@@ -1,0 +1,335 @@
+# 📄 Cover Letter Agent
+
+An intelligent agent that generates customized, accurate, and high-impact cover letters using structured "blurb" modules and a logic-based scoring system.
+
+## 🎯 Features
+
+- **Smart Job Evaluation**: Automatically evaluates job descriptions using keyword matching and scoring logic
+- **Go/No-Go Decision**: Determines whether a job is worth applying to based on configurable criteria
+- **Blurb-Based Generation**: Uses pre-approved paragraph modules that can be mixed and matched
+- **Intelligent Matching**: Selects the most appropriate blurbs based on job requirements and company type
+- **Enhancement Suggestions**: Provides actionable feedback to improve cover letter quality
+- **Enhancement Tracking**: Logs and tracks enhancement suggestions with status management
+
+## 📁 Project Structure
+
+```
+project/
+├── agents/
+│   └── cover_letter_agent.py      # Main agent implementation
+├── data/
+│   ├── resume.pdf                 # Your resume (for future parsing)
+│   ├── job_description.txt        # Sample job description
+│   ├── blurbs.yaml               # Pre-approved paragraph modules
+│   ├── blurb_logic.yaml          # Scoring and matching logic
+│   └── enhancement_log.csv       # Enhancement suggestion tracking
+├── scripts/
+│   └── run_cover_letter_agent.py # Command-line interface
+└── README.md
+```
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+pip install pyyaml
+```
+
+### 2. Run the Agent
+
+```bash
+# Process a job description file
+python scripts/run_cover_letter_agent.py -i data/job_description.txt
+
+# Process job description text directly
+python scripts/run_cover_letter_agent.py -t "Senior Product Manager at TechCorp..."
+
+# Save output to file
+python scripts/run_cover_letter_agent.py -i data/job_description.txt -o cover_letter.txt
+```
+
+### 3. View Enhancement Log
+
+```bash
+# View all enhancement suggestions
+python scripts/run_cover_letter_agent.py --log
+
+# View only open suggestions
+python scripts/run_cover_letter_agent.py --log --log-status open
+```
+
+## 🔧 Configuration
+
+### Blurbs (`data/blurbs.yaml`)
+
+Pre-approved paragraph modules organized by type:
+
+```yaml
+intro:
+  - id: standard
+    tags: [all]
+    text: "I'm a product leader with 15+ years..."
+  
+  - id: ai_variant
+    tags: [AI, ML]
+    text: "I focus on clarifying ambiguity and building trust in AI..."
+
+paragraph2:
+  - id: growth
+    tags: [growth]
+    text: "I build systems that align teams around measurable outcomes..."
+```
+
+### Logic (`data/blurb_logic.yaml`)
+
+Scoring rules and matching criteria:
+
+```yaml
+scoring_rules:
+  keyword_weights:
+    AI: 3.0
+    startup: 2.5
+    growth: 2.0
+
+go_no_go:
+  minimum_keywords: 3
+  minimum_total_score: 5.0
+```
+
+## 📊 How It Works
+
+### 1. Job Description Parsing
+
+The agent extracts:
+- Company name and job title
+- Relevant keywords from the description
+- Job type classification (startup, enterprise, AI/ML, etc.)
+- Requirements and responsibilities
+- Company information
+
+### 2. Scoring & Evaluation
+
+Each job is scored based on:
+- **Keyword matching**: Relevant terms get positive scores
+- **Strong match keywords**: Product management terms get bonus points
+- **Poor match keywords**: Non-relevant terms get negative scores
+- **Minimum thresholds**: Jobs must meet criteria to proceed
+
+### 3. Blurb Selection
+
+The agent selects the best blurbs for each section:
+- **Intro paragraph**: Matches job type and company size
+- **Main paragraph**: Aligns with key responsibilities
+- **Examples**: Highlights relevant experience
+- **Closing**: Tailored to company and role
+
+### 4. Cover Letter Generation
+
+Combines selected blurbs into a coherent cover letter:
+- Replaces placeholders with actual company names
+- Maintains consistent tone and flow
+- Includes proper formatting and structure
+
+### 5. Enhancement Suggestions
+
+The agent reviews the draft and suggests improvements:
+- **Low score issues**: Add more specific keywords
+- **Missing examples**: Include concrete experience
+- **Weak closing**: Strengthen with company research
+- **Generic content**: Make more specific to the role
+
+## 🎛️ Command Line Options
+
+```bash
+python scripts/run_cover_letter_agent.py [OPTIONS]
+
+Options:
+  -i, --input-file FILE     Input job description file
+  -t, --text TEXT          Job description text
+  -o, --output-file FILE   Output cover letter file
+  -d, --data-dir DIR       Data directory (default: data)
+  --log                    Show enhancement log
+  --log-status STATUS      Filter log by status (open/accepted/rejected)
+  --update-status JOB_ID ENHANCEMENT_TYPE STATUS
+                           Update enhancement suggestion status
+  -v, --verbose           Verbose output
+```
+
+## 📈 Enhancement Tracking
+
+The system tracks enhancement suggestions with:
+
+- **Status**: `open`, `accepted`, `rejected`
+- **Priority**: `high`, `medium`, `low`
+- **Category**: `content_improvement`, `keyword_optimization`, etc.
+- **Notes**: Additional context and implementation details
+
+### Managing Enhancements
+
+```bash
+# View open suggestions
+python scripts/run_cover_letter_agent.py --log --log-status open
+
+# Mark suggestion as accepted
+python scripts/run_cover_letter_agent.py --update-status JOB_001 content_improvement accepted
+
+# Add notes to suggestion
+python scripts/run_cover_letter_agent.py --update-status JOB_001 keyword_optimization accepted "Added AI/ML keywords"
+```
+
+## 🔍 Job Types Supported
+
+The agent recognizes and optimizes for:
+
+- **Startup**: Early-stage, fast-paced, growth-focused
+- **Enterprise**: Large-scale, B2B, corporate environment
+- **AI/ML**: Artificial intelligence and machine learning focus
+- **Cleantech**: Climate, energy, sustainability focus
+- **Internal Tools**: Productivity, efficiency, operations focus
+
+## 📝 Customizing Blurbs
+
+To add new blurbs or modify existing ones:
+
+1. Edit `data/blurbs.yaml`
+2. Add new blurb entries with appropriate tags
+3. Update scoring logic in `data/blurb_logic.yaml` if needed
+4. Test with sample job descriptions
+
+### Blurb Structure
+
+```yaml
+intro:
+  - id: your_new_blurb
+    tags: [relevant, keywords, here]
+    text: "Your blurb text here..."
+```
+
+## 🎯 Scoring Logic
+
+### Keyword Weights
+
+- **AI/ML terms**: 3.0 points
+- **Startup terms**: 2.5 points
+- **Growth/Scaling**: 2.0 points
+- **Enterprise/B2B**: 2.0 points
+- **Trust/Explainable**: 1.5 points
+
+### Minimum Scores
+
+- **AI variant intro**: 2.0 points required
+- **Startup variant intro**: 1.5 points required
+- **Growth paragraph**: 1.5 points required
+- **Cleantech paragraph**: 2.0 points required
+
+### Go/No-Go Criteria
+
+- **Minimum keywords**: 3 relevant terms
+- **Minimum total score**: 5.0 points
+- **Strong match bonus**: +2.0 for product management terms
+- **Poor match penalty**: -1.0 for non-relevant terms
+
+## 🔮 Future Enhancements
+
+- **Resume parsing**: Extract experience from PDF resume
+- **Company research**: Auto-research company for better customization
+- **A/B testing**: Test different blurb combinations
+- **Learning system**: Improve scoring based on application outcomes
+- **Template expansion**: Add more specialized blurb types
+- **Multi-language support**: Generate cover letters in different languages
+
+## 📁 Google Drive Integration
+
+The agent can access supporting materials from Google Drive:
+
+### Setup Google Drive Integration
+
+1. **Run the setup script:**
+   ```bash
+   python setup_google_drive.py
+   ```
+
+2. **Follow the interactive setup:**
+   - Create Google Cloud project
+   - Enable Google Drive API
+   - Create service account
+   - Download credentials
+   - Share your Google Drive folder
+   - Update configuration
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Supported Materials
+
+- **Presentations**: Slides and decks
+- **Spreadsheets**: Metrics and data
+- **Past Cover Letters**: Previous applications
+- **Case Studies**: Portfolio materials
+
+### Configuration
+
+Edit `data/agent_config.yaml`:
+
+```yaml
+google_drive:
+  enabled: true
+  folder_id: "your_google_drive_folder_id"
+  credentials_file: "credentials.json"
+  materials:
+    presentations: "presentations/"
+    spreadsheets: "spreadsheets/"
+    cover_letters: "cover_letters/"
+    case_studies: "case_studies/"
+```
+
+## 📚 Case Study Management
+
+### URL-Based Case Studies
+
+Add case study URLs to `data/agent_config.yaml`:
+
+```yaml
+case_studies:
+  urls:
+    - name: "Aurora Solar Growth Case Study"
+      url: "https://example.com/aurora-solar-case-study"
+      description: "Scaling B2B platform from 10 to 10,000+ customers"
+      tags: [growth, B2B, clean_energy, scaling]
+```
+
+### Local Case Study Files
+
+Add local files to the configuration:
+
+```yaml
+case_studies:
+  local_files:
+    - name: "Aurora Solar Metrics"
+      file_path: "case_studies/aurora_metrics.pdf"
+      description: "Detailed metrics and KPIs from Aurora Solar growth"
+      tags: [growth, metrics, B2B]
+```
+
+### Google Drive Case Studies
+
+Materials in your Google Drive folder are automatically detected and matched to job keywords.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add new blurbs or improve logic
+4. Test with sample job descriptions
+5. Submit a pull request
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+---
+
+**Note**: This agent is designed for product management roles but can be easily adapted for other positions by modifying the blurbs and logic configuration. 

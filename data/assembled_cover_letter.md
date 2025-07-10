@@ -1,0 +1,14 @@
+Dear Hiring Manager,
+
+I'm a product leader with 15+ years of experience building user-centric products that drive results. My background includes 0–1 execution at hypergrowth startups (Aurora Solar, FalconX) and impact at scale for global brands (Meta, Samsung, Salesforce). I began as a front-end engineer, moved through UX leadership, and transitioned into product management 8 years ago to lead full-lifecycle execution. I believe the best product teams don't just move fast—they build the right thing. I focus on asking the right questions to unlock adoption, activation, and retention. I specialize in clarifying ambiguity, aligning stakeholders, and using AI tools to accelerate discovery, storytelling, and delivery—without losing sight of the user or business context. I bring 5 years of experience improving the usability of AI/ML systems—helping users trust and adopt novel technologies. At Meta, I led explainable AI for internal tools. At Samsung, I designed NLP-powered support flows. At Aurora, I improved workflows for ML-based solar modeling. I'm also a daily GenAI power user: I've built a Python web scraper, moderated a panel on GenAI and DERs for SF Climate Week, and created a voice assistant for home energy upgrades that was a finalist at the Hacking for Clean Energy hackathon.
+Key Skills: machine learning, agile, analytics
+
+
+I build growth systems that align cross-functional teams around measurable outcomes. I uncover product gaps through behavioral analytics, user interviews, and collaboration with customer success, sales and product marketing. I lead a hypothesis-driven development process that includes iteration and beta testing. I develop roadmaps grounded in differentiated value and lead delivery with a focus on activation, engagement, and sustained retention. I also work closely with marketing to launch GTM campaigns and implement PLG systems that drive adoption across key segments.
+
+At Aurora Solar, I was a founding product manager and helped scale the company from Series A to Series C. I led a multi-year platform rebuild to support a land-and-expand strategy—broadening our user base from solar designers to sales teams and enabling a shift from SMB to enterprise. I introduced beta testing, behavioral analytics, and product-led onboarding to improve launch speed and adoption. I built internal tools and processes to align marketing, support, and engineering, including a shared prioritization framework, streamlined bug reporting, and v1 design system. These efforts contributed to adoption by 90% of the top U.S. solar EPCs and supported a $4B valuation.
+
+I'm excited about the opportunity to help Unknown Company scale and grow. My experience building systems that align teams around measurable outcomes would be valuable as you continue to expand. I'd love to discuss how my background can contribute to your growth trajectory.
+
+Best regards,
+[Your Name]
