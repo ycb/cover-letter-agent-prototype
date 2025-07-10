@@ -1,33 +1,61 @@
 # 📄 Cover Letter Agent
 
-## 🚀 Getting Started (Multi-User Setup)
+---
 
-### 1. Create a New User
+## 🤖 OpenAI Setup (for LLM Enhancement)
 
+To enable AI-powered cover letter enhancement, you need an OpenAI API key.
+
+### 1. Get an OpenAI API Key
+- Sign up at https://platform.openai.com/ and create an API key (requires a free or paid account).
+
+### 2. Add Your API Key
+- **Recommended:** Copy `.env.example` to `.env` and add your API key:
+  ```bash
+  cp .env.example .env
+  # Edit .env and set OPENAI_API_KEY=sk-...
+  ```
+- **Alternative:** Set the environment variable in your shell:
+  ```bash
+  export OPENAI_API_KEY=sk-...
+  ```
+
+### 3. Install Dependencies
 ```bash
-python3 init_user.py <user_id>
+pip install openai python-dotenv
 ```
-- This creates a new folder under `users/<user_id>/` with all the necessary template files.
 
-### 2. Add Your Resume and Customize
-- Place your resume as `resume.pdf` in your user folder.
-- Edit `config.yaml` with your personal info and preferences.
-- Edit `blurbs.yaml` with your stories, intros, closings, etc.
-- Optionally, update `blurb_logic.yaml` and `job_targeting.yaml`.
-
-### 3. Generate a Cover Letter
-
+### 4. Test LLM Integration
 ```bash
-python3 scripts/run_cover_letter_agent.py --user <user_id> -i data/job_description.txt
+python test_metrics_preservation.py
 ```
-- Replace `<user_id>` with your username.
-- You can also use `--text "Job description here..."` for quick tests.
+If metrics are preserved and no errors appear, your setup is correct!
 
-### 4. See All Users
+---
 
-```bash
-python3 init_user.py --list
-```
+## 🧠 What is LLM Phase 1? (AI Enhancement)
+
+**LLM Phase 1** is the first stage of AI-powered cover letter improvement. Here’s what it does:
+
+- **Post-Draft Enhancement:**
+  - The agent first generates a draft using your pre-approved blurbs and logic.
+  - The LLM (e.g., GPT-4) then rewrites the draft to improve clarity, flow, tone, and alignment with the job description.
+
+- **Strict Truth & Metrics Preservation:**
+  - The LLM is instructed to NEVER add, remove, or change any factual claims, numbers, percentages, or achievements.
+  - All metrics (e.g., “+210%”, “$4B”, “15+ years”) are preserved exactly as written.
+  - The system checks for any exaggeration or loss of facts and warns you if detected.
+
+- **No Invention or Hallucination:**
+  - The LLM cannot invent new experiences, companies, or results.
+  - If it cannot improve a section without changing facts, it leaves it as is.
+
+- **Professional, Polished Output:**
+  - The result is a more concise, professional, and impactful cover letter—without losing your authentic achievements or voice.
+
+- **Safety Features:**
+  - All enhancements are validated for truth and metric preservation.
+  - You can disable LLM enhancement at any time in your config.
 
 ---
 
