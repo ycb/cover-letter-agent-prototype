@@ -10,6 +10,7 @@ An intelligent agent that generates customized, accurate, and high-impact cover 
 - **Intelligent Matching**: Selects the most appropriate blurbs based on job requirements and company type
 - **Enhancement Suggestions**: Provides actionable feedback to improve cover letter quality
 - **Enhancement Tracking**: Logs and tracks enhancement suggestions with status management
+- **Google Drive Integration**: Automatically saves all cover letter drafts to Google Drive with metadata
 
 ## 📁 Project Structure
 
@@ -241,11 +242,24 @@ intro:
 
 ## 📁 Google Drive Integration
 
-The agent can access supporting materials from Google Drive:
+The agent can access supporting materials from Google Drive and automatically saves all cover letter drafts with metadata.
+
+### Features
+
+- **Automatic Draft Saving**: Every cover letter is automatically uploaded to Google Drive
+- **Rich Metadata**: Includes company name, position, job score, and timestamp
+- **Organized Storage**: Files are saved in a dedicated `drafts/` subfolder
+- **Easy Access**: All drafts are available in your Google Drive folder under `drafts/`
+- **Separation**: Drafts are kept separate from approved/submitted cover letters
 
 ### Setup Google Drive Integration
 
-1. **Run the setup script:**
+1. **Install required packages:**
+   ```bash
+   pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+   ```
+
+2. **Run the setup script:**
    ```bash
    python setup_google_drive.py
    ```
@@ -284,7 +298,18 @@ google_drive:
     spreadsheets: "spreadsheets/"
     cover_letters: "cover_letters/"
     case_studies: "case_studies/"
+    drafts: "drafts/"
 ```
+
+### Testing Drive Upload
+
+Test the Google Drive upload functionality:
+
+```bash
+python scripts/test_drive_upload.py
+```
+
+This will verify that your credentials and folder permissions are working correctly.
 
 ## 📚 Case Study Management
 

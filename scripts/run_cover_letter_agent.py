@@ -290,6 +290,11 @@ def main():
     if cover_letter:
         print_cover_letter(cover_letter)
         print_enhancement_suggestions(suggestions)
+        
+        # Check if uploaded to Google Drive
+        if hasattr(agent, 'google_drive') and agent.google_drive and agent.google_drive.available:
+            print("\n📁 Cover letter draft automatically saved to Google Drive drafts folder")
+        
         # Save to file if requested
         if args.output_file:
             save_cover_letter(cover_letter, args.output_file)

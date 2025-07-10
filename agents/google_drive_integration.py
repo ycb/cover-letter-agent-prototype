@@ -4,7 +4,7 @@ Google Drive Integration
 =======================
 
 Module for accessing supporting materials (presentations, spreadsheets, 
-past cover letters) from Google Drive.
+past cover letters) from Google Drive and uploading cover letter drafts.
 """
 
 import os
@@ -12,11 +12,12 @@ import json
 from typing import List, Dict, Optional, Any
 from pathlib import Path
 import logging
+from datetime import datetime
 
 try:
     from google.oauth2 import service_account
     from googleapiclient.discovery import build
-    from googleapiclient.http import MediaIoBaseDownload
+    from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
     import io
     GOOGLE_DRIVE_AVAILABLE = True
 except ImportError:
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class GoogleDriveIntegration:
-    """Handles Google Drive integration for accessing supporting materials."""
+    """Handles Google Drive integration for accessing supporting materials and uploading drafts."""
     
     def __init__(self, credentials_file: str = "credentials.json", folder_id: str = ""):
         """Initialize Google Drive integration."""
@@ -48,7 +49,7 @@ class GoogleDriveIntegration:
             
             credentials = service_account.Credentials.from_service_account_file(
                 self.credentials_file,
-                scopes=['https://www.googleapis.com/auth/drive.readonly']
+                scopes=['https://www.googleapis.com/auth/drive']
             )
             
             self.service = build('drive', 'v3', credentials=credentials)
@@ -117,6 +118,114 @@ class GoogleDriveIntegration:
         except Exception as e:
             logger.error(f"Error downloading file: {e}")
             return False
+    
+    def upload_file(self, content: str, filename: str, folder_id: Optional[str] = None, mime_type: str = "text/plain") -> Optional[str]:
+        """Upload a file to Google Drive."""
+        if not self.available or not self.service:
+            logger.error("Google Drive service not available")
+            return None
+        
+        folder_id = folder_id or self.folder_id
+        if not folder_id:
+            logger.error("No folder ID specified for upload")
+            return None
+        
+        try:
+            # Create file metadata
+            file_metadata = {
+                'name': filename,
+                'parents': [folder_id]
+            }
+            
+            # Create media upload
+            fh = io.BytesIO(content.encode('utf-8'))
+            media = MediaIoBaseUpload(fh, mimetype=mime_type, resumable=True)
+            
+            # Upload file
+            file = self.service.files().create(
+                body=file_metadata,
+                media_body=media,
+                fields='id'
+            ).execute()
+            
+            logger.info(f"Uploaded file to Google Drive: {filename} (ID: {file.get('id')})")
+            return file.get('id')
+            
+        except Exception as e:
+            logger.error(f"Error uploading file: {e}")
+            return None
+    
+    def upload_cover_letter_draft(self, cover_letter: str, company_name: str, position_title: str, job_score: float = 0.0) -> Optional[str]:
+        """Upload a cover letter draft to Google Drive with metadata."""
+        if not self.available:
+            logger.warning("Google Drive not available for upload")
+            return None
+        
+        # Create filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_company = company_name.replace(' ', '_').replace('/', '_')[:30]
+        safe_position = position_title.replace(' ', '_').replace('/', '_')[:30]
+        
+        filename = f"{safe_company}_{safe_position}_{timestamp}.txt"
+        
+        # Add metadata to the content
+        metadata_header = f"""# Cover Letter Draft
+Company: {company_name}
+Position: {position_title}
+Score: {job_score:.2f}
+Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+"""
+        
+        full_content = metadata_header + cover_letter
+        
+        # Get or create drafts subfolder
+        drafts_folder_id = self._get_or_create_drafts_folder()
+        if not drafts_folder_id:
+            logger.error("Could not create or find drafts folder")
+            return None
+        
+        return self.upload_file(full_content, filename, drafts_folder_id)
+    
+    def _get_or_create_drafts_folder(self) -> Optional[str]:
+        """Get or create a drafts subfolder in the main Google Drive folder."""
+        if not self.available or not self.service:
+            return None
+        
+        try:
+            # First, try to find existing drafts folder
+            query = f"'{self.folder_id}' in parents and name='drafts' and mimeType='application/vnd.google-apps.folder' and trashed=false"
+            results = self.service.files().list(
+                q=query,
+                fields="files(id, name)"
+            ).execute()
+            
+            files = results.get('files', [])
+            if files:
+                # Drafts folder already exists
+                drafts_folder_id = files[0]['id']
+                logger.info(f"Found existing drafts folder: {drafts_folder_id}")
+                return drafts_folder_id
+            
+            # Create new drafts folder
+            folder_metadata = {
+                'name': 'drafts',
+                'mimeType': 'application/vnd.google-apps.folder',
+                'parents': [self.folder_id]
+            }
+            
+            folder = self.service.files().create(
+                body=folder_metadata,
+                fields='id'
+            ).execute()
+            
+            drafts_folder_id = folder.get('id')
+            logger.info(f"Created new drafts folder: {drafts_folder_id}")
+            return drafts_folder_id
+            
+        except Exception as e:
+            logger.error(f"Error creating/finding drafts folder: {e}")
+            return None
     
     def get_supporting_materials(self, materials_config: Dict[str, str]) -> Dict[str, List[Dict]]:
         """Get supporting materials organized by type."""

@@ -1908,6 +1908,23 @@ Draft Cover Letter:
                 print(f"[LLM Review Error] {e}")
         # Review draft
         suggestions = self.review_draft(cover_letter, job) if track_enhance else []
+        
+        # Upload cover letter draft to Google Drive if available
+        if self.google_drive and self.google_drive.available:
+            try:
+                file_id = self.google_drive.upload_cover_letter_draft(
+                    cover_letter, 
+                    job.company_name, 
+                    job.job_title, 
+                    job.score
+                )
+                if file_id:
+                    logger.info(f"Cover letter draft uploaded to Google Drive with ID: {file_id}")
+                else:
+                    logger.warning("Failed to upload cover letter draft to Google Drive")
+            except Exception as e:
+                logger.error(f"Error uploading to Google Drive: {e}")
+        
         if debug or explain:
             return job, cover_letter, suggestions, debug_info
         return job, cover_letter, suggestions
