@@ -1,0 +1,148 @@
+# Job Targeting Configuration
+# Defines criteria for job evaluation and filtering
+
+target_titles:
+  leadership:
+    - VP of Product
+    - Director of Product
+    - Head of Product
+    - Group Product Manager
+  IC:
+    - Product Manager
+    - Principal Product Manager
+    - Lead Product Manager
+    - Senior Product Manager
+
+comp_target: 200000  # minimum USD
+
+locations:
+  preferred:
+    - San Francisco
+  open_to:
+    - New York
+    - Colorado
+    - UK
+    - EU (Nordics, Spain)
+
+role_types:
+  - growth
+  - founding
+  - UX
+  - AI/ML
+
+company_stages:
+  - startup
+  - scale-up
+  - public
+
+business_models:
+  - B2B
+  - B2C
+  - B2B2C
+  - D2C
+
+# Scoring weights for different criteria
+scoring_weights:
+  title_match: 5.0
+  comp_target: 3.0
+  location_preferred: 2.0
+  location_open: 1.0
+  role_type_match: 2.0
+  company_stage_match: 1.5
+  business_model_match: 1.0
+
+# Minimum scores for different criteria
+minimum_scores:
+  title_match: 1.0
+  comp_target: 0.0  # Will be evaluated separately
+  location_match: 0.0
+  role_type_match: 0.0
+
+# Keywords that indicate different criteria
+keywords:
+  title_leadership:
+    - VP
+    - Director
+    - Head of
+    - Group
+    - Executive
+  title_IC:
+    - Principal
+    - Lead
+    - Senior
+    - Staff
+  comp_indicators:
+    - salary
+    - compensation
+    - pay
+    - equity
+    - stock options
+    - benefits
+  location_indicators:
+    - remote
+    - hybrid
+    - onsite
+    - location
+    - office
+  role_type_indicators:
+    growth:
+      - growth
+      - scaling
+      - expansion
+      - user acquisition
+      - revenue growth
+    founding:
+      - founding
+      - early stage
+      - startup
+      - founding team
+      - first hire
+    UX:
+      - user experience
+      - UX
+      - design
+      - user research
+      - usability
+    AI/ML:
+      - AI
+      - ML
+      - artificial intelligence
+      - machine learning
+      - algorithms
+  company_stage_indicators:
+    startup:
+      - startup
+      - early stage
+      - seed
+      - series a
+      - series b
+    scale_up:
+      - scale up
+      - growth stage
+      - series c
+      - series d
+      - unicorn
+    public:
+      - public company
+      - IPO
+      - publicly traded
+      - Fortune 500
+  business_model_indicators:
+    B2B:
+      - B2B
+      - enterprise
+      - business to business
+      - corporate
+    B2C:
+      - B2C
+      - consumer
+      - direct to consumer
+      - retail
+    B2B2C:
+      - B2B2C
+      - marketplace
+      - platform
+    D2C:
+      - D2C
+      - direct to consumer
+      - e-commerce 

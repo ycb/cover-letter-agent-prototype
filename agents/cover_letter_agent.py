@@ -87,17 +87,32 @@ class EnhancementSuggestion:
 class CoverLetterAgent:
     """Main agent class for generating customized cover letters."""
     
-    def __init__(self, data_dir: str = "data"):
-        """Initialize the agent with data directory."""
-        self.data_dir = Path(data_dir)
-        self.blurbs = self._load_blurbs()
-        self.logic = self._load_logic()
-        self.enhancement_log = self._load_enhancement_log()
-        self.targeting = self._load_targeting()
-        self.config = self._load_config()
-        self.google_drive = self._initialize_google_drive()
-        self.context_analyzer = self._initialize_context_analyzer()
-        self.resume = self._load_resume()
+    def __init__(self, user_id: str = None, data_dir: str = "data"):
+        """Initialize the agent with user context or data directory."""
+        if user_id:
+            # Multi-user mode
+            from core.user_context import UserContext
+            self.user_context = UserContext(user_id)
+            self.data_dir = self.user_context.user_dir
+            self.blurbs = self.user_context.blurbs
+            self.logic = self.user_context.logic
+            self.enhancement_log = self.user_context.load_enhancement_log()
+            self.targeting = self.user_context.targeting
+            self.config = self.user_context.config
+            self.google_drive = self._initialize_google_drive()
+            self.context_analyzer = self._initialize_context_analyzer()
+            self.resume = self._load_resume()
+        else:
+            # Legacy mode
+            self.data_dir = Path(data_dir)
+            self.blurbs = self._load_blurbs()
+            self.logic = self._load_logic()
+            self.enhancement_log = self._load_enhancement_log()
+            self.targeting = self._load_targeting()
+            self.config = self._load_config()
+            self.google_drive = self._initialize_google_drive()
+            self.context_analyzer = self._initialize_context_analyzer()
+            self.resume = self._load_resume()
     
     def _load_blurbs(self) -> Dict[str, List[Dict]]:
         """Load blurbs from YAML file."""
@@ -123,15 +138,20 @@ class CoverLetterAgent:
     
     def _save_enhancement_log(self):
         """Save enhancement log to CSV file."""
-        log_path = self.data_dir / "enhancement_log.csv"
-        if not self.enhancement_log:
-            return
-        
-        fieldnames = self.enhancement_log[0].keys()
-        with open(log_path, 'w', newline='') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(self.enhancement_log)
+        if hasattr(self, 'user_context'):
+            # Multi-user mode
+            self.user_context.save_enhancement_log(self.enhancement_log)
+        else:
+            # Legacy mode
+            log_path = self.data_dir / "enhancement_log.csv"
+            if not self.enhancement_log:
+                return
+            
+            fieldnames = self.enhancement_log[0].keys()
+            with open(log_path, 'w', newline='') as f:
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(self.enhancement_log)
     
     def _load_targeting(self) -> Dict[str, Any]:
         """Load job targeting config from YAML file."""

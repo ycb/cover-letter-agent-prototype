@@ -1,5 +1,67 @@
 # 📄 Cover Letter Agent
 
+## 🚀 Getting Started (Multi-User Setup)
+
+### 1. Create a New User
+
+```bash
+python3 init_user.py <user_id>
+```
+- This creates a new folder under `users/<user_id>/` with all the necessary template files.
+
+### 2. Add Your Resume and Customize
+- Place your resume as `resume.pdf` in your user folder.
+- Edit `config.yaml` with your personal info and preferences.
+- Edit `blurbs.yaml` with your stories, intros, closings, etc.
+- Optionally, update `blurb_logic.yaml` and `job_targeting.yaml`.
+
+### 3. Generate a Cover Letter
+
+```bash
+python3 scripts/run_cover_letter_agent.py --user <user_id> -i data/job_description.txt
+```
+- Replace `<user_id>` with your username.
+- You can also use `--text "Job description here..."` for quick tests.
+
+### 4. See All Users
+
+```bash
+python3 init_user.py --list
+```
+
+---
+
+## 🗂 Project Structure
+
+```
+cover-letter-agent/
+├── users/
+│   ├── alice/
+│   └── bob/
+├── core/
+│   └── user_context.py
+├── scripts/
+│   └── run_cover_letter_agent.py
+├── init_user.py
+└── templates/
+    ├── config_template.yaml
+    ├── blurbs_template.yaml
+    ├── blurb_logic_template.yaml
+    └── job_targeting_template.yaml
+```
+
+---
+
+## 📝 Notes
+- Each user is fully isolated: their config, blurbs, logic, and resume are private.
+- No global or hardcoded user data.
+- To add a new user, just run the onboarding script and follow the README in your user folder.
+- **Sensitive files** (like resumes or credentials) are not committed to GitHub if `.gitignore` is set up correctly.
+
+---
+
+# 📄 Cover Letter Agent
+
 An intelligent agent that generates customized, accurate, and high-impact cover letters using structured "blurb" modules and a logic-based scoring system.
 
 ## 🎯 Features

@@ -198,6 +198,7 @@ def print_strategic_insights(insights):
 def main():
     """Main function."""
     parser = argparse.ArgumentParser(description="Cover Letter Agent")
+    parser.add_argument("--user", "-u", required=True, help="User ID (matches users/[id]/)")
     parser.add_argument("--input-file", "-i", help="Input job description file")
     parser.add_argument("--jd", help="Input job description file (alias for --input-file)")
     parser.add_argument("--text", "-t", help="Job description text")
@@ -219,8 +220,21 @@ def main():
     # Support --jd as alias for --input-file
     input_file = args.input_file or args.jd
 
-    # Initialize agent
-    agent = CoverLetterAgent(args.data_dir)
+    # Validate user exists
+    import sys
+    sys.path.append(str(Path(__file__).parent.parent))
+    from core.user_context import validate_user_exists, list_available_users
+    
+    if not validate_user_exists(args.user):
+        print(f"❌ User '{args.user}' not found.")
+        print("Available users:")
+        for user in list_available_users():
+            print(f"  - {user}")
+        print(f"\nTo create a new user: python3 init_user.py {args.user}")
+        return
+    
+    # Initialize agent with user context
+    agent = CoverLetterAgent(user_id=args.user)
 
     # Handle enhancement log commands
     if args.log:

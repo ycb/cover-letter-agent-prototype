@@ -1,0 +1,118 @@
+case_studies:
+  urls:
+  - description: Scaling B2B platform from Series A to C
+    name: Aurora Solar Growth Case Study
+    tags:
+    - growth
+    - B2B
+    - clean_energy
+    - scaling
+    url: https://tinyurl.com/series-a-to-c
+  - description: Explainable AI for recruiting
+    name: Meta Explainable AI Case Study
+    tags:
+    - AI
+    - ML
+    - trust
+    - internal_tools
+    - explainable
+    url: https://tinyurl.com/ml-at-meta
+  - description: PMF for home energy management
+    name: Enact 0 to 1 Case Study
+    tags:
+    - growth
+    - consumer
+    - clean_energy
+    - user_experience
+    url: https://tinyurl.com/vp-of-product
+  - description: VPP / DERMS proposal
+    name: Duke Energy Case Study
+    tags:
+    - B2C
+    - clean_energy
+    url: https://tinyurl.com/duke-vpp
+  - description: GenAI and DERs
+    name: SF Climate Week Roundtable
+    tags:
+    - AI
+    - ML
+    - trust
+    - internal_tools
+    - explainable
+    url: https://www.linkedin.com/feed/update/urn:li:activity:7320603049863835648/
+cover_letter:
+  personal_brand:
+    key_strengths:
+    - Building systems that align teams around measurable outcomes
+    - Clarifying ambiguity in complex environments
+    - Creating trust in AI and ML systems
+    - Scaling products from zero to millions of users
+    tagline: Product leader focused on clarifying ambiguity and building trust
+  placeholders:
+    case_study_reference: '[Case Study Reference]'
+    company_name: '[Company Name]'
+    position_title: '[Position Title]'
+    specific_achievement: '[Specific Achievement]'
+  tone:
+    AI_ML: technical
+    default: professional
+    enterprise: professional
+    startup: conversational
+google_drive:
+  credentials_file: credentials.json
+  enabled: true
+  folder_id: 1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x
+  materials:
+    case_studies: case_studies/
+    cover_letters: cover_letters/
+    drafts: drafts/
+    presentations: presentations/
+    spreadsheets: spreadsheets/
+integrations:
+  google_drive_setup:
+    steps:
+    - 1. Go to Google Cloud Console
+    - 2. Create a new project or select existing
+    - 3. Enable Google Drive API
+    - 4. Create service account credentials
+    - 5. Download credentials.json to project root
+    - 6. Share your Google Drive folder with the service account email
+  supported_file_types:
+  - pdf
+  - docx
+  - pptx
+  - xlsx
+  - txt
+  - md
+output:
+  export_formats:
+  - txt
+  - md
+  - docx
+  file_naming:
+    date_format: '%Y%m%d'
+    pattern: '{company}_{position}_{date}'
+  format:
+    include_footer: true
+    include_header: true
+    max_length: 400
+    preferred_sections:
+    - intro
+    - experience
+    - examples
+    - closing
+profile:
+  achievements:
+  - Co-founded spatial intelligence startup that earned $250k revenue and onboarded
+    100+ users
+  - Led 0-1 (Series A management team) delivering 10X growth of user base, +210% MAUs,
+    +876% engagement and +169% revenue
+  - Drove 10X increase in adoption of AI/ML tools for recruiting at Meta
+  - 'Founding PM (Series A-C): captured majority of US solar installer market, 10X
+    team, $4B valuation'
+  - 'Improved customer care for 20M Samsung users: +160% MAUs, +200% engagement, NLP
+    chatbot'
+  github_url: https://github.com/ycb
+  linkedin_url: https://linkedin.com/in/pspan
+  portfolio_url: https://peterspannagle.com/
+  resume_file: Peter Spannagle-Resume.pdf

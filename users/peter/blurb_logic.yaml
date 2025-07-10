@@ -1,0 +1,172 @@
+# Blurb Logic Configuration
+# Defines scoring rules and matching criteria for different job types
+
+scoring_rules:
+  # Keywords that boost scores for specific blurb types
+  keyword_weights:
+    AI: 3.0
+    ML: 3.0
+    artificial_intelligence: 3.0
+    machine_learning: 3.0
+    startup: 2.5
+    early_stage: 2.5
+    growth: 2.0
+    scaling: 2.0
+    B2B: 2.0
+    enterprise: 2.0
+    climate: 2.5
+    energy: 2.5
+    clean_energy: 2.5
+    sustainability: 2.5
+    internal_tools: 2.0
+    productivity: 2.0
+    efficiency: 2.0
+    operations: 2.0
+    trust: 1.5
+    explainable: 1.5
+    search: 1.5
+    consumer: 1.5
+    large_scale: 1.5
+    user_experience: 1.5
+    mission: 1.5
+    purpose: 1.5
+    impact: 1.5
+
+  # Minimum scores for different blurb types
+  minimum_scores:
+    intro:
+      standard: 0
+      ai_variant: 2.0
+      startup_variant: 1.5
+    paragraph2:
+      growth: 1.5
+      cleantech: 2.0
+      internal_tools: 1.5
+    examples:
+      enact:
+        min_score: 2.0
+      aurora:
+        min_score: 2.0
+      meta:
+        min_score: 2.0
+      samsung:
+        min_score: 1.5
+      duke:
+        min_score: 1.5
+      spatialthink:
+        min_score: 1.5
+      samsung_chatbot:
+        min_score: 1.5
+      genai_voice:
+        min_score: 1.5
+      sf_climate_week:
+        min_score: 1.0
+
+    closing:
+      standard: 0
+      mission_aligned: 1.0
+      growth_focused: 1.0
+
+# Job type classification rules
+job_classification:
+  startup:
+    keywords: [startup, early_stage, seed, series_a, series_b, fast_paced, rapid_growth]
+    min_keyword_count: 2
+  
+  enterprise:
+    keywords: [enterprise, B2B, large_scale, corporate, Fortune_500, enterprise_sales]
+    min_keyword_count: 2
+  
+  ai_ml:
+    keywords: [AI, ML, artificial_intelligence, machine_learning, deep_learning, neural_networks, algorithms]
+    min_keyword_count: 2
+  
+  cleantech:
+    keywords: [climate, energy, clean_energy, sustainability, renewable, solar, wind, carbon]
+    min_keyword_count: 2
+  
+  internal_tools:
+    keywords: [internal_tools, productivity, efficiency, operations, employee_tools, HR_tools]
+    min_keyword_count: 2
+
+# Go/No-Go criteria
+go_no_go:
+  # Minimum required keywords for a job to be worth applying to
+  minimum_keywords: 3
+  
+  # Keywords that indicate a strong match
+  strong_match_keywords:
+    - product_manager
+    - product_lead
+    - product_director
+    - product_strategy
+    - product_development
+    - user_experience
+    - user_research
+    - data_driven
+    - metrics
+    - analytics
+  
+  # Keywords that indicate a poor match (negative scoring)
+  poor_match_keywords:
+    - senior_developer
+    - software_engineer
+    - frontend_developer
+    - backend_developer
+    - devops_engineer
+    - data_scientist
+    - research_scientist
+    - marketing_manager
+    - sales_manager
+    - finance_manager
+  
+  # Minimum score threshold for proceeding with cover letter generation
+  minimum_total_score: 5.0
+
+# Enhancement suggestions logic
+enhancement_suggestions:
+  # Triggers for suggesting improvements
+  triggers:
+    low_score:
+      threshold: 3.0
+      message: "Consider adding more specific keywords or experience examples"
+    
+    missing_examples:
+      threshold: 1.0
+      message: "Add more concrete examples from your experience"
+    
+    weak_closing:
+      threshold: 1.0
+      message: "Strengthen the closing with more specific company research"
+    
+    generic_content:
+      threshold: 2.0
+      message: "Make the content more specific to the company and role"
+  
+  # Categories for enhancement suggestions
+  categories:
+    - content_improvement
+    - keyword_optimization
+    - experience_examples
+    - company_research
+    - tone_adjustment
+    - structure_improvement 
+
+case_study_selection:
+  rules:
+    - match_tags: [growth, data_driven, b2b2c]
+      include: [enact]
+    - match_tags: [founding_pm, platform, design_tools]
+      include: [aurora]
+    - match_tags: [ux, ai_ml, data_driven, internal_tools]
+      include: [meta]
+    - match_tags: [consumer, public, ux, mobile]
+      include: [samsung]
+    - match_tags: [cleantech, b2b, ai_ml, strategy]
+      include: [duke]
+    - match_tags: [founding_pm, platform, design_tools, startup]
+      include: [spatialthink]
+    - match_tags: [ai_ml, genai, cleantech, prototype]
+      include: [genai_voice]
+    - match_tags: [cleantech, genai, thought_leadership, event]
+      include: [sf_climate_week] 
