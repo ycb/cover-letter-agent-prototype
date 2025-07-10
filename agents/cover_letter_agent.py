@@ -17,6 +17,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 import logging
 import os
+
+# Load environment variables from .env file if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 # Add language_tool_python for grammar/spell check
 try:
     import language_tool_python
@@ -1281,7 +1288,30 @@ class CoverLetterAgent:
         # Remove deprecated blurbs (GenAI, Climate Week, etc.) if present
         for deprecated in ['GenAI', 'Climate Week', 'sf_climate_week', 'genai_voice', 'duke']:
             cover_letter = re.sub(deprecated, '', cover_letter, flags=re.IGNORECASE)
-        return cover_letter
+        
+        # Post-process with LLM enhancement if enabled
+        try:
+            from core.llm_rewrite import post_process_with_llm
+            user_context = None
+            if hasattr(self, 'user_context'):
+                user_context = {
+                    'company_notes': getattr(self.user_context, 'company_notes', None),
+                    'role_insights': getattr(self.user_context, 'role_insights', None)
+                }
+            
+            enhanced_cover_letter = post_process_with_llm(
+                cover_letter, 
+                job.raw_text, 
+                self.config,
+                user_context
+            )
+            return enhanced_cover_letter
+        except ImportError:
+            logger.warning("LLM rewrite module not available - returning original draft")
+            return cover_letter
+        except Exception as e:
+            logger.error(f"LLM enhancement failed: {e}")
+            return cover_letter
 
     def _requirements_mapping_section(self, job: JobDescription) -> str:
         """Map each core requirement to the case study or experience that demonstrates it."""

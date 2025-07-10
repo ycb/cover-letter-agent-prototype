@@ -70,6 +70,7 @@ An intelligent agent that generates customized, accurate, and high-impact cover 
 - **Go/No-Go Decision**: Determines whether a job is worth applying to based on configurable criteria
 - **Blurb-Based Generation**: Uses pre-approved paragraph modules that can be mixed and matched
 - **Intelligent Matching**: Selects the most appropriate blurbs based on job requirements and company type
+- **LLM Enhancement**: Post-processes drafts with AI to improve clarity, tone, and JD alignment
 - **Enhancement Suggestions**: Provides actionable feedback to improve cover letter quality
 - **Enhancement Tracking**: Logs and tracks enhancement suggestions with status management
 - **Google Drive Integration**: Automatically saves all cover letter drafts to Google Drive with metadata
@@ -159,6 +160,81 @@ go_no_go:
   minimum_keywords: 3
   minimum_total_score: 5.0
 ```
+
+## 🤖 LLM Integration
+
+The agent now includes AI-powered enhancement that improves cover letter quality while preserving factual accuracy.
+
+### Configuration
+
+Add LLM settings to your `agent_config.yaml`:
+
+```yaml
+# LLM Enhancement Configuration
+llm_enhance: true
+llm_model: "gpt-4"
+llm_temperature: 0.5
+llm_preserve_truth: true
+llm_add_comments: true
+```
+
+### How It Works
+
+1. **Logic-Based Generation**: First, the agent generates a cover letter using the traditional blurb-based approach
+2. **LLM Post-Processing**: The draft is then enhanced by an LLM that:
+   - Improves clarity and flow
+   - Enhances alignment with the job description
+   - Strengthens impact and persuasiveness
+   - Maintains all factual claims from the original
+   - **Preserves all metrics and quantified achievements**
+3. **Truth Preservation**: The system includes validation to prevent exaggeration or hallucination
+4. **Optional Enhancement**: Can be disabled via configuration if preferred
+
+### Setup
+
+1. **Install OpenAI**: `pip install openai`
+2. **Set API Key**: 
+   ```bash
+   # Option A: Create .env file (recommended)
+   cp .env.example .env
+   # Edit .env and add your actual API key
+   
+   # Option B: Set environment variable
+   export OPENAI_API_KEY='your-api-key'
+   ```
+3. **Test Integration**: `python scripts/test_llm_integration.py`
+
+### Safety Features
+
+- **Truth Preservation**: LLM cannot add unverified claims or experiences
+- **Metrics Protection**: All percentages, numbers, and quantified achievements are preserved
+- **Configurable**: Can be enabled/disabled per user
+- **Transparent**: Adds comments to indicate LLM-enhanced sections
+- **Fallback**: Returns original draft if LLM enhancement fails
+
+### Validation Features
+
+The system includes comprehensive validation to ensure quality:
+
+- **Exaggeration Detection**: Flags potential overstatements like "spearheaded" or "managed"
+- **Metrics Preservation**: Ensures all numbers, percentages, and achievements remain intact
+- **Fact Verification**: Validates that all claims are verifiable from the original
+- **Structure Maintenance**: Preserves professional cover letter format
+
+### Future Enhancements
+
+**Phase 2** (Planned):
+- **Authentic Individual Tone**: Balance personal voice with professionalism
+- **Context-Aware Blurb Selection**: Use LLM to augment blurb logic
+- **Custom Prompting**: Generate role-specific content
+- **Active Feedback Loop**: User-guided refinement
+
+**Phase 3** (Planned):
+- **Success Tracking**: Monitor interview outcomes
+- **Learning System**: Improve based on user feedback
+- **Advanced Personalization**: Tailor to individual writing style
+
+---
 
 ## 📊 How It Works
 

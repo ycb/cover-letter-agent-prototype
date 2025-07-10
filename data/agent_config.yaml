@@ -116,3 +116,10 @@ profile:
   linkedin_url: https://linkedin.com/in/pspan
   portfolio_url: https://peterspannagle.com/
   resume_file: Peter Spannagle-Resume.pdf
+
+# LLM Enhancement Configuration
+llm_enhance: true
+llm_model: "gpt-4"
+llm_temperature: 0.5
+llm_preserve_truth: true
+llm_add_comments: true
