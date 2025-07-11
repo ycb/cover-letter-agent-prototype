@@ -1913,6 +1913,67 @@ class CoverLetterAgent:
         if isinstance(selected_blurbs, tuple):
             selected_blurbs = selected_blurbs[0]
         cover_letter = self.generate_cover_letter(job, selected_blurbs, missing_requirements)
+        
+        # --- LLM ENHANCEMENT STEP ---
+        original_draft = cover_letter
+        enhancement_result = None
+        
+        # Check if LLM enhancement is enabled
+        llm_config = self.config.get('llm_enhancement', {})
+        llm_enabled = llm_config.get('enabled', True)
+        
+        if llm_enabled and os.getenv("OPENAI_API_KEY"):
+            try:
+                logger.info("Starting LLM enhancement of cover letter draft")
+                
+                # Prepare metadata for enhancement
+                metadata = {
+                    'company_name': job.company_name,
+                    'position_title': job.job_title,
+                    'job_type': job.job_type,
+                    'job_score': job.score,
+                    'case_study_tags': [blurb.tags for blurb in selected_blurbs.values() if blurb.tags],
+                    'role_alignment': 'strong' if job.score > 7.0 else 'moderate',
+                    'targeting_score': job.targeting.targeting_score if job.targeting else 0.0,
+                    'go_no_go': job.go_no_go
+                }
+                
+                # Import and use LLM enhancement
+                try:
+                    from features.enhance_with_contextual_llm import enhance_with_contextual_llm
+                    enhancement_result = enhance_with_contextual_llm(
+                        jd_text=job_text,
+                        cl_text=cover_letter,
+                        metadata=metadata
+                    )
+                    
+                    if enhancement_result.confidence_score > 0.5:
+                        cover_letter = enhancement_result.enhanced_draft
+                        logger.info(f"LLM enhancement applied with confidence: {enhancement_result.confidence_score:.2f}")
+                    else:
+                        logger.warning(f"LLM enhancement confidence too low ({enhancement_result.confidence_score:.2f}), keeping original draft")
+                        
+                except ImportError:
+                    logger.warning("LLM enhancement module not available")
+                except Exception as e:
+                    logger.error(f"Error in LLM enhancement: {e}")
+                    
+            except Exception as e:
+                logger.error(f"Failed to apply LLM enhancement: {e}")
+        
+        # Save draft comparison if enhancement was applied
+        if enhancement_result and enhancement_result.confidence_score > 0.5:
+            try:
+                from agents.draft_cover_letter import DraftCoverLetterAgent
+                draft_agent = DraftCoverLetterAgent(user_id=getattr(self, 'user_id', None), config=self.config)
+                comparison_file = draft_agent.save_draft_comparison(
+                    original_draft=original_draft,
+                    enhanced_draft=cover_letter,
+                    enhancement_result=enhancement_result
+                )
+                logger.info(f"Saved draft comparison to: {comparison_file}")
+            except Exception as e:
+                logger.error(f"Failed to save draft comparison: {e}")
         # --- LLM-DRIVEN REVIEW AND ENHANCE STEP ---
         if interactive:
             print("\n[STEP] LLM review and enhancement suggestions:")
