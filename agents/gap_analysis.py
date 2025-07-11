@@ -288,7 +288,7 @@ def main(jd_path, letter_path, blurb_db_path=BLURB_DB_PATH, api_key=None):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 3:
-        print("Usage: python gap_analysis.py <job_description.md> <assembled_cover_letter.md> [OPENAI_API_KEY]")
+        print("Usage: python gap_analysis.py <job_description.txt> <assembled_cover_letter.txt> [OPENAI_API_KEY]")
         print("Set OPENAI_API_KEY as an environment variable or pass as third argument.")
         sys.exit(1)
     api_key = sys.argv[3] if len(sys.argv) > 3 else None

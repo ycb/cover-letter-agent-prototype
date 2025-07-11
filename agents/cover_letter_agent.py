@@ -649,24 +649,46 @@ class CoverLetterAgent:
         """Robust, multi-pass extraction of company name from job description."""
         import re, collections
         lines = [line.strip() for line in text.split('\n') if line.strip()]
-        # 1. Ignore 'About the job', use 'About <Name>' if present
+        
+        # 1. Look for "CompanyName · Location" pattern (most common)
+        for line in lines:
+            match = re.match(r'^([A-Z][a-zA-Z0-9&]+)\s*·\s*', line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'Company · Location' pattern: {company}")
+                return company
+        
+        # 2. Ignore 'About the job', use 'About <Name>' if present
         for line in lines:
             if line.lower().startswith('about ') and line.lower() != 'about the job':
                 company = line[6:].strip()
                 print(f"[DEBUG] Extracted company name from 'About': {company}")
                 return company
-        # 2. First non-empty, single capitalized word line
-        for line in lines:
-            if line.isalpha() and line[0].isupper() and len(line.split()) == 1:
-                print(f"[DEBUG] Extracted company name from first capitalized line: {line}")
-                return line
-        # 3. Most frequent capitalized word in the JD
+        
+        # 3. Look for company name after job title (common pattern)
+        for i, line in enumerate(lines):
+            if i > 0 and 'product manager' in line.lower() or 'pm' in line.lower():
+                # Check next line for company
+                if i + 1 < len(lines):
+                    next_line = lines[i + 1]
+                    # Look for capitalized company name
+                    company_match = re.match(r'^([A-Z][a-zA-Z0-9&]+)', next_line)
+                    if company_match:
+                        company = company_match.group(1).strip()
+                        print(f"[DEBUG] Extracted company name after job title: {company}")
+                        return company
+        
+        # 4. Most frequent capitalized word in the JD (excluding common job words)
         words = re.findall(r'\b[A-Z][a-zA-Z0-9&]+\b', text)
-        if words:
-            most_common = collections.Counter(words).most_common(1)[0][0]
+        # Filter out common job-related words
+        job_words = {'Staff', 'Senior', 'Product', 'Manager', 'PM', 'Lead', 'Director', 'VP', 'Engineer', 'Developer'}
+        filtered_words = [word for word in words if word not in job_words]
+        if filtered_words:
+            most_common = collections.Counter(filtered_words).most_common(1)[0][0]
             print(f"[DEBUG] Extracted company name from most frequent capitalized word: {most_common}")
             return most_common
-        # 4. Possessive or 'the Name team'
+        
+        # 5. Possessive or 'the Name team'
         for line in lines:
             match = re.match(r"([A-Z][a-zA-Z0-9& ]+)'s ", line)
             if match:
@@ -678,7 +700,8 @@ class CoverLetterAgent:
                 company = match.group(1).strip()
                 print(f"[DEBUG] Extracted company name from 'the Name team': {company}")
                 return company
-        # 5. Not found
+        
+        # 6. Not found
         print("[DEBUG] Company name not found in JD.")
         return ""
     
@@ -1972,8 +1995,15 @@ Draft Cover Letter:
                     logger.info(f"Cover letter draft uploaded to Google Drive with ID: {file_id}")
                 else:
                     logger.warning("Failed to upload cover letter draft to Google Drive")
+                    # Fallback: save locally
+                    self._save_cover_letter_locally(cover_letter, job)
             except Exception as e:
                 logger.error(f"Error uploading to Google Drive: {e}")
+                # Fallback: save locally
+                self._save_cover_letter_locally(cover_letter, job)
+        else:
+            # Save locally when Google Drive is not available
+            self._save_cover_letter_locally(cover_letter, job)
         
         if debug or explain:
             return job, cover_letter, suggestions, debug_info
@@ -2053,6 +2083,46 @@ Draft Cover Letter:
         else:
             logger.warning("language_tool_python not available; skipping spell/grammar check.")
             return text
+
+    def _save_cover_letter_locally(self, cover_letter: str, job: JobDescription):
+        """Save cover letter locally when Google Drive upload fails."""
+        try:
+            from datetime import datetime
+            import os
+            
+            # Create drafts directory if it doesn't exist
+            drafts_dir = Path("drafts")
+            drafts_dir.mkdir(exist_ok=True)
+            
+            # Create filename with timestamp
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_company = job.company_name.replace(' ', '_').replace('/', '_')[:30]
+            safe_position = job.job_title.replace(' ', '_').replace('/', '_')[:30]
+            
+            filename = f"{safe_company}_{safe_position}_{timestamp}.txt"
+            filepath = drafts_dir / filename
+            
+            # Add metadata header
+            metadata_header = f"""# Cover Letter Draft
+Company: {job.company_name}
+Position: {job.job_title}
+Score: {job.score:.2f}
+Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+"""
+            
+            full_content = metadata_header + cover_letter
+            
+            # Save the file
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(full_content)
+            
+            logger.info(f"Cover letter saved locally: {filepath}")
+            print(f"\n📄 Cover letter saved locally: {filepath}")
+            
+        except Exception as e:
+            logger.error(f"Error saving cover letter locally: {e}")
+            print(f"\n⚠️  Could not save cover letter locally: {e}")
 
 
 if __name__ == "__main__":
