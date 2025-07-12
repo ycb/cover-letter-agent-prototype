@@ -10,6 +10,8 @@ import sys
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 # --- Ensure .env is always loaded ---
 try:
     from dotenv import load_dotenv
@@ -30,12 +32,12 @@ else:
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from core.llm_rewrite import LLMRewriter, LLMRewriteConfig
+from core.llm_rewrite import LLMRewriteConfig, LLMRewriter
 
 
 def test_metrics_preservation():
     """Test that metrics are preserved in LLM enhancement."""
-    
+
     # Sample draft with lots of metrics
     original_draft = """Dear Hiring Team,
 
@@ -51,7 +53,7 @@ I have 6+ years of experience leading and mentoring high-performing product team
 
 Best regards,
 Peter Spannagle"""
-    
+
     job_description = """Senior Product Manager - Growth Team
 
 We are seeking a Senior Product Manager to join our growth team. You will be responsible for:
@@ -71,78 +73,75 @@ Requirements:
 - Experience with growth strategies and user acquisition
 
 About our company: We are a fast-growing SaaS company focused on helping businesses scale efficiently through data-driven product decisions."""
-    
+
     print("🧪 Testing Metrics Preservation")
     print("=" * 50)
-    
+
+    # Check if LLM is available
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        print("❌ OPENAI_API_KEY not found - cannot test LLM enhancement")
+        return
+
     # Create LLM rewriter
-    config = LLMRewriteConfig(
-        enabled=True,
-        model="gpt-4",
-        temperature=0.5,
-        preserve_truth=True,
-        add_comments=True
-    )
+    config = LLMRewriteConfig(enabled=True, model="gpt-4", temperature=0.5, preserve_truth=True, add_comments=True)
     rewriter = LLMRewriter(config)
-    
+
     if not rewriter.available:
         print("❌ LLM rewriter not available")
         return
-    
+
     print("📄 Original Draft (with metrics):")
     print("-" * 30)
     print(original_draft)
     print("\n" + "=" * 50)
-    
+
     # Enhance the draft
     print("🔄 Enhancing with LLM...")
     enhanced_draft = rewriter.rewrite_cover_letter(original_draft, job_description)
-    
+
     print("🔁 Enhanced Draft:")
     print("-" * 30)
     print(enhanced_draft)
     print("\n" + "=" * 50)
-    
+
     # Validate metrics preservation
     print("🔍 Metrics Preservation Check:")
     validation = rewriter.validate_truth_preservation(original_draft, enhanced_draft)
-    
+
     if validation["valid"]:
         print("✅ No truth preservation concerns detected")
     else:
         print("⚠️  Truth preservation concerns:")
         for concern in validation["concerns"]:
             print(f"   - {concern}")
-    
+
     # Check specific metrics
-    metrics_to_check = [
-        "15+", "210%", "876%", "853%", "169%", "90%", "$4B", 
-        "160%", "200%", "3.7", "4.3", "6+"
-    ]
-    
+    metrics_to_check = ["15+", "210%", "876%", "853%", "169%", "90%", "$4B", "160%", "200%", "3.7", "4.3", "6+"]
+
     print(f"\n📊 Specific Metrics Check:")
     for metric in metrics_to_check:
         if metric in enhanced_draft:
             print(f"   ✅ '{metric}' preserved")
         else:
             print(f"   ❌ '{metric}' missing")
-    
+
     # Count preserved metrics
     preserved_count = sum(1 for metric in metrics_to_check if metric in enhanced_draft)
     total_count = len(metrics_to_check)
-    
+
     print(f"\n📈 Metrics Preservation Score:")
     print(f"   Preserved: {preserved_count}/{total_count} metrics")
     print(f"   Success Rate: {(preserved_count/total_count)*100:.1f}%")
-    
+
     if preserved_count == total_count:
         print("🎉 All metrics preserved successfully!")
     else:
         print("⚠️  Some metrics were lost - needs improvement")
-    
+
     return preserved_count == total_count
 
 
 if __name__ == "__main__":
     success = test_metrics_preservation()
-    sys.exit(0 if success else 1) 
+    sys.exit(0 if success else 1)

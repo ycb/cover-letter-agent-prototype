@@ -6,16 +6,15 @@ Google Drive Setup Script
 Interactive script to help set up Google Drive integration for the cover letter agent.
 """
 
-import os
 import json
 from pathlib import Path
 
 
 def print_setup_instructions():
     """Print detailed setup instructions."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("GOOGLE DRIVE SETUP INSTRUCTIONS")
-    print("="*60)
+    print("=" * 60)
     print("Follow these steps to enable Google Drive integration:")
     print()
     print("1. GOOGLE CLOUD CONSOLE SETUP:")
@@ -55,9 +54,11 @@ def print_setup_instructions():
     print()
     print("7. INSTALL DEPENDENCIES:")
     print("   pip install -r requirements.txt")
-    print("="*60)
+    print("=" * 60)
 
 
+# The following is a SAMPLE credentials.json structure for documentation/testing only.
+# DO NOT use real secrets in this file.
 def create_sample_credentials():
     """Create a sample credentials.json file."""
     sample_credentials = {
@@ -70,12 +71,12 @@ def create_sample_credentials():
         "auth_uri": "https://accounts.google.com/o/oauth2/auth",
         "token_uri": "https://oauth2.googleapis.com/token",
         "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project.iam.gserviceaccount.com"
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project.iam.gserviceaccount.com",
     }
-    
+
     with open("credentials.json", "w") as f:
         json.dump(sample_credentials, f, indent=2)
-    
+
     print("✅ Created sample credentials.json file")
     print("⚠️  Replace with your actual credentials from Google Cloud Console")
 
@@ -83,38 +84,39 @@ def create_sample_credentials():
 def update_agent_config():
     """Update agent_config.yaml with Google Drive settings."""
     config_path = Path("data/agent_config.yaml")
-    
+
     if not config_path.exists():
         print("❌ agent_config.yaml not found. Please create it first.")
         return
-    
-    print("\n" + "="*60)
+
+    print("\n" + "=" * 60)
     print("UPDATE AGENT CONFIGURATION")
-    print("="*60)
-    
+    print("=" * 60)
+
     folder_id = input("Enter your Google Drive folder ID: ").strip()
-    
+
     if not folder_id:
         print("❌ No folder ID provided. Please get it from your Google Drive URL.")
         return
-    
+
     # Read current config
     import yaml
-    with open(config_path, 'r') as f:
+
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
-    
+
     # Update Google Drive settings
-    if 'google_drive' not in config:
-        config['google_drive'] = {}
-    
-    config['google_drive']['enabled'] = True
-    config['google_drive']['folder_id'] = folder_id
-    config['google_drive']['credentials_file'] = 'credentials.json'
-    
+    if "google_drive" not in config:
+        config["google_drive"] = {}
+
+    config["google_drive"]["enabled"] = True
+    config["google_drive"]["folder_id"] = folder_id
+    config["google_drive"]["credentials_file"] = "credentials.json"
+
     # Write updated config
-    with open(config_path, 'w') as f:
+    with open(config_path, "w") as f:
         yaml.dump(config, f, default_flow_style=False, indent=2)
-    
+
     print("✅ Updated agent_config.yaml with Google Drive settings")
     print(f"   Folder ID: {folder_id}")
     print("   Enabled: true")
@@ -122,20 +124,20 @@ def update_agent_config():
 
 def test_google_drive_integration():
     """Test Google Drive integration."""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("TESTING GOOGLE DRIVE INTEGRATION")
-    print("="*60)
-    
+    print("=" * 60)
+
     try:
         from agents.google_drive_integration import GoogleDriveIntegration
-        
+
         integration = GoogleDriveIntegration()
-        
+
         if integration.available:
             print("✅ Google Drive integration is working!")
             files = integration.list_files()
             print(f"   Found {len(files)} files in your folder")
-            
+
             if files:
                 print("   Sample files:")
                 for file in files[:3]:
@@ -143,7 +145,7 @@ def test_google_drive_integration():
         else:
             print("❌ Google Drive integration failed")
             print("   Check your credentials.json and folder permissions")
-            
+
     except ImportError:
         print("❌ Google Drive dependencies not installed")
         print("   Run: pip install -r requirements.txt")
@@ -154,8 +156,8 @@ def test_google_drive_integration():
 def main():
     """Main setup function."""
     print("🚀 Google Drive Setup for Cover Letter Agent")
-    print("="*60)
-    
+    print("=" * 60)
+
     while True:
         print("\nChoose an option:")
         print("1. Show setup instructions")
@@ -163,9 +165,9 @@ def main():
         print("3. Update agent configuration")
         print("4. Test Google Drive integration")
         print("5. Exit")
-        
+
         choice = input("\nEnter your choice (1-5): ").strip()
-        
+
         if choice == "1":
             print_setup_instructions()
         elif choice == "2":
@@ -182,4 +184,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main() 
+    main()

@@ -1,159 +1,168 @@
 # 📄 Cover Letter Agent
 
----
+> An intelligent, AI-powered cover letter generation system that creates customized, high-impact cover letters using structured content modules and advanced matching algorithms.
 
-## 🤖 OpenAI Setup (for LLM Enhancement)
-
-To enable AI-powered cover letter enhancement, you need an OpenAI API key.
-
-### 1. Get an OpenAI API Key
-- Sign up at https://platform.openai.com/ and create an API key (requires a free or paid account).
-
-### 2. Add Your API Key
-- **Recommended:** Copy `.env.example` to `.env` and add your API key:
-  ```bash
-  cp .env.example .env
-  # Edit .env and set OPENAI_API_KEY=sk-...
-  ```
-- **Alternative:** Set the environment variable in your shell:
-  ```bash
-  export OPENAI_API_KEY=sk-...
-  ```
-
-### 3. Install Dependencies
-```bash
-pip install openai python-dotenv
-```
-
-### 4. Test LLM Integration
-```bash
-python test_metrics_preservation.py
-```
-If metrics are preserved and no errors appear, your setup is correct!
-
----
-
-## 🧠 What is LLM Phase 1? (AI Enhancement)
-
-**LLM Phase 1** is the first stage of AI-powered cover letter improvement. Here’s what it does:
-
-- **Post-Draft Enhancement:**
-  - The agent first generates a draft using your pre-approved blurbs and logic.
-  - The LLM (e.g., GPT-4) then rewrites the draft to improve clarity, flow, tone, and alignment with the job description.
-
-- **Strict Truth & Metrics Preservation:**
-  - The LLM is instructed to NEVER add, remove, or change any factual claims, numbers, percentages, or achievements.
-  - All metrics (e.g., “+210%”, “$4B”, “15+ years”) are preserved exactly as written.
-  - The system checks for any exaggeration or loss of facts and warns you if detected.
-
-- **No Invention or Hallucination:**
-  - The LLM cannot invent new experiences, companies, or results.
-  - If it cannot improve a section without changing facts, it leaves it as is.
-
-- **Professional, Polished Output:**
-  - The result is a more concise, professional, and impactful cover letter—without losing your authentic achievements or voice.
-
-- **Safety Features:**
-  - All enhancements are validated for truth and metric preservation.
-  - You can disable LLM enhancement at any time in your config.
-
----
-
-## 🗂 Project Structure
-
-```
-cover-letter-agent/
-├── users/
-│   ├── alice/
-│   └── bob/
-├── core/
-│   └── user_context.py
-├── scripts/
-│   └── run_cover_letter_agent.py
-├── init_user.py
-└── templates/
-    ├── config_template.yaml
-    ├── blurbs_template.yaml
-    ├── blurb_logic_template.yaml
-    └── job_targeting_template.yaml
-```
-
----
-
-## 📝 Notes
-- Each user is fully isolated: their config, blurbs, logic, and resume are private.
-- No global or hardcoded user data.
-- To add a new user, just run the onboarding script and follow the README in your user folder.
-- **Sensitive files** (like resumes or credentials) are not committed to GitHub if `.gitignore` is set up correctly.
-
----
-
-# 📄 Cover Letter Agent
-
-An intelligent agent that generates customized, accurate, and high-impact cover letters using structured "blurb" modules and a logic-based scoring system.
-
-## 🎯 Features
-
-- **Smart Job Evaluation**: Automatically evaluates job descriptions using keyword matching and scoring logic
-- **Go/No-Go Decision**: Determines whether a job is worth applying to based on configurable criteria
-- **Blurb-Based Generation**: Uses pre-approved paragraph modules that can be mixed and matched
-- **Intelligent Matching**: Selects the most appropriate blurbs based on job requirements and company type
-- **LLM Enhancement**: Post-processes drafts with AI to improve clarity, tone, and JD alignment
-- **Enhancement Suggestions**: Provides actionable feedback to improve cover letter quality
-- **Enhancement Tracking**: Logs and tracks enhancement suggestions with status management
-- **Google Drive Integration**: Automatically saves all cover letter drafts to Google Drive with metadata
-
-## 📁 Project Structure
-
-```
-project/
-├── agents/
-│   └── cover_letter_agent.py      # Main agent implementation
-├── data/
-│   ├── resume.pdf                 # Your resume (for future parsing)
-│   ├── job_description.txt        # Sample job description
-│   ├── blurbs.yaml               # Pre-approved paragraph modules
-│   ├── blurb_logic.yaml          # Scoring and matching logic
-│   └── enhancement_log.csv       # Enhancement suggestion tracking
-├── scripts/
-│   └── run_cover_letter_agent.py # Command-line interface
-└── README.md
-```
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Type Checked: MyPy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
+### 1. Installation
 
 ```bash
-pip install pyyaml
+# Clone the repository
+git clone https://github.com/yourusername/cover-letter-agent.git
+cd cover-letter-agent
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set up your environment
+cp .env.example .env
+# Edit .env with your OpenAI API key (optional)
 ```
 
-### 2. Run the Agent
+### 2. Create Your Profile
+
+```bash
+# Initialize a new user profile
+python init_user.py your_name
+
+# This creates: users/your_name/ with all configuration files
+```
+
+### 3. Customize Your Content
+
+Edit the files in `users/your_name/`:
+- **`config.yaml`** - Your personal information and preferences
+- **`blurbs.yaml`** - Your cover letter content modules
+- **`blurb_logic.yaml`** - Scoring and matching rules
+- **`job_targeting.yaml`** - Job filtering criteria
+- **`resume.pdf`** - Your resume (add this file)
+
+### 4. Generate Your First Cover Letter
 
 ```bash
 # Process a job description file
-python scripts/run_cover_letter_agent.py -i data/job_description.txt
+python scripts/run_cover_letter_agent.py --user your_name -i job_description.txt
 
-# Process job description text directly
-python scripts/run_cover_letter_agent.py -t "Senior Product Manager at TechCorp..."
-
-# Save output to file
-python scripts/run_cover_letter_agent.py -i data/job_description.txt -o cover_letter.txt
+# Or process text directly
+python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Manager at TechCorp..."
 ```
 
-### 3. View Enhancement Log
+## ✨ Key Features
 
-```bash
-# View all enhancement suggestions
-python scripts/run_cover_letter_agent.py --log
+### 🎯 **Smart Job Evaluation**
+- Automatically analyzes job descriptions using keyword matching and scoring logic
+- Provides go/no-go decisions based on configurable criteria
+- Extracts company information, requirements, and responsibilities
 
-# View only open suggestions
-python scripts/run_cover_letter_agent.py --log --log-status open
+### 📝 **Blurb-Based Generation**
+- Uses pre-approved paragraph modules that can be mixed and matched
+- Intelligent selection based on job requirements and company type
+- Maintains consistency while allowing customization
+
+### 🤖 **AI-Powered Enhancement**
+- Post-processes drafts with GPT-4 to improve clarity, tone, and alignment
+- **Strict truth preservation** - never adds or changes factual claims
+- Preserves all metrics, percentages, and quantified achievements
+- Optional enhancement that can be disabled
+
+### 📊 **Enhancement Tracking**
+- Logs and tracks improvement suggestions with status management
+- Provides actionable feedback to improve cover letter quality
+- Supports status tracking: open, accepted, rejected
+
+### ☁️ **Google Drive Integration**
+- Automatically saves all cover letter drafts with rich metadata
+- Access supporting materials from Google Drive
+- Organized storage with company and position information
+
+### 🧪 **Comprehensive Testing**
+- Full test suite with pytest
+- Type checking with MyPy
+- Code quality with flake8, black, and isort
+- CI/CD integration with GitHub Actions
+
+### ⚡ **Performance Optimization**
+- Intelligent caching for file I/O operations
+- Job description parsing optimization
+- Blurb selection performance improvements
+- LLM API call caching and memoization
+- Comprehensive performance monitoring and metrics
+
+## 🏗️ Architecture
+
+### Core Components
+
+```
+cover-letter-agent/
+├── agents/
+│   ├── cover_letter_agent.py      # Main agent implementation
+│   ├── context_analyzer.py        # Job analysis and insights
+│   ├── gap_analysis.py           # Requirement gap analysis
+│   ├── google_drive_integration.py # Google Drive integration
+│   └── resume_parser.py          # Resume parsing (future)
+├── core/
+│   ├── config_manager.py         # Centralized configuration
+│   ├── user_context.py           # User data management
+│   ├── types.py                  # Type definitions
+│   ├── logging_config.py         # Logging setup
+│   └── performance.py            # Performance optimization and caching
+├── users/
+│   └── [user_id]/               # Per-user configuration
+├── scripts/
+│   └── run_cover_letter_agent.py # Command-line interface
+└── docs/
+    └── API_REFERENCE.md          # Complete API documentation
 ```
 
-## 🔧 Configuration
+### Multi-User Architecture
 
-### Blurbs (`data/blurbs.yaml`)
+Each user has their own isolated environment:
+- **Personal configuration** in `users/[user_id]/`
+- **Private blurbs and logic** specific to their experience
+- **Secure data handling** with no cross-user data sharing
+- **Customizable scoring** and targeting rules
+
+## 🎛️ Configuration
+
+### User Configuration (`users/[user_id]/config.yaml`)
+
+```yaml
+name: "John Doe"
+role: "Product Manager"
+location: "San Francisco, CA"
+industry_focus: ["AI/ML", "SaaS", "Growth"]
+resume_path: "resume.pdf"
+
+google_drive:
+  enabled: true
+  folder_id: "your_google_drive_folder_id"
+  credentials_file: "credentials.json"
+
+profile:
+  linkedin_url: "https://linkedin.com/in/johndoe"
+  portfolio_url: "https://johndoe.com"
+  achievements:
+    - "Led product team of 15 engineers"
+    - "Increased user engagement by 40%"
+
+cover_letter:
+  personal_brand:
+    tagline: "Product leader focused on AI/ML and growth"
+    key_strengths:
+      - "Data-driven decision making"
+      - "Cross-functional leadership"
+  tone:
+    default: "professional"
+    startup: "conversational"
+    enterprise: "professional"
+```
+
+### Blurbs (`users/[user_id]/blurbs.yaml`)
 
 Pre-approved paragraph modules organized by type:
 
@@ -161,19 +170,24 @@ Pre-approved paragraph modules organized by type:
 intro:
   - id: standard
     tags: [all]
-    text: "I'm a product leader with 15+ years..."
+    text: "I'm a product leader with 15+ years of experience in [INDUSTRY]. I am excited to apply for the [POSITION] role at [COMPANY]."
   
   - id: ai_variant
     tags: [AI, ML]
-    text: "I focus on clarifying ambiguity and building trust in AI..."
+    text: "I focus on clarifying ambiguity and building trust in AI systems. I am excited to apply for the [POSITION] role at [COMPANY]."
 
 paragraph2:
   - id: growth
     tags: [growth]
-    text: "I build systems that align teams around measurable outcomes..."
+    text: "I build systems that align teams around measurable outcomes. At [COMPANY], I [SPECIFIC ACHIEVEMENT]."
+
+closing:
+  - id: standard
+    tags: [all]
+    text: "I am excited about the opportunity to contribute to [COMPANY]'s mission and would welcome the chance to discuss how my experience aligns with your needs."
 ```
 
-### Logic (`data/blurb_logic.yaml`)
+### Logic (`users/[user_id]/blurb_logic.yaml`)
 
 Scoring rules and matching criteria:
 
@@ -181,15 +195,28 @@ Scoring rules and matching criteria:
 scoring_rules:
   keyword_weights:
     AI: 3.0
+    ML: 3.0
     startup: 2.5
     growth: 2.0
+    leadership: 2.0
+    clean_tech: 2.0
 
 go_no_go:
   minimum_keywords: 3
   minimum_total_score: 5.0
+  strong_match_keywords: ["AI", "ML", "growth", "startup"]
+  poor_match_keywords: ["junior", "entry-level", "intern"]
+
+job_classification:
+  leadership:
+    keywords: ["manager", "director", "lead", "head", "chief"]
+    min_keyword_count: 1
+  IC:
+    keywords: ["analyst", "specialist", "coordinator"]
+    min_keyword_count: 1
 ```
 
-## 🤖 LLM Integration
+## LLM Integration
 
 The agent now includes AI-powered enhancement that improves cover letter quality while preserving factual accuracy.
 
@@ -243,7 +270,7 @@ llm_add_comments: true
 ### How It Works
 
 1. **Logic-Based Generation**: First, the agent generates a cover letter using the traditional blurb-based approach
-2. **LLM Post-Processing**: The draft is then enhanced by an LLM that:
+2. **LLM Post-Processing**: The draft is then enhanced by GPT-4 that:
    - Improves clarity and flow
    - Enhances alignment with the job description
    - Strengthens impact and persuasiveness
@@ -251,20 +278,6 @@ llm_add_comments: true
    - **Preserves all metrics and quantified achievements**
 3. **Truth Preservation**: The system includes validation to prevent exaggeration or hallucination
 4. **Optional Enhancement**: Can be disabled via configuration if preferred
-
-### Setup
-
-1. **Install OpenAI**: `pip install openai`
-2. **Set API Key**: 
-   ```bash
-   # Option A: Create .env file (recommended)
-   cp .env.example .env
-   # Edit .env and add your actual API key
-   
-   # Option B: Set environment variable
-   export OPENAI_API_KEY='your-api-key'
-   ```
-3. **Test Integration**: `python scripts/test_llm_integration.py`
 
 ### Safety Features
 
@@ -274,112 +287,21 @@ llm_add_comments: true
 - **Transparent**: Adds comments to indicate LLM-enhanced sections
 - **Fallback**: Returns original draft if LLM enhancement fails
 
-### Validation Features
+### Setup
 
-The system includes comprehensive validation to ensure quality:
+1. **Get OpenAI API Key**: Sign up at [OpenAI Platform](https://platform.openai.com/)
+2. **Configure API Key**:
+   ```bash
+   # Option A: Create .env file (recommended)
+   cp .env.example .env
+   # Edit .env and add your actual API key
+   
+   # Option B: Set environment variable
+   export OPENAI_API_KEY='your-api-key'
+   ```
+3. **Test Integration**: `python test_metrics_preservation.py`
 
-- **Exaggeration Detection**: Flags potential overstatements like "spearheaded" or "managed"
-- **Metrics Preservation**: Ensures all numbers, percentages, and achievements remain intact
-- **Fact Verification**: Validates that all claims are verifiable from the original
-- **Structure Maintenance**: Preserves professional cover letter format
-
-### Future Enhancements
-
-**Phase 2** (Planned):
-- **Authentic Individual Tone**: Balance personal voice with professionalism
-- **Context-Aware Blurb Selection**: Use LLM to augment blurb logic
-- **Custom Prompting**: Generate role-specific content
-- **Active Feedback Loop**: User-guided refinement
-
-**Phase 3** (Planned):
-- **Success Tracking**: Monitor interview outcomes
-- **Learning System**: Improve based on user feedback
-- **Advanced Personalization**: Tailor to individual writing style
-
----
-
-## 📊 How It Works
-
-### 1. Job Description Parsing
-
-The agent extracts:
-- Company name and job title
-- Relevant keywords from the description
-- Job type classification (startup, enterprise, AI/ML, etc.)
-- Requirements and responsibilities
-- Company information
-
-### 2. Scoring & Evaluation
-
-Each job is scored based on:
-- **Keyword matching**: Relevant terms get positive scores
-- **Strong match keywords**: Product management terms get bonus points
-- **Poor match keywords**: Non-relevant terms get negative scores
-- **Minimum thresholds**: Jobs must meet criteria to proceed
-
-### 3. Blurb Selection
-
-The agent selects the best blurbs for each section:
-- **Intro paragraph**: Matches job type and company size
-- **Main paragraph**: Aligns with key responsibilities
-- **Examples**: Highlights relevant experience
-- **Closing**: Tailored to company and role
-
-### 4. Cover Letter Generation
-
-Combines selected blurbs into a coherent cover letter:
-- Replaces placeholders with actual company names
-- Maintains consistent tone and flow
-- Includes proper formatting and structure
-
-### 5. Enhancement Suggestions
-
-The agent reviews the draft and suggests improvements:
-- **Low score issues**: Add more specific keywords
-- **Missing examples**: Include concrete experience
-- **Weak closing**: Strengthen with company research
-- **Generic content**: Make more specific to the role
-
-## 🎛️ Command Line Options
-
-```bash
-python scripts/run_cover_letter_agent.py [OPTIONS]
-
-Options:
-  -i, --input-file FILE     Input job description file
-  -t, --text TEXT          Job description text
-  -o, --output-file FILE   Output cover letter file
-  -d, --data-dir DIR       Data directory (default: data)
-  --log                    Show enhancement log
-  --log-status STATUS      Filter log by status (open/accepted/rejected)
-  --update-status JOB_ID ENHANCEMENT_TYPE STATUS
-                           Update enhancement suggestion status
-  -v, --verbose           Verbose output
-```
-
-## 📈 Enhancement Tracking
-
-The system tracks enhancement suggestions with:
-
-- **Status**: `open`, `accepted`, `rejected`
-- **Priority**: `high`, `medium`, `low`
-- **Category**: `content_improvement`, `keyword_optimization`, etc.
-- **Notes**: Additional context and implementation details
-
-### Managing Enhancements
-
-```bash
-# View open suggestions
-python scripts/run_cover_letter_agent.py --log --log-status open
-
-# Mark suggestion as accepted
-python scripts/run_cover_letter_agent.py --update-status JOB_001 content_improvement accepted
-
-# Add notes to suggestion
-python scripts/run_cover_letter_agent.py --update-status JOB_001 keyword_optimization accepted "Added AI/ML keywords"
-```
-
-## 🔍 Job Types Supported
+## 📊 Job Types Supported
 
 The agent recognizes and optimizes for:
 
@@ -389,60 +311,54 @@ The agent recognizes and optimizes for:
 - **Cleantech**: Climate, energy, sustainability focus
 - **Internal Tools**: Productivity, efficiency, operations focus
 
-## 📝 Customizing Blurbs
+## 🎛️ Command Line Interface
 
-To add new blurbs or modify existing ones:
+### Basic Usage
 
-1. Edit `data/blurbs.yaml`
-2. Add new blurb entries with appropriate tags
-3. Update scoring logic in `data/blurb_logic.yaml` if needed
-4. Test with sample job descriptions
+```bash
+# Process a job description file
+python scripts/run_cover_letter_agent.py --user your_name -i job_description.txt
 
-### Blurb Structure
+# Process job description text directly
+python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Manager at TechCorp..."
 
-```yaml
-intro:
-  - id: your_new_blurb
-    tags: [relevant, keywords, here]
-    text: "Your blurb text here..."
+# Save output to file
+python scripts/run_cover_letter_agent.py --user your_name -i job_description.txt -o cover_letter.txt
 ```
 
-## 🎯 Scoring Logic
+### Advanced Options
 
-### Keyword Weights
+```bash
+# Enable debug mode (shows scoring details)
+python scripts/run_cover_letter_agent.py --user your_name -i job.txt --debug
 
-- **AI/ML terms**: 3.0 points
-- **Startup terms**: 2.5 points
-- **Growth/Scaling**: 2.0 points
-- **Enterprise/B2B**: 2.0 points
-- **Trust/Explainable**: 1.5 points
+# Show detailed explanations
+python scripts/run_cover_letter_agent.py --user your_name -i job.txt --explain
 
-### Minimum Scores
+# Track enhancement suggestions
+python scripts/run_cover_letter_agent.py --user your_name -i job.txt --track-enhance
 
-- **AI variant intro**: 2.0 points required
-- **Startup variant intro**: 1.5 points required
-- **Growth paragraph**: 1.5 points required
-- **Cleantech paragraph**: 2.0 points required
+# Interactive mode (step-by-step confirmation)
+python scripts/run_cover_letter_agent.py --user your_name -i job.txt --interactive
+```
 
-### Go/No-Go Criteria
+### Enhancement Management
 
-- **Minimum keywords**: 3 relevant terms
-- **Minimum total score**: 5.0 points
-- **Strong match bonus**: +2.0 for product management terms
-- **Poor match penalty**: -1.0 for non-relevant terms
+```bash
+# View all enhancement suggestions
+python scripts/run_cover_letter_agent.py --user your_name --log
 
-## 🔮 Future Enhancements
+# View only open suggestions
+python scripts/run_cover_letter_agent.py --user your_name --log --log-status open
 
-- **Resume parsing**: Extract experience from PDF resume
-- **Company research**: Auto-research company for better customization
-- **A/B testing**: Test different blurb combinations
-- **Learning system**: Improve scoring based on application outcomes
-- **Template expansion**: Add more specialized blurb types
-- **Multi-language support**: Generate cover letters in different languages
+# Mark suggestion as accepted
+python scripts/run_cover_letter_agent.py --user your_name --update-status JOB_001 content_improvement accepted
 
-## 📁 Google Drive Integration
+# Add notes to suggestion
+python scripts/run_cover_letter_agent.py --user your_name --update-status JOB_001 keyword_optimization accepted "Added AI/ML keywords"
+```
 
-The agent can access supporting materials from Google Drive and automatically saves all cover letter drafts with metadata.
+## ☁️ Google Drive Integration
 
 ### Features
 
@@ -452,19 +368,14 @@ The agent can access supporting materials from Google Drive and automatically sa
 - **Easy Access**: All drafts are available in your Google Drive folder under `drafts/`
 - **Separation**: Drafts are kept separate from approved/submitted cover letters
 
-### Setup Google Drive Integration
+### Setup
 
-1. **Install required packages:**
-   ```bash
-   pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
-   ```
-
-2. **Run the setup script:**
+1. **Run the setup script**:
    ```bash
    python setup_google_drive.py
    ```
 
-2. **Follow the interactive setup:**
+2. **Follow the interactive setup**:
    - Create Google Cloud project
    - Enable Google Drive API
    - Create service account
@@ -472,21 +383,14 @@ The agent can access supporting materials from Google Drive and automatically sa
    - Share your Google Drive folder
    - Update configuration
 
-3. **Install dependencies:**
+3. **Test integration**:
    ```bash
-   pip install -r requirements.txt
+   python scripts/test_drive_upload.py
    ```
-
-### Supported Materials
-
-- **Presentations**: Slides and decks
-- **Spreadsheets**: Metrics and data
-- **Past Cover Letters**: Previous applications
-- **Case Studies**: Portfolio materials
 
 ### Configuration
 
-Edit `data/agent_config.yaml`:
+Edit your user config (`users/[user_id]/config.yaml`):
 
 ```yaml
 google_drive:
@@ -501,59 +405,82 @@ google_drive:
     drafts: "drafts/"
 ```
 
-### Testing Drive Upload
+## 🧪 Testing & Quality
 
-Test the Google Drive upload functionality:
+### Running Tests
 
 ```bash
-python scripts/test_drive_upload.py
+# Run all tests
+make test
+
+# Run with coverage
+make coverage
+
+# Run specific test file
+python -m pytest test_config_management.py -v
 ```
 
-This will verify that your credentials and folder permissions are working correctly.
+### Code Quality
 
-## 📚 Case Study Management
+```bash
+# Format code
+make format
 
-### URL-Based Case Studies
+# Lint code
+make lint
 
-Add case study URLs to `data/agent_config.yaml`:
-
-```yaml
-case_studies:
-  urls:
-    - name: "Aurora Solar Growth Case Study"
-      url: "https://example.com/aurora-solar-case-study"
-      description: "Scaling B2B platform from 10 to 10,000+ customers"
-      tags: [growth, B2B, clean_energy, scaling]
+# Type checking
+make typecheck
 ```
 
-### Local Case Study Files
+### CI/CD
 
-Add local files to the configuration:
+The project includes GitHub Actions workflows for:
+- **Continuous Integration**: Tests on Python 3.8, 3.9, 3.10
+- **Code Quality**: Linting with flake8, black, isort, mypy
+- **Automated Testing**: Runs on every push and pull request
 
-```yaml
-case_studies:
-  local_files:
-    - name: "Aurora Solar Metrics"
-      file_path: "case_studies/aurora_metrics.pdf"
-      description: "Detailed metrics and KPIs from Aurora Solar growth"
-      tags: [growth, metrics, B2B]
-```
+## 📚 Documentation
 
-### Google Drive Case Studies
-
-Materials in your Google Drive folder are automatically detected and matched to job keywords.
+- **[Quick Reference](docs/QUICK_REFERENCE.md)**: Commands, configs, and troubleshooting
+- **[User Guide](docs/USER_GUIDE.md)**: Complete setup and usage guide
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)**: Architecture and contribution guide
+- **[API Reference](docs/API_REFERENCE.md)**: Complete API documentation
+- **[Testing Guide](TESTING.md)**: How to run tests and contribute
+- **[LLM Integration Results](LLM_INTEGRATION_TEST_RESULTS.md)**: AI enhancement validation
+- **[Performance Demo](scripts/performance_demo.py)**: Performance optimization demonstration
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Add new blurbs or improve logic
-4. Test with sample job descriptions
-5. Submit a pull request
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes** and add tests
+4. **Run the test suite**: `make test`
+5. **Submit a pull request**
+
+### Development Setup
+
+```bash
+# Install development dependencies
+pip install -r requirements.txt
+
+# Set up pre-commit hooks
+pre-commit install
+
+# Run all quality checks
+make all
+```
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with modern Python best practices
+- Uses OpenAI's GPT models for enhancement
+- Integrates with Google Drive for storage
+- Follows clean code principles and comprehensive testing
 
 ---
 
