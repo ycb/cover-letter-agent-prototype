@@ -42,6 +42,7 @@ except ImportError:
         DIM = ""
         NORMAL = ""
         RESET = ""
+        RESET_ALL = ""
 
 
 try:
@@ -70,14 +71,14 @@ class ProgressIndicator:
         if TQDM_AVAILABLE:
             self.pbar = tqdm.tqdm(desc=self.description, total=self.total, unit="steps", colour="green")
         else:
-            print(f"{Fore.CYAN}⏳ {self.description}...{Style.RESET}")
+            print(f"{Fore.CYAN}⏳ {self.description}...{Style.RESET_ALL}")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if TQDM_AVAILABLE:
             self.pbar.close()
         else:
-            print(f"{Fore.GREEN}✅ {self.description} completed{Style.RESET}")
+            print(f"{Fore.GREEN}✅ {self.description} completed{Style.RESET_ALL}")
 
     def update(self, increment: int = 1, description: Optional[str] = None):
         """Update progress."""
@@ -88,54 +89,54 @@ class ProgressIndicator:
             self.pbar.update(increment)
         else:
             if description:
-                print(f"{Fore.CYAN}⏳ {description}...{Style.RESET}")
+                print(f"{Fore.CYAN}⏳ {description}...{Style.RESET_ALL}")
 
 
 def print_header(title: str, subtitle: Optional[str] = None):
     """Print a formatted header."""
     width = 60
-    print(f"\n{Fore.CYAN}{'=' * width}{Style.RESET}")
-    print(f"{Fore.CYAN}{Style.BRIGHT}{title.center(width)}{Style.RESET}")
+    print(f"\n{Fore.CYAN}{'=' * width}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}{Style.BRIGHT}{title.center(width)}{Style.RESET_ALL}")
     if subtitle:
-        print(f"{Fore.CYAN}{subtitle.center(width)}{Style.RESET}")
-    print(f"{Fore.CYAN}{'=' * width}{Style.RESET}")
+        print(f"{Fore.CYAN}{subtitle.center(width)}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}{'=' * width}{Style.RESET_ALL}")
 
 
 def print_section(title: str):
     """Print a section header."""
-    print(f"\n{Fore.BLUE}{Style.BRIGHT}{title}{Style.RESET}")
-    print(f"{Fore.BLUE}{'-' * len(title)}{Style.RESET}")
+    print(f"\n{Fore.BLUE}{Style.BRIGHT}{title}{Style.RESET_ALL}")
+    print(f"{Fore.BLUE}{'-' * len(title)}{Style.RESET_ALL}")
 
 
 def print_success(message: str):
     """Print a success message."""
-    print(f"{Fore.GREEN}✅ {message}{Style.RESET}")
+    print(f"{Fore.GREEN}✅ {message}{Style.RESET_ALL}")
 
 
 def print_error(message: str):
     """Print an error message."""
-    print(f"{Fore.RED}❌ {message}{Style.RESET}")
+    print(f"{Fore.RED}❌ {message}{Style.RESET_ALL}")
 
 
 def print_warning(message: str):
     """Print a warning message."""
-    print(f"{Fore.YELLOW}⚠️  {message}{Style.RESET}")
+    print(f"{Fore.YELLOW}⚠️  {message}{Style.RESET_ALL}")
 
 
 def print_info(message: str):
     """Print an info message."""
-    print(f"{Fore.BLUE}ℹ️  {message}{Style.RESET}")
+    print(f"{Fore.BLUE}ℹ️  {message}{Style.RESET_ALL}")
 
 
 def print_debug(message: str):
     """Print a debug message."""
-    print(f"{Fore.MAGENTA}🔍 {message}{Style.RESET}")
+    print(f"{Fore.MAGENTA}🔍 {message}{Style.RESET_ALL}")
 
 
 def confirm_action(prompt: str, default: bool = True) -> bool:
     """Interactive confirmation prompt."""
     default_text = "Y/n" if default else "y/N"
-    response = input(f"{Fore.YELLOW}❓ {prompt} ({default_text}): {Style.RESET}").strip().lower()
+    response = input(f"{Fore.YELLOW}❓ {prompt} ({default_text}): {Style.RESET_ALL}").strip().lower()
 
     if not response:
         return default
@@ -147,13 +148,13 @@ def select_from_list(options: List[str], prompt: str = "Select an option:") -> O
     if not options:
         return None
 
-    print(f"\n{Fore.CYAN}{prompt}{Style.RESET}")
+    print(f"\n{Fore.CYAN}{prompt}{Style.RESET_ALL}")
     for i, option in enumerate(options, 1):
-        print(f"{Fore.WHITE}{i:2d}. {option}{Style.RESET}")
+        print(f"{Fore.WHITE}{i:2d}. {option}{Style.RESET_ALL}")
 
     while True:
         try:
-            choice = input(f"\n{Fore.YELLOW}Enter choice (1-{len(options)}): {Style.RESET}").strip()
+            choice = input(f"\n{Fore.YELLOW}Enter choice (1-{len(options)}): {Style.RESET_ALL}").strip()
             if not choice:
                 return None
 
@@ -174,7 +175,7 @@ def input_with_validation(prompt: str, validator: callable = None, default: str 
         else:
             display_prompt = f"{prompt}: "
 
-        value = input(f"{Fore.CYAN}{display_prompt}{Style.RESET}").strip()
+        value = input(f"{Fore.CYAN}{display_prompt}{Style.RESET_ALL}").strip()
 
         if not value and default:
             value = default
@@ -214,8 +215,8 @@ def print_table(headers: List[str], rows: List[List[str]], title: Optional[str] 
 
     # Print header
     header_line = " | ".join(f"{headers[i]:<{col_widths[i]}}" for i in range(len(headers)))
-    print(f"{Fore.CYAN}{Style.BRIGHT}{header_line}{Style.RESET}")
-    print(f"{Fore.CYAN}{'-' * len(header_line)}{Style.RESET}")
+    print(f"{Fore.CYAN}{Style.BRIGHT}{header_line}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}{'-' * len(header_line)}{Style.RESET_ALL}")
 
     # Print rows
     for row in rows:
@@ -237,7 +238,7 @@ def print_key_value_pairs(data: Dict[str, Any], title: Optional[str] = None):
 
     for key, value in data.items():
         key_str = f"{key}:".ljust(max_key_length + 1)
-        print(f"{Fore.CYAN}{key_str}{Style.RESET} {value}")
+        print(f"{Fore.CYAN}{key_str}{Style.RESET_ALL} {value}")
 
 
 def print_status_indicator(status: str, message: str):
@@ -252,7 +253,7 @@ def print_status_indicator(status: str, message: str):
     }
 
     indicator = status_indicators.get(status, "•")
-    print(f"{indicator} {message}{Style.RESET}")
+    print(f"{indicator} {message}{Style.RESET_ALL}")
 
 
 def format_file_size(size_bytes: int) -> str:
@@ -279,7 +280,7 @@ def print_file_info(file_path: Path):
     size = format_file_size(stat.st_size)
     modified = stat.st_mtime
 
-    print(f"{Fore.CYAN}📄 {file_path.name}{Style.RESET}")
+    print(f"{Fore.CYAN}📄 {file_path.name}{Style.RESET_ALL}")
     print(f"   Size: {size}")
     print(f"   Modified: {modified}")
 
@@ -305,14 +306,14 @@ def create_spinner(description: str):
             self.spinning = False
             if self.spinner_thread:
                 self.spinner_thread.join()
-            print(f"\r{Fore.GREEN}✅ {self.description} completed{Style.RESET}")
+            print(f"\r{Fore.GREEN}✅ {self.description} completed{Style.RESET_ALL}")
 
         def _spin(self):
             spinner_chars = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
             i = 0
             while self.spinning:
                 print(
-                    f"\r{Fore.CYAN}{spinner_chars[i % len(spinner_chars)]} {self.description}...{Style.RESET}",
+                    f"\r{Fore.CYAN}{spinner_chars[i % len(spinner_chars)]} {self.description}...{Style.RESET_ALL}",
                     end="",
                     flush=True,
                 )
@@ -325,17 +326,17 @@ def create_spinner(description: str):
 def print_help_text():
     """Print help text for the CLI."""
     help_text = f"""
-{Fore.CYAN}Cover Letter Agent CLI Help{Style.RESET}
+{Fore.CYAN}Cover Letter Agent CLI Help{Style.RESET_ALL}
 
-{Fore.YELLOW}Basic Usage:{Style.RESET}
+{Fore.YELLOW}Basic Usage:{Style.RESET_ALL}
   python scripts/run_cover_letter_agent.py --user <user_id> -i <job_file>
   python scripts/run_cover_letter_agent.py --user <user_id> -t "Job description text"
 
-{Fore.YELLOW}User Management:{Style.RESET}
+{Fore.YELLOW}User Management:{Style.RESET_ALL}
   python init_user.py <user_id>          # Create new user
   python init_user.py --list             # List existing users
 
-{Fore.YELLOW}Advanced Options:{Style.RESET}
+{Fore.YELLOW}Advanced Options:{Style.RESET_ALL}
   --debug                                # Show detailed scoring information
   --explain                              # Show reasoning for decisions
   --interactive                          # Step-by-step confirmation
@@ -343,11 +344,11 @@ def print_help_text():
   --log                                  # View enhancement log
   --log-status <status>                  # Filter log by status
 
-{Fore.YELLOW}Output Options:{Style.RESET}
+{Fore.YELLOW}Output Options:{Style.RESET_ALL}
   -o <file>                              # Save cover letter to file
   --verbose                              # Verbose output
 
-{Fore.YELLOW}Examples:{Style.RESET}
+{Fore.YELLOW}Examples:{Style.RESET_ALL}
   # Process job description file
   python scripts/run_cover_letter_agent.py --user john -i job.txt
 
@@ -357,7 +358,7 @@ def print_help_text():
   # Interactive mode with file output
   python scripts/run_cover_letter_agent.py --user john -i job.txt --interactive -o cover.txt
 
-{Fore.YELLOW}For more help:{Style.RESET}
+{Fore.YELLOW}For more help:{Style.RESET_ALL}
   python scripts/run_cover_letter_agent.py --help
   python init_user.py --help
 """
