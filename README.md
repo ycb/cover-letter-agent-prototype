@@ -7,6 +7,33 @@
 [![Code Style: Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Type Checked: MyPy](https://img.shields.io/badge/type%20checked-mypy-blue.svg)](https://mypy-lang.org/)
 
+## 🎯 What is the Cover Letter Agent?
+
+The Cover Letter Agent is a sophisticated system that generates personalized, high-quality cover letters by combining **structured content management** with **intelligent job matching** and **AI-powered enhancement**.
+
+### How It Works
+
+1. **Content Management**: You create a library of pre-approved paragraph modules (blurbs) that represent your experience, achievements, and skills
+2. **Smart Matching**: The system analyzes job descriptions and intelligently selects the most relevant content modules
+3. **Intelligent Assembly**: Blurbs are assembled into coherent cover letters using configurable logic and scoring rules
+4. **AI Enhancement**: Optional LLM-powered post-processing improves clarity, tone, and alignment while preserving all factual claims
+5. **Quality Control**: Built-in gap analysis identifies missing requirements and suggests improvements
+
+### Key Benefits
+
+- **Consistency**: Pre-approved content ensures all cover letters maintain your professional voice
+- **Efficiency**: Generate high-quality cover letters in minutes, not hours
+- **Customization**: Each letter is tailored to specific job requirements and company context
+- **Quality**: AI enhancement improves clarity and impact while preserving accuracy
+- **Organization**: Automatic Google Drive integration keeps all drafts organized
+
+### Perfect For
+
+- **Job seekers** who want to apply to many positions efficiently
+- **Professionals** who need to maintain consistent personal branding
+- **Career changers** who want to highlight transferable skills
+- **Busy professionals** who need high-quality cover letters quickly
+
 ## 🚀 Quick Start
 
 ### 1. Installation
@@ -52,6 +79,16 @@ python scripts/run_cover_letter_agent.py --user your_name -i job_description.txt
 python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Manager at TechCorp..."
 ```
 
+## 📚 Documentation
+
+- **[Quick Reference](docs/QUICK_REFERENCE.md)**: Commands, configs, and troubleshooting
+- **[User Guide](docs/USER_GUIDE.md)**: Complete setup and usage guide
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)**: Architecture and contribution guide
+- **[API Reference](docs/API_REFERENCE.md)**: Complete API documentation
+- **[Testing Guide](TESTING.md)**: How to run tests and contribute
+- **[LLM Integration Results](LLM_INTEGRATION_TEST_RESULTS.md)**: AI enhancement validation
+- **[Performance Demo](scripts/performance_demo.py)**: Performance optimization demonstration
+
 ## ✨ Key Features
 
 ### 🎯 **Smart Job Evaluation**
@@ -69,6 +106,12 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - **Strict truth preservation** - never adds or changes factual claims
 - Preserves all metrics, percentages, and quantified achievements
 - Optional enhancement that can be disabled
+
+### 🔍 **Interactive Gap Analysis**
+- Identifies missing requirements in your content
+- Suggests new blurbs to fill gaps
+- Interactive approval workflow for new content
+- Saves approved blurbs for future reuse
 
 ### 📊 **Enhancement Tracking**
 - Logs and tracks improvement suggestions with status management
@@ -216,9 +259,9 @@ job_classification:
     min_keyword_count: 1
 ```
 
-## LLM Integration
+## 🤖 AI-Powered Enhancement
 
-The agent now includes AI-powered enhancement that improves cover letter quality while preserving factual accuracy.
+The agent includes intelligent LLM-powered enhancement that improves cover letter quality while preserving factual accuracy.
 
 ### Configuration
 
@@ -232,21 +275,6 @@ llm_enhancement:
   confidence_threshold: 0.5
   preserve_metrics: true
   preserve_user_voice: true
-```
-
-### Testing LLM Enhancement
-
-Test the LLM enhancement functionality:
-
-```bash
-# Test with mock data (no API key required)
-python test_llm_mock.py
-
-# Test with real API calls (requires OpenAI API key)
-python test_llm_enhancement.py
-
-# Test with CLI tool
-python cli/test_llm_enhancement.py --jd job.txt --cl draft.txt
 ```
 
 ### LLM Enhancement Features
@@ -286,6 +314,21 @@ llm_add_comments: true
 - **Configurable**: Can be enabled/disabled per user
 - **Transparent**: Adds comments to indicate LLM-enhanced sections
 - **Fallback**: Returns original draft if LLM enhancement fails
+
+### Testing LLM Enhancement
+
+Test the LLM enhancement functionality:
+
+```bash
+# Test with mock data (no API key required)
+python test_llm_mock.py
+
+# Test with real API calls (requires OpenAI API key)
+python test_llm_enhancement.py
+
+# Test with CLI tool
+python cli/test_llm_enhancement.py --jd job.txt --cl draft.txt
+```
 
 ### Setup
 
@@ -440,16 +483,6 @@ The project includes GitHub Actions workflows for:
 - **Code Quality**: Linting with flake8, black, isort, mypy
 - **Automated Testing**: Runs on every push and pull request
 
-## 📚 Documentation
-
-- **[Quick Reference](docs/QUICK_REFERENCE.md)**: Commands, configs, and troubleshooting
-- **[User Guide](docs/USER_GUIDE.md)**: Complete setup and usage guide
-- **[Developer Guide](docs/DEVELOPER_GUIDE.md)**: Architecture and contribution guide
-- **[API Reference](docs/API_REFERENCE.md)**: Complete API documentation
-- **[Testing Guide](TESTING.md)**: How to run tests and contribute
-- **[LLM Integration Results](LLM_INTEGRATION_TEST_RESULTS.md)**: AI enhancement validation
-- **[Performance Demo](scripts/performance_demo.py)**: Performance optimization demonstration
-
 ## 🤝 Contributing
 
 1. **Fork the repository**
@@ -506,6 +539,4 @@ To use the LLM-powered enhancement features, you must provide your OpenAI API ke
    - If the key is missing, you will see a clear error message and the script will exit.
 
 3. **Do not commit your real `.env` file to version control.**
-   - Use `.env.example` as a template for sharing setup instructions.
-
-``` 
+   - Use `.env.example` as a template for sharing setup instructions. 
