@@ -1,0 +1,64 @@
+# User Preferences for LLM Enhancement
+# ===================================
+
+tone_preferences:
+  verbosity: "low"
+  formality: "medium"
+  precision: "high"
+  metric_emphasis: "high"
+  authenticity: "strict"
+  tone_style: "executive_succinct"
+  narrative_cohesion: "high"
+  tighten_percent: 15
+
+language_preferences:
+  sentence_length: "short-medium"
+  paragraph_style: "concise"
+  transition_style: "smooth"
+  voice_consistency: "strict"
+
+preservation_rules:
+  preserve_metrics: true
+  preserve_company_names: true
+  preserve_role_titles: true
+  preserve_achievements: true
+  preserve_user_voice: true
+  preserve_structure: true
+
+enhancement_guidelines:
+  max_sentence_length: 25
+  target_paragraph_length: 3
+  avoid_fluff: true
+  emphasize_outcomes: true
+  maintain_professionalism: true
+  prohibit_passive_voice: true
+
+# Original preferences (kept for backward compatibility)
+tone_preferences_legacy:
+  verbosity: "medium"
+  formality: "professional"
+  precision: "high"
+  metric_emphasis: "high"
+  authenticity: "strict"
+  tone_style: "executive"
+  narrative_cohesion: "high"
+  tighten_percent: 15
+
+language_preferences_legacy:
+  sentence_length: "varied"
+  paragraph_style: "concise"
+  transition_style: "smooth"
+  voice_consistency: "strict"
+
+preservation_rules_legacy:
+  preserve_metrics: true
+  preserve_company_names: true
+  preserve_role_titles: true
+  preserve_achievements: true
+  preserve_user_voice: true
+  preserve_structure: true
+
+enhancement_guidelines_legacy:
+  avoid_fluff: true
+  emphasize_outcomes: true
+  maintain_professionalism: true 

@@ -125,12 +125,28 @@ def enhance_with_contextual_llm(
 
 
 def _build_system_prompt(preferences: Dict, metadata: Dict) -> str:
-    """Build structured system prompt with preferences and metadata."""
+    """Build structured system prompt with user preferences and metadata."""
+    
+    # Load user preferences from metadata if present
+    user_prefs = metadata.get('user_preferences', {})
+    if not user_prefs:
+        try:
+            import yaml
+            with open("data/user_preferences.yaml", 'r') as f:
+                user_prefs = yaml.safe_load(f)
+        except Exception:
+            user_prefs = {}
     
     # Extract key metadata
     case_study_tags = metadata.get('case_study_tags', [])
     role_alignment = metadata.get('role_alignment', '')
     job_score = metadata.get('job_score', 0.0)
+    
+    # Extract user preferences
+    tone_prefs = user_prefs.get('tone_preferences', {})
+    language_prefs = user_prefs.get('language_preferences', {})
+    preservation_rules = user_prefs.get('preservation_rules', {})
+    enhancement_guidelines = user_prefs.get('enhancement_guidelines', {})
     
     # Build tag-specific instructions
     tag_instructions = ""
@@ -143,7 +159,56 @@ def _build_system_prompt(preferences: Dict, metadata: Dict) -> str:
     if 'founding_pm' in case_study_tags:
         tag_instructions += "\n- Emphasize 0-to-1 experience and startup mindset"
     
+    # Build user preference instructions
+    preference_instructions = f"""
+USER TONE PREFERENCES:
+- Verbosity: {tone_prefs.get('verbosity', 'medium')}
+- Formality: {tone_prefs.get('formality', 'medium')}
+- Precision: {tone_prefs.get('precision', 'high')}
+- Metric Emphasis: {tone_prefs.get('metric_emphasis', 'high')}
+- Authenticity: {tone_prefs.get('authenticity', 'strict')}
+- Tone Style: {tone_prefs.get('tone_style', 'executive')}
+- Narrative Cohesion: {tone_prefs.get('narrative_cohesion', 'high')}
+- Tighten Percent: {tone_prefs.get('tighten_percent', 15)}%
+
+LANGUAGE PREFERENCES:
+- Sentence Length: {language_prefs.get('sentence_length', 'varied')}
+- Paragraph Style: {language_prefs.get('paragraph_style', 'concise')}
+- Transition Style: {language_prefs.get('transition_style', 'smooth')}
+- Voice Consistency: {language_prefs.get('voice_consistency', 'strict')}
+"""
+    
+    # Build preservation rules
+    preservation_instructions = ""
+    if preservation_rules.get('preserve_metrics', True):
+        preservation_instructions += "\n- ALWAYS preserve exact numbers, percentages, and metrics"
+    if preservation_rules.get('preserve_company_names', True):
+        preservation_instructions += "\n- ALWAYS preserve company names exactly as written"
+    if preservation_rules.get('preserve_role_titles', True):
+        preservation_instructions += "\n- ALWAYS preserve job titles exactly as written"
+    if preservation_rules.get('preserve_achievements', True):
+        preservation_instructions += "\n- ALWAYS preserve achievement claims exactly as written"
+    if preservation_rules.get('preserve_user_voice', True):
+        preservation_instructions += "\n- Maintain original voice and style"
+    if preservation_rules.get('preserve_structure', True):
+        preservation_instructions += "\n- Keep overall paragraph structure"
+    
+    # Build enhancement guidelines
+    enhancement_instructions = ""
+    if enhancement_guidelines.get('avoid_fluff', True):
+        enhancement_instructions += "\n- Remove unnecessary words and fluff"
+    if enhancement_guidelines.get('emphasize_outcomes', True):
+        enhancement_instructions += "\n- Highlight results and impact prominently"
+    if enhancement_guidelines.get('maintain_professionalism', True):
+        enhancement_instructions += "\n- Keep executive-level tone throughout"
+    
+    max_sentence_length = enhancement_guidelines.get('max_sentence_length', 25)
+    target_paragraph_length = enhancement_guidelines.get('target_paragraph_length', 3)
+    tighten_percent = tone_prefs.get('tighten_percent', 15)
+    
     return f"""You are an expert cover letter editor specializing in product management roles.
+
+{preference_instructions}
 
 STYLE PREFERENCES:
 {preferences.get('style', 'Direct, data-driven, high-impact')}
@@ -162,20 +227,29 @@ CONTEXT:
 TAG-SPECIFIC INSTRUCTIONS:
 {tag_instructions}
 
-CRITICAL RULES:
-1. Preserve all factual claims, metrics, and achievements exactly as stated
-2. Only improve clarity, flow, and strategic alignment
-3. Maintain the original voice and tone
-4. Focus on job description alignment
-5. Avoid adding unverified claims or experiences
-6. Respect user-authored content unless clearly problematic
+CRITICAL PRESERVATION RULES:
+{preservation_instructions}
+
+ENHANCEMENT GUIDELINES:
+{enhancement_instructions}
+
+SPECIFIC REQUIREMENTS:
+- Reduce length by approximately {tighten_percent}% without sacrificing clarity or impact
+- Keep sentences under {max_sentence_length} words where possible
+- Target {target_paragraph_length} sentences per paragraph
+- Maintain smooth transitions between paragraphs
+- Ensure voice consistency with experienced, metric-driven product leadership
+- Avoid rewording content unnecessarily
+- Do not invent or fabricate information
+- Prioritize cohesion and clarity
+- Edits should primarily tighten the draft and enhance readability
 
 Output format:
 ENHANCED DRAFT:
 [Your improved cover letter here]
 
 ANALYSIS:
-[Brief summary of key improvements made]
+[Brief summary of key improvements made, including length reduction achieved]
 """
 
 

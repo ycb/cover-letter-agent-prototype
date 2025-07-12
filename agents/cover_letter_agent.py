@@ -2055,6 +2055,15 @@ class CoverLetterAgent:
         original_draft = cover_letter
         enhancement_result = None
         
+        # Load user preferences for LLM enhancement
+        user_preferences = {}
+        try:
+            import yaml
+            with open("data/user_preferences.yaml", 'r') as f:
+                user_preferences = yaml.safe_load(f)
+        except Exception as e:
+            logger.warning(f"Could not load user preferences: {e}")
+        
         # Check if LLM enhancement is enabled
         llm_config = self.config.get('llm_enhancement', {})
         llm_enabled = llm_config.get('enabled', True)
@@ -2072,7 +2081,8 @@ class CoverLetterAgent:
                     'case_study_tags': [blurb.tags for blurb in selected_blurbs.values() if blurb.tags],
                     'role_alignment': 'strong' if job.score > 7.0 else 'moderate',
                     'targeting_score': job.targeting.targeting_score if job.targeting else 0.0,
-                    'go_no_go': job.go_no_go
+                    'go_no_go': job.go_no_go,
+                    'user_preferences': user_preferences  # Pass preferences to enhancement
                 }
                 
                 # Import and use LLM enhancement

@@ -6,13 +6,25 @@ Test Metrics Preservation
 Test that the LLM enhancement preserves all metrics and quantified achievements.
 """
 
-import os
 import sys
+import os
 from pathlib import Path
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# --- Ensure .env is always loaded ---
+try:
+    from dotenv import load_dotenv
+    dotenv_path = Path(__file__).parent / ".env"
+    load_dotenv(dotenv_path)
+except ImportError:
+    pass
+
+# --- Fail fast if API key is missing ---
+api_key = os.environ.get('OPENAI_API_KEY')
+if not api_key:
+    print("\n❌ OPENAI_API_KEY not found.\nPlease create a .env file in the project root with the line: OPENAI_API_KEY=sk-...\nSee .env.example for details.\n")
+    sys.exit(1)
+else:
+    print(f"[DEBUG] OPENAI_API_KEY loaded: ...{api_key[-4:]}")
 
 # Add the project root to the Python path
 project_root = Path(__file__).parent
@@ -62,12 +74,6 @@ About our company: We are a fast-growing SaaS company focused on helping busines
     
     print("🧪 Testing Metrics Preservation")
     print("=" * 50)
-    
-    # Check if LLM is available
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        print("❌ OPENAI_API_KEY not found - cannot test LLM enhancement")
-        return
     
     # Create LLM rewriter
     config = LLMRewriteConfig(

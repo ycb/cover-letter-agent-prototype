@@ -558,3 +558,27 @@ This project is open source and available under the MIT License.
 ---
 
 **Note**: This agent is designed for product management roles but can be easily adapted for other positions by modifying the blurbs and logic configuration. 
+
+---
+
+## 🚀 LLM Integration Setup (OpenAI API Key)
+
+To use the LLM-powered enhancement features, you must provide your OpenAI API key. This is required for all CLI and test runs.
+
+1. **Create a `.env` file in the project root:**
+
+   Copy the following into a file named `.env`:
+   
+   ```env
+   OPENAI_API_KEY=sk-...
+   ```
+   Replace `sk-...` with your actual OpenAI API key.
+
+2. **No need to set environment variables in your shell.**
+   - The agent and all test scripts will automatically load the `.env` file.
+   - If the key is missing, you will see a clear error message and the script will exit.
+
+3. **Do not commit your real `.env` file to version control.**
+   - Use `.env.example` as a template for sharing setup instructions.
+
+``` 

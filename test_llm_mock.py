@@ -10,6 +10,22 @@ import os
 import sys
 from pathlib import Path
 
+# --- Ensure .env is always loaded ---
+try:
+    from dotenv import load_dotenv
+    dotenv_path = Path(__file__).parent / ".env"
+    load_dotenv(dotenv_path)
+except ImportError:
+    pass
+
+# --- Fail fast if API key is missing ---
+api_key = os.environ.get('OPENAI_API_KEY')
+if not api_key:
+    print("\n❌ OPENAI_API_KEY not found.\nPlease create a .env file in the project root with the line: OPENAI_API_KEY=sk-...\nSee .env.example for details.\n")
+    sys.exit(1)
+else:
+    print(f"[DEBUG] OPENAI_API_KEY loaded: ...{api_key[-4:]}")
+
 # Add project root to path
 project_root = Path(__file__).parent
 sys.path.append(str(project_root))

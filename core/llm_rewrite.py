@@ -34,7 +34,9 @@ class LLMRewriter:
     def __init__(self, config: Optional[LLMRewriteConfig] = None):
         """Initialize the LLM rewriter with configuration."""
         self.config = config or LLMRewriteConfig()
-        self.api_key = os.getenv("OPENAI_API_KEY")
+        
+        # Get API key
+        self.api_key = os.getenv("OPENAI_API_KEY", "")
         
         if not self.api_key:
             logger.warning("OPENAI_API_KEY not found in environment variables")
@@ -86,9 +88,12 @@ class LLMRewriter:
             
             context_text = "\n".join(context_parts) if context_parts else "None"
             
+            # Add protection markers to user-authored blurbs
+            protected_text = self._add_protection_markers(original_text)
+            
             # Create the prompt with truth preservation emphasis
             prompt = self._create_rewrite_prompt(
-                original_text, 
+                protected_text, 
                 job_description, 
                 context_text
             )
@@ -112,6 +117,9 @@ class LLMRewriter:
             
             enhanced_text = response.choices[0].message.content.strip()
             
+            # Remove protection markers from the output
+            enhanced_text = self._remove_protection_markers(enhanced_text)
+            
             # Add comments if enabled
             if self.config.add_comments:
                 enhanced_text = self._add_llm_comments(enhanced_text)
@@ -131,18 +139,49 @@ class LLMRewriter:
     ) -> str:
         """Create the rewrite prompt with truth preservation emphasis."""
         return f"""
-You are a professional writing assistant helping a senior product leader apply for a job.
+You are enhancing a professional cover letter written by an experienced product manager.
 
-Rewrite the following cover letter to improve clarity, tone, and polish while maintaining 100% factual accuracy. Do not add or change any experience, achievements, or claims that cannot be verified from the original text.
+Goals:
+- Tighten language by approximately 10–15% by removing redundancy and shortening overly long phrases
+- Maintain original executive tone: strategic, confident, and direct
+- Keep user-authored blurbs intact (including metrics, company names, and paragraph structure)
+- Only revise transitional language and minor phrasings where clarity or conciseness can be improved
 
-CRITICAL: You must preserve ALL numbers, percentages, and metrics exactly as they appear in the original text, including:
-- All percentages (e.g., "50%", "+210%", "876%")
-- All multipliers (e.g., "10x", "15+ years")
-- All dollar amounts (e.g., "$4B", "$250k")
-- All decimal numbers (e.g., "3.7 to 4.3")
-- All exact formatting and symbols
+Hard constraints:
+- DO NOT paraphrase or restructure approved blurbs
+- DO NOT alter specific numbers, company names, role titles, or strategic claims
+- DO NOT add generic content or expand the mission/closing statements
+- Preserve paragraph structure and voice throughout
+- Avoid filler, passive voice, and generic buzzwords
 
-IMPORTANT: This is a post-draft enhancement. The original text contains verified facts and experiences. Your job is to improve writing quality, not to invent new content.
+User tone/style preferences:
+- verbosity: low
+- formality: medium
+- precision: high
+- metric_emphasis: high
+- authenticity: strict
+- tone_style: executive and succinct
+- narrative_cohesion: high
+- sentence_length: short to medium
+- paragraph_style: concise (target ~3 sentences)
+- transition_style: smooth and minimal
+- voice_consistency: strict
+
+Preservation:
+- preserve_metrics: true
+- preserve_structure: true
+- preserve_user_voice: true
+- preserve_company_names: true
+- preserve_role_titles: true
+- preserve_achievements: true
+
+Enhancement Guidelines:
+- max_sentence_length: 25 words
+- tighten_percent: 15%
+- avoid_fluff: true
+- emphasize_outcomes: true
+- prohibit_passive_voice: true
+- maintain_professionalism: true
 
 Cover Letter:
 \"\"\"
@@ -157,15 +196,7 @@ Job Description:
 Additional Context:
 {context_text}
 
-Rewrite the cover letter to:
-1. Improve clarity and flow
-2. Enhance alignment with the job description
-3. Strengthen impact and persuasiveness
-4. Maintain all factual claims from the original
-5. Preserve ALL metrics and numbers exactly as written
-6. Use professional, confident tone
-
-Output only the rewritten cover letter without any explanations or comments.
+Only output the revised letter, with no explanation or commentary.
 """
     
     def _get_system_prompt(self) -> str:
@@ -192,6 +223,37 @@ If you cannot improve a section without changing facts, leave it as is."""
 {text}
 
 <!-- End LLM Enhanced Cover Letter -->"""
+    
+    def _add_protection_markers(self, text: str) -> str:
+        """Add protection markers around user-authored blurbs."""
+        # This is a simplified version - in practice, you'd identify blurbs from the database
+        # For now, we'll protect key metrics and company names
+        import re
+        
+        # Protect company names and metrics
+        protected_patterns = [
+            (r'(\+?\d+%)', r'{{DO_NOT_EDIT}} \1 {{/DO_NOT_EDIT}}'),  # Percentages
+            (r'(\d+x)', r'{{DO_NOT_EDIT}} \1 {{/DO_NOT_EDIT}}'),  # Multipliers
+            (r'(\$\d+[BbMmKk]?)', r'{{DO_NOT_EDIT}} \1 {{/DO_NOT_EDIT}}'),  # Dollar amounts
+            (r'(Enact Systems|Meta|Samsung|AudioEye)', r'{{DO_NOT_EDIT}} \1 {{/DO_NOT_EDIT}}'),  # Company names
+            (r'(Product Manager|Series A|P&L)', r'{{DO_NOT_EDIT}} \1 {{/DO_NOT_EDIT}}'),  # Role titles
+        ]
+        
+        protected_text = text
+        for pattern, replacement in protected_patterns:
+            protected_text = re.sub(pattern, replacement, protected_text)
+        
+        return protected_text
+    
+    def _remove_protection_markers(self, text: str) -> str:
+        """Remove protection markers from the enhanced text."""
+        import re
+        
+        # Remove all protection markers
+        text = re.sub(r'\{\{DO_NOT_EDIT\}\}\s*', '', text)
+        text = re.sub(r'\s*\{\{/DO_NOT_EDIT\}\}', '', text)
+        
+        return text
     
     def validate_truth_preservation(
         self, 

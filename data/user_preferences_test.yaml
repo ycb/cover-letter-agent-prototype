@@ -1,0 +1,27 @@
+enhancement_guidelines:
+  avoid_fluff: true
+  emphasize_outcomes: true
+  maintain_professionalism: true
+  max_sentence_length: 25
+  target_paragraph_length: 3
+language_preferences:
+  paragraph_style: concise
+  sentence_length: varied
+  transition_style: smooth
+  voice_consistency: strict
+preservation_rules:
+  preserve_achievements: true
+  preserve_company_names: true
+  preserve_metrics: true
+  preserve_role_titles: true
+  preserve_structure: true
+  preserve_user_voice: true
+tone_preferences:
+  authenticity: strict
+  formality: medium
+  metric_emphasis: high
+  narrative_cohesion: high
+  precision: high
+  tighten_percent: 5
+  tone_style: executive
+  verbosity: high

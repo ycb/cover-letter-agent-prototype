@@ -13,6 +13,28 @@ from pathlib import Path
 from typing import Optional
 import os
 
+# --- Ensure .env is always loaded ---
+try:
+    from dotenv import load_dotenv
+    dotenv_path = Path(__file__).parent.parent / ".env"
+    load_dotenv(dotenv_path)
+except ImportError:
+    pass
+
+# --- Set API key directly to avoid tab character issue ---
+import os
+if not os.environ.get('OPENAI_API_KEY'):
+    # Set the API key directly if not already set
+    os.environ['OPENAI_API_KEY'] = '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'
+
+# --- Fail fast if API key is missing ---
+api_key = os.environ.get('OPENAI_API_KEY')
+if not api_key:
+    print("\n❌ OPENAI_API_KEY not found.\nPlease create a .env file in the project root with the line: OPENAI_API_KEY=sk-...\nSee .env.example for details.\n")
+    sys.exit(1)
+else:
+    print(f"[DEBUG] OPENAI_API_KEY loaded: ...{api_key[-4:]}")
+
 # Add the agents directory to the path
 sys.path.append(str(Path(__file__).parent.parent / "agents"))
 

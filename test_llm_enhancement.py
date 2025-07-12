@@ -6,16 +6,25 @@ Test LLM Enhancement
 Simple test script to verify LLM enhancement functionality.
 """
 
-import os
 import sys
+import os
 from pathlib import Path
 
-# Load environment variables from .env file
+# --- Ensure .env is always loaded ---
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    dotenv_path = Path(__file__).parent / ".env"
+    load_dotenv(dotenv_path)
 except ImportError:
     pass
+
+# --- Fail fast if API key is missing ---
+api_key = os.environ.get('OPENAI_API_KEY')
+if not api_key:
+    print("\n❌ OPENAI_API_KEY not found.\nPlease create a .env file in the project root with the line: OPENAI_API_KEY=sk-...\nSee .env.example for details.\n")
+    sys.exit(1)
+else:
+    print(f"[DEBUG] OPENAI_API_KEY loaded: ...{api_key[-4:]}")
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -23,12 +32,6 @@ sys.path.append(str(project_root))
 
 def test_llm_enhancement():
     """Test the LLM enhancement functionality."""
-    
-    # Check if OpenAI API key is available
-    if not os.getenv("OPENAI_API_KEY"):
-        print("❌ OPENAI_API_KEY not found in environment")
-        print("Set it with: export OPENAI_API_KEY='your-key-here'")
-        return False
     
     # Test job description
     job_description = """
