@@ -8,3 +8,50 @@ scoring_rules:
 go_no_go:
   minimum_keywords: 3
   minimum_total_score: 5.0
+  # Keywords that indicate a strong match
+  strong_match_keywords:
+    - product_manager
+    - product_lead
+    - product_director
+    - product_strategy
+    - product_development
+    - user_experience
+    - user_research
+    - data_driven
+    - metrics
+    - analytics
+  
+  # Keywords that indicate a poor match (negative scoring)
+  poor_match_keywords:
+    - senior_developer
+    - software_engineer
+    - frontend_developer
+    - backend_developer
+    - devops_engineer
+    - data_scientist
+    - research_scientist
+    - marketing_manager
+    - sales_manager
+    - finance_manager
+
+# Job type classification rules
+job_classification:
+  startup:
+    keywords: [startup, early_stage, seed, series_a, series_b, fast_paced, rapid_growth]
+    min_keyword_count: 2
+  
+  enterprise:
+    keywords: [enterprise, B2B, large_scale, corporate, Fortune_500, enterprise_sales]
+    min_keyword_count: 2
+  
+  ai_ml:
+    keywords: [AI, ML, artificial_intelligence, machine_learning, deep_learning, neural_networks, algorithms]
+    min_keyword_count: 2
+  
+  cleantech:
+    keywords: [climate, energy, clean_energy, sustainability, renewable, solar, wind, carbon]
+    min_keyword_count: 2
+  
+  internal_tools:
+    keywords: [internal_tools, productivity, efficiency, operations, employee_tools, HR_tools]
+    min_keyword_count: 2

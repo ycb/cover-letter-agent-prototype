@@ -27,7 +27,15 @@ def extract_requirements_llm(jd_text: str, api_key: str) -> Dict[str, List[str]]
     prompt = f"""
 Extract all explicit and implicit requirements from this job description. 
 Categorize them as: tools, team_dynamics, domain_knowledge, soft_skills, responsibilities, outcomes.
+
+Be SPECIFIC in your extraction:
+- If a requirement mentions "accessibility community engagement", extract that exact phrase, not just "customer engagement"
+- If a requirement mentions "digital accessibility expertise", extract that exact phrase, not just "domain knowledge"
+- If a requirement mentions "company-specific market understanding", extract that exact phrase, not just "market knowledge"
+- Preserve the specific language and context of each requirement
+
 Output as JSON with each category as a list of strings.
+
 Job Description:
 {jd_text}
 """
@@ -59,7 +67,35 @@ def gap_analysis_llm(jd_requirements: Dict[str, List[str]], cover_letter: str, a
 
     client = openai.OpenAI(api_key=api_key)
     prompt = f"""
-Given these job requirements (JSON) and this cover letter, for each requirement, state if it is fully covered, partially covered, or missing in the letter. Output as a JSON object where each requirement is a key and the value is an object with 'status' (one of '✅', '⚠️', '❌') and 'recommendation' (a short suggestion or comment).
+Given these job requirements (JSON) and this cover letter, for each requirement, state if it is EXPLICITLY covered, partially covered, or missing in the letter.
+
+Be EXTREMELY STRICT in your assessment:
+- ✅ (Fully Covered): ONLY if the requirement is EXPLICITLY mentioned with the EXACT SAME WORDS or clearly demonstrated with specific examples
+- ⚠️ (Partially Covered): If it's only implied, tangentially related, or mentioned in passing without specific details
+- ❌ (Missing): If it's completely absent or only very loosely related
+
+CRITICAL: You must be EXTREMELY strict. General experience does NOT cover specific requirements.
+
+Examples of what should be marked as ❌:
+- "Customer discovery" does NOT cover "accessibility community engagement" 
+- "Mission alignment" does NOT cover "digital accessibility expertise"
+- "General PM experience" does NOT cover "AudioEye-specific market understanding"
+- "Cross-functional leadership" does NOT cover "stakeholder management in accessibility domain"
+- "Product development" does NOT cover "accessibility testing tools"
+- "User research" does NOT cover "accessibility compliance knowledge"
+- "Team leadership" does NOT cover "accessibility community engagement"
+
+Examples of what should be marked as ✅:
+- "accessibility testing tools" is mentioned → ✅
+- "digital accessibility expertise" is mentioned → ✅
+- "accessibility community engagement" is mentioned → ✅
+
+Examples of what should be marked as ⚠️:
+- "accessibility" is mentioned but not "accessibility testing tools" → ⚠️
+- "community" is mentioned but not "accessibility community engagement" → ⚠️
+
+Output as a JSON object where each requirement is a key and the value is an object with 'status' (one of '✅', '⚠️', '❌') and 'recommendation' (a short suggestion or comment explaining why).
+
 Requirements: {json.dumps(jd_requirements)}
 Cover Letter: {cover_letter}
 """

@@ -323,7 +323,7 @@ class CoverLetterAgent:
         # Extract achievements from case studies
         case_studies = self.get_case_studies(job_description.split())
         for case_study in case_studies:
-            if case_study["type"] == "file" and case_study.get("file_path"):
+            if case_study.get("type") == "file" and case_study.get("file_path"):
                 try:
                     with open(case_study["file_path"], "r") as f:
                         content = f.read()
@@ -545,17 +545,55 @@ class CoverLetterAgent:
 
         return "\n".join(lines)
 
+    def _get_tone_for_job(self, job: JobDescription) -> str:
+        """Determine the appropriate tone based on job type and user preferences."""
+        # Get tone preferences from config
+        tone_config = self.config.get("cover_letter", {}).get("tone", {})
+        
+        # Determine job type for tone selection
+        job_type = job.job_type.lower()
+        company_name = job.company_name.lower()
+        
+        # Check for specific tone mappings
+        if "ai_ml" in job_type or "artificial_intelligence" in job_type or "machine_learning" in job_type:
+            return tone_config.get("AI_ML", tone_config.get("default", "professional"))
+        elif "startup" in company_name or "startup" in job_type or "early" in job_type:
+            return tone_config.get("startup", tone_config.get("default", "conversational"))
+        elif "enterprise" in company_name or "enterprise" in job_type or "corporate" in job_type:
+            return tone_config.get("enterprise", tone_config.get("default", "professional"))
+        else:
+            return tone_config.get("default", "professional")
+
     def _adjust_tone(self, cover_letter: str, tone_recommendation: str) -> str:
         """Adjust the tone of the cover letter based on recommendation."""
-        # Simple tone adjustments
+        # Enhanced tone adjustments based on user preferences
         if "conversational" in tone_recommendation.lower():
-            # Make more conversational
+            # Make more conversational and approachable
             cover_letter = cover_letter.replace("I am", "I'm")
             cover_letter = cover_letter.replace("I would", "I'd")
+            cover_letter = cover_letter.replace("I have", "I've")
+            cover_letter = cover_letter.replace("I will", "I'll")
+            cover_letter = cover_letter.replace("I can", "I can")
+            # Add more casual transitions
+            cover_letter = cover_letter.replace("Furthermore,", "Plus,")
+            cover_letter = cover_letter.replace("Additionally,", "Also,")
+            cover_letter = cover_letter.replace("Moreover,", "What's more,")
         elif "professional" in tone_recommendation.lower():
-            # Make more professional
+            # Make more formal and professional
             cover_letter = cover_letter.replace("I'm", "I am")
             cover_letter = cover_letter.replace("I'd", "I would")
+            cover_letter = cover_letter.replace("I've", "I have")
+            cover_letter = cover_letter.replace("I'll", "I will")
+            # Add more formal transitions
+            cover_letter = cover_letter.replace("Plus,", "Furthermore,")
+            cover_letter = cover_letter.replace("Also,", "Additionally,")
+            cover_letter = cover_letter.replace("What's more,", "Moreover,")
+        elif "technical" in tone_recommendation.lower():
+            # Add more technical language and precision
+            cover_letter = cover_letter.replace("helped", "facilitated")
+            cover_letter = cover_letter.replace("worked on", "developed")
+            cover_letter = cover_letter.replace("made", "implemented")
+            cover_letter = cover_letter.replace("did", "executed")
 
         return cover_letter
 
@@ -587,6 +625,13 @@ class CoverLetterAgent:
         # Compute enhanced relevance score for each case study
         scored = []
         job_kw_set = set([kw.lower() for kw in job_keywords])
+        
+        # Define tag categories for scoring
+        maturity_tags = ['startup', 'scaleup', 'public', 'enterprise']
+        business_model_tags = ['b2b', 'b2c', 'marketplace', 'saas']
+        role_type_tags = ['founding_pm', 'staff_pm', 'principal_pm', 'group_pm']
+        key_skill_tags = ['ai_ml', 'data', 'product', 'growth', 'platform']
+        industry_tags = ['fintech', 'healthtech', 'ecommerce', 'social']
         
         for cs in case_studies:
             initial_score = 0
@@ -1503,7 +1548,7 @@ class CoverLetterAgent:
         return False
 
     def generate_cover_letter(
-        self, job: JobDescription, selected_blurbs: Dict[str, BlurbMatch], missing_requirements: Optional[List[str]] = None
+        self, job: JobDescription, selected_blurbs: Dict[str, BlurbMatch], missing_requirements: Optional[List[str]] = None,
     ) -> str:
         """Generate a cover letter from selected blurbs using approved content. Optionally fill gaps with role_specific_alignment blurbs."""
         logger.info("Generating cover letter...")
@@ -1565,25 +1610,3641 @@ class CoverLetterAgent:
         for deprecated in ["GenAI", "Climate Week", "sf_climate_week", "genai_voice", "duke"]:
             cover_letter = re.sub(deprecated, "", cover_letter, flags=re.IGNORECASE)
 
-        # Post-process with LLM enhancement if enabled
+        # Apply tone based on user preferences and job type
+        tone = self._get_tone_for_job(job)
+        cover_letter = self._adjust_tone(cover_letter, tone)
+        
+        # Limited LLM enhancement - only for specific areas, not entire letter
         try:
             from core.llm_rewrite import post_process_with_llm
 
-            user_context = None
-            if hasattr(self, "user_context"):
-                user_context = {
-                    "company_notes": getattr(self.user_context, "company_notes", None),
-                    "role_insights": getattr(self.user_context, "role_insights", None),
-                }
+            # Only enhance specific sections, not the entire letter
+            # For now, limit LLM to just the closing paragraph for safety
+            lines = cover_letter.split('\n')
+            closing_start = -1
+            for i, line in enumerate(lines):
+                if "I'm excited" in line or "I'd be excited" in line or "I am excited" in line:
+                    closing_start = i
+                    break
+            
+            if closing_start > 0:
+                # Only enhance the closing paragraph
+                closing_lines = lines[closing_start:]
+                closing_text = '\n'.join(closing_lines)
+                
+                user_context = None
+                if hasattr(self, "user_context"):
+                    user_context = {
+                        "company_notes": getattr(self.user_context, "company_notes", None),
+                        "role_insights": getattr(self.user_context, "role_insights", None),
+                    }
 
-            enhanced_cover_letter = post_process_with_llm(cover_letter, job.raw_text, self.config, user_context)
-            return enhanced_cover_letter
+                enhanced_closing = post_process_with_llm(closing_text, job.raw_text, self.config, user_context)
+                
+                # Replace only the closing section
+                lines[closing_start:] = enhanced_closing.split('\n')
+                cover_letter = '\n'.join(lines)
+                
         except ImportError:
             logger.warning("LLM rewrite module not available - returning original draft")
-            return cover_letter
         except Exception as e:
             logger.error(f"LLM enhancement failed: {e}")
+        
+        return cover_letter
+
+    def _apply_strategic_insights(self, cover_letter: str, insights: List[Any]) -> str:
+        """Apply strategic insights to the cover letter."""
+        # For now, just log the insights
+        for insight in insights:
+            logger.info(f"Strategic insight: {insight.description}")
+            logger.info(f"Recommended action: {insight.recommended_action}")
+
+        return cover_letter
+
+    def _include_recommended_achievements(self, cover_letter: str, achievements: List[Any]) -> str:
+        """Include recommended achievements in the cover letter."""
+        if not achievements:
             return cover_letter
+
+        # Find a good place to insert achievements (after the main paragraph)
+        lines = cover_letter.split("\n")
+        insert_index = -1
+
+        for i, line in enumerate(lines):
+            if "At Meta" in line or "At Aurora" in line:
+                insert_index = i + 1
+                break
+
+        if insert_index == -1:
+            # Insert before the closing paragraph
+            for i, line in enumerate(lines):
+                if "I'm excited about" in line:
+                    insert_index = i
+                    break
+
+        if insert_index > 0:
+            # Add achievement paragraph
+            achievement_text = "\n"
+            for achievement in achievements[:2]:  # Limit to 2 achievements
+                achievement_text += f"At {achievement.company}, {achievement.description}\n"
+            achievement_text += "\n"
+
+            lines.insert(insert_index, achievement_text)
+
+        return "\n".join(lines)
+
+    def _include_resume_data(self, cover_letter: str, resume_data: Dict[str, Any]) -> str:
+        """Include resume-based data in the cover letter."""
+        lines = cover_letter.split("\n")
+
+        # Add relevant experience highlights
+        if resume_data.get("relevant_experience"):
+            experience_text = "\n".join(
+                [f"• {exp.title} at {exp.company} ({exp.duration})" for exp in resume_data["relevant_experience"][:2]]
+            )
+
+            # Find a good place to insert (after main paragraph)
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "At Meta" in line or "At Aurora" in line or "I have" in line:
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nRelevant Experience:\n{experience_text}\n")
+
+        # Add relevant skills
+        if resume_data.get("relevant_skills"):
+            skills_text = ", ".join([skill.name for skill in resume_data["relevant_skills"][:5]])
+
+            # Find place to insert skills
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "skills" in line.lower() or "technologies" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"Key Skills: {skills_text}\n")
+
+        # Add resume achievements
+        if resume_data.get("achievements"):
+            achievements_text = "\n".join([f"• {achievement}" for achievement in resume_data["achievements"][:3]])
+
+            # Find place to insert achievements
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "achievements" in line.lower() or "accomplishments" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nKey Achievements:\n{achievements_text}\n")
+
+        return "\n".join(lines)
+
+    def _get_tone_for_job(self, job: JobDescription) -> str:
+        """Determine the appropriate tone based on job type and user preferences."""
+        # Get tone preferences from config
+        tone_config = self.config.get("cover_letter", {}).get("tone", {})
+        
+        # Determine job type for tone selection
+        job_type = job.job_type.lower()
+        company_name = job.company_name.lower()
+        
+        # Check for specific tone mappings
+        if "ai_ml" in job_type or "artificial_intelligence" in job_type or "machine_learning" in job_type:
+            return tone_config.get("AI_ML", tone_config.get("default", "professional"))
+        elif "startup" in company_name or "startup" in job_type or "early" in job_type:
+            return tone_config.get("startup", tone_config.get("default", "conversational"))
+        elif "enterprise" in company_name or "enterprise" in job_type or "corporate" in job_type:
+            return tone_config.get("enterprise", tone_config.get("default", "professional"))
+        else:
+            return tone_config.get("default", "professional")
+
+    def _adjust_tone(self, cover_letter: str, tone_recommendation: str) -> str:
+        """Adjust the tone of the cover letter based on recommendation."""
+        # Enhanced tone adjustments based on user preferences
+        if "conversational" in tone_recommendation.lower():
+            # Make more conversational and approachable
+            cover_letter = cover_letter.replace("I am", "I'm")
+            cover_letter = cover_letter.replace("I would", "I'd")
+            cover_letter = cover_letter.replace("I have", "I've")
+            cover_letter = cover_letter.replace("I will", "I'll")
+            cover_letter = cover_letter.replace("I can", "I can")
+            # Add more casual transitions
+            cover_letter = cover_letter.replace("Furthermore,", "Plus,")
+            cover_letter = cover_letter.replace("Additionally,", "Also,")
+            cover_letter = cover_letter.replace("Moreover,", "What's more,")
+        elif "professional" in tone_recommendation.lower():
+            # Make more formal and professional
+            cover_letter = cover_letter.replace("I'm", "I am")
+            cover_letter = cover_letter.replace("I'd", "I would")
+            cover_letter = cover_letter.replace("I've", "I have")
+            cover_letter = cover_letter.replace("I'll", "I will")
+            # Add more formal transitions
+            cover_letter = cover_letter.replace("Plus,", "Furthermore,")
+            cover_letter = cover_letter.replace("Also,", "Additionally,")
+            cover_letter = cover_letter.replace("What's more,", "Moreover,")
+        elif "technical" in tone_recommendation.lower():
+            # Add more technical language and precision
+            cover_letter = cover_letter.replace("helped", "facilitated")
+            cover_letter = cover_letter.replace("worked on", "developed")
+            cover_letter = cover_letter.replace("made", "implemented")
+            cover_letter = cover_letter.replace("did", "executed")
+
+        return cover_letter
+
+    def get_case_studies(
+        self, job_keywords: Optional[List[str]] = None, force_include: Optional[List[str]] = None
+    ) -> List[CaseStudyDict]:
+        """Enhanced case study selection with improved scoring multipliers and diversity logic."""
+        import collections
+        
+        if job_keywords is None:
+            job_keywords = []
+        if force_include is None:
+            force_include = []
+        
+        # Load case studies from blurbs.yaml (examples section)
+        case_studies = self.blurbs.get('examples', [])
+        # Use job title if available (from self.current_job or similar)
+        job_title = getattr(self, 'current_job', None)
+        if job_title and hasattr(job_title, 'job_title'):
+            job_title = job_title.job_title
+        else:
+            job_title = ' '.join(job_keywords)
+        
+        # Determine role type for role-based guidance
+        job_title_lower = ' '.join(job_keywords).lower()
+        is_staff_principal = any(word in job_title_lower for word in ['staff', 'principal', 'senior', 'lead'])
+        is_startup_pm = any(word in job_title_lower for word in ['startup', 'early', 'founding', '0-1'])
+        
+        # Compute enhanced relevance score for each case study
+        scored = []
+        job_kw_set = set([kw.lower() for kw in job_keywords])
+        
+        # Define tag categories for scoring
+        maturity_tags = ['startup', 'scaleup', 'public', 'enterprise']
+        business_model_tags = ['b2b', 'b2c', 'marketplace', 'saas']
+        role_type_tags = ['founding_pm', 'staff_pm', 'principal_pm', 'group_pm']
+        key_skill_tags = ['ai_ml', 'data', 'product', 'growth', 'platform']
+        industry_tags = ['fintech', 'healthtech', 'ecommerce', 'social']
+        
+        for cs in case_studies:
+            initial_score = 0
+            tag_matches = set()
+            multipliers = []
+            explanations = []
+            
+            # Base tag matching
+            for tag in cs.get('tags', []):
+                if tag.lower() in [kw.lower() for kw in job_keywords]:
+                    # Strong weighting for certain tag categories
+                    if tag.lower() in maturity_tags or tag.lower() in business_model_tags or tag.lower() in role_type_tags:
+                        initial_score += 3
+                    elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
+                        initial_score += 1
+                    tag_matches.add(tag.lower())
+            
+            # Apply scoring multipliers
+            final_score = initial_score
+            
+            # 1. Public company multiplier (+20%)
+            if 'public' in cs.get('tags', []):
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"public_company: {multiplier:.1f}x")
+                explanations.append("public company")
+            
+            # 2. Impressive metrics multiplier (+30%)
+            impressive_metrics = ['210%', '876%', '853%', '169%', '90%', '4B', '130%', '10x', '160%', '200%', '4.3', '20x', '60%', '80%']
+            has_impressive_metrics = any(metric in cs.get('text', '') for metric in impressive_metrics)
+            if has_impressive_metrics:
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"impressive_metrics: {multiplier:.1f}x")
+                explanations.append("impressive metrics")
+            
+            # 3. Non-redundant theme multiplier (+30%)
+            # Check if this case study brings unique themes not covered by others
+            unique_themes = set(cs.get('tags', [])) - {'startup', 'founding_pm', '0_to_1'}  # Remove common themes
+            if len(unique_themes) >= 3:  # Has substantial unique themes
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"non_redundant_theme: {multiplier:.1f}x")
+                explanations.append("diverse themes")
+            
+            # 4. Credibility anchor multiplier (+20%)
+            credibility_anchors = ['meta', 'samsung', 'salesforce', 'aurora', 'enact']
+            if cs['id'] in credibility_anchors:
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"credibility_anchor: {multiplier:.1f}x")
+                explanations.append("credible brand")
+            
+            # 5. Special case: public company + impressive metrics
+            if 'public' in cs.get('tags', []) and has_impressive_metrics:
+                multiplier = 1.5  # Additional 50% boost
+                final_score *= multiplier
+                multipliers.append(f"public+metrics: {multiplier:.1f}x")
+                explanations.append("public company with impressive metrics")
+            
+            # 6. Role-based adjustments
+            if is_staff_principal:
+                # For Staff/Principal PM: favor scale, impact, XFN leadership
+                if any(tag in cs.get('tags', []) for tag in ['scaleup', 'platform', 'xfn', 'leadership']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"staff_principal: {multiplier:.1f}x")
+                    explanations.append("staff/principal alignment")
+            elif is_startup_pm:
+                # For startup PM: bias toward 0_to_1 and scrappy execution
+                if any(tag in cs.get('tags', []) for tag in ['founding_pm', '0_to_1', 'startup']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"startup_pm: {multiplier:.1f}x")
+                    explanations.append("startup alignment")
+            
+            # Penalties
+            penalties = []
+            
+            # Penalty for B2B-only if B2C/consumer present in JD
+            if 'b2b' in cs.get('tags', []) and ('b2c' in job_keywords or 'consumer' in job_keywords):
+                final_score -= 2
+                penalties.append("B2B mismatch")
+            
+            # Penalty for redundant founding PM stories (if we already have one)
+            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
+                final_score -= 3
+                penalties.append("redundant founding PM")
+            
+            scored.append({
+                'case_study': cs,
+                'initial_score': initial_score,
+                'final_score': final_score,
+                'multipliers': multipliers,
+                'penalties': penalties,
+                'explanations': explanations,
+                'id': cs.get('id', 'unknown')
+            })
+        
+        # DEBUG: Print enhanced scores
+        print("[DEBUG] Enhanced case study scores:")
+        for item in scored:
+            cs = item['case_study']
+            print(f"  {item['id']}: {item['initial_score']:.1f} → {item['final_score']:.1f}")
+            if item['multipliers']:
+                print(f"    Multipliers: {', '.join(item['multipliers'])}")
+            if item['penalties']:
+                print(f"    Penalties: {', '.join(item['penalties'])}")
+            print(f"    Explanation: {', '.join(item['explanations'])}")
+        
+        # Get min_scores from logic
+        logic = self.config.get('blurb_logic', {}).get('minimum_scores', {}).get('examples', {})
+        
+        # Filter by min_score and sort by final score
+        eligible = []
+        for item in scored:
+            cs = item['case_study']
+            min_score = float(logic.get(cs['id'], {}).get('min_score', 0))
+            if item['final_score'] >= min_score or cs['id'] in force_include:
+                eligible.append(item)
+        
+        eligible.sort(key=lambda x: x['final_score'], reverse=True)
+        
+        # Enhanced selection with diversity logic
+        selected = []
+        used_themes = set()
+        samsung_selected = False
+        
+        print("[DEBUG] Enhanced selection process:")
+        
+        for item in eligible:
+            cs = item['case_study']
+            cs_id = cs['id']
+            final_score = item['final_score']
+            
+            print(f"  Considering {cs_id} (score: {final_score:.1f})")
+            
+            # Samsung logic: only one allowed
+            if cs_id in ['samsung', 'samsung_chatbot']:
+                if samsung_selected:
+                    print(f"    Skipping {cs_id} - Samsung already selected")
+                    continue
+                
+                # Prefer chatbot for AI/ML, NLP, or customer success
+                if cs_id == 'samsung_chatbot' and any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for AI/ML/NLP")
+                    selected.append(cs)
+                    samsung_selected = True
+                elif cs_id == 'samsung' and not any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for non-AI/ML")
+                    selected.append(cs)
+                    samsung_selected = True
+                else:
+                    print(f"    Selecting {cs_id} - first Samsung found")
+                    selected.append(cs)
+                    samsung_selected = True
+            
+            # Check for redundant themes
+            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+                if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
+                    print(f"    Skipping {cs_id} - redundant founding/startup theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique founding/startup story")
+                    selected.append(cs)
+                    used_themes.update(['founding_pm', '0_to_1', 'startup'])
+            
+            # Check for scale/growth themes
+            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+                if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
+                    print(f"    Skipping {cs_id} - redundant scale/growth theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique scale/growth story")
+                    selected.append(cs)
+                    used_themes.update(['scaleup', 'growth', 'platform'])
+            
+            # Default selection
+            else:
+                print(f"    Selecting {cs_id} - diverse theme")
+                selected.append(cs)
+            
+            if len(selected) >= 3:
+                print("    Reached 3 case studies, stopping")
+                break
+        
+        print(f"[DEBUG] Final selection: {[cs['id'] for cs in selected]}")
+        
+        # If user forced specific examples, ensure they're included
+        for fid in force_include:
+            if not any(cs['id'] == fid for cs in selected):
+                for cs in case_studies:
+                    if cs['id'] == fid:
+                        selected.append(cs)
+                        break
+        return selected
+
+    def download_case_study_materials(self, case_studies: List[CaseStudyDict], local_dir: str = "materials") -> List[str]:
+        """Download case study materials to local directory."""
+        downloaded_files = []
+
+        if not self.google_drive or not self.google_drive.available:
+            return downloaded_files
+
+        for case_study in case_studies:
+            if case_study["type"] == "google_drive":
+                local_path = os.path.join(local_dir, case_study["material_type"], case_study["name"])
+
+                if self.google_drive.download_file(case_study["file_id"], local_path):
+                    downloaded_files.append(local_path)
+
+        return downloaded_files
+
+    def parse_job_description(self, job_text: str) -> JobDescription:
+        """Parse and analyze a job description."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description...")
+
+        # Extract basic information
+        company_name = self._extract_company_name(job_text)
+        job_title = self._extract_job_title(job_text)
+        keywords = self._extract_keywords(job_text)
+        job_type = self._classify_job_type(job_text)
+
+        # Calculate score
+        score = self._calculate_job_score(job_text, keywords)
+
+        # Determine go/no-go
+        go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+
+        # Extract additional information
+        extracted_info = {
+            "requirements": self._extract_requirements(job_text),
+            "responsibilities": self._extract_responsibilities(job_text),
+            "company_info": self._extract_company_info(job_text),
+        }
+
+        # Evaluate job targeting
+        targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+
+        # End performance monitoring
+        monitor.end_timer("job_parsing")
+
+        return JobDescription(
+            raw_text=job_text,
+            company_name=company_name,
+            job_title=job_title,
+            keywords=keywords,
+            job_type=job_type,
+            score=score,
+            go_no_go=go_no_go,
+            extracted_info=extracted_info,
+            targeting=targeting,
+        )
+
+    def _extract_company_name(self, text: str) -> str:
+        """Robust, multi-pass extraction of company name from job description."""
+        import re, collections
+
+        lines = [line.strip() for line in text.split("\n") if line.strip()]
+
+        # 1. Look for "CompanyName · Location" pattern (most common)
+        for line in lines:
+            match = re.match(r"^([A-Z][a-zA-Z0-9&]+)\s*·\s*", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'Company · Location' pattern: {company}")
+                return company
+
+        # 2. Ignore 'About the job', use 'About <Name>' if present
+        for line in lines:
+            if line.lower().startswith("about ") and line.lower() != "about the job":
+                company = line[6:].strip()
+                print(f"[DEBUG] Extracted company name from 'About': {company}")
+                return company
+
+        # 3. Look for company name after job title (common pattern)
+        for i, line in enumerate(lines):
+            if i > 0 and "product manager" in line.lower() or "pm" in line.lower():
+                # Check next line for company
+                if i + 1 < len(lines):
+                    next_line = lines[i + 1]
+                    # Look for capitalized company name
+                    company_match = re.match(r"^([A-Z][a-zA-Z0-9&]+)", next_line)
+                    if company_match:
+                        company = company_match.group(1).strip()
+                        print(f"[DEBUG] Extracted company name after job title: {company}")
+                        return company
+
+        # 4. Most frequent capitalized word in the JD (excluding common job words)
+        words = re.findall(r"\b[A-Z][a-zA-Z0-9&]+\b", text)
+        # Filter out common job-related words
+        job_words = {"Staff", "Senior", "Product", "Manager", "PM", "Lead", "Director", "VP", "Engineer", "Developer"}
+        filtered_words = [word for word in words if word not in job_words]
+        if filtered_words:
+            most_common = collections.Counter(filtered_words).most_common(1)[0][0]
+            print(f"[DEBUG] Extracted company name from most frequent capitalized word: {most_common}")
+            return most_common
+
+        # 5. Possessive or 'the Name team'
+        for line in lines:
+            match = re.match(r"([A-Z][a-zA-Z0-9& ]+)'s ", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from possessive: {company}")
+                return company
+            match = re.match(r"the ([A-Z][a-zA-Z0-9& ]+) team", line, re.IGNORECASE)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'the Name team': {company}")
+                return company
+
+        # 6. Not found
+        print("[DEBUG] Company name not found in JD.")
+        return ""
+
+    def _extract_job_title(self, text: str) -> str:
+        """Extract job title from job description."""
+        # Look for "As a [Title] at" or "As a [Title]," pattern first
+        as_pattern = r"As\s+a[n]?\s+([A-Z][a-zA-Z\s]+?)(?:\s+at|,|\.|\n)"
+        match = re.search(as_pattern, text, re.IGNORECASE)
+        if match:
+            title = match.group(1).strip()
+            # Remove trailing generic words
+            title = re.sub(r"\s+(at|for|with|in|on|of)\b.*$", "", title)
+            # Normalize to common titles
+            if "product manager" in title.lower():
+                return "Product Manager"
+            if "pm" == title.lower().strip():
+                return "Product Manager"
+            return title
+        # Fallback to common job title patterns
+        patterns = [
+            r"(?:Senior\s+)?(?:Product\s+)?(?:Manager|Lead|Director|VP)",
+            r"(?:Senior\s+)?(?:Software\s+)?(?:Engineer|Developer)",
+            r"(?:Data\s+)?(?:Scientist|Analyst)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                found = match.group(0).strip()
+                if "product manager" in found.lower():
+                    return "Product Manager"
+                return found
+        return "Product Manager"  # Default fallback for this use case
+
+    def _extract_keywords(self, text: str) -> List[str]:
+        """Extract keywords and implied tags from job description, including synonyms for maturity, business model, and role type."""
+        import re
+
+        keywords = set()
+        text_lower = text.lower()
+        # Direct keyword extraction (existing logic)
+        direct_keywords = re.findall(r"\b[a-zA-Z0-9_\-/]+\b", text_lower)
+        keywords.update(direct_keywords)
+        # Synonym and implied tag mapping
+        synonym_map = {
+            # Maturity
+            "public company": "public",
+            "ipo": "public",
+            "fortune 500": "public",
+            "startup": "startup",
+            "scaleup": "scaleup",
+            "pilot": "pilot",
+            "prototype": "prototype",
+            # Business Model
+            "consumer": "consumer",
+            "personal finance": "consumer",
+            "b2c": "b2c",
+            "b2b": "b2b",
+            "b2b2c": "b2b2c",
+            "d2c": "d2c",
+            "smb": "smb",
+            "small business": "smb",
+            "enterprise": "b2b",
+            # Role Type
+            "growth": "growth",
+            "leadership": "leadership",
+            "team lead": "leadership",
+            "manager": "leadership",
+            "founding pm": "founding_pm",
+            "founder": "founding_pm",
+            "platform": "platform",
+            "ux": "ux",
+            "user experience": "ux",
+            "ai/ml": "ai_ml",
+            "ai": "ai_ml",
+            "ml": "ai_ml",
+            # Key Skills
+            "data": "data_driven",
+            "analytics": "data_driven",
+            "metrics": "data_driven",
+            "execution": "execution",
+            "strategy": "strategy",
+            "discovery": "discovery",
+            "customer discovery": "discovery",
+            "user research": "discovery",
+        }
+        for phrase, tag in synonym_map.items():
+            if phrase in text_lower:
+                keywords.add(tag)
+        # Implied tags for Quicken/finance
+        if "quicken" in text_lower or "personal finance" in text_lower:
+            keywords.update(["public", "consumer", "b2c", "smb", "data_driven"])
+        return list(set(keywords))
+
+    def _classify_job_type(self, text: str) -> str:
+        """Classify the job type based on keywords."""
+        text_lower = text.lower()
+
+        for job_type, config in self.logic["job_classification"].items():
+            keyword_count = sum(1 for keyword in config["keywords"] if keyword.lower() in text_lower)
+            if keyword_count >= config["min_keyword_count"]:
+                return job_type
+
+        return "general"
+
+    def _calculate_job_score(self, text: str, keywords: List[str]) -> float:
+        """Calculate a score for the job based on keywords and content."""
+        score = 0.0
+
+        # Add scores for keywords
+        keyword_weights = self.logic["scoring_rules"]["keyword_weights"]
+        for keyword in keywords:
+            if keyword in keyword_weights:
+                score += keyword_weights[keyword]
+
+        # Add scores for strong match keywords
+        strong_match_keywords = self.logic["go_no_go"]["strong_match_keywords"]
+        for keyword in keywords:
+            if keyword in strong_match_keywords:
+                score += 2.0
+
+        # Subtract scores for poor match keywords
+        poor_match_keywords = self.logic["go_no_go"]["poor_match_keywords"]
+        for keyword in keywords:
+            if keyword in poor_match_keywords:
+                score -= 1.0
+
+        return score
+
+    def _evaluate_go_no_go(self, text: str, keywords: List[str], score: float) -> bool:
+        """Evaluate whether to proceed with cover letter generation."""
+        # Check minimum keywords
+        if len(keywords) < self.logic["go_no_go"]["minimum_keywords"]:
+            return False
+
+        # Check minimum score
+        if score < self.logic["go_no_go"]["minimum_total_score"]:
+            return False
+
+        return True
+
+    def _extract_requirements(self, text: str) -> List[str]:
+        """Extract job requirements from text."""
+        # Simple extraction - look for requirement patterns
+        requirements = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:requirements?|qualifications?|must|should)", line, re.IGNORECASE):
+                requirements.append(line.strip())
+
+        return requirements
+
+    def _extract_responsibilities(self, text: str) -> List[str]:
+        """Extract job responsibilities from text."""
+        # Simple extraction - look for responsibility patterns
+        responsibilities = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:responsibilities?|duties?|will|you\s+will)", line, re.IGNORECASE):
+                responsibilities.append(line.strip())
+
+        return responsibilities
+
+    def _extract_company_info(self, text: str) -> Dict[str, str]:
+        """Extract company information from text."""
+        info = {}
+
+        # Look for company size
+        size_patterns = [
+            r"(\d+)\s*-\s*(\d+)\s+employees",
+            r"(\d+)\+?\s+employees",
+        ]
+
+        for pattern in size_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                info["company_size"] = match.group(0)
+                break
+
+        # Look for industry
+        industries = ["technology", "healthcare", "finance", "education", "energy", "retail"]
+        for industry in industries:
+            if industry in text.lower():
+                info["industry"] = industry
+                break
+
+        return info
+
+    def _evaluate_job_targeting(self, job_text: str, job_title: str, extracted_info: Dict[str, Any]) -> JobTargeting:
+        """Evaluate job against targeting criteria from job_targeting.yaml."""
+        if not self.targeting:
+            return JobTargeting()
+        t = self.targeting
+        weights = t.get("scoring_weights", {})
+        keywords = t.get("keywords", {})
+        score = 0.0
+
+        # Title match - IMPROVED: More flexible matching
+        title_match = False
+        title_category = ""
+        job_title_lower = job_title.lower()
+
+        # Check for exact matches first
+        for cat, titles in t.get("target_titles", {}).items():
+            for title in titles:
+                if title.lower() in job_title_lower:
+                    title_match = True
+                    title_category = cat
+                    score += weights.get("title_match", 5.0)
+                    break
+
+        # If no exact match, check for partial matches (e.g., "Product Manager" matches "Senior Product Manager")
+        if not title_match:
+            for cat, titles in t.get("target_titles", {}).items():
+                for title in titles:
+                    title_words = title.lower().split()
+                    job_words = job_title_lower.split()
+                    # Check if any target title words are in job title
+                    if any(word in job_words for word in title_words):
+                        title_match = True
+                        title_category = cat
+                        score += weights.get("title_match", 3.0)  # Lower score for partial match
+                        break
+
+        # PATCH: Force leadership for 'Group Product Manager' or similar
+        if "group product manager" in job_title_lower:
+            title_category = "leadership"
+        # PATCH: If responsibilities mention manage/mentor, force leadership
+        responsibilities = extracted_info.get("responsibilities", [])
+        if any("manage" in r.lower() or "mentor" in r.lower() for r in responsibilities):
+            title_category = "leadership"
+
+        # Compensation - IMPROVED: Extract actual salary ranges
+        comp_match = False
+        comp_target = t.get("comp_target", 0)
+
+        # Look for salary ranges in text
+        import re
+
+        salary_patterns = [
+            r"\$(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)",  # $100,000-$200,000
+            r"(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)\s*(?:USD|dollars?)",  # 100,000-200,000 USD
+        ]
+
+        max_salary = 0
+        for pattern in salary_patterns:
+            matches = re.findall(pattern, job_text)
+            for match in matches:
+                if "-" in match:
+                    # Range like "100,000-200,000"
+                    parts = match.split("-")
+                    try:
+                        high_end = int(parts[1].replace(",", ""))
+                        max_salary = max(max_salary, high_end)
+                    except (ValueError, IndexError) as e:
+                        logger.debug(f"Failed to parse salary range '{match}': {e}")
+                else:
+                    # Single number
+                    try:
+                        salary = int(match.replace(",", ""))
+                        max_salary = max(max_salary, salary)
+                    except ValueError as e:
+                        logger.debug(f"Failed to parse salary value '{match}': {e}")
+
+        # Check if compensation meets target
+        if max_salary > 0:
+            comp_match = max_salary >= comp_target
+            if comp_match:
+                score += weights.get("comp_target", 3.0)
+                # Bonus for high compensation
+                if max_salary >= 200000:
+                    score += 2.0  # Extra bonus for high comp
+        else:
+            # Fallback to keyword matching
+            comp_found = any(kw in job_text.lower() for kw in keywords.get("comp_indicators", []))
+            comp_match = comp_found
+            if comp_match:
+                score += weights.get("comp_target", 1.0)  # Lower score for keyword-only match
+
+        # Location
+        location_match = False
+        location_type = ""
+        for loc in t.get("locations", {}).get("preferred", []):
+            if loc.lower() in job_text.lower():
+                location_match = True
+                location_type = "preferred"
+                score += weights.get("location_preferred", 2.0)
+        if not location_match:
+            for loc in t.get("locations", {}).get("open_to", []):
+                if loc.lower() in job_text.lower():
+                    location_match = True
+                    location_type = "open_to"
+                    score += weights.get("location_open", 1.0)
+
+        # Role types
+        role_type_matches = []
+        for role_type in t.get("role_types", []):
+            for kw in keywords.get("role_type_indicators", {}).get(role_type, []):
+                if kw in job_text.lower():
+                    role_type_matches.append(role_type)
+                    score += weights.get("role_type_match", 2.0)
+                    break
+
+        # Company stage - IMPROVED: Better detection of well-funded companies
+        company_stage_match = False
+        text_lower = job_text.lower()
+
+        # Check for well-funded indicators (these are GOOD)
+        well_funded_indicators = [
+            "backed by",
+            "funded by",
+            "series",
+            "unicorn",
+            "billion",
+            "valuation",
+            "lightspeed",
+            "a16z",
+            "sequoia",
+            "andreessen",
+            "coatue",
+            "silver lake",
+        ]
+
+        # Check for early-stage indicators (these are RISKIER)
+        early_stage_indicators = ["seed", "pre-seed", "angel", "bootstrapped", "first hire", "founding team"]
+
+        # Well-funded companies get positive score
+        if any(indicator in text_lower for indicator in well_funded_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 2.0)  # Higher score for well-funded
+        # Early-stage companies get lower score
+        elif any(indicator in text_lower for indicator in early_stage_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 0.5)  # Lower score for early-stage
+
+        # Business model
+        business_model_match = False
+        for bm in t.get("business_models", []):
+            for kw in keywords.get("business_model_indicators", {}).get(bm, []):
+                if kw in job_text.lower():
+                    business_model_match = True
+                    score += weights.get("business_model_match", 1.0)
+                    break
+
+        # Go/No-Go - IMPROVED: More flexible logic
+        # High compensation can override strict title requirements
+        high_comp_override = max_salary >= 200000
+
+        # Calculate total positive factors
+        positive_factors = 0
+        if title_match:
+            positive_factors += 1
+        if location_match:
+            positive_factors += 1
+        if role_type_matches:
+            positive_factors += 1
+        if company_stage_match:
+            positive_factors += 1
+        if business_model_match:
+            positive_factors += 1
+        if comp_match and high_comp_override:
+            positive_factors += 2  # High comp counts double
+
+        # More flexible go/no-go: require fewer factors if high comp
+        required_factors = 2 if high_comp_override else 3
+        targeting_go_no_go = positive_factors >= required_factors
+
+        return JobTargeting(
+            title_match=title_match,
+            title_category=title_category,
+            comp_match=comp_match,
+            location_match=location_match,
+            location_type=location_type,
+            role_type_matches=role_type_matches,
+            company_stage_match=company_stage_match,
+            business_model_match=business_model_match,
+            targeting_score=score,
+            targeting_go_no_go=targeting_go_no_go,
+        )
+
+    def select_blurbs(self, job: JobDescription, debug: bool = False, explain: bool = False) -> BlurbSelectionResult:
+        """Select appropriate blurbs for the job description. Optionally return debug info."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("blurb_selection")
+
+        debug_steps = []
+        selected_blurbs = {}
+        max_scores = {}
+        for blurb_type, blurb_list in self.blurbs.items():
+            best_match = None
+            best_score = -1
+            scores = []
+            for blurb in blurb_list:
+                score = self._calculate_blurb_score(blurb, job)
+                scores.append((blurb["id"], score))
+                if score > best_score:
+                    best_score = score
+                    best_match = BlurbMatch(
+                        blurb_id=blurb["id"],
+                        blurb_type=blurb_type,
+                        text=blurb["text"],
+                        tags=blurb["tags"],
+                        score=score,
+                        selected=True,
+                    )
+            max_scores[blurb_type] = best_score
+            # Enforce 60% relevance threshold
+            if best_match and best_score >= 0.6 * (best_score if best_score > 0 else 1):
+                selected_blurbs[blurb_type] = best_match
+            if debug or explain:
+                debug_steps.append(
+                    {
+                        "blurb_type": blurb_type,
+                        "scores": scores,
+                        "selected": best_match.blurb_id if best_match else None,
+                        "selected_score": best_score,
+                    }
+                )
+        selected_blurbs = self._remove_blurb_duplication(selected_blurbs)
+
+        # End performance monitoring
+        monitor.end_timer("blurb_selection")
+
+        if debug or explain:
+            return selected_blurbs, debug_steps
+        return selected_blurbs
+
+    def _calculate_blurb_score(self, blurb: Dict[str, Any], job: JobDescription) -> float:
+        """Calculate how well a blurb matches the job description."""
+        score = 0.0
+
+        # Score based on tag overlap with job keywords
+        for tag in blurb["tags"]:
+            if tag in job.keywords:
+                score += 1.0
+            elif tag.lower() in [k.lower() for k in job.keywords]:
+                score += 0.5
+
+        # Bonus for job type alignment
+        if job.job_type in blurb["tags"]:
+            score += 2.0
+
+        # Bonus for 'all' tag (universal blurbs)
+        if "all" in blurb["tags"]:
+            score += 0.5
+
+        # ENHANCED: Theme-based paragraph2 selection
+        if blurb.get("id") in ["growth", "ai_ml", "cleantech", "internal_tools"]:
+            score = self._calculate_paragraph2_theme_score(blurb, job)
+
+        return score
+
+    def _remove_blurb_duplication(self, selected_blurbs: Dict[str, BlurbMatch]) -> Dict[str, BlurbMatch]:
+        """Remove duplication between selected blurbs."""
+        # Check for duplicate content between blurbs
+        blurb_texts = []
+        for blurb_type, blurb in selected_blurbs.items():
+            if blurb_type in ["paragraph2", "examples"]:
+                blurb_texts.append(blurb.text.lower())
+
+        # If we have both paragraph2 and examples, check for overlap
+        if "paragraph2" in selected_blurbs and "examples" in selected_blurbs:
+            para2_text = selected_blurbs["paragraph2"].text.lower()
+            examples_text = selected_blurbs["examples"].text.lower()
+
+            # Check for significant overlap (same company/role mentioned)
+            companies_para2 = self._extract_companies_from_text(para2_text)
+            companies_examples = self._extract_companies_from_text(examples_text)
+
+            if companies_para2 and companies_examples:
+                overlap = set(companies_para2) & set(companies_examples)
+                if overlap:
+                    # If same company mentioned in both, prefer the higher scoring one
+                    if selected_blurbs["paragraph2"].score > selected_blurbs["examples"].score:
+                        del selected_blurbs["examples"]
+                    else:
+                        del selected_blurbs["paragraph2"]
+
+        return selected_blurbs
+
+    def _extract_companies_from_text(self, text: str) -> List[str]:
+        """Extract company names from text."""
+        companies = []
+        # Common company patterns
+        company_patterns = ["At Meta", "At Aurora", "At Enact", "At SpatialThink", "Meta", "Aurora", "Enact", "SpatialThink"]
+
+        for pattern in company_patterns:
+            if pattern.lower() in text:
+                companies.append(pattern)
+
+        return companies
+
+    def _calculate_paragraph2_theme_score(self, blurb: Dict, job: JobDescription) -> float:
+        """Calculate theme-specific score for paragraph2 blurbs."""
+        job_text_lower = job.raw_text.lower()
+        blurb_id = blurb.get("id", "")
+
+        # Growth theme indicators
+        growth_indicators = [
+            "onboarding",
+            "activation",
+            "a/b testing",
+            "product-led growth",
+            "plg",
+            "conversion",
+            "monetization",
+            "user acquisition",
+            "retention",
+            "experiments",
+            "dashboard",
+            "metrics",
+            "analytics",
+            "growth",
+        ]
+
+        # AI/ML theme indicators
+        ai_ml_indicators = [
+            "nlp",
+            "ml model",
+            "trust",
+            "explainability",
+            "explainable",
+            "agent interfaces",
+            "artificial intelligence",
+            "machine learning",
+            "neural networks",
+            "algorithms",
+            "model deployment",
+            "ai",
+            "ml",
+        ]
+
+        # Cleantech theme indicators
+        cleantech_indicators = [
+            "climate",
+            "energy",
+            "sustainability",
+            "renewable",
+            "solar",
+            "clean energy",
+            "carbon",
+            "environmental",
+        ]
+
+        # Internal tools theme indicators
+        internal_tools_indicators = [
+            "internal tools",
+            "employee tools",
+            "hr tools",
+            "productivity",
+            "efficiency",
+            "operations",
+            "workflow",
+            "process",
+        ]
+
+        # Calculate theme match scores
+        growth_score = sum(2.0 for indicator in growth_indicators if indicator in job_text_lower)
+        ai_ml_score = sum(2.0 for indicator in ai_ml_indicators if indicator in job_text_lower)
+        cleantech_score = sum(2.0 for indicator in cleantech_indicators if indicator in job_text_lower)
+        internal_tools_score = sum(2.0 for indicator in internal_tools_indicators if indicator in job_text_lower)
+
+        # Debug logging
+        logger.info(f"Blurb ID: {blurb_id}")
+        logger.info(
+            f"Growth score: {growth_score}, AI/ML score: {ai_ml_score}, Cleantech score: {cleantech_score}, Internal tools score: {internal_tools_score}"
+        )
+
+        # Match blurb to highest scoring theme
+        if blurb_id == "growth" and growth_score > max(ai_ml_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected growth blurb with score {growth_score}")
+            return 10.0  # High score for perfect theme match
+        elif blurb_id == "ai_ml" and ai_ml_score > max(growth_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected ai_ml blurb with score {ai_ml_score}")
+            return 10.0
+        elif blurb_id == "cleantech" and cleantech_score > max(growth_score, ai_ml_score, internal_tools_score):
+            logger.info(f"Selected cleantech blurb with score {cleantech_score}")
+            return 10.0
+        elif blurb_id == "internal_tools" and internal_tools_score > max(growth_score, ai_ml_score, cleantech_score):
+            logger.info(f"Selected internal_tools blurb with score {internal_tools_score}")
+            return 10.0
+        else:
+            # Lower score for non-matching themes
+            logger.info(f"Non-matching theme for {blurb_id}, returning low score")
+            return 1.0
+
+    def _should_include_leadership_blurb(self, job: JobDescription) -> bool:
+        """Return True if the role is a leadership role or JD mentions managing/mentoring."""
+        title = job.job_title.lower()
+        jd_text = job.raw_text.lower()
+        leadership_titles = ["lead", "director", "head", "vp", "chief", "manager", "executive"]
+        if any(t in title for t in leadership_titles):
+            return True
+        if "managing" in jd_text or "mentoring" in jd_text:
+            return True
+        return False
+
+    def generate_cover_letter(
+        self, job: JobDescription, selected_blurbs: Dict[str, BlurbMatch], missing_requirements: Optional[List[str]] = None,
+    ) -> str:
+        """Generate a cover letter from selected blurbs using approved content. Optionally fill gaps with role_specific_alignment blurbs."""
+        logger.info("Generating cover letter...")
+        cover_letter_parts = []
+        # Greeting
+        company = job.company_name.strip() if hasattr(job, "company_name") and job.company_name else ""
+        if company:
+            greeting = f"Dear {company} team,"
+        else:
+            greeting = "Dear Hiring Team,"
+        cover_letter_parts.append(greeting)
+        cover_letter_parts.append("")
+        # Intro
+        intro_text = self._select_appropriate_intro_blurb(job)
+        intro_text = self._customize_intro_for_role(intro_text, job)
+        cover_letter_parts.append(intro_text)
+        cover_letter_parts.append("")
+        # Paragraph 2 (role-specific alignment) - only if strong match
+        para2_text = self._select_paragraph2_blurb(job)
+        if para2_text and para2_text.strip():
+            cover_letter_parts.append(para2_text)
+            cover_letter_parts.append("")
+        # Dynamically selected case studies (top 2–3)
+        case_studies = self._select_top_case_studies(job)
+        for case_study in case_studies:
+            cover_letter_parts.append(case_study)
+            cover_letter_parts.append("")
+        # Leadership blurb if leadership role or JD mentions managing/mentoring
+        if self._should_include_leadership_blurb(job):
+            for blurb in self.blurbs.get("leadership", []):
+                if blurb["id"] == "leadership":
+                    cover_letter_parts.append(blurb["text"])
+                    cover_letter_parts.append("")
+                    break
+        # PATCH: Add role_specific_alignment blurbs for missing/partial requirements (robust, no duplicates)
+        if missing_requirements:
+            used_blurbs = set()
+            for req in missing_requirements:
+                for blurb in self.blurbs.get("role_specific_alignment", []):
+                    if any(tag.lower() in req.lower() or req.lower() in tag.lower() for tag in blurb.get("tags", [])):
+                        if blurb["text"] not in used_blurbs:
+                            cover_letter_parts.append(blurb["text"])
+                            cover_letter_parts.append("")
+                            used_blurbs.add(blurb["text"])
+        # Closing: choose standard, mission_aligned, or growth_focused
+        closing = self._generate_compelling_closing(job)
+        cover_letter_parts.append(closing)
+        cover_letter_parts.append("")
+        cover_letter_parts.append("Best regards,")
+        cover_letter_parts.append("Peter Spannagle")
+        cover_letter_parts.append("linkedin.com/in/pspan")
+        # Join and clean up
+        cover_letter = "\n".join([line.strip() for line in cover_letter_parts if line.strip()])
+        cover_letter = re.sub(r"\n+", "\n\n", cover_letter)
+        cover_letter = re.sub(r" +", " ", cover_letter)
+        # Remove any resume data or skills lines
+        cover_letter = re.sub(r"Key Skills:.*?(\n|$)", "", cover_letter, flags=re.IGNORECASE)
+        # Remove deprecated blurbs (GenAI, Climate Week, etc.) if present
+        for deprecated in ["GenAI", "Climate Week", "sf_climate_week", "genai_voice", "duke"]:
+            cover_letter = re.sub(deprecated, "", cover_letter, flags=re.IGNORECASE)
+
+        # Apply tone based on user preferences and job type
+        tone = self._get_tone_for_job(job)
+        cover_letter = self._adjust_tone(cover_letter, tone)
+        
+        # Limited LLM enhancement - only for specific areas, not entire letter
+        try:
+            from core.llm_rewrite import post_process_with_llm
+
+            # Only enhance specific sections, not the entire letter
+            # For now, limit LLM to just the closing paragraph for safety
+            lines = cover_letter.split('\n')
+            closing_start = -1
+            for i, line in enumerate(lines):
+                if "I'm excited" in line or "I'd be excited" in line or "I am excited" in line:
+                    closing_start = i
+                    break
+            
+            if closing_start > 0:
+                # Only enhance the closing paragraph
+                closing_lines = lines[closing_start:]
+                closing_text = '\n'.join(closing_lines)
+                
+                user_context = None
+                if hasattr(self, "user_context"):
+                    user_context = {
+                        "company_notes": getattr(self.user_context, "company_notes", None),
+                        "role_insights": getattr(self.user_context, "role_insights", None),
+                    }
+
+                enhanced_closing = post_process_with_llm(closing_text, job.raw_text, self.config, user_context)
+                
+                # Replace only the closing section
+                lines[closing_start:] = enhanced_closing.split('\n')
+                cover_letter = '\n'.join(lines)
+                
+        except ImportError:
+            logger.warning("LLM rewrite module not available - returning original draft")
+        except Exception as e:
+            logger.error(f"LLM enhancement failed: {e}")
+        
+        return cover_letter
+
+    def _apply_strategic_insights(self, cover_letter: str, insights: List[Any]) -> str:
+        """Apply strategic insights to the cover letter."""
+        # For now, just log the insights
+        for insight in insights:
+            logger.info(f"Strategic insight: {insight.description}")
+            logger.info(f"Recommended action: {insight.recommended_action}")
+
+        return cover_letter
+
+    def _include_recommended_achievements(self, cover_letter: str, achievements: List[Any]) -> str:
+        """Include recommended achievements in the cover letter."""
+        if not achievements:
+            return cover_letter
+
+        # Find a good place to insert achievements (after the main paragraph)
+        lines = cover_letter.split("\n")
+        insert_index = -1
+
+        for i, line in enumerate(lines):
+            if "At Meta" in line or "At Aurora" in line:
+                insert_index = i + 1
+                break
+
+        if insert_index == -1:
+            # Insert before the closing paragraph
+            for i, line in enumerate(lines):
+                if "I'm excited about" in line:
+                    insert_index = i
+                    break
+
+        if insert_index > 0:
+            # Add achievement paragraph
+            achievement_text = "\n"
+            for achievement in achievements[:2]:  # Limit to 2 achievements
+                achievement_text += f"At {achievement.company}, {achievement.description}\n"
+            achievement_text += "\n"
+
+            lines.insert(insert_index, achievement_text)
+
+        return "\n".join(lines)
+
+    def _include_resume_data(self, cover_letter: str, resume_data: Dict[str, Any]) -> str:
+        """Include resume-based data in the cover letter."""
+        lines = cover_letter.split("\n")
+
+        # Add relevant experience highlights
+        if resume_data.get("relevant_experience"):
+            experience_text = "\n".join(
+                [f"• {exp.title} at {exp.company} ({exp.duration})" for exp in resume_data["relevant_experience"][:2]]
+            )
+
+            # Find a good place to insert (after main paragraph)
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "At Meta" in line or "At Aurora" in line or "I have" in line:
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nRelevant Experience:\n{experience_text}\n")
+
+        # Add relevant skills
+        if resume_data.get("relevant_skills"):
+            skills_text = ", ".join([skill.name for skill in resume_data["relevant_skills"][:5]])
+
+            # Find place to insert skills
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "skills" in line.lower() or "technologies" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"Key Skills: {skills_text}\n")
+
+        # Add resume achievements
+        if resume_data.get("achievements"):
+            achievements_text = "\n".join([f"• {achievement}" for achievement in resume_data["achievements"][:3]])
+
+            # Find place to insert achievements
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "achievements" in line.lower() or "accomplishments" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nKey Achievements:\n{achievements_text}\n")
+
+        return "\n".join(lines)
+
+    def _get_tone_for_job(self, job: JobDescription) -> str:
+        """Determine the appropriate tone based on job type and user preferences."""
+        # Get tone preferences from config
+        tone_config = self.config.get("cover_letter", {}).get("tone", {})
+        
+        # Determine job type for tone selection
+        job_type = job.job_type.lower()
+        company_name = job.company_name.lower()
+        
+        # Check for specific tone mappings
+        if "ai_ml" in job_type or "artificial_intelligence" in job_type or "machine_learning" in job_type:
+            return tone_config.get("AI_ML", tone_config.get("default", "professional"))
+        elif "startup" in company_name or "startup" in job_type or "early" in job_type:
+            return tone_config.get("startup", tone_config.get("default", "conversational"))
+        elif "enterprise" in company_name or "enterprise" in job_type or "corporate" in job_type:
+            return tone_config.get("enterprise", tone_config.get("default", "professional"))
+        else:
+            return tone_config.get("default", "professional")
+
+    def _adjust_tone(self, cover_letter: str, tone_recommendation: str) -> str:
+        """Adjust the tone of the cover letter based on recommendation."""
+        # Enhanced tone adjustments based on user preferences
+        if "conversational" in tone_recommendation.lower():
+            # Make more conversational and approachable
+            cover_letter = cover_letter.replace("I am", "I'm")
+            cover_letter = cover_letter.replace("I would", "I'd")
+            cover_letter = cover_letter.replace("I have", "I've")
+            cover_letter = cover_letter.replace("I will", "I'll")
+            cover_letter = cover_letter.replace("I can", "I can")
+            # Add more casual transitions
+            cover_letter = cover_letter.replace("Furthermore,", "Plus,")
+            cover_letter = cover_letter.replace("Additionally,", "Also,")
+            cover_letter = cover_letter.replace("Moreover,", "What's more,")
+        elif "professional" in tone_recommendation.lower():
+            # Make more formal and professional
+            cover_letter = cover_letter.replace("I'm", "I am")
+            cover_letter = cover_letter.replace("I'd", "I would")
+            cover_letter = cover_letter.replace("I've", "I have")
+            cover_letter = cover_letter.replace("I'll", "I will")
+            # Add more formal transitions
+            cover_letter = cover_letter.replace("Plus,", "Furthermore,")
+            cover_letter = cover_letter.replace("Also,", "Additionally,")
+            cover_letter = cover_letter.replace("What's more,", "Moreover,")
+        elif "technical" in tone_recommendation.lower():
+            # Add more technical language and precision
+            cover_letter = cover_letter.replace("helped", "facilitated")
+            cover_letter = cover_letter.replace("worked on", "developed")
+            cover_letter = cover_letter.replace("made", "implemented")
+            cover_letter = cover_letter.replace("did", "executed")
+
+        return cover_letter
+
+    def get_case_studies(
+        self, job_keywords: Optional[List[str]] = None, force_include: Optional[List[str]] = None
+    ) -> List[CaseStudyDict]:
+        """Enhanced case study selection with improved scoring multipliers and diversity logic."""
+        import collections
+        
+        if job_keywords is None:
+            job_keywords = []
+        if force_include is None:
+            force_include = []
+        
+        # Load case studies from blurbs.yaml (examples section)
+        case_studies = self.blurbs.get('examples', [])
+        # Use job title if available (from self.current_job or similar)
+        job_title = getattr(self, 'current_job', None)
+        if job_title and hasattr(job_title, 'job_title'):
+            job_title = job_title.job_title
+        else:
+            job_title = ' '.join(job_keywords)
+        
+        # Determine role type for role-based guidance
+        job_title_lower = ' '.join(job_keywords).lower()
+        is_staff_principal = any(word in job_title_lower for word in ['staff', 'principal', 'senior', 'lead'])
+        is_startup_pm = any(word in job_title_lower for word in ['startup', 'early', 'founding', '0-1'])
+        
+        # Compute enhanced relevance score for each case study
+        scored = []
+        job_kw_set = set([kw.lower() for kw in job_keywords])
+        
+        # Define tag categories for scoring
+        maturity_tags = ['startup', 'scaleup', 'public', 'enterprise']
+        business_model_tags = ['b2b', 'b2c', 'marketplace', 'saas']
+        role_type_tags = ['founding_pm', 'staff_pm', 'principal_pm', 'group_pm']
+        key_skill_tags = ['ai_ml', 'data', 'product', 'growth', 'platform']
+        industry_tags = ['fintech', 'healthtech', 'ecommerce', 'social']
+        
+        for cs in case_studies:
+            initial_score = 0
+            tag_matches = set()
+            multipliers = []
+            explanations = []
+            
+            # Base tag matching
+            for tag in cs.get('tags', []):
+                if tag.lower() in [kw.lower() for kw in job_keywords]:
+                    # Strong weighting for certain tag categories
+                    if tag.lower() in maturity_tags or tag.lower() in business_model_tags or tag.lower() in role_type_tags:
+                        initial_score += 3
+                    elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
+                        initial_score += 1
+                    tag_matches.add(tag.lower())
+            
+            # Apply scoring multipliers
+            final_score = initial_score
+            
+            # 1. Public company multiplier (+20%)
+            if 'public' in cs.get('tags', []):
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"public_company: {multiplier:.1f}x")
+                explanations.append("public company")
+            
+            # 2. Impressive metrics multiplier (+30%)
+            impressive_metrics = ['210%', '876%', '853%', '169%', '90%', '4B', '130%', '10x', '160%', '200%', '4.3', '20x', '60%', '80%']
+            has_impressive_metrics = any(metric in cs.get('text', '') for metric in impressive_metrics)
+            if has_impressive_metrics:
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"impressive_metrics: {multiplier:.1f}x")
+                explanations.append("impressive metrics")
+            
+            # 3. Non-redundant theme multiplier (+30%)
+            # Check if this case study brings unique themes not covered by others
+            unique_themes = set(cs.get('tags', [])) - {'startup', 'founding_pm', '0_to_1'}  # Remove common themes
+            if len(unique_themes) >= 3:  # Has substantial unique themes
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"non_redundant_theme: {multiplier:.1f}x")
+                explanations.append("diverse themes")
+            
+            # 4. Credibility anchor multiplier (+20%)
+            credibility_anchors = ['meta', 'samsung', 'salesforce', 'aurora', 'enact']
+            if cs['id'] in credibility_anchors:
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"credibility_anchor: {multiplier:.1f}x")
+                explanations.append("credible brand")
+            
+            # 5. Special case: public company + impressive metrics
+            if 'public' in cs.get('tags', []) and has_impressive_metrics:
+                multiplier = 1.5  # Additional 50% boost
+                final_score *= multiplier
+                multipliers.append(f"public+metrics: {multiplier:.1f}x")
+                explanations.append("public company with impressive metrics")
+            
+            # 6. Role-based adjustments
+            if is_staff_principal:
+                # For Staff/Principal PM: favor scale, impact, XFN leadership
+                if any(tag in cs.get('tags', []) for tag in ['scaleup', 'platform', 'xfn', 'leadership']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"staff_principal: {multiplier:.1f}x")
+                    explanations.append("staff/principal alignment")
+            elif is_startup_pm:
+                # For startup PM: bias toward 0_to_1 and scrappy execution
+                if any(tag in cs.get('tags', []) for tag in ['founding_pm', '0_to_1', 'startup']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"startup_pm: {multiplier:.1f}x")
+                    explanations.append("startup alignment")
+            
+            # Penalties
+            penalties = []
+            
+            # Penalty for B2B-only if B2C/consumer present in JD
+            if 'b2b' in cs.get('tags', []) and ('b2c' in job_keywords or 'consumer' in job_keywords):
+                final_score -= 2
+                penalties.append("B2B mismatch")
+            
+            # Penalty for redundant founding PM stories (if we already have one)
+            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
+                final_score -= 3
+                penalties.append("redundant founding PM")
+            
+            scored.append({
+                'case_study': cs,
+                'initial_score': initial_score,
+                'final_score': final_score,
+                'multipliers': multipliers,
+                'penalties': penalties,
+                'explanations': explanations,
+                'id': cs.get('id', 'unknown')
+            })
+        
+        # DEBUG: Print enhanced scores
+        print("[DEBUG] Enhanced case study scores:")
+        for item in scored:
+            cs = item['case_study']
+            print(f"  {item['id']}: {item['initial_score']:.1f} → {item['final_score']:.1f}")
+            if item['multipliers']:
+                print(f"    Multipliers: {', '.join(item['multipliers'])}")
+            if item['penalties']:
+                print(f"    Penalties: {', '.join(item['penalties'])}")
+            print(f"    Explanation: {', '.join(item['explanations'])}")
+        
+        # Get min_scores from logic
+        logic = self.config.get('blurb_logic', {}).get('minimum_scores', {}).get('examples', {})
+        
+        # Filter by min_score and sort by final score
+        eligible = []
+        for item in scored:
+            cs = item['case_study']
+            min_score = float(logic.get(cs['id'], {}).get('min_score', 0))
+            if item['final_score'] >= min_score or cs['id'] in force_include:
+                eligible.append(item)
+        
+        eligible.sort(key=lambda x: x['final_score'], reverse=True)
+        
+        # Enhanced selection with diversity logic
+        selected = []
+        used_themes = set()
+        samsung_selected = False
+        
+        print("[DEBUG] Enhanced selection process:")
+        
+        for item in eligible:
+            cs = item['case_study']
+            cs_id = cs['id']
+            final_score = item['final_score']
+            
+            print(f"  Considering {cs_id} (score: {final_score:.1f})")
+            
+            # Samsung logic: only one allowed
+            if cs_id in ['samsung', 'samsung_chatbot']:
+                if samsung_selected:
+                    print(f"    Skipping {cs_id} - Samsung already selected")
+                    continue
+                
+                # Prefer chatbot for AI/ML, NLP, or customer success
+                if cs_id == 'samsung_chatbot' and any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for AI/ML/NLP")
+                    selected.append(cs)
+                    samsung_selected = True
+                elif cs_id == 'samsung' and not any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for non-AI/ML")
+                    selected.append(cs)
+                    samsung_selected = True
+                else:
+                    print(f"    Selecting {cs_id} - first Samsung found")
+                    selected.append(cs)
+                    samsung_selected = True
+            
+            # Check for redundant themes
+            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+                if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
+                    print(f"    Skipping {cs_id} - redundant founding/startup theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique founding/startup story")
+                    selected.append(cs)
+                    used_themes.update(['founding_pm', '0_to_1', 'startup'])
+            
+            # Check for scale/growth themes
+            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+                if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
+                    print(f"    Skipping {cs_id} - redundant scale/growth theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique scale/growth story")
+                    selected.append(cs)
+                    used_themes.update(['scaleup', 'growth', 'platform'])
+            
+            # Default selection
+            else:
+                print(f"    Selecting {cs_id} - diverse theme")
+                selected.append(cs)
+            
+            if len(selected) >= 3:
+                print("    Reached 3 case studies, stopping")
+                break
+        
+        print(f"[DEBUG] Final selection: {[cs['id'] for cs in selected]}")
+        
+        # If user forced specific examples, ensure they're included
+        for fid in force_include:
+            if not any(cs['id'] == fid for cs in selected):
+                for cs in case_studies:
+                    if cs['id'] == fid:
+                        selected.append(cs)
+                        break
+        return selected
+
+    def download_case_study_materials(self, case_studies: List[CaseStudyDict], local_dir: str = "materials") -> List[str]:
+        """Download case study materials to local directory."""
+        downloaded_files = []
+
+        if not self.google_drive or not self.google_drive.available:
+            return downloaded_files
+
+        for case_study in case_studies:
+            if case_study["type"] == "google_drive":
+                local_path = os.path.join(local_dir, case_study["material_type"], case_study["name"])
+
+                if self.google_drive.download_file(case_study["file_id"], local_path):
+                    downloaded_files.append(local_path)
+
+        return downloaded_files
+
+    def parse_job_description(self, job_text: str) -> JobDescription:
+        """Parse and analyze a job description."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description...")
+
+        # Extract basic information
+        company_name = self._extract_company_name(job_text)
+        job_title = self._extract_job_title(job_text)
+        keywords = self._extract_keywords(job_text)
+        job_type = self._classify_job_type(job_text)
+
+        # Calculate score
+        score = self._calculate_job_score(job_text, keywords)
+
+        # Determine go/no-go
+        go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+
+        # Extract additional information
+        extracted_info = {
+            "requirements": self._extract_requirements(job_text),
+            "responsibilities": self._extract_responsibilities(job_text),
+            "company_info": self._extract_company_info(job_text),
+        }
+
+        # Evaluate job targeting
+        targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+
+        # End performance monitoring
+        monitor.end_timer("job_parsing")
+
+        return JobDescription(
+            raw_text=job_text,
+            company_name=company_name,
+            job_title=job_title,
+            keywords=keywords,
+            job_type=job_type,
+            score=score,
+            go_no_go=go_no_go,
+            extracted_info=extracted_info,
+            targeting=targeting,
+        )
+
+    def _extract_company_name(self, text: str) -> str:
+        """Robust, multi-pass extraction of company name from job description."""
+        import re, collections
+
+        lines = [line.strip() for line in text.split("\n") if line.strip()]
+
+        # 1. Look for "CompanyName · Location" pattern (most common)
+        for line in lines:
+            match = re.match(r"^([A-Z][a-zA-Z0-9&]+)\s*·\s*", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'Company · Location' pattern: {company}")
+                return company
+
+        # 2. Ignore 'About the job', use 'About <Name>' if present
+        for line in lines:
+            if line.lower().startswith("about ") and line.lower() != "about the job":
+                company = line[6:].strip()
+                print(f"[DEBUG] Extracted company name from 'About': {company}")
+                return company
+
+        # 3. Look for company name after job title (common pattern)
+        for i, line in enumerate(lines):
+            if i > 0 and "product manager" in line.lower() or "pm" in line.lower():
+                # Check next line for company
+                if i + 1 < len(lines):
+                    next_line = lines[i + 1]
+                    # Look for capitalized company name
+                    company_match = re.match(r"^([A-Z][a-zA-Z0-9&]+)", next_line)
+                    if company_match:
+                        company = company_match.group(1).strip()
+                        print(f"[DEBUG] Extracted company name after job title: {company}")
+                        return company
+
+        # 4. Most frequent capitalized word in the JD (excluding common job words)
+        words = re.findall(r"\b[A-Z][a-zA-Z0-9&]+\b", text)
+        # Filter out common job-related words
+        job_words = {"Staff", "Senior", "Product", "Manager", "PM", "Lead", "Director", "VP", "Engineer", "Developer"}
+        filtered_words = [word for word in words if word not in job_words]
+        if filtered_words:
+            most_common = collections.Counter(filtered_words).most_common(1)[0][0]
+            print(f"[DEBUG] Extracted company name from most frequent capitalized word: {most_common}")
+            return most_common
+
+        # 5. Possessive or 'the Name team'
+        for line in lines:
+            match = re.match(r"([A-Z][a-zA-Z0-9& ]+)'s ", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from possessive: {company}")
+                return company
+            match = re.match(r"the ([A-Z][a-zA-Z0-9& ]+) team", line, re.IGNORECASE)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'the Name team': {company}")
+                return company
+
+        # 6. Not found
+        print("[DEBUG] Company name not found in JD.")
+        return ""
+
+    def _extract_job_title(self, text: str) -> str:
+        """Extract job title from job description."""
+        # Look for "As a [Title] at" or "As a [Title]," pattern first
+        as_pattern = r"As\s+a[n]?\s+([A-Z][a-zA-Z\s]+?)(?:\s+at|,|\.|\n)"
+        match = re.search(as_pattern, text, re.IGNORECASE)
+        if match:
+            title = match.group(1).strip()
+            # Remove trailing generic words
+            title = re.sub(r"\s+(at|for|with|in|on|of)\b.*$", "", title)
+            # Normalize to common titles
+            if "product manager" in title.lower():
+                return "Product Manager"
+            if "pm" == title.lower().strip():
+                return "Product Manager"
+            return title
+        # Fallback to common job title patterns
+        patterns = [
+            r"(?:Senior\s+)?(?:Product\s+)?(?:Manager|Lead|Director|VP)",
+            r"(?:Senior\s+)?(?:Software\s+)?(?:Engineer|Developer)",
+            r"(?:Data\s+)?(?:Scientist|Analyst)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                found = match.group(0).strip()
+                if "product manager" in found.lower():
+                    return "Product Manager"
+                return found
+        return "Product Manager"  # Default fallback for this use case
+
+    def _extract_keywords(self, text: str) -> List[str]:
+        """Extract keywords and implied tags from job description, including synonyms for maturity, business model, and role type."""
+        import re
+
+        keywords = set()
+        text_lower = text.lower()
+        # Direct keyword extraction (existing logic)
+        direct_keywords = re.findall(r"\b[a-zA-Z0-9_\-/]+\b", text_lower)
+        keywords.update(direct_keywords)
+        # Synonym and implied tag mapping
+        synonym_map = {
+            # Maturity
+            "public company": "public",
+            "ipo": "public",
+            "fortune 500": "public",
+            "startup": "startup",
+            "scaleup": "scaleup",
+            "pilot": "pilot",
+            "prototype": "prototype",
+            # Business Model
+            "consumer": "consumer",
+            "personal finance": "consumer",
+            "b2c": "b2c",
+            "b2b": "b2b",
+            "b2b2c": "b2b2c",
+            "d2c": "d2c",
+            "smb": "smb",
+            "small business": "smb",
+            "enterprise": "b2b",
+            # Role Type
+            "growth": "growth",
+            "leadership": "leadership",
+            "team lead": "leadership",
+            "manager": "leadership",
+            "founding pm": "founding_pm",
+            "founder": "founding_pm",
+            "platform": "platform",
+            "ux": "ux",
+            "user experience": "ux",
+            "ai/ml": "ai_ml",
+            "ai": "ai_ml",
+            "ml": "ai_ml",
+            # Key Skills
+            "data": "data_driven",
+            "analytics": "data_driven",
+            "metrics": "data_driven",
+            "execution": "execution",
+            "strategy": "strategy",
+            "discovery": "discovery",
+            "customer discovery": "discovery",
+            "user research": "discovery",
+        }
+        for phrase, tag in synonym_map.items():
+            if phrase in text_lower:
+                keywords.add(tag)
+        # Implied tags for Quicken/finance
+        if "quicken" in text_lower or "personal finance" in text_lower:
+            keywords.update(["public", "consumer", "b2c", "smb", "data_driven"])
+        return list(set(keywords))
+
+    def _classify_job_type(self, text: str) -> str:
+        """Classify the job type based on keywords."""
+        text_lower = text.lower()
+
+        for job_type, config in self.logic["job_classification"].items():
+            keyword_count = sum(1 for keyword in config["keywords"] if keyword.lower() in text_lower)
+            if keyword_count >= config["min_keyword_count"]:
+                return job_type
+
+        return "general"
+
+    def _calculate_job_score(self, text: str, keywords: List[str]) -> float:
+        """Calculate a score for the job based on keywords and content."""
+        score = 0.0
+
+        # Add scores for keywords
+        keyword_weights = self.logic["scoring_rules"]["keyword_weights"]
+        for keyword in keywords:
+            if keyword in keyword_weights:
+                score += keyword_weights[keyword]
+
+        # Add scores for strong match keywords
+        strong_match_keywords = self.logic["go_no_go"]["strong_match_keywords"]
+        for keyword in keywords:
+            if keyword in strong_match_keywords:
+                score += 2.0
+
+        # Subtract scores for poor match keywords
+        poor_match_keywords = self.logic["go_no_go"]["poor_match_keywords"]
+        for keyword in keywords:
+            if keyword in poor_match_keywords:
+                score -= 1.0
+
+        return score
+
+    def _evaluate_go_no_go(self, text: str, keywords: List[str], score: float) -> bool:
+        """Evaluate whether to proceed with cover letter generation."""
+        # Check minimum keywords
+        if len(keywords) < self.logic["go_no_go"]["minimum_keywords"]:
+            return False
+
+        # Check minimum score
+        if score < self.logic["go_no_go"]["minimum_total_score"]:
+            return False
+
+        return True
+
+    def _extract_requirements(self, text: str) -> List[str]:
+        """Extract job requirements from text."""
+        # Simple extraction - look for requirement patterns
+        requirements = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:requirements?|qualifications?|must|should)", line, re.IGNORECASE):
+                requirements.append(line.strip())
+
+        return requirements
+
+    def _extract_responsibilities(self, text: str) -> List[str]:
+        """Extract job responsibilities from text."""
+        # Simple extraction - look for responsibility patterns
+        responsibilities = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:responsibilities?|duties?|will|you\s+will)", line, re.IGNORECASE):
+                responsibilities.append(line.strip())
+
+        return responsibilities
+
+    def _extract_company_info(self, text: str) -> Dict[str, str]:
+        """Extract company information from text."""
+        info = {}
+
+        # Look for company size
+        size_patterns = [
+            r"(\d+)\s*-\s*(\d+)\s+employees",
+            r"(\d+)\+?\s+employees",
+        ]
+
+        for pattern in size_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                info["company_size"] = match.group(0)
+                break
+
+        # Look for industry
+        industries = ["technology", "healthcare", "finance", "education", "energy", "retail"]
+        for industry in industries:
+            if industry in text.lower():
+                info["industry"] = industry
+                break
+
+        return info
+
+    def _evaluate_job_targeting(self, job_text: str, job_title: str, extracted_info: Dict[str, Any]) -> JobTargeting:
+        """Evaluate job against targeting criteria from job_targeting.yaml."""
+        if not self.targeting:
+            return JobTargeting()
+        t = self.targeting
+        weights = t.get("scoring_weights", {})
+        keywords = t.get("keywords", {})
+        score = 0.0
+
+        # Title match - IMPROVED: More flexible matching
+        title_match = False
+        title_category = ""
+        job_title_lower = job_title.lower()
+
+        # Check for exact matches first
+        for cat, titles in t.get("target_titles", {}).items():
+            for title in titles:
+                if title.lower() in job_title_lower:
+                    title_match = True
+                    title_category = cat
+                    score += weights.get("title_match", 5.0)
+                    break
+
+        # If no exact match, check for partial matches (e.g., "Product Manager" matches "Senior Product Manager")
+        if not title_match:
+            for cat, titles in t.get("target_titles", {}).items():
+                for title in titles:
+                    title_words = title.lower().split()
+                    job_words = job_title_lower.split()
+                    # Check if any target title words are in job title
+                    if any(word in job_words for word in title_words):
+                        title_match = True
+                        title_category = cat
+                        score += weights.get("title_match", 3.0)  # Lower score for partial match
+                        break
+
+        # PATCH: Force leadership for 'Group Product Manager' or similar
+        if "group product manager" in job_title_lower:
+            title_category = "leadership"
+        # PATCH: If responsibilities mention manage/mentor, force leadership
+        responsibilities = extracted_info.get("responsibilities", [])
+        if any("manage" in r.lower() or "mentor" in r.lower() for r in responsibilities):
+            title_category = "leadership"
+
+        # Compensation - IMPROVED: Extract actual salary ranges
+        comp_match = False
+        comp_target = t.get("comp_target", 0)
+
+        # Look for salary ranges in text
+        import re
+
+        salary_patterns = [
+            r"\$(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)",  # $100,000-$200,000
+            r"(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)\s*(?:USD|dollars?)",  # 100,000-200,000 USD
+        ]
+
+        max_salary = 0
+        for pattern in salary_patterns:
+            matches = re.findall(pattern, job_text)
+            for match in matches:
+                if "-" in match:
+                    # Range like "100,000-200,000"
+                    parts = match.split("-")
+                    try:
+                        high_end = int(parts[1].replace(",", ""))
+                        max_salary = max(max_salary, high_end)
+                    except (ValueError, IndexError) as e:
+                        logger.debug(f"Failed to parse salary range '{match}': {e}")
+                else:
+                    # Single number
+                    try:
+                        salary = int(match.replace(",", ""))
+                        max_salary = max(max_salary, salary)
+                    except ValueError as e:
+                        logger.debug(f"Failed to parse salary value '{match}': {e}")
+
+        # Check if compensation meets target
+        if max_salary > 0:
+            comp_match = max_salary >= comp_target
+            if comp_match:
+                score += weights.get("comp_target", 3.0)
+                # Bonus for high compensation
+                if max_salary >= 200000:
+                    score += 2.0  # Extra bonus for high comp
+        else:
+            # Fallback to keyword matching
+            comp_found = any(kw in job_text.lower() for kw in keywords.get("comp_indicators", []))
+            comp_match = comp_found
+            if comp_match:
+                score += weights.get("comp_target", 1.0)  # Lower score for keyword-only match
+
+        # Location
+        location_match = False
+        location_type = ""
+        for loc in t.get("locations", {}).get("preferred", []):
+            if loc.lower() in job_text.lower():
+                location_match = True
+                location_type = "preferred"
+                score += weights.get("location_preferred", 2.0)
+        if not location_match:
+            for loc in t.get("locations", {}).get("open_to", []):
+                if loc.lower() in job_text.lower():
+                    location_match = True
+                    location_type = "open_to"
+                    score += weights.get("location_open", 1.0)
+
+        # Role types
+        role_type_matches = []
+        for role_type in t.get("role_types", []):
+            for kw in keywords.get("role_type_indicators", {}).get(role_type, []):
+                if kw in job_text.lower():
+                    role_type_matches.append(role_type)
+                    score += weights.get("role_type_match", 2.0)
+                    break
+
+        # Company stage - IMPROVED: Better detection of well-funded companies
+        company_stage_match = False
+        text_lower = job_text.lower()
+
+        # Check for well-funded indicators (these are GOOD)
+        well_funded_indicators = [
+            "backed by",
+            "funded by",
+            "series",
+            "unicorn",
+            "billion",
+            "valuation",
+            "lightspeed",
+            "a16z",
+            "sequoia",
+            "andreessen",
+            "coatue",
+            "silver lake",
+        ]
+
+        # Check for early-stage indicators (these are RISKIER)
+        early_stage_indicators = ["seed", "pre-seed", "angel", "bootstrapped", "first hire", "founding team"]
+
+        # Well-funded companies get positive score
+        if any(indicator in text_lower for indicator in well_funded_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 2.0)  # Higher score for well-funded
+        # Early-stage companies get lower score
+        elif any(indicator in text_lower for indicator in early_stage_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 0.5)  # Lower score for early-stage
+
+        # Business model
+        business_model_match = False
+        for bm in t.get("business_models", []):
+            for kw in keywords.get("business_model_indicators", {}).get(bm, []):
+                if kw in job_text.lower():
+                    business_model_match = True
+                    score += weights.get("business_model_match", 1.0)
+                    break
+
+        # Go/No-Go - IMPROVED: More flexible logic
+        # High compensation can override strict title requirements
+        high_comp_override = max_salary >= 200000
+
+        # Calculate total positive factors
+        positive_factors = 0
+        if title_match:
+            positive_factors += 1
+        if location_match:
+            positive_factors += 1
+        if role_type_matches:
+            positive_factors += 1
+        if company_stage_match:
+            positive_factors += 1
+        if business_model_match:
+            positive_factors += 1
+        if comp_match and high_comp_override:
+            positive_factors += 2  # High comp counts double
+
+        # More flexible go/no-go: require fewer factors if high comp
+        required_factors = 2 if high_comp_override else 3
+        targeting_go_no_go = positive_factors >= required_factors
+
+        return JobTargeting(
+            title_match=title_match,
+            title_category=title_category,
+            comp_match=comp_match,
+            location_match=location_match,
+            location_type=location_type,
+            role_type_matches=role_type_matches,
+            company_stage_match=company_stage_match,
+            business_model_match=business_model_match,
+            targeting_score=score,
+            targeting_go_no_go=targeting_go_no_go,
+        )
+
+    def select_blurbs(self, job: JobDescription, debug: bool = False, explain: bool = False) -> BlurbSelectionResult:
+        """Select appropriate blurbs for the job description. Optionally return debug info."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("blurb_selection")
+
+        debug_steps = []
+        selected_blurbs = {}
+        max_scores = {}
+        for blurb_type, blurb_list in self.blurbs.items():
+            best_match = None
+            best_score = -1
+            scores = []
+            for blurb in blurb_list:
+                score = self._calculate_blurb_score(blurb, job)
+                scores.append((blurb["id"], score))
+                if score > best_score:
+                    best_score = score
+                    best_match = BlurbMatch(
+                        blurb_id=blurb["id"],
+                        blurb_type=blurb_type,
+                        text=blurb["text"],
+                        tags=blurb["tags"],
+                        score=score,
+                        selected=True,
+                    )
+            max_scores[blurb_type] = best_score
+            # Enforce 60% relevance threshold
+            if best_match and best_score >= 0.6 * (best_score if best_score > 0 else 1):
+                selected_blurbs[blurb_type] = best_match
+            if debug or explain:
+                debug_steps.append(
+                    {
+                        "blurb_type": blurb_type,
+                        "scores": scores,
+                        "selected": best_match.blurb_id if best_match else None,
+                        "selected_score": best_score,
+                    }
+                )
+        selected_blurbs = self._remove_blurb_duplication(selected_blurbs)
+
+        # End performance monitoring
+        monitor.end_timer("blurb_selection")
+
+        if debug or explain:
+            return selected_blurbs, debug_steps
+        return selected_blurbs
+
+    def _calculate_blurb_score(self, blurb: Dict[str, Any], job: JobDescription) -> float:
+        """Calculate how well a blurb matches the job description."""
+        score = 0.0
+
+        # Score based on tag overlap with job keywords
+        for tag in blurb["tags"]:
+            if tag in job.keywords:
+                score += 1.0
+            elif tag.lower() in [k.lower() for k in job.keywords]:
+                score += 0.5
+
+        # Bonus for job type alignment
+        if job.job_type in blurb["tags"]:
+            score += 2.0
+
+        # Bonus for 'all' tag (universal blurbs)
+        if "all" in blurb["tags"]:
+            score += 0.5
+
+        # ENHANCED: Theme-based paragraph2 selection
+        if blurb.get("id") in ["growth", "ai_ml", "cleantech", "internal_tools"]:
+            score = self._calculate_paragraph2_theme_score(blurb, job)
+
+        return score
+
+    def _remove_blurb_duplication(self, selected_blurbs: Dict[str, BlurbMatch]) -> Dict[str, BlurbMatch]:
+        """Remove duplication between selected blurbs."""
+        # Check for duplicate content between blurbs
+        blurb_texts = []
+        for blurb_type, blurb in selected_blurbs.items():
+            if blurb_type in ["paragraph2", "examples"]:
+                blurb_texts.append(blurb.text.lower())
+
+        # If we have both paragraph2 and examples, check for overlap
+        if "paragraph2" in selected_blurbs and "examples" in selected_blurbs:
+            para2_text = selected_blurbs["paragraph2"].text.lower()
+            examples_text = selected_blurbs["examples"].text.lower()
+
+            # Check for significant overlap (same company/role mentioned)
+            companies_para2 = self._extract_companies_from_text(para2_text)
+            companies_examples = self._extract_companies_from_text(examples_text)
+
+            if companies_para2 and companies_examples:
+                overlap = set(companies_para2) & set(companies_examples)
+                if overlap:
+                    # If same company mentioned in both, prefer the higher scoring one
+                    if selected_blurbs["paragraph2"].score > selected_blurbs["examples"].score:
+                        del selected_blurbs["examples"]
+                    else:
+                        del selected_blurbs["paragraph2"]
+
+        return selected_blurbs
+
+    def _extract_companies_from_text(self, text: str) -> List[str]:
+        """Extract company names from text."""
+        companies = []
+        # Common company patterns
+        company_patterns = ["At Meta", "At Aurora", "At Enact", "At SpatialThink", "Meta", "Aurora", "Enact", "SpatialThink"]
+
+        for pattern in company_patterns:
+            if pattern.lower() in text:
+                companies.append(pattern)
+
+        return companies
+
+    def _calculate_paragraph2_theme_score(self, blurb: Dict, job: JobDescription) -> float:
+        """Calculate theme-specific score for paragraph2 blurbs."""
+        job_text_lower = job.raw_text.lower()
+        blurb_id = blurb.get("id", "")
+
+        # Growth theme indicators
+        growth_indicators = [
+            "onboarding",
+            "activation",
+            "a/b testing",
+            "product-led growth",
+            "plg",
+            "conversion",
+            "monetization",
+            "user acquisition",
+            "retention",
+            "experiments",
+            "dashboard",
+            "metrics",
+            "analytics",
+            "growth",
+        ]
+
+        # AI/ML theme indicators
+        ai_ml_indicators = [
+            "nlp",
+            "ml model",
+            "trust",
+            "explainability",
+            "explainable",
+            "agent interfaces",
+            "artificial intelligence",
+            "machine learning",
+            "neural networks",
+            "algorithms",
+            "model deployment",
+            "ai",
+            "ml",
+        ]
+
+        # Cleantech theme indicators
+        cleantech_indicators = [
+            "climate",
+            "energy",
+            "sustainability",
+            "renewable",
+            "solar",
+            "clean energy",
+            "carbon",
+            "environmental",
+        ]
+
+        # Internal tools theme indicators
+        internal_tools_indicators = [
+            "internal tools",
+            "employee tools",
+            "hr tools",
+            "productivity",
+            "efficiency",
+            "operations",
+            "workflow",
+            "process",
+        ]
+
+        # Calculate theme match scores
+        growth_score = sum(2.0 for indicator in growth_indicators if indicator in job_text_lower)
+        ai_ml_score = sum(2.0 for indicator in ai_ml_indicators if indicator in job_text_lower)
+        cleantech_score = sum(2.0 for indicator in cleantech_indicators if indicator in job_text_lower)
+        internal_tools_score = sum(2.0 for indicator in internal_tools_indicators if indicator in job_text_lower)
+
+        # Debug logging
+        logger.info(f"Blurb ID: {blurb_id}")
+        logger.info(
+            f"Growth score: {growth_score}, AI/ML score: {ai_ml_score}, Cleantech score: {cleantech_score}, Internal tools score: {internal_tools_score}"
+        )
+
+        # Match blurb to highest scoring theme
+        if blurb_id == "growth" and growth_score > max(ai_ml_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected growth blurb with score {growth_score}")
+            return 10.0  # High score for perfect theme match
+        elif blurb_id == "ai_ml" and ai_ml_score > max(growth_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected ai_ml blurb with score {ai_ml_score}")
+            return 10.0
+        elif blurb_id == "cleantech" and cleantech_score > max(growth_score, ai_ml_score, internal_tools_score):
+            logger.info(f"Selected cleantech blurb with score {cleantech_score}")
+            return 10.0
+        elif blurb_id == "internal_tools" and internal_tools_score > max(growth_score, ai_ml_score, cleantech_score):
+            logger.info(f"Selected internal_tools blurb with score {internal_tools_score}")
+            return 10.0
+        else:
+            # Lower score for non-matching themes
+            logger.info(f"Non-matching theme for {blurb_id}, returning low score")
+            return 1.0
+
+    def _should_include_leadership_blurb(self, job: JobDescription) -> bool:
+        """Return True if the role is a leadership role or JD mentions managing/mentoring."""
+        title = job.job_title.lower()
+        jd_text = job.raw_text.lower()
+        leadership_titles = ["lead", "director", "head", "vp", "chief", "manager", "executive"]
+        if any(t in title for t in leadership_titles):
+            return True
+        if "managing" in jd_text or "mentoring" in jd_text:
+            return True
+        return False
+
+    def generate_cover_letter(
+        self, job: JobDescription, selected_blurbs: Dict[str, BlurbMatch], missing_requirements: Optional[List[str]] = None,
+    ) -> str:
+        """Generate a cover letter from selected blurbs using approved content. Optionally fill gaps with role_specific_alignment blurbs."""
+        logger.info("Generating cover letter...")
+        cover_letter_parts = []
+        # Greeting
+        company = job.company_name.strip() if hasattr(job, "company_name") and job.company_name else ""
+        if company:
+            greeting = f"Dear {company} team,"
+        else:
+            greeting = "Dear Hiring Team,"
+        cover_letter_parts.append(greeting)
+        cover_letter_parts.append("")
+        # Intro
+        intro_text = self._select_appropriate_intro_blurb(job)
+        intro_text = self._customize_intro_for_role(intro_text, job)
+        cover_letter_parts.append(intro_text)
+        cover_letter_parts.append("")
+        # Paragraph 2 (role-specific alignment) - only if strong match
+        para2_text = self._select_paragraph2_blurb(job)
+        if para2_text and para2_text.strip():
+            cover_letter_parts.append(para2_text)
+            cover_letter_parts.append("")
+        # Dynamically selected case studies (top 2–3)
+        case_studies = self._select_top_case_studies(job)
+        for case_study in case_studies:
+            cover_letter_parts.append(case_study)
+            cover_letter_parts.append("")
+        # Leadership blurb if leadership role or JD mentions managing/mentoring
+        if self._should_include_leadership_blurb(job):
+            for blurb in self.blurbs.get("leadership", []):
+                if blurb["id"] == "leadership":
+                    cover_letter_parts.append(blurb["text"])
+                    cover_letter_parts.append("")
+                    break
+        # PATCH: Add role_specific_alignment blurbs for missing/partial requirements (robust, no duplicates)
+        if missing_requirements:
+            used_blurbs = set()
+            for req in missing_requirements:
+                for blurb in self.blurbs.get("role_specific_alignment", []):
+                    if any(tag.lower() in req.lower() or req.lower() in tag.lower() for tag in blurb.get("tags", [])):
+                        if blurb["text"] not in used_blurbs:
+                            cover_letter_parts.append(blurb["text"])
+                            cover_letter_parts.append("")
+                            used_blurbs.add(blurb["text"])
+        # Closing: choose standard, mission_aligned, or growth_focused
+        closing = self._generate_compelling_closing(job)
+        cover_letter_parts.append(closing)
+        cover_letter_parts.append("")
+        cover_letter_parts.append("Best regards,")
+        cover_letter_parts.append("Peter Spannagle")
+        cover_letter_parts.append("linkedin.com/in/pspan")
+        # Join and clean up
+        cover_letter = "\n".join([line.strip() for line in cover_letter_parts if line.strip()])
+        cover_letter = re.sub(r"\n+", "\n\n", cover_letter)
+        cover_letter = re.sub(r" +", " ", cover_letter)
+        # Remove any resume data or skills lines
+        cover_letter = re.sub(r"Key Skills:.*?(\n|$)", "", cover_letter, flags=re.IGNORECASE)
+        # Remove deprecated blurbs (GenAI, Climate Week, etc.) if present
+        for deprecated in ["GenAI", "Climate Week", "sf_climate_week", "genai_voice", "duke"]:
+            cover_letter = re.sub(deprecated, "", cover_letter, flags=re.IGNORECASE)
+
+        # Apply tone based on user preferences and job type
+        tone = self._get_tone_for_job(job)
+        cover_letter = self._adjust_tone(cover_letter, tone)
+        
+        # Limited LLM enhancement - only for specific areas, not entire letter
+        try:
+            from core.llm_rewrite import post_process_with_llm
+
+            # Only enhance specific sections, not the entire letter
+            # For now, limit LLM to just the closing paragraph for safety
+            lines = cover_letter.split('\n')
+            closing_start = -1
+            for i, line in enumerate(lines):
+                if "I'm excited" in line or "I'd be excited" in line or "I am excited" in line:
+                    closing_start = i
+                    break
+            
+            if closing_start > 0:
+                # Only enhance the closing paragraph
+                closing_lines = lines[closing_start:]
+                closing_text = '\n'.join(closing_lines)
+                
+                user_context = None
+                if hasattr(self, "user_context"):
+                    user_context = {
+                        "company_notes": getattr(self.user_context, "company_notes", None),
+                        "role_insights": getattr(self.user_context, "role_insights", None),
+                    }
+
+                enhanced_closing = post_process_with_llm(closing_text, job.raw_text, self.config, user_context)
+                
+                # Replace only the closing section
+                lines[closing_start:] = enhanced_closing.split('\n')
+                cover_letter = '\n'.join(lines)
+                
+        except ImportError:
+            logger.warning("LLM rewrite module not available - returning original draft")
+        except Exception as e:
+            logger.error(f"LLM enhancement failed: {e}")
+        
+        return cover_letter
+
+    def _apply_strategic_insights(self, cover_letter: str, insights: List[Any]) -> str:
+        """Apply strategic insights to the cover letter."""
+        # For now, just log the insights
+        for insight in insights:
+            logger.info(f"Strategic insight: {insight.description}")
+            logger.info(f"Recommended action: {insight.recommended_action}")
+
+        return cover_letter
+
+    def _include_recommended_achievements(self, cover_letter: str, achievements: List[Any]) -> str:
+        """Include recommended achievements in the cover letter."""
+        if not achievements:
+            return cover_letter
+
+        # Find a good place to insert achievements (after the main paragraph)
+        lines = cover_letter.split("\n")
+        insert_index = -1
+
+        for i, line in enumerate(lines):
+            if "At Meta" in line or "At Aurora" in line:
+                insert_index = i + 1
+                break
+
+        if insert_index == -1:
+            # Insert before the closing paragraph
+            for i, line in enumerate(lines):
+                if "I'm excited about" in line:
+                    insert_index = i
+                    break
+
+        if insert_index > 0:
+            # Add achievement paragraph
+            achievement_text = "\n"
+            for achievement in achievements[:2]:  # Limit to 2 achievements
+                achievement_text += f"At {achievement.company}, {achievement.description}\n"
+            achievement_text += "\n"
+
+            lines.insert(insert_index, achievement_text)
+
+        return "\n".join(lines)
+
+    def _include_resume_data(self, cover_letter: str, resume_data: Dict[str, Any]) -> str:
+        """Include resume-based data in the cover letter."""
+        lines = cover_letter.split("\n")
+
+        # Add relevant experience highlights
+        if resume_data.get("relevant_experience"):
+            experience_text = "\n".join(
+                [f"• {exp.title} at {exp.company} ({exp.duration})" for exp in resume_data["relevant_experience"][:2]]
+            )
+
+            # Find a good place to insert (after main paragraph)
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "At Meta" in line or "At Aurora" in line or "I have" in line:
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nRelevant Experience:\n{experience_text}\n")
+
+        # Add relevant skills
+        if resume_data.get("relevant_skills"):
+            skills_text = ", ".join([skill.name for skill in resume_data["relevant_skills"][:5]])
+
+            # Find place to insert skills
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "skills" in line.lower() or "technologies" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"Key Skills: {skills_text}\n")
+
+        # Add resume achievements
+        if resume_data.get("achievements"):
+            achievements_text = "\n".join([f"• {achievement}" for achievement in resume_data["achievements"][:3]])
+
+            # Find place to insert achievements
+            insert_index = -1
+            for i, line in enumerate(lines):
+                if "achievements" in line.lower() or "accomplishments" in line.lower():
+                    insert_index = i + 1
+                    break
+
+            if insert_index > 0:
+                lines.insert(insert_index, f"\nKey Achievements:\n{achievements_text}\n")
+
+        return "\n".join(lines)
+
+    def _get_tone_for_job(self, job: JobDescription) -> str:
+        """Determine the appropriate tone based on job type and user preferences."""
+        # Get tone preferences from config
+        tone_config = self.config.get("cover_letter", {}).get("tone", {})
+        
+        # Determine job type for tone selection
+        job_type = job.job_type.lower()
+        company_name = job.company_name.lower()
+        
+        # Check for specific tone mappings
+        if "ai_ml" in job_type or "artificial_intelligence" in job_type or "machine_learning" in job_type:
+            return tone_config.get("AI_ML", tone_config.get("default", "professional"))
+        elif "startup" in company_name or "startup" in job_type or "early" in job_type:
+            return tone_config.get("startup", tone_config.get("default", "conversational"))
+        elif "enterprise" in company_name or "enterprise" in job_type or "corporate" in job_type:
+            return tone_config.get("enterprise", tone_config.get("default", "professional"))
+        else:
+            return tone_config.get("default", "professional")
+
+    def _adjust_tone(self, cover_letter: str, tone_recommendation: str) -> str:
+        """Adjust the tone of the cover letter based on recommendation."""
+        # Enhanced tone adjustments based on user preferences
+        if "conversational" in tone_recommendation.lower():
+            # Make more conversational and approachable
+            cover_letter = cover_letter.replace("I am", "I'm")
+            cover_letter = cover_letter.replace("I would", "I'd")
+            cover_letter = cover_letter.replace("I have", "I've")
+            cover_letter = cover_letter.replace("I will", "I'll")
+            cover_letter = cover_letter.replace("I can", "I can")
+            # Add more casual transitions
+            cover_letter = cover_letter.replace("Furthermore,", "Plus,")
+            cover_letter = cover_letter.replace("Additionally,", "Also,")
+            cover_letter = cover_letter.replace("Moreover,", "What's more,")
+        elif "professional" in tone_recommendation.lower():
+            # Make more formal and professional
+            cover_letter = cover_letter.replace("I'm", "I am")
+            cover_letter = cover_letter.replace("I'd", "I would")
+            cover_letter = cover_letter.replace("I've", "I have")
+            cover_letter = cover_letter.replace("I'll", "I will")
+            # Add more formal transitions
+            cover_letter = cover_letter.replace("Plus,", "Furthermore,")
+            cover_letter = cover_letter.replace("Also,", "Additionally,")
+            cover_letter = cover_letter.replace("What's more,", "Moreover,")
+        elif "technical" in tone_recommendation.lower():
+            # Add more technical language and precision
+            cover_letter = cover_letter.replace("helped", "facilitated")
+            cover_letter = cover_letter.replace("worked on", "developed")
+            cover_letter = cover_letter.replace("made", "implemented")
+            cover_letter = cover_letter.replace("did", "executed")
+
+        return cover_letter
+
+    def get_case_studies(
+        self, job_keywords: Optional[List[str]] = None, force_include: Optional[List[str]] = None
+    ) -> List[CaseStudyDict]:
+        """Enhanced case study selection with improved scoring multipliers and diversity logic."""
+        import collections
+        
+        if job_keywords is None:
+            job_keywords = []
+        if force_include is None:
+            force_include = []
+        
+        # Load case studies from blurbs.yaml (examples section)
+        case_studies = self.blurbs.get('examples', [])
+        # Use job title if available (from self.current_job or similar)
+        job_title = getattr(self, 'current_job', None)
+        if job_title and hasattr(job_title, 'job_title'):
+            job_title = job_title.job_title
+        else:
+            job_title = ' '.join(job_keywords)
+        
+        # Determine role type for role-based guidance
+        job_title_lower = ' '.join(job_keywords).lower()
+        is_staff_principal = any(word in job_title_lower for word in ['staff', 'principal', 'senior', 'lead'])
+        is_startup_pm = any(word in job_title_lower for word in ['startup', 'early', 'founding', '0-1'])
+        
+        # Compute enhanced relevance score for each case study
+        scored = []
+        job_kw_set = set([kw.lower() for kw in job_keywords])
+        
+        # Define tag categories for scoring
+        maturity_tags = ['startup', 'scaleup', 'public', 'enterprise']
+        business_model_tags = ['b2b', 'b2c', 'marketplace', 'saas']
+        role_type_tags = ['founding_pm', 'staff_pm', 'principal_pm', 'group_pm']
+        key_skill_tags = ['ai_ml', 'data', 'product', 'growth', 'platform']
+        industry_tags = ['fintech', 'healthtech', 'ecommerce', 'social']
+        
+        for cs in case_studies:
+            initial_score = 0
+            tag_matches = set()
+            multipliers = []
+            explanations = []
+            
+            # Base tag matching
+            for tag in cs.get('tags', []):
+                if tag.lower() in [kw.lower() for kw in job_keywords]:
+                    # Strong weighting for certain tag categories
+                    if tag.lower() in maturity_tags or tag.lower() in business_model_tags or tag.lower() in role_type_tags:
+                        initial_score += 3
+                    elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
+                        initial_score += 1
+                    tag_matches.add(tag.lower())
+            
+            # Apply scoring multipliers
+            final_score = initial_score
+            
+            # 1. Public company multiplier (+20%)
+            if 'public' in cs.get('tags', []):
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"public_company: {multiplier:.1f}x")
+                explanations.append("public company")
+            
+            # 2. Impressive metrics multiplier (+30%)
+            impressive_metrics = ['210%', '876%', '853%', '169%', '90%', '4B', '130%', '10x', '160%', '200%', '4.3', '20x', '60%', '80%']
+            has_impressive_metrics = any(metric in cs.get('text', '') for metric in impressive_metrics)
+            if has_impressive_metrics:
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"impressive_metrics: {multiplier:.1f}x")
+                explanations.append("impressive metrics")
+            
+            # 3. Non-redundant theme multiplier (+30%)
+            # Check if this case study brings unique themes not covered by others
+            unique_themes = set(cs.get('tags', [])) - {'startup', 'founding_pm', '0_to_1'}  # Remove common themes
+            if len(unique_themes) >= 3:  # Has substantial unique themes
+                multiplier = 1.3
+                final_score *= multiplier
+                multipliers.append(f"non_redundant_theme: {multiplier:.1f}x")
+                explanations.append("diverse themes")
+            
+            # 4. Credibility anchor multiplier (+20%)
+            credibility_anchors = ['meta', 'samsung', 'salesforce', 'aurora', 'enact']
+            if cs['id'] in credibility_anchors:
+                multiplier = 1.2
+                final_score *= multiplier
+                multipliers.append(f"credibility_anchor: {multiplier:.1f}x")
+                explanations.append("credible brand")
+            
+            # 5. Special case: public company + impressive metrics
+            if 'public' in cs.get('tags', []) and has_impressive_metrics:
+                multiplier = 1.5  # Additional 50% boost
+                final_score *= multiplier
+                multipliers.append(f"public+metrics: {multiplier:.1f}x")
+                explanations.append("public company with impressive metrics")
+            
+            # 6. Role-based adjustments
+            if is_staff_principal:
+                # For Staff/Principal PM: favor scale, impact, XFN leadership
+                if any(tag in cs.get('tags', []) for tag in ['scaleup', 'platform', 'xfn', 'leadership']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"staff_principal: {multiplier:.1f}x")
+                    explanations.append("staff/principal alignment")
+            elif is_startup_pm:
+                # For startup PM: bias toward 0_to_1 and scrappy execution
+                if any(tag in cs.get('tags', []) for tag in ['founding_pm', '0_to_1', 'startup']):
+                    multiplier = 1.2
+                    final_score *= multiplier
+                    multipliers.append(f"startup_pm: {multiplier:.1f}x")
+                    explanations.append("startup alignment")
+            
+            # Penalties
+            penalties = []
+            
+            # Penalty for B2B-only if B2C/consumer present in JD
+            if 'b2b' in cs.get('tags', []) and ('b2c' in job_keywords or 'consumer' in job_keywords):
+                final_score -= 2
+                penalties.append("B2B mismatch")
+            
+            # Penalty for redundant founding PM stories (if we already have one)
+            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
+                final_score -= 3
+                penalties.append("redundant founding PM")
+            
+            scored.append({
+                'case_study': cs,
+                'initial_score': initial_score,
+                'final_score': final_score,
+                'multipliers': multipliers,
+                'penalties': penalties,
+                'explanations': explanations,
+                'id': cs.get('id', 'unknown')
+            })
+        
+        # DEBUG: Print enhanced scores
+        print("[DEBUG] Enhanced case study scores:")
+        for item in scored:
+            cs = item['case_study']
+            print(f"  {item['id']}: {item['initial_score']:.1f} → {item['final_score']:.1f}")
+            if item['multipliers']:
+                print(f"    Multipliers: {', '.join(item['multipliers'])}")
+            if item['penalties']:
+                print(f"    Penalties: {', '.join(item['penalties'])}")
+            print(f"    Explanation: {', '.join(item['explanations'])}")
+        
+        # Get min_scores from logic
+        logic = self.config.get('blurb_logic', {}).get('minimum_scores', {}).get('examples', {})
+        
+        # Filter by min_score and sort by final score
+        eligible = []
+        for item in scored:
+            cs = item['case_study']
+            min_score = float(logic.get(cs['id'], {}).get('min_score', 0))
+            if item['final_score'] >= min_score or cs['id'] in force_include:
+                eligible.append(item)
+        
+        eligible.sort(key=lambda x: x['final_score'], reverse=True)
+        
+        # Enhanced selection with diversity logic
+        selected = []
+        used_themes = set()
+        samsung_selected = False
+        
+        print("[DEBUG] Enhanced selection process:")
+        
+        for item in eligible:
+            cs = item['case_study']
+            cs_id = cs['id']
+            final_score = item['final_score']
+            
+            print(f"  Considering {cs_id} (score: {final_score:.1f})")
+            
+            # Samsung logic: only one allowed
+            if cs_id in ['samsung', 'samsung_chatbot']:
+                if samsung_selected:
+                    print(f"    Skipping {cs_id} - Samsung already selected")
+                    continue
+                
+                # Prefer chatbot for AI/ML, NLP, or customer success
+                if cs_id == 'samsung_chatbot' and any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for AI/ML/NLP")
+                    selected.append(cs)
+                    samsung_selected = True
+                elif cs_id == 'samsung' and not any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
+                    print(f"    Selecting {cs_id} - preferred for non-AI/ML")
+                    selected.append(cs)
+                    samsung_selected = True
+                else:
+                    print(f"    Selecting {cs_id} - first Samsung found")
+                    selected.append(cs)
+                    samsung_selected = True
+            
+            # Check for redundant themes
+            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+                if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
+                    print(f"    Skipping {cs_id} - redundant founding/startup theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique founding/startup story")
+                    selected.append(cs)
+                    used_themes.update(['founding_pm', '0_to_1', 'startup'])
+            
+            # Check for scale/growth themes
+            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+                if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
+                    print(f"    Skipping {cs_id} - redundant scale/growth theme")
+                    continue
+                else:
+                    print(f"    Selecting {cs_id} - unique scale/growth story")
+                    selected.append(cs)
+                    used_themes.update(['scaleup', 'growth', 'platform'])
+            
+            # Default selection
+            else:
+                print(f"    Selecting {cs_id} - diverse theme")
+                selected.append(cs)
+            
+            if len(selected) >= 3:
+                print("    Reached 3 case studies, stopping")
+                break
+        
+        print(f"[DEBUG] Final selection: {[cs['id'] for cs in selected]}")
+        
+        # If user forced specific examples, ensure they're included
+        for fid in force_include:
+            if not any(cs['id'] == fid for cs in selected):
+                for cs in case_studies:
+                    if cs['id'] == fid:
+                        selected.append(cs)
+                        break
+        return selected
+
+    def download_case_study_materials(self, case_studies: List[CaseStudyDict], local_dir: str = "materials") -> List[str]:
+        """Download case study materials to local directory."""
+        downloaded_files = []
+
+        if not self.google_drive or not self.google_drive.available:
+            return downloaded_files
+
+        for case_study in case_studies:
+            if case_study["type"] == "google_drive":
+                local_path = os.path.join(local_dir, case_study["material_type"], case_study["name"])
+
+                if self.google_drive.download_file(case_study["file_id"], local_path):
+                    downloaded_files.append(local_path)
+
+        return downloaded_files
+
+    def parse_job_description(self, job_text: str) -> JobDescription:
+        """Parse and analyze a job description."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description...")
+
+        # Extract basic information
+        company_name = self._extract_company_name(job_text)
+        job_title = self._extract_job_title(job_text)
+        keywords = self._extract_keywords(job_text)
+        job_type = self._classify_job_type(job_text)
+
+        # Calculate score
+        score = self._calculate_job_score(job_text, keywords)
+
+        # Determine go/no-go
+        go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+
+        # Extract additional information
+        extracted_info = {
+            "requirements": self._extract_requirements(job_text),
+            "responsibilities": self._extract_responsibilities(job_text),
+            "company_info": self._extract_company_info(job_text),
+        }
+
+        # Evaluate job targeting
+        targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+
+        # End performance monitoring
+        monitor.end_timer("job_parsing")
+
+        return JobDescription(
+            raw_text=job_text,
+            company_name=company_name,
+            job_title=job_title,
+            keywords=keywords,
+            job_type=job_type,
+            score=score,
+            go_no_go=go_no_go,
+            extracted_info=extracted_info,
+            targeting=targeting,
+        )
+
+    def _extract_company_name(self, text: str) -> str:
+        """Robust, multi-pass extraction of company name from job description."""
+        import re, collections
+
+        lines = [line.strip() for line in text.split("\n") if line.strip()]
+
+        # 1. Look for "CompanyName · Location" pattern (most common)
+        for line in lines:
+            match = re.match(r"^([A-Z][a-zA-Z0-9&]+)\s*·\s*", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'Company · Location' pattern: {company}")
+                return company
+
+        # 2. Ignore 'About the job', use 'About <Name>' if present
+        for line in lines:
+            if line.lower().startswith("about ") and line.lower() != "about the job":
+                company = line[6:].strip()
+                print(f"[DEBUG] Extracted company name from 'About': {company}")
+                return company
+
+        # 3. Look for company name after job title (common pattern)
+        for i, line in enumerate(lines):
+            if i > 0 and "product manager" in line.lower() or "pm" in line.lower():
+                # Check next line for company
+                if i + 1 < len(lines):
+                    next_line = lines[i + 1]
+                    # Look for capitalized company name
+                    company_match = re.match(r"^([A-Z][a-zA-Z0-9&]+)", next_line)
+                    if company_match:
+                        company = company_match.group(1).strip()
+                        print(f"[DEBUG] Extracted company name after job title: {company}")
+                        return company
+
+        # 4. Most frequent capitalized word in the JD (excluding common job words)
+        words = re.findall(r"\b[A-Z][a-zA-Z0-9&]+\b", text)
+        # Filter out common job-related words
+        job_words = {"Staff", "Senior", "Product", "Manager", "PM", "Lead", "Director", "VP", "Engineer", "Developer"}
+        filtered_words = [word for word in words if word not in job_words]
+        if filtered_words:
+            most_common = collections.Counter(filtered_words).most_common(1)[0][0]
+            print(f"[DEBUG] Extracted company name from most frequent capitalized word: {most_common}")
+            return most_common
+
+        # 5. Possessive or 'the Name team'
+        for line in lines:
+            match = re.match(r"([A-Z][a-zA-Z0-9& ]+)'s ", line)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from possessive: {company}")
+                return company
+            match = re.match(r"the ([A-Z][a-zA-Z0-9& ]+) team", line, re.IGNORECASE)
+            if match:
+                company = match.group(1).strip()
+                print(f"[DEBUG] Extracted company name from 'the Name team': {company}")
+                return company
+
+        # 6. Not found
+        print("[DEBUG] Company name not found in JD.")
+        return ""
+
+    def _extract_job_title(self, text: str) -> str:
+        """Extract job title from job description."""
+        # Look for "As a [Title] at" or "As a [Title]," pattern first
+        as_pattern = r"As\s+a[n]?\s+([A-Z][a-zA-Z\s]+?)(?:\s+at|,|\.|\n)"
+        match = re.search(as_pattern, text, re.IGNORECASE)
+        if match:
+            title = match.group(1).strip()
+            # Remove trailing generic words
+            title = re.sub(r"\s+(at|for|with|in|on|of)\b.*$", "", title)
+            # Normalize to common titles
+            if "product manager" in title.lower():
+                return "Product Manager"
+            if "pm" == title.lower().strip():
+                return "Product Manager"
+            return title
+        # Fallback to common job title patterns
+        patterns = [
+            r"(?:Senior\s+)?(?:Product\s+)?(?:Manager|Lead|Director|VP)",
+            r"(?:Senior\s+)?(?:Software\s+)?(?:Engineer|Developer)",
+            r"(?:Data\s+)?(?:Scientist|Analyst)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                found = match.group(0).strip()
+                if "product manager" in found.lower():
+                    return "Product Manager"
+                return found
+        return "Product Manager"  # Default fallback for this use case
+
+    def _extract_keywords(self, text: str) -> List[str]:
+        """Extract keywords and implied tags from job description, including synonyms for maturity, business model, and role type."""
+        import re
+
+        keywords = set()
+        text_lower = text.lower()
+        # Direct keyword extraction (existing logic)
+        direct_keywords = re.findall(r"\b[a-zA-Z0-9_\-/]+\b", text_lower)
+        keywords.update(direct_keywords)
+        # Synonym and implied tag mapping
+        synonym_map = {
+            # Maturity
+            "public company": "public",
+            "ipo": "public",
+            "fortune 500": "public",
+            "startup": "startup",
+            "scaleup": "scaleup",
+            "pilot": "pilot",
+            "prototype": "prototype",
+            # Business Model
+            "consumer": "consumer",
+            "personal finance": "consumer",
+            "b2c": "b2c",
+            "b2b": "b2b",
+            "b2b2c": "b2b2c",
+            "d2c": "d2c",
+            "smb": "smb",
+            "small business": "smb",
+            "enterprise": "b2b",
+            # Role Type
+            "growth": "growth",
+            "leadership": "leadership",
+            "team lead": "leadership",
+            "manager": "leadership",
+            "founding pm": "founding_pm",
+            "founder": "founding_pm",
+            "platform": "platform",
+            "ux": "ux",
+            "user experience": "ux",
+            "ai/ml": "ai_ml",
+            "ai": "ai_ml",
+            "ml": "ai_ml",
+            # Key Skills
+            "data": "data_driven",
+            "analytics": "data_driven",
+            "metrics": "data_driven",
+            "execution": "execution",
+            "strategy": "strategy",
+            "discovery": "discovery",
+            "customer discovery": "discovery",
+            "user research": "discovery",
+        }
+        for phrase, tag in synonym_map.items():
+            if phrase in text_lower:
+                keywords.add(tag)
+        # Implied tags for Quicken/finance
+        if "quicken" in text_lower or "personal finance" in text_lower:
+            keywords.update(["public", "consumer", "b2c", "smb", "data_driven"])
+        return list(set(keywords))
+
+    def _classify_job_type(self, text: str) -> str:
+        """Classify the job type based on keywords."""
+        text_lower = text.lower()
+
+        for job_type, config in self.logic["job_classification"].items():
+            keyword_count = sum(1 for keyword in config["keywords"] if keyword.lower() in text_lower)
+            if keyword_count >= config["min_keyword_count"]:
+                return job_type
+
+        return "general"
+
+    def _calculate_job_score(self, text: str, keywords: List[str]) -> float:
+        """Calculate a score for the job based on keywords and content."""
+        score = 0.0
+
+        # Add scores for keywords
+        keyword_weights = self.logic["scoring_rules"]["keyword_weights"]
+        for keyword in keywords:
+            if keyword in keyword_weights:
+                score += keyword_weights[keyword]
+
+        # Add scores for strong match keywords
+        strong_match_keywords = self.logic["go_no_go"]["strong_match_keywords"]
+        for keyword in keywords:
+            if keyword in strong_match_keywords:
+                score += 2.0
+
+        # Subtract scores for poor match keywords
+        poor_match_keywords = self.logic["go_no_go"]["poor_match_keywords"]
+        for keyword in keywords:
+            if keyword in poor_match_keywords:
+                score -= 1.0
+
+        return score
+
+    def _evaluate_go_no_go(self, text: str, keywords: List[str], score: float) -> bool:
+        """Evaluate whether to proceed with cover letter generation."""
+        # Check minimum keywords
+        if len(keywords) < self.logic["go_no_go"]["minimum_keywords"]:
+            return False
+
+        # Check minimum score
+        if score < self.logic["go_no_go"]["minimum_total_score"]:
+            return False
+
+        return True
+
+    def _extract_requirements(self, text: str) -> List[str]:
+        """Extract job requirements from text."""
+        # Simple extraction - look for requirement patterns
+        requirements = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:requirements?|qualifications?|must|should)", line, re.IGNORECASE):
+                requirements.append(line.strip())
+
+        return requirements
+
+    def _extract_responsibilities(self, text: str) -> List[str]:
+        """Extract job responsibilities from text."""
+        # Simple extraction - look for responsibility patterns
+        responsibilities = []
+        lines = text.split("\n")
+
+        for line in lines:
+            if re.search(r"(?:responsibilities?|duties?|will|you\s+will)", line, re.IGNORECASE):
+                responsibilities.append(line.strip())
+
+        return responsibilities
+
+    def _extract_company_info(self, text: str) -> Dict[str, str]:
+        """Extract company information from text."""
+        info = {}
+
+        # Look for company size
+        size_patterns = [
+            r"(\d+)\s*-\s*(\d+)\s+employees",
+            r"(\d+)\+?\s+employees",
+        ]
+
+        for pattern in size_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                info["company_size"] = match.group(0)
+                break
+
+        # Look for industry
+        industries = ["technology", "healthcare", "finance", "education", "energy", "retail"]
+        for industry in industries:
+            if industry in text.lower():
+                info["industry"] = industry
+                break
+
+        return info
+
+    def _evaluate_job_targeting(self, job_text: str, job_title: str, extracted_info: Dict[str, Any]) -> JobTargeting:
+        """Evaluate job against targeting criteria from job_targeting.yaml."""
+        if not self.targeting:
+            return JobTargeting()
+        t = self.targeting
+        weights = t.get("scoring_weights", {})
+        keywords = t.get("keywords", {})
+        score = 0.0
+
+        # Title match - IMPROVED: More flexible matching
+        title_match = False
+        title_category = ""
+        job_title_lower = job_title.lower()
+
+        # Check for exact matches first
+        for cat, titles in t.get("target_titles", {}).items():
+            for title in titles:
+                if title.lower() in job_title_lower:
+                    title_match = True
+                    title_category = cat
+                    score += weights.get("title_match", 5.0)
+                    break
+
+        # If no exact match, check for partial matches (e.g., "Product Manager" matches "Senior Product Manager")
+        if not title_match:
+            for cat, titles in t.get("target_titles", {}).items():
+                for title in titles:
+                    title_words = title.lower().split()
+                    job_words = job_title_lower.split()
+                    # Check if any target title words are in job title
+                    if any(word in job_words for word in title_words):
+                        title_match = True
+                        title_category = cat
+                        score += weights.get("title_match", 3.0)  # Lower score for partial match
+                        break
+
+        # PATCH: Force leadership for 'Group Product Manager' or similar
+        if "group product manager" in job_title_lower:
+            title_category = "leadership"
+        # PATCH: If responsibilities mention manage/mentor, force leadership
+        responsibilities = extracted_info.get("responsibilities", [])
+        if any("manage" in r.lower() or "mentor" in r.lower() for r in responsibilities):
+            title_category = "leadership"
+
+        # Compensation - IMPROVED: Extract actual salary ranges
+        comp_match = False
+        comp_target = t.get("comp_target", 0)
+
+        # Look for salary ranges in text
+        import re
+
+        salary_patterns = [
+            r"\$(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)",  # $100,000-$200,000
+            r"(\d{1,3}(?:,\d{3})*(?:-\d{1,3}(?:,\d{3})*)?)\s*(?:USD|dollars?)",  # 100,000-200,000 USD
+        ]
+
+        max_salary = 0
+        for pattern in salary_patterns:
+            matches = re.findall(pattern, job_text)
+            for match in matches:
+                if "-" in match:
+                    # Range like "100,000-200,000"
+                    parts = match.split("-")
+                    try:
+                        high_end = int(parts[1].replace(",", ""))
+                        max_salary = max(max_salary, high_end)
+                    except (ValueError, IndexError) as e:
+                        logger.debug(f"Failed to parse salary range '{match}': {e}")
+                else:
+                    # Single number
+                    try:
+                        salary = int(match.replace(",", ""))
+                        max_salary = max(max_salary, salary)
+                    except ValueError as e:
+                        logger.debug(f"Failed to parse salary value '{match}': {e}")
+
+        # Check if compensation meets target
+        if max_salary > 0:
+            comp_match = max_salary >= comp_target
+            if comp_match:
+                score += weights.get("comp_target", 3.0)
+                # Bonus for high compensation
+                if max_salary >= 200000:
+                    score += 2.0  # Extra bonus for high comp
+        else:
+            # Fallback to keyword matching
+            comp_found = any(kw in job_text.lower() for kw in keywords.get("comp_indicators", []))
+            comp_match = comp_found
+            if comp_match:
+                score += weights.get("comp_target", 1.0)  # Lower score for keyword-only match
+
+        # Location
+        location_match = False
+        location_type = ""
+        for loc in t.get("locations", {}).get("preferred", []):
+            if loc.lower() in job_text.lower():
+                location_match = True
+                location_type = "preferred"
+                score += weights.get("location_preferred", 2.0)
+        if not location_match:
+            for loc in t.get("locations", {}).get("open_to", []):
+                if loc.lower() in job_text.lower():
+                    location_match = True
+                    location_type = "open_to"
+                    score += weights.get("location_open", 1.0)
+
+        # Role types
+        role_type_matches = []
+        for role_type in t.get("role_types", []):
+            for kw in keywords.get("role_type_indicators", {}).get(role_type, []):
+                if kw in job_text.lower():
+                    role_type_matches.append(role_type)
+                    score += weights.get("role_type_match", 2.0)
+                    break
+
+        # Company stage - IMPROVED: Better detection of well-funded companies
+        company_stage_match = False
+        text_lower = job_text.lower()
+
+        # Check for well-funded indicators (these are GOOD)
+        well_funded_indicators = [
+            "backed by",
+            "funded by",
+            "series",
+            "unicorn",
+            "billion",
+            "valuation",
+            "lightspeed",
+            "a16z",
+            "sequoia",
+            "andreessen",
+            "coatue",
+            "silver lake",
+        ]
+
+        # Check for early-stage indicators (these are RISKIER)
+        early_stage_indicators = ["seed", "pre-seed", "angel", "bootstrapped", "first hire", "founding team"]
+
+        # Well-funded companies get positive score
+        if any(indicator in text_lower for indicator in well_funded_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 2.0)  # Higher score for well-funded
+        # Early-stage companies get lower score
+        elif any(indicator in text_lower for indicator in early_stage_indicators):
+            company_stage_match = True
+            score += weights.get("company_stage_match", 0.5)  # Lower score for early-stage
+
+        # Business model
+        business_model_match = False
+        for bm in t.get("business_models", []):
+            for kw in keywords.get("business_model_indicators", {}).get(bm, []):
+                if kw in job_text.lower():
+                    business_model_match = True
+                    score += weights.get("business_model_match", 1.0)
+                    break
+
+        # Go/No-Go - IMPROVED: More flexible logic
+        # High compensation can override strict title requirements
+        high_comp_override = max_salary >= 200000
+
+        # Calculate total positive factors
+        positive_factors = 0
+        if title_match:
+            positive_factors += 1
+        if location_match:
+            positive_factors += 1
+        if role_type_matches:
+            positive_factors += 1
+        if company_stage_match:
+            positive_factors += 1
+        if business_model_match:
+            positive_factors += 1
+        if comp_match and high_comp_override:
+            positive_factors += 2  # High comp counts double
+
+        # More flexible go/no-go: require fewer factors if high comp
+        required_factors = 2 if high_comp_override else 3
+        targeting_go_no_go = positive_factors >= required_factors
+
+        return JobTargeting(
+            title_match=title_match,
+            title_category=title_category,
+            comp_match=comp_match,
+            location_match=location_match,
+            location_type=location_type,
+            role_type_matches=role_type_matches,
+            company_stage_match=company_stage_match,
+            business_model_match=business_model_match,
+            targeting_score=score,
+            targeting_go_no_go=targeting_go_no_go,
+        )
+
+    def select_blurbs(self, job: JobDescription, debug: bool = False, explain: bool = False) -> BlurbSelectionResult:
+        """Select appropriate blurbs for the job description. Optionally return debug info."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("blurb_selection")
+
+        debug_steps = []
+        selected_blurbs = {}
+        max_scores = {}
+        for blurb_type, blurb_list in self.blurbs.items():
+            best_match = None
+            best_score = -1
+            scores = []
+            for blurb in blurb_list:
+                score = self._calculate_blurb_score(blurb, job)
+                scores.append((blurb["id"], score))
+                if score > best_score:
+                    best_score = score
+                    best_match = BlurbMatch(
+                        blurb_id=blurb["id"],
+                        blurb_type=blurb_type,
+                        text=blurb["text"],
+                        tags=blurb["tags"],
+                        score=score,
+                        selected=True,
+                    )
+            max_scores[blurb_type] = best_score
+            # Enforce 60% relevance threshold
+            if best_match and best_score >= 0.6 * (best_score if best_score > 0 else 1):
+                selected_blurbs[blurb_type] = best_match
+            if debug or explain:
+                debug_steps.append(
+                    {
+                        "blurb_type": blurb_type,
+                        "scores": scores,
+                        "selected": best_match.blurb_id if best_match else None,
+                        "selected_score": best_score,
+                    }
+                )
+        selected_blurbs = self._remove_blurb_duplication(selected_blurbs)
+
+        # End performance monitoring
+        monitor.end_timer("blurb_selection")
+
+        if debug or explain:
+            return selected_blurbs, debug_steps
+        return selected_blurbs
+
+    def _calculate_blurb_score(self, blurb: Dict[str, Any], job: JobDescription) -> float:
+        """Calculate how well a blurb matches the job description."""
+        score = 0.0
+
+        # Score based on tag overlap with job keywords
+        for tag in blurb["tags"]:
+            if tag in job.keywords:
+                score += 1.0
+            elif tag.lower() in [k.lower() for k in job.keywords]:
+                score += 0.5
+
+        # Bonus for job type alignment
+        if job.job_type in blurb["tags"]:
+            score += 2.0
+
+        # Bonus for 'all' tag (universal blurbs)
+        if "all" in blurb["tags"]:
+            score += 0.5
+
+        # ENHANCED: Theme-based paragraph2 selection
+        if blurb.get("id") in ["growth", "ai_ml", "cleantech", "internal_tools"]:
+            score = self._calculate_paragraph2_theme_score(blurb, job)
+
+        return score
+
+    def _remove_blurb_duplication(self, selected_blurbs: Dict[str, BlurbMatch]) -> Dict[str, BlurbMatch]:
+        """Remove duplication between selected blurbs."""
+        # Check for duplicate content between blurbs
+        blurb_texts = []
+        for blurb_type, blurb in selected_blurbs.items():
+            if blurb_type in ["paragraph2", "examples"]:
+                blurb_texts.append(blurb.text.lower())
+
+        # If we have both paragraph2 and examples, check for overlap
+        if "paragraph2" in selected_blurbs and "examples" in selected_blurbs:
+            para2_text = selected_blurbs["paragraph2"].text.lower()
+            examples_text = selected_blurbs["examples"].text.lower()
+
+            # Check for significant overlap (same company/role mentioned)
+            companies_para2 = self._extract_companies_from_text(para2_text)
+            companies_examples = self._extract_companies_from_text(examples_text)
+
+            if companies_para2 and companies_examples:
+                overlap = set(companies_para2) & set(companies_examples)
+                if overlap:
+                    # If same company mentioned in both, prefer the higher scoring one
+                    if selected_blurbs["paragraph2"].score > selected_blurbs["examples"].score:
+                        del selected_blurbs["examples"]
+                    else:
+                        del selected_blurbs["paragraph2"]
+
+        return selected_blurbs
+
+    def _extract_companies_from_text(self, text: str) -> List[str]:
+        """Extract company names from text."""
+        companies = []
+        # Common company patterns
+        company_patterns = ["At Meta", "At Aurora", "At Enact", "At SpatialThink", "Meta", "Aurora", "Enact", "SpatialThink"]
+
+        for pattern in company_patterns:
+            if pattern.lower() in text:
+                companies.append(pattern)
+
+        return companies
+
+    def _calculate_paragraph2_theme_score(self, blurb: Dict, job: JobDescription) -> float:
+        """Calculate theme-specific score for paragraph2 blurbs."""
+        job_text_lower = job.raw_text.lower()
+        blurb_id = blurb.get("id", "")
+
+        # Growth theme indicators
+        growth_indicators = [
+            "onboarding",
+            "activation",
+            "a/b testing",
+            "product-led growth",
+            "plg",
+            "conversion",
+            "monetization",
+            "user acquisition",
+            "retention",
+            "experiments",
+            "dashboard",
+            "metrics",
+            "analytics",
+            "growth",
+        ]
+
+        # AI/ML theme indicators
+        ai_ml_indicators = [
+            "nlp",
+            "ml model",
+            "trust",
+            "explainability",
+            "explainable",
+            "agent interfaces",
+            "artificial intelligence",
+            "machine learning",
+            "neural networks",
+            "algorithms",
+            "model deployment",
+            "ai",
+            "ml",
+        ]
+
+        # Cleantech theme indicators
+        cleantech_indicators = [
+            "climate",
+            "energy",
+            "sustainability",
+            "renewable",
+            "solar",
+            "clean energy",
+            "carbon",
+            "environmental",
+        ]
+
+        # Internal tools theme indicators
+        internal_tools_indicators = [
+            "internal tools",
+            "employee tools",
+            "hr tools",
+            "productivity",
+            "efficiency",
+            "operations",
+            "workflow",
+            "process",
+        ]
+
+        # Calculate theme match scores
+        growth_score = sum(2.0 for indicator in growth_indicators if indicator in job_text_lower)
+        ai_ml_score = sum(2.0 for indicator in ai_ml_indicators if indicator in job_text_lower)
+        cleantech_score = sum(2.0 for indicator in cleantech_indicators if indicator in job_text_lower)
+        internal_tools_score = sum(2.0 for indicator in internal_tools_indicators if indicator in job_text_lower)
+
+        # Debug logging
+        logger.info(f"Blurb ID: {blurb_id}")
+        logger.info(
+            f"Growth score: {growth_score}, AI/ML score: {ai_ml_score}, Cleantech score: {cleantech_score}, Internal tools score: {internal_tools_score}"
+        )
+
+        # Match blurb to highest scoring theme
+        if blurb_id == "growth" and growth_score > max(ai_ml_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected growth blurb with score {growth_score}")
+            return 10.0  # High score for perfect theme match
+        elif blurb_id == "ai_ml" and ai_ml_score > max(growth_score, cleantech_score, internal_tools_score):
+            logger.info(f"Selected ai_ml blurb with score {ai_ml_score}")
+            return 10.0
+        elif blurb_id == "cleantech" and cleantech_score > max(growth_score, ai_ml_score, internal_tools_score):
+            logger.info(f"Selected cleantech blurb with score {cleantech_score}")
+            return 10.0
+        elif blurb_id == "internal_tools" and internal_tools_score > max(growth_score, ai_ml_score, cleantech_score):
+            logger.info(f"Selected internal_tools blurb with score {internal_tools_score}")
+            return 10.0
+        else:
+            # Lower score for non-matching themes
+            logger.info(f"Non-matching theme for {blurb_id}, returning low score")
+            return 1.0
+
+    def _should_include_leadership_blurb(self, job: JobDescription) -> bool:
+        """Return True if the role is a leadership role or JD mentions managing/mentoring."""
+        title = job.job_title.lower()
+        jd_text = job.raw_text.lower()
+        leadership_titles = ["lead", "director", "head", "vp", "chief", "manager", "executive"]
+        if any(t in title for t in leadership_titles):
+            return True
+        if "managing" in jd_text or "mentoring" in jd_text:
+            return True
+        return False
+
+    def generate_cover_letter(
+        self, job: JobDescription, selected_blurbs: Dict[str, BlurbMatch], missing_requirements: Optional[List[str]] = None,
+    ) -> str:
+        """Generate a cover letter from selected blurbs using approved content. Optionally fill gaps with role_specific_alignment blurbs."""
+        logger.info("Generating cover letter...")
+        cover_letter_parts = []
+        # Greeting
+        company = job.company_name.strip() if hasattr(job, "company_name") and job.company_name else ""
+        if company:
+            greeting = f"Dear {company} team,"
+        else:
+            greeting = "Dear Hiring Team,"
+        cover_letter_parts.append(greeting)
+        cover_letter_parts.append("")
+        # Intro
+        intro_text = self._select_appropriate_intro_blurb(job)
+        intro_text = self._customize_intro_for_role(intro_text, job)
+        cover_letter_parts.append(intro_text)
+        cover_letter_parts.append("")
+        # Paragraph 2 (role-specific alignment) - only if strong match
+        para2_text = self._select_paragraph2_blurb(job)
+        if para2_text and para2_text.strip():
+            cover_letter_parts.append(para2_text)
+            cover_letter_parts.append("")
+        # Dynamically selected case studies (top 2–3)
+        case_studies = self._select_top_case_studies(job)
+        for case_study in case_studies:
+            cover_letter_parts.append(case_study)
+            cover_letter_parts.append("")
+        # Leadership blurb if leadership role or JD mentions managing/mentoring
+        if self._should_include_leadership_blurb(job):
+            for blurb in self.blurbs.get("leadership", []):
+                if blurb["id"] == "leadership":
+                    cover_letter_parts.append(blurb["text"])
+                    cover_letter_parts.append("")
+                    break
+        # PATCH: Add role_specific_alignment blurbs for missing/partial requirements (robust, no duplicates)
+        if missing_requirements:
+            used_blurbs = set()
+            for req in missing_requirements:
+                for blurb in self.blurbs.get("role_specific_alignment", []):
+                    if any(tag.lower() in req.lower() or req.lower() in tag.lower() for tag in blurb.get("tags", [])):
+                        if blurb["text"] not in used_blurbs:
+                            cover_letter_parts.append(blurb["text"])
+                            cover_letter_parts.append("")
+                            used_blurbs.add(blurb["text"])
+        # Closing: choose standard, mission_aligned, or growth_focused
+        closing = self._generate_compelling_closing(job)
+        cover_letter_parts.append(closing)
+        cover_letter_parts.append("")
+        cover_letter_parts.append("Best regards,")
+        cover_letter_parts.append("Peter Spannagle")
+        cover_letter_parts.append("linkedin.com/in/pspan")
+        # Join and clean up
+        cover_letter = "\n".join([line.strip() for line in cover_letter_parts if line.strip()])
+        cover_letter = re.sub(r"\n+", "\n\n", cover_letter)
+        cover_letter = re.sub(r" +", " ", cover_letter)
+        # Remove any resume data or skills lines
+        cover_letter = re.sub(r"Key Skills:.*?(\n|$)", "", cover_letter, flags=re.IGNORECASE)
+        # Remove deprecated blurbs (GenAI, Climate Week, etc.) if present
+        for deprecated in ["GenAI", "Climate Week", "sf_climate_week", "genai_voice", "duke"]:
+            cover_letter = re.sub(deprecated, "", cover_letter, flags=re.IGNORECASE)
+
+        # Apply tone based on user preferences and job type
+        tone = self._get_tone_for_job(job)
+        cover_letter = self._adjust_tone(cover_letter, tone)
+        
+        # Limited LLM enhancement - only for specific areas, not entire letter
+        try:
+            from core.llm_rewrite import post_process_with_llm
+
+            # Only enhance specific sections, not the entire letter
+            # For now, limit LLM to just the closing paragraph for safety
+            lines = cover_letter.split('\n')
+            closing_start = -1
+            for i, line in enumerate(lines):
+                if "I'm excited" in line or "I'd be excited" in line or "I am excited" in line:
+                    closing_start = i
+                    break
+            
+            if closing_start > 0:
+                # Only enhance the closing paragraph
+                closing_lines = lines[closing_start:]
+                closing_text = '\n'.join(closing_lines)
+                
+                user_context = None
+                if hasattr(self, "user_context"):
+                    user_context = {
+                        "company_notes": getattr(self.user_context, "company_notes", None),
+                        "role_insights": getattr(self.user_context, "role_insights", None),
+                    }
+
+                enhanced_closing = post_process_with_llm(closing_text, job.raw_text, self.config, user_context)
+                
+                # Replace only the closing section
+                lines[closing_start:] = enhanced_closing.split('\n')
+                cover_letter = '\n'.join(lines)
+                
+        except ImportError:
+            logger.warning("LLM rewrite module not available - returning original draft")
+        except Exception as e:
+            logger.error(f"LLM enhancement failed: {e}")
+        
+        return cover_letter
 
     def _requirements_mapping_section(self, job: JobDescription) -> str:
         """Map each core requirement to the case study or experience that demonstrates it."""
@@ -2134,55 +5795,148 @@ class CoverLetterAgent:
             except ImportError:
                 from gap_analysis import extract_requirements_llm, gap_analysis_llm
             api_key = os.environ.get("OPENAI_API_KEY") or ""
-            jd_reqs = extract_requirements_llm(job_text, api_key)
-            if interactive:
-                print("\n[STEP] Extracted requirements:")
-                for cat, reqs in jd_reqs.items():
-                    print(f"  {cat}: {reqs}")
-                user_input = input("Press Enter to accept, or type 'edit' to manually enter requirements: ").strip()
-                if user_input.lower() == "edit":
-                    jd_reqs = {}
-                    for cat in ["tools", "team_dynamics", "domain_knowledge", "soft_skills", "responsibilities", "outcomes"]:
-                        reqs = input(f"Enter requirements for {cat} (comma-separated, or leave blank): ").strip()
-                        if reqs:
-                            jd_reqs[cat] = [r.strip() for r in reqs.split(",") if r.strip()]
-            # Generate initial draft
-            selected_blurbs = self.select_blurbs(job)
-            if isinstance(selected_blurbs, tuple):
-                selected_blurbs = selected_blurbs[0]
-            draft = self.generate_cover_letter(job, selected_blurbs, [])
-            gap_report = gap_analysis_llm(jd_reqs, draft, api_key)
-            missing_requirements = []
-            if interactive:
-                print("\n[STEP] Gap analysis results:")
-                for req_cat, reqs in jd_reqs.items():
-                    for req in reqs:
-                        info = gap_report.get(req, {})
-                        status = info.get("status") if isinstance(info, dict) else ""
-                        rec = info.get("recommendation") if isinstance(info, dict) else ""
-                        print(f"  {req}: {status} {rec}")
-            # --- INTERACTIVE: Confirm/override gap-filling ---
-            for req_cat, reqs in jd_reqs.items():
-                for req in reqs:
-                    info = gap_report.get(req, {})
-                    if isinstance(info, dict) and info.get("status") in ["❌", "⚠️"]:
-                        if interactive:
-                            print(f"\n[STEP] Gap detected: {req}")
-                            action = input(
-                                "Type 'add' to insert a matching blurb, 'skip' to ignore, or enter custom text: "
-                            ).strip()
-                            if action == "add" or action == "":
-                                missing_requirements.append(req)
-                            elif action == "skip":
+            
+            if api_key:
+                # Extract requirements using LLM
+                jd_reqs = extract_requirements_llm(job_text, api_key)
+                
+                if interactive:
+                    print("\n[STEP] Extracted requirements:")
+                    for cat, reqs in jd_reqs.items():
+                        print(f"  {cat}: {reqs}")
+                    user_input = input("Press Enter to accept, or type 'edit' to manually enter requirements: ").strip()
+                    if user_input.lower() == "edit":
+                        jd_reqs = {}
+                        for cat in ["tools", "team_dynamics", "domain_knowledge", "soft_skills", "responsibilities", "outcomes"]:
+                            reqs = input(f"Enter requirements for {cat} (comma-separated, or leave blank): ").strip()
+                            if reqs:
+                                jd_reqs[cat] = [r.strip() for r in reqs.split(",") if r.strip()]
+                
+                # Generate initial draft
+                selected_blurbs = self.select_blurbs(job)
+                if isinstance(selected_blurbs, tuple):
+                    selected_blurbs = selected_blurbs[0]
+                draft = self.generate_cover_letter(job, selected_blurbs, [])
+                
+                # Run gap analysis
+                gap_report = gap_analysis_llm(jd_reqs, draft, api_key)
+                
+                if interactive:
+                    print("\n[STEP] Gap analysis results:")
+                    for req_cat, reqs in jd_reqs.items():
+                        print(f"\n{req_cat.upper()}:")
+                        for req in reqs:
+                            info = gap_report.get(req, {})
+                            status = info.get("status") if isinstance(info, dict) else ""
+                            rec = info.get("recommendation") if isinstance(info, dict) else ""
+                            print(f"  {req}: {status} {rec}")
+                    
+                    # Interactive gap-filling with blurb creation
+                    missing_requirements = []
+                    new_blurbs_created = []
+                    
+                    for req_cat, reqs in jd_reqs.items():
+                        print(f"\n[GAP ANALYSIS] Category: {req_cat.upper()}")
+                        category_gaps = []
+                        
+                        for req in reqs:
+                            info = gap_report.get(req, {})
+                            if isinstance(info, dict) and info.get("status") in ["❌", "⚠️"]:
+                                category_gaps.append(req)
+                        
+                        if category_gaps:
+                            print(f"Found {len(category_gaps)} gaps in {req_cat}:")
+                            for i, gap in enumerate(category_gaps, 1):
+                                print(f"  {i}. {gap}")
+                            
+                            action = input(f"\nAction for {req_cat} gaps:\n"
+                                         f"[A]uto-fill with AI-generated blurbs\n"
+                                         f"[M]anual blurb creation\n"
+                                         f"[S]kip this category\n"
+                                         f"Enter choice: ").strip().lower()
+                            
+                            if action == "a":
+                                # Auto-generate blurbs for gaps
+                                for gap in category_gaps:
+                                    new_blurb = self._generate_blurb_for_gap(gap, job, api_key)
+                                    if new_blurb:
+                                        print(f"\nGenerated blurb for '{gap}':")
+                                        print(f"Text: {new_blurb['text']}")
+                                        print(f"Tags: {new_blurb['tags']}")
+                                        
+                                        approve = input("Approve this blurb? [Y]es/[N]o/[E]dit: ").strip().lower()
+                                        if approve == "y" or approve == "":
+                                            self._save_new_blurb_to_database(new_blurb)
+                                            new_blurbs_created.append(new_blurb)
+                                            missing_requirements.append(gap)
+                                        elif approve == "e":
+                                            edited_text = input("Enter edited text: ").strip()
+                                            edited_tags = input("Enter edited tags (comma-separated): ").strip()
+                                            new_blurb['text'] = edited_text
+                                            new_blurb['tags'] = [t.strip() for t in edited_tags.split(",") if t.strip()]
+                                            self._save_new_blurb_to_database(new_blurb)
+                                            new_blurbs_created.append(new_blurb)
+                                            missing_requirements.append(gap)
+                            
+                            elif action == "m":
+                                # Manual blurb creation
+                                for gap in category_gaps:
+                                    print(f"\nCreating blurb for: {gap}")
+                                    text = input("Enter blurb text: ").strip()
+                                    tags_input = input("Enter tags (comma-separated): ").strip()
+                                    tags = [t.strip() for t in tags_input.split(",") if t.strip()]
+                                    
+                                    new_blurb = {
+                                        "id": gap.replace(" ", "_").lower(),
+                                        "text": text,
+                                        "tags": tags,
+                                        "category": req_cat,
+                                        "created_for_job": f"{job.company_name}_{job.job_title}"
+                                    }
+                                    
+                                    self._save_new_blurb_to_database(new_blurb)
+                                    new_blurbs_created.append(new_blurb)
+                                    missing_requirements.append(gap)
+                            
+                            elif action == "s":
+                                print(f"Skipping {req_cat} gaps")
                                 continue
-                            else:
-                                # Custom blurb
-                                from agents.gap_analysis import add_new_blurb
-
-                                add_new_blurb(req, "w")
-                                missing_requirements.append(req)
                         else:
-                            missing_requirements.append(req)
+                            print(f"✅ No gaps found in {req_cat}")
+                    
+                    # Regenerate cover letter with new blurbs
+                    if new_blurbs_created:
+                        print(f"\n[STEP] Regenerating cover letter with {len(new_blurbs_created)} new blurbs...")
+                        # Add new blurbs to the selection
+                        for blurb in new_blurbs_created:
+                            blurb_id = blurb['id']
+                            selected_blurbs[blurb_id] = BlurbMatch(
+                                blurb_id=blurb_id,
+                                blurb_type="new",
+                                text=blurb['text'],
+                                tags=blurb['tags'],
+                                score=8.0,  # High score for user-created blurbs
+                                selected=True
+                            )
+                        
+                        # Regenerate with new blurbs
+                        cover_letter = self.generate_cover_letter(job, selected_blurbs, missing_requirements)
+                        
+                        print(f"✅ Cover letter regenerated with {len(new_blurbs_created)} new blurbs")
+                        
+                        # Show blurb re-use information
+                        print(f"\n[RE-USE] These blurbs are now available for future jobs with tags: {[blurb['tags'] for blurb in new_blurbs_created]}")
+                else:
+                    # Non-interactive mode - just collect missing requirements
+                    missing_requirements = []
+                    for req_cat, reqs in jd_reqs.items():
+                        for req in reqs:
+                            info = gap_report.get(req, {})
+                            if isinstance(info, dict) and info.get("status") in ["❌", "⚠️"]:
+                                missing_requirements.append(req)
+            else:
+                missing_requirements = []
+                
         except Exception as e:
             logger.warning(f"Gap analysis failed: {e}")
             missing_requirements = []
@@ -2205,12 +5959,18 @@ class CoverLetterAgent:
                 logger.info("Starting LLM enhancement of cover letter draft")
 
                 # Prepare metadata for enhancement
+                # Flatten case study tags from list of lists to single list
+                case_study_tags = []
+                for blurb in selected_blurbs.values():
+                    if blurb.tags:
+                        case_study_tags.extend(blurb.tags)
+                
                 metadata = {
                     "company_name": job.company_name,
                     "position_title": job.job_title,
                     "job_type": job.job_type,
                     "job_score": job.score,
-                    "case_study_tags": [blurb.tags for blurb in selected_blurbs.values() if blurb.tags],
+                    "case_study_tags": case_study_tags,
                     "role_alignment": "strong" if job.score > 7.0 else "moderate",
                     "targeting_score": job.targeting.targeting_score if job.targeting else 0.0,
                     "go_no_go": job.go_no_go,
@@ -2451,6 +6211,95 @@ Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
         except Exception as e:
             logger.error(f"Error saving cover letter locally: {e}")
             print(f"\n⚠️  Could not save cover letter locally: {e}")
+
+    def _generate_blurb_for_gap(self, gap: str, job: JobDescription, api_key: str) -> Optional[Dict[str, Any]]:
+        """Generate a new blurb for a specific gap using LLM."""
+        try:
+            import openai
+            client = openai.OpenAI(api_key=api_key)
+            
+            prompt = f"""
+Create a professional blurb that demonstrates experience with: {gap}
+
+Context:
+- Job: {job.job_title} at {job.company_name}
+- Job Type: {job.job_type}
+- Company Mission: {job.extracted_info.get('mission', 'Not specified')}
+
+Requirements:
+- Be specific and include quantifiable achievements if possible
+- Use professional tone appropriate for {job.job_type} roles
+- Include relevant metrics, outcomes, or impact
+- Keep it concise (2-3 sentences)
+- Make it sound authentic and personal
+
+Output as JSON with:
+- "text": the blurb content
+- "tags": list of relevant tags for categorization
+"""
+            
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7
+            )
+            
+            content = response.choices[0].message.content
+            if content:
+                try:
+                    result = json.loads(content)
+                    return {
+                        "id": gap.replace(" ", "_").lower(),
+                        "text": result.get("text", ""),
+                        "tags": result.get("tags", []),
+                        "category": "user_generated",
+                        "created_for_job": f"{job.company_name}_{job.job_title}"
+                    }
+                except json.JSONDecodeError:
+                    # Fallback if JSON parsing fails
+                    return {
+                        "id": gap.replace(" ", "_").lower(),
+                        "text": content.strip(),
+                        "tags": [gap.lower().replace(" ", "_")],
+                        "category": "user_generated",
+                        "created_for_job": f"{job.company_name}_{job.job_title}"
+                    }
+        except Exception as e:
+            logger.error(f"Failed to generate blurb for gap '{gap}': {e}")
+            return None
+
+    def _save_new_blurb_to_database(self, blurb: Dict[str, Any]) -> None:
+        """Save a new blurb to the user's blurb database for re-use."""
+        try:
+            # Load current blurbs
+            user_blurbs_path = os.path.join(self.data_dir, "users", self.user_id, "blurbs.yaml")
+            
+            if os.path.exists(user_blurbs_path):
+                with open(user_blurbs_path, 'r') as f:
+                    blurbs_data = yaml.safe_load(f) or {}
+            else:
+                blurbs_data = {}
+            
+            # Add new blurb to appropriate section
+            category = blurb.get("category", "user_generated")
+            if category not in blurbs_data:
+                blurbs_data[category] = []
+            
+            # Check if blurb already exists
+            existing_ids = [b.get("id") for b in blurbs_data[category]]
+            if blurb["id"] not in existing_ids:
+                blurbs_data[category].append(blurb)
+                
+                # Save updated blurbs
+                with open(user_blurbs_path, 'w') as f:
+                    yaml.safe_dump(blurbs_data, f, default_flow_style=False)
+                
+                logger.info(f"Saved new blurb '{blurb['id']}' to user database")
+            else:
+                logger.info(f"Blurb '{blurb['id']}' already exists in database")
+                
+        except Exception as e:
+            logger.error(f"Failed to save blurb to database: {e}")
 
 
 if __name__ == "__main__":

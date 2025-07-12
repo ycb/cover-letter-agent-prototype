@@ -128,6 +128,41 @@ def _build_system_prompt(preferences: Dict, metadata: Dict) -> str:
     role_alignment = metadata.get("role_alignment", "")
     job_score = metadata.get("job_score", 0.0)
 
+    # Define missing instruction variables
+    preference_instructions = """
+PREFERENCE INSTRUCTIONS:
+- Preserve all factual claims, metrics, and achievements exactly as stated
+- Maintain the original voice and tone unless explicitly improving clarity
+- Focus on structural improvements rather than content changes
+- Respect user-authored blurbs and case studies
+- Only enhance transitions and minor phrasings for clarity
+"""
+
+    preservation_instructions = """
+CRITICAL PRESERVATION RULES:
+- NEVER change specific numbers, percentages, or quantified achievements
+- NEVER alter company names, role titles, or strategic claims
+- NEVER add unverified experiences or accomplishments
+- NEVER paraphrase approved blurbs or case studies
+- Preserve paragraph structure and voice throughout
+- Maintain all metrics and performance data exactly as written
+"""
+
+    enhancement_instructions = """
+ENHANCEMENT GUIDELINES:
+- Tighten language by removing redundancy and shortening phrases
+- Improve flow and transitions between paragraphs
+- Enhance clarity without changing meaning
+- Strengthen impact through better word choice
+- Ensure alignment with job description requirements
+- Maintain professional tone appropriate for the role
+"""
+
+    # Configuration parameters
+    tighten_percent = 15
+    max_sentence_length = 25
+    target_paragraph_length = 3
+
     # Build tag-specific instructions
     tag_instructions = ""
     if "ai_ml" in case_study_tags:
@@ -160,10 +195,8 @@ CONTEXT:
 TAG-SPECIFIC INSTRUCTIONS:
 {tag_instructions}
 
-CRITICAL PRESERVATION RULES:
 {preservation_instructions}
 
-ENHANCEMENT GUIDELINES:
 {enhancement_instructions}
 
 SPECIFIC REQUIREMENTS:

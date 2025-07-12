@@ -34,6 +34,7 @@ from core.cli_utils import (
     select_from_list,
     validate_file_path,
     validate_user_id,
+    print_key_value_pairs,  # Added import
 )
 
 # --- Ensure .env is always loaded ---
@@ -61,10 +62,11 @@ else:
 # Add the agents directory to the path
 sys.path.append(str(Path(__file__).parent.parent / "agents"))
 
-from cover_letter_agent import CoverLetterAgent
+from agents.cover_letter_agent import CoverLetterAgent
 
 # Import gap analysis LLM functions
-from gap_analysis import extract_requirements_llm, gap_analysis_llm
+from agents.gap_analysis import extract_requirements_llm, gap_analysis_llm
+from core.user_context import validate_user_exists, list_available_users
 
 
 def load_job_description(file_path: Optional[str] = None, text: Optional[str] = None) -> str:
@@ -216,18 +218,21 @@ def print_case_studies(case_studies):
     print_section("Relevant Case Studies")
 
     for i, case_study in enumerate(case_studies, 1):
-        print(f"{i}. {case_study['name']}")
-        print(f"   Type: {case_study['type']}")
-        print(f"   Description: {case_study['description']}")
-
-        if case_study["type"] == "url":
+        # Use 'name' if present, else 'id'
+        name = case_study.get('name') or case_study.get('id', 'N/A')
+        # Use 'description' if present, else 'text'
+        description = case_study.get('description') or case_study.get('text', '')
+        print(f"{i}. {name}")
+        if 'type' in case_study:
+            print(f"   Type: {case_study['type']}")
+        print(f"   Description: {description}")
+        if 'url' in case_study:
             print(f"   URL: {case_study['url']}")
-        elif case_study["type"] == "file":
+        if 'file_path' in case_study:
             print(f"   File: {case_study['file_path']}")
-        elif case_study["type"] == "google_drive":
+        if 'material_type' in case_study:
             print(f"   Material Type: {case_study['material_type']}")
-
-        if "tags" in case_study:
+        if 'tags' in case_study:
             print(f"   Tags: {', '.join(case_study['tags'])}")
         print()
 

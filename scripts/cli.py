@@ -34,6 +34,7 @@ from core.cli_utils import (
     select_from_list,
     validate_file_path,
     validate_user_id,
+    print_key_value_pairs,
 )
 from core.user_context import list_available_users, validate_user_exists
 
