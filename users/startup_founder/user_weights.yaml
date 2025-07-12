@@ -1,0 +1,11 @@
+scoring_weights:
+  key_qualities:
+    discovery: 4
+    gtm: 4
+  maturity:
+    pilot: 4
+    startup: 5
+  role:
+    founding_pm: 5
+    leadership: 4
+    strategy: 4

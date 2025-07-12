@@ -489,243 +489,34 @@ class CoverLetterAgent:
         return cover_letter
     
     def get_case_studies(self, job_keywords: List[str] = None, force_include: list = None) -> List[Dict]:
-        """Enhanced case study selection with improved scoring multipliers and diversity logic."""
-        import collections
+        """Case study selection using customizable, multi-user scoring."""
+        from core.case_study_scoring import CaseStudyScorer
         if job_keywords is None:
             job_keywords = []
         if force_include is None:
             force_include = []
         
-        # Enhanced tag categories with multipliers
-        maturity_tags = {'public', 'startup', 'scaleup', 'pilot', 'prototype'}
-        business_model_tags = {'b2b', 'b2c', 'b2b2c', 'd2c', 'consumer', 'smb', 'enterprise'}
-        role_type_tags = {'growth', 'leadership', 'founding_pm', 'platform', 'ux', 'ai_ml'}
-        key_skill_tags = {'data', 'analytics', 'metrics', 'execution', 'strategy', 'discovery', 'customer discovery', 'user research'}
-        industry_tags = ['technology', 'healthcare', 'finance', 'education', 'energy', 'retail']
-        
-        # Redundant theme tags (only select one from each group)
-        redundant_themes = {
-            'founding_pm': ['founding_pm', 'early_stage', '0_to_1'],
-            'startup': ['startup', 'early_stage', '0_to_1'],
-            'scale': ['scaleup', 'growth', 'platform']
-        }
-        
         # Load case studies from blurbs.yaml (examples section)
         case_studies = self.blurbs.get('examples', [])
+        # Use job title if available (from self.current_job or similar)
+        job_title = getattr(self, 'current_job', None)
+        if job_title and hasattr(job_title, 'job_title'):
+            job_title = job_title.job_title
+        else:
+            job_title = ' '.join(job_keywords)
         
-        # Determine role type for role-based guidance
-        job_title_lower = ' '.join(job_keywords).lower()
-        is_staff_principal = any(word in job_title_lower for word in ['staff', 'principal', 'senior', 'lead'])
-        is_startup_pm = any(word in job_title_lower for word in ['startup', 'early', 'founding', '0-1'])
-        
-        # Compute enhanced relevance score for each case study
-        scored = []
-        job_kw_set = set([kw.lower() for kw in job_keywords])
-        
-        for cs in case_studies:
-            initial_score = 0
-            tag_matches = set()
-            multipliers = []
-            explanations = []
-            
-            # Base tag matching
-            for tag in cs.get('tags', []):
-                if tag.lower() in [kw.lower() for kw in job_keywords]:
-                    # Strong weighting for certain tag categories
-                    if tag.lower() in maturity_tags or tag.lower() in business_model_tags or tag.lower() in role_type_tags:
-                        initial_score += 3
-                    elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
-                        initial_score += 1
-                    tag_matches.add(tag.lower())
-            
-            # Apply scoring multipliers
-            final_score = initial_score
-            
-            # 1. Public company multiplier (+20%)
-            if 'public' in cs.get('tags', []):
-                multiplier = 1.2
-                final_score *= multiplier
-                multipliers.append(f"public_company: {multiplier:.1f}x")
-                explanations.append("public company")
-            
-            # 2. Impressive metrics multiplier (+30%)
-            impressive_metrics = ['210%', '876%', '853%', '169%', '90%', '4B', '130%', '10x', '160%', '200%', '4.3', '20x', '60%', '80%']
-            has_impressive_metrics = any(metric in cs.get('text', '') for metric in impressive_metrics)
-            if has_impressive_metrics:
-                multiplier = 1.3
-                final_score *= multiplier
-                multipliers.append(f"impressive_metrics: {multiplier:.1f}x")
-                explanations.append("impressive metrics")
-            
-            # 3. Non-redundant theme multiplier (+30%)
-            # Check if this case study brings unique themes not covered by others
-            unique_themes = set(cs.get('tags', [])) - {'startup', 'founding_pm', '0_to_1'}  # Remove common themes
-            if len(unique_themes) >= 3:  # Has substantial unique themes
-                multiplier = 1.3
-                final_score *= multiplier
-                multipliers.append(f"non_redundant_theme: {multiplier:.1f}x")
-                explanations.append("diverse themes")
-            
-            # 4. Credibility anchor multiplier (+20%)
-            credibility_anchors = ['meta', 'samsung', 'salesforce', 'aurora', 'enact']
-            if cs['id'] in credibility_anchors:
-                multiplier = 1.2
-                final_score *= multiplier
-                multipliers.append(f"credibility_anchor: {multiplier:.1f}x")
-                explanations.append("credible brand")
-            
-            # 5. Special case: public company + impressive metrics
-            if 'public' in cs.get('tags', []) and has_impressive_metrics:
-                multiplier = 1.5  # Additional 50% boost
-                final_score *= multiplier
-                multipliers.append(f"public+metrics: {multiplier:.1f}x")
-                explanations.append("public company with impressive metrics")
-            
-            # 6. Role-based adjustments
-            if is_staff_principal:
-                # For Staff/Principal PM: favor scale, impact, XFN leadership
-                if any(tag in cs.get('tags', []) for tag in ['scaleup', 'platform', 'xfn', 'leadership']):
-                    multiplier = 1.2
-                    final_score *= multiplier
-                    multipliers.append(f"staff_principal: {multiplier:.1f}x")
-                    explanations.append("staff/principal alignment")
-            elif is_startup_pm:
-                # For startup PM: bias toward 0_to_1 and scrappy execution
-                if any(tag in cs.get('tags', []) for tag in ['founding_pm', '0_to_1', 'startup']):
-                    multiplier = 1.2
-                    final_score *= multiplier
-                    multipliers.append(f"startup_pm: {multiplier:.1f}x")
-                    explanations.append("startup alignment")
-            
-            # Penalties
-            penalties = []
-            
-            # Penalty for B2B-only if B2C/consumer present in JD
-            if 'b2b' in cs.get('tags', []) and ('b2c' in job_keywords or 'consumer' in job_keywords):
-                final_score -= 2
-                penalties.append("B2B mismatch")
-            
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
-            
-            scored.append({
-                'case_study': cs,
-                'initial_score': initial_score,
-                'final_score': final_score,
-                'multipliers': multipliers,
-                'penalties': penalties,
-                'explanations': explanations,
-                'id': cs.get('id', 'unknown')
-            })
-        
-        # DEBUG: Print enhanced scores
-        print("[DEBUG] Enhanced case study scores:")
-        for item in scored:
-            cs = item['case_study']
-            print(f"  {item['id']}: {item['initial_score']:.1f} → {item['final_score']:.1f}")
-            if item['multipliers']:
-                print(f"    Multipliers: {', '.join(item['multipliers'])}")
-            if item['penalties']:
-                print(f"    Penalties: {', '.join(item['penalties'])}")
-            print(f"    Explanation: {', '.join(item['explanations'])}")
-        
-        # Get min_scores from logic
-        logic = self.config.get('blurb_logic', {}).get('minimum_scores', {}).get('examples', {})
-        
-        # Filter by min_score and sort by final score
-        eligible = []
-        for item in scored:
-            cs = item['case_study']
-            min_score = float(logic.get(cs['id'], {}).get('min_score', 0))
-            if item['final_score'] >= min_score or cs['id'] in force_include:
-                eligible.append(item)
-        
-        eligible.sort(key=lambda x: x['final_score'], reverse=True)
-        
-        # Enhanced selection with diversity logic
-        selected = []
-        used_themes = set()
-        samsung_selected = False
-        
-        print("[DEBUG] Enhanced selection process:")
-        
-        for item in eligible:
-            cs = item['case_study']
-            cs_id = cs['id']
-            final_score = item['final_score']
-            
-            print(f"  Considering {cs_id} (score: {final_score:.1f})")
-            
-            # Samsung logic: only one allowed
-            if cs_id in ['samsung', 'samsung_chatbot']:
-                if samsung_selected:
-                    print(f"    Skipping {cs_id} - Samsung already selected")
-                    continue
-                
-                # Prefer chatbot for AI/ML, NLP, or customer success
-                if cs_id == 'samsung_chatbot' and any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
-                    print(f"    Selecting {cs_id} - preferred for AI/ML/NLP")
-                    selected.append(cs)
-                    samsung_selected = True
-                elif cs_id == 'samsung' and not any(tag in job_keywords for tag in ['ai_ml', 'nlp', 'customer_success']):
-                    print(f"    Selecting {cs_id} - preferred for non-AI/ML")
-                    selected.append(cs)
-                    samsung_selected = True
-                else:
-                    print(f"    Selecting {cs_id} - first Samsung found")
-                    selected.append(cs)
-                    samsung_selected = True
-            
-            # Check for redundant themes
-            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
-                if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
-                    print(f"    Skipping {cs_id} - redundant founding/startup theme")
-                    continue
-                else:
-                    print(f"    Selecting {cs_id} - unique founding/startup story")
-                    selected.append(cs)
-                    used_themes.update(['founding_pm', '0_to_1', 'startup'])
-            
-            # Check for scale/growth themes
-            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
-                if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
-                    print(f"    Skipping {cs_id} - redundant scale/growth theme")
-                    continue
-                else:
-                    print(f"    Selecting {cs_id} - unique scale/growth story")
-                    selected.append(cs)
-                    used_themes.update(['scaleup', 'growth', 'platform'])
-            
-            # Default selection
-            else:
-                print(f"    Selecting {cs_id} - diverse theme")
-                selected.append(cs)
-            
-            if len(selected) >= 3:
-                print(f"    Reached 3 case studies, stopping")
-                break
-        
-        print(f"[DEBUG] Final selection: {[cs['id'] for cs in selected]}")
+        # Use user_id if available
+        user_id = getattr(self, 'user_id', None)
+        scorer = CaseStudyScorer(user_id=user_id)
+        selected = scorer.select_case_studies(case_studies, job_keywords, job_title, max_selections=3)
         
         # If user forced specific examples, ensure they're included
         for fid in force_include:
             if not any(cs['id'] == fid for cs in selected):
-                for item in eligible:
-                    if item['case_study']['id'] == fid:
-                        selected.append(item['case_study'])
+                for cs in case_studies:
+                    if cs['id'] == fid:
+                        selected.append(cs)
                         break
-        
-        # Add 'name', 'description', and 'type' fields for compatibility
-        for cs in selected:
-            if 'name' not in cs:
-                cs['name'] = cs['id'].capitalize()
-            if 'description' not in cs:
-                cs['description'] = cs['text'].split('.')[0].strip()
-            if 'type' not in cs:
-                cs['type'] = 'blurb'
-        
         return selected
     
     def download_case_study_materials(self, case_studies: List[Dict], local_dir: str = "materials") -> List[str]:

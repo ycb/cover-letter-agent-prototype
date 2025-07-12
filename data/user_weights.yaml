@@ -1,0 +1,150 @@
+# User-Defined Scoring Weights for Case Study Selection
+# This file allows users to customize how case studies are scored based on their preferences
+
+scoring_weights:
+  # Role-based weights (what type of PM role)
+  role:
+    growth: 3          # Growth PM roles
+    platform: 2        # Platform PM roles  
+    founding_pm: 3     # Founding/early-stage PM roles
+    leadership: 4      # Leadership/management roles
+    ux_fe: 2          # UX/Frontend-focused roles
+    ai_ml: 2          # AI/ML-focused roles
+    data_driven: 3     # Data-driven PM roles
+    strategy: 3        # Strategy-focused roles
+  
+  # Industry-specific weights
+  industry:
+    cleantech: 4       # Clean energy/climate tech
+    infra: 3           # Infrastructure/platform
+    analytics: 2       # Analytics/data
+    design: 2          # Design tools/UX
+    consumer: 2        # Consumer products
+    enterprise: 3      # Enterprise/B2B
+    fintech: 2         # Financial technology
+    healthtech: 2      # Healthcare technology
+  
+  # Company maturity stage weights
+  maturity:
+    startup: 3         # Early-stage startups
+    scaleup: 2         # Growth-stage companies
+    public: 1          # Public companies
+    pilot: 2           # Pilot/prototype stage
+    prototype: 2       # Prototype stage
+  
+  # Business model weights
+  business_model:
+    b2b: 2             # B2B products
+    b2c: 2             # B2C products
+    b2b2c: 3          # B2B2C products
+    d2c: 2             # D2C products
+    consumer: 2        # Consumer products
+    smb: 2             # Small/medium business
+    enterprise: 3      # Enterprise products
+  
+  # Key product qualities/experiences
+  key_qualities:
+    xfn: 4             # Cross-functional leadership
+    usability: 4       # User experience focus
+    data_driven: 3     # Data-driven decision making
+    trust: 2           # Trust/explainability
+    onboarding: 3      # User onboarding
+    engagement: 3      # User engagement
+    retention: 3       # User retention
+    activation: 3      # User activation
+    plg: 3             # Product-led growth
+    gtm: 3             # Go-to-market
+    scale: 3           # Scaling experience
+    metrics: 3         # Metrics/analytics
+    execution: 3       # Execution focus
+    discovery: 3       # Customer discovery
+    user_research: 3   # User research
+    strategy: 3        # Strategic thinking
+  
+  # Technical/domain expertise
+  technical:
+    ai_ml: 2           # AI/ML experience
+    genai: 2           # Generative AI
+    nlp: 2             # Natural language processing
+    mobile: 2          # Mobile experience
+    web: 2             # Web experience
+    api: 2             # API experience
+    integration: 2     # System integration
+    automation: 2      # Process automation
+  
+  # Impact/outcome weights
+  impact:
+    revenue: 4         # Revenue impact
+    users: 3           # User growth
+    engagement: 3      # Engagement metrics
+    efficiency: 3      # Efficiency gains
+    cost_reduction: 3  # Cost reduction
+    time_savings: 3    # Time savings
+    quality: 3         # Quality improvements
+    adoption: 3        # Adoption rates
+
+# Default weights for different job types
+job_type_defaults:
+  growth_pm:
+    role:
+      growth: 5
+      data_driven: 4
+      metrics: 4
+    impact:
+      revenue: 5
+      users: 4
+      engagement: 4
+  
+  ai_pm:
+    role:
+      ai_ml: 5
+      data_driven: 4
+    technical:
+      ai_ml: 5
+      genai: 4
+      nlp: 4
+    key_qualities:
+      trust: 4
+      explainability: 4
+  
+  founding_pm:
+    role:
+      founding_pm: 5
+      leadership: 4
+      strategy: 4
+    maturity:
+      startup: 5
+      pilot: 4
+    key_qualities:
+      gtm: 4
+      discovery: 4
+  
+  enterprise_pm:
+    business_model:
+      enterprise: 5
+      b2b: 4
+    key_qualities:
+      xfn: 5
+      strategy: 4
+    maturity:
+      public: 3
+      scaleup: 4
+  
+  cleantech_pm:
+    industry:
+      cleantech: 5
+    business_model:
+      b2b2c: 4
+    key_qualities:
+      mission: 4
+      impact: 4
+
+# Penalty weights for mismatches
+penalties:
+  role_mismatch: -2    # Wrong role type
+  industry_mismatch: -1 # Wrong industry
+  maturity_mismatch: -1 # Wrong company stage
+  business_model_mismatch: -1 # Wrong business model
+  redundant_themes: -3  # Too many similar themes
+  low_impact: -2       # Low impact metrics
+  generic_content: -1   # Generic/unspecific content 

@@ -1,0 +1,10 @@
+scoring_weights:
+  business_model:
+    b2b: 4
+    enterprise: 5
+  key_qualities:
+    strategy: 4
+    xfn: 5
+  maturity:
+    public: 3
+    scaleup: 4

@@ -1,0 +1,11 @@
+scoring_weights:
+  key_qualities:
+    explainability: 4
+    trust: 4
+  role:
+    ai_ml: 5
+    data_driven: 4
+  technical:
+    ai_ml: 5
+    genai: 4
+    nlp: 4

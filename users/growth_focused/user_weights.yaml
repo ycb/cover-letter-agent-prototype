@@ -1,0 +1,12 @@
+scoring_weights:
+  impact:
+    engagement: 4
+    revenue: 5
+    users: 4
+  key_qualities:
+    activation: 4
+    plg: 4
+  role:
+    data_driven: 4
+    growth: 5
+    metrics: 4
