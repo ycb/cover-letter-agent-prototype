@@ -1,0 +1,32 @@
+title_keywords:
+  leadership:
+  - senior
+  - lead
+  - manager
+  - director
+  - head
+  - vp
+  - chief
+  IC:
+  - engineer
+  - developer
+  - analyst
+  - specialist
+  - coordinator
+company_stages:
+  startup:
+  - startup
+  - early-stage
+  - seed
+  - series a
+  - series b
+  scaleup:
+  - scaleup
+  - growth
+  - series c
+  - series d
+  enterprise:
+  - enterprise
+  - fortune
+  - large
+  - established

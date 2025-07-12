@@ -1,0 +1,40 @@
+name: Dario Novoa
+role: Sr. Engineering Manager
+location: San Francisco, CA
+industry_focus:
+- TEch
+resume_path: resume.pdf
+preferred_examples:
+- example1
+- example2
+google_drive:
+  enabled: false
+  folder_id: ''
+  credentials_file: credentials.json
+  materials:
+    presentations: presentations/
+    spreadsheets: spreadsheets/
+    cover_letters: cover_letters/
+    case_studies: case_studies/
+    drafts: drafts/
+profile:
+  resume_file: resume.pdf
+  linkedin_url: https://linkedin.com/in/[username]
+  portfolio_url: https://[username].com/
+  github_url: https://github.com/[username]
+  achievements:
+  - Add your key achievements here
+  - Quantify your impact with metrics
+  - Focus on leadership and growth
+cover_letter:
+  personal_brand:
+    tagline: Product leader focused on [your focus area]
+    key_strengths:
+    - Add your key strengths
+    - Focus on measurable outcomes
+    - Highlight unique value proposition
+  tone:
+    default: professional
+    startup: conversational
+    enterprise: professional
+    AI_ML: technical
