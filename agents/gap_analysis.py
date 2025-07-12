@@ -17,11 +17,12 @@ def extract_requirements_llm(jd_text: str, api_key: str) -> Dict[str, List[str]]
 
     # Validate API key format
     from core.security import get_security_manager
+
     security_manager = get_security_manager()
-    
+
     if not security_manager.validate_secret_format("OPENAI_API_KEY", api_key):
         raise ValueError("Invalid OpenAI API key format")
-    
+
     client = openai.OpenAI(api_key=api_key)
     prompt = f"""
 Extract all explicit and implicit requirements from this job description. 
@@ -50,11 +51,12 @@ def gap_analysis_llm(jd_requirements: Dict[str, List[str]], cover_letter: str, a
 
     # Validate API key format
     from core.security import get_security_manager
+
     security_manager = get_security_manager()
-    
+
     if not security_manager.validate_secret_format("OPENAI_API_KEY", api_key):
         raise ValueError("Invalid OpenAI API key format")
-    
+
     client = openai.OpenAI(api_key=api_key)
     prompt = f"""
 Given these job requirements (JSON) and this cover letter, for each requirement, state if it is fully covered, partially covered, or missing in the letter. Output as a JSON object where each requirement is a key and the value is an object with 'status' (one of '✅', '⚠️', '❌') and 'recommendation' (a short suggestion or comment).
@@ -152,7 +154,7 @@ def prompt_user_for_gaps(report: Dict[str, Tuple[str, str]]) -> Dict[str, str]:
     """Interactively prompt user for each gap. Return {item: user_action}."""
     user_actions = {}
     print("\nGAP DETECTION SUMMARY:\n")
-    print("{:<25} {:<4} Recommendation".format('Requirement', 'Status'))
+    print("{:<25} {:<4} Recommendation".format("Requirement", "Status"))
     print("-" * 60)
     for req, (status, rec) in report.items():
         print(f"{req:<25} {status:<4} {rec}")
@@ -238,7 +240,7 @@ def main(jd_path, letter_path, blurb_db_path=BLURB_DB_PATH, api_key=None):
         print("[LLM] Running gap analysis...")
         gap_report = gap_analysis_llm(jd_reqs, letter_text, api_key)
         print("\nGAP DETECTION SUMMARY (LLM):\n")
-        print("{:<25} {:<4} Recommendation".format('Requirement', 'Status'))
+        print("{:<25} {:<4} Recommendation".format("Requirement", "Status"))
         print("-" * 60)
         for req, info in gap_report.items():
             if isinstance(info, dict):
@@ -271,7 +273,7 @@ def main(jd_path, letter_path, blurb_db_path=BLURB_DB_PATH, api_key=None):
         jd_reqs = extract_requirements(jd_text)
         report = gap_analysis(jd_reqs, letter_text, blurb_db)
         print("\nGAP DETECTION SUMMARY:\n")
-        print("{:<25} {:<4} Recommendation".format('Requirement', 'Status'))
+        print("{:<25} {:<4} Recommendation".format("Requirement", "Status"))
         print("-" * 60)
         for req, info in report.items():
             if isinstance(info, tuple):

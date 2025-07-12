@@ -92,10 +92,7 @@ class CacheManager:
     def _generate_cache_key(self, *args, **kwargs) -> str:
         """Generate a cache key from function arguments."""
         # Create a hash of the arguments
-        key_data = {
-            "args": args,
-            "kwargs": sorted(kwargs.items()) if kwargs else []
-        }
+        key_data = {"args": args, "kwargs": sorted(kwargs.items()) if kwargs else []}
         key_string = json.dumps(key_data, sort_keys=True, default=str)
         return hashlib.md5(key_string.encode()).hexdigest()
 
@@ -130,7 +127,7 @@ class CacheManager:
             try:
                 with open(cache_file, "r") as f:
                     data = json.load(f)
-                
+
                 if self._is_cache_valid(cache_key, max_age_hours):
                     # Load into memory cache
                     self.memory_cache[cache_key] = data["value"]
@@ -150,19 +147,13 @@ class CacheManager:
         self.memory_cache[cache_key] = value
 
         # Store metadata
-        self.cache_metadata[cache_key] = {
-            "timestamp": datetime.now().isoformat(),
-            "metadata": metadata or {}
-        }
+        self.cache_metadata[cache_key] = {"timestamp": datetime.now().isoformat(), "metadata": metadata or {}}
 
         # Store in file cache
         cache_file = self._get_cache_file_path(cache_key)
         try:
             with open(cache_file, "w") as f:
-                json.dump({
-                    "value": value,
-                    "metadata": self.cache_metadata[cache_key]
-                }, f)
+                json.dump({"value": value, "metadata": self.cache_metadata[cache_key]}, f)
         except Exception as e:
             logger.warning(f"Error writing cache file {cache_file}: {e}")
 
@@ -175,7 +166,7 @@ class CacheManager:
     def _evict_oldest(self) -> None:
         """Evict the oldest cache entries."""
         # Remove oldest entries from memory cache
-        keys_to_remove = list(self.memory_cache.keys())[:len(self.memory_cache) // 4]
+        keys_to_remove = list(self.memory_cache.keys())[: len(self.memory_cache) // 4]
         for key in keys_to_remove:
             del self.memory_cache[key]
             if key in self.cache_metadata:
@@ -203,12 +194,13 @@ class CacheManager:
             "memory_cache_size": len(self.memory_cache),
             "metadata_size": len(self.cache_metadata),
             "max_size": self.max_size,
-            "performance_metrics": self.monitor.get_metrics_summary()
+            "performance_metrics": self.monitor.get_metrics_summary(),
         }
 
 
 def memoize(max_age_hours: int = 24, cache_key_prefix: str = ""):
     """Decorator for memoizing expensive function calls."""
+
     def decorator(func: Callable) -> Callable:
         cache_manager = CacheManager()
 
@@ -216,7 +208,7 @@ def memoize(max_age_hours: int = 24, cache_key_prefix: str = ""):
         def wrapper(*args, **kwargs):
             # Generate cache key
             key = f"{cache_key_prefix}_{func.__name__}_{cache_manager._generate_cache_key(*args, **kwargs)}"
-            
+
             # Try to get from cache
             cached_result = cache_manager.get(key, max_age_hours)
             if cached_result is not None:
@@ -230,6 +222,7 @@ def memoize(max_age_hours: int = 24, cache_key_prefix: str = ""):
             return result
 
         return wrapper
+
     return decorator
 
 
@@ -245,13 +238,13 @@ class FileCache:
     def load_yaml_file(self, file_path: Union[str, Path]) -> Dict[str, Any]:
         """Load and cache YAML file content."""
         self.monitor.start_timer("yaml_load")
-        
+
         try:
             with open(file_path, "r") as f:
                 data = yaml.safe_load(f)
                 if data is None:
                     data = {}
-            
+
             self.monitor.end_timer("yaml_load")
             return data
         except Exception as e:
@@ -262,7 +255,7 @@ class FileCache:
     def parse_job_description(self, job_text: str) -> Dict[str, Any]:
         """Parse and cache job description analysis."""
         self.monitor.start_timer("job_parse")
-        
+
         # This would contain the actual job parsing logic
         # For now, return a simple structure
         result = {
@@ -270,9 +263,9 @@ class FileCache:
             "job_title": "",
             "requirements": [],
             "score": 0.0,
-            "parsed_at": datetime.now().isoformat()
+            "parsed_at": datetime.now().isoformat(),
         }
-        
+
         self.monitor.end_timer("job_parse")
         return result
 
@@ -280,19 +273,19 @@ class FileCache:
     def score_blurb(self, blurb: Dict[str, Any], job_requirements: List[str]) -> float:
         """Score a blurb against job requirements."""
         self.monitor.start_timer("blurb_score")
-        
+
         # Simple scoring logic
         score = 0.0
         blurb_text = blurb.get("text", "").lower()
         blurb_tags = [tag.lower() for tag in blurb.get("tags", [])]
-        
+
         for requirement in job_requirements:
             req_lower = requirement.lower()
             if req_lower in blurb_text:
                 score += 1.0
             if req_lower in blurb_tags:
                 score += 0.5
-        
+
         self.monitor.end_timer("blurb_score")
         return score
 
@@ -309,11 +302,11 @@ class LLMCache:
     def enhance_cover_letter(self, draft: str, job_description: str) -> str:
         """Cache LLM cover letter enhancement."""
         self.monitor.start_timer("llm_enhance")
-        
+
         # This would contain the actual LLM enhancement logic
         # For now, return the draft as-is
         result = draft
-        
+
         self.monitor.end_timer("llm_enhance")
         return result
 
@@ -321,7 +314,7 @@ class LLMCache:
     def extract_requirements(self, job_description: str) -> Dict[str, List[str]]:
         """Cache LLM requirement extraction."""
         self.monitor.start_timer("llm_requirements")
-        
+
         # This would contain the actual LLM requirement extraction
         result = {
             "tools": [],
@@ -329,9 +322,9 @@ class LLMCache:
             "domain_knowledge": [],
             "soft_skills": [],
             "responsibilities": [],
-            "outcomes": []
+            "outcomes": [],
         }
-        
+
         self.monitor.end_timer("llm_requirements")
         return result
 
@@ -354,4 +347,4 @@ def get_file_cache() -> FileCache:
 
 def get_llm_cache() -> LLMCache:
     """Get the global LLM cache instance."""
-    return llm_cache 
+    return llm_cache

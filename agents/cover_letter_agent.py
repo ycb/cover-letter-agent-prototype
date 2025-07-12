@@ -691,7 +691,7 @@ class CoverLetterAgent:
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("job_parsing")
-        
+
         logger.info("Parsing job description...")
 
         # Extract basic information
@@ -734,46 +734,47 @@ class CoverLetterAgent:
     def _extract_company_name(self, text: str) -> str:
         """Robust, multi-pass extraction of company name from job description."""
         import re, collections
-        lines = [line.strip() for line in text.split('\n') if line.strip()]
-        
+
+        lines = [line.strip() for line in text.split("\n") if line.strip()]
+
         # 1. Look for "CompanyName · Location" pattern (most common)
         for line in lines:
-            match = re.match(r'^([A-Z][a-zA-Z0-9&]+)\s*·\s*', line)
+            match = re.match(r"^([A-Z][a-zA-Z0-9&]+)\s*·\s*", line)
             if match:
                 company = match.group(1).strip()
                 print(f"[DEBUG] Extracted company name from 'Company · Location' pattern: {company}")
                 return company
-        
+
         # 2. Ignore 'About the job', use 'About <Name>' if present
         for line in lines:
             if line.lower().startswith("about ") and line.lower() != "about the job":
                 company = line[6:].strip()
                 print(f"[DEBUG] Extracted company name from 'About': {company}")
                 return company
-        
+
         # 3. Look for company name after job title (common pattern)
         for i, line in enumerate(lines):
-            if i > 0 and 'product manager' in line.lower() or 'pm' in line.lower():
+            if i > 0 and "product manager" in line.lower() or "pm" in line.lower():
                 # Check next line for company
                 if i + 1 < len(lines):
                     next_line = lines[i + 1]
                     # Look for capitalized company name
-                    company_match = re.match(r'^([A-Z][a-zA-Z0-9&]+)', next_line)
+                    company_match = re.match(r"^([A-Z][a-zA-Z0-9&]+)", next_line)
                     if company_match:
                         company = company_match.group(1).strip()
                         print(f"[DEBUG] Extracted company name after job title: {company}")
                         return company
-        
+
         # 4. Most frequent capitalized word in the JD (excluding common job words)
-        words = re.findall(r'\b[A-Z][a-zA-Z0-9&]+\b', text)
+        words = re.findall(r"\b[A-Z][a-zA-Z0-9&]+\b", text)
         # Filter out common job-related words
-        job_words = {'Staff', 'Senior', 'Product', 'Manager', 'PM', 'Lead', 'Director', 'VP', 'Engineer', 'Developer'}
+        job_words = {"Staff", "Senior", "Product", "Manager", "PM", "Lead", "Director", "VP", "Engineer", "Developer"}
         filtered_words = [word for word in words if word not in job_words]
         if filtered_words:
             most_common = collections.Counter(filtered_words).most_common(1)[0][0]
             print(f"[DEBUG] Extracted company name from most frequent capitalized word: {most_common}")
             return most_common
-        
+
         # 5. Possessive or 'the Name team'
         for line in lines:
             match = re.match(r"([A-Z][a-zA-Z0-9& ]+)'s ", line)
@@ -786,7 +787,7 @@ class CoverLetterAgent:
                 company = match.group(1).strip()
                 print(f"[DEBUG] Extracted company name from 'the Name team': {company}")
                 return company
-        
+
         # 6. Not found
         print("[DEBUG] Company name not found in JD.")
         return ""
@@ -1174,7 +1175,7 @@ class CoverLetterAgent:
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("blurb_selection")
-        
+
         debug_steps = []
         selected_blurbs = {}
         max_scores = {}
@@ -1209,10 +1210,10 @@ class CoverLetterAgent:
                     }
                 )
         selected_blurbs = self._remove_blurb_duplication(selected_blurbs)
-        
+
         # End performance monitoring
         monitor.end_timer("blurb_selection")
-        
+
         if debug or explain:
             return selected_blurbs, debug_steps
         return selected_blurbs
@@ -2076,63 +2077,61 @@ class CoverLetterAgent:
         if isinstance(selected_blurbs, tuple):
             selected_blurbs = selected_blurbs[0]
         cover_letter = self.generate_cover_letter(job, selected_blurbs, missing_requirements)
-        
+
         # --- LLM ENHANCEMENT STEP ---
         original_draft = cover_letter
         enhancement_result = None
-        
+
         # Check if LLM enhancement is enabled
-        llm_config = self.config.get('llm_enhancement', {})
-        llm_enabled = llm_config.get('enabled', True)
-        
+        llm_config = self.config.get("llm_enhancement", {})
+        llm_enabled = llm_config.get("enabled", True)
+
         if llm_enabled and os.getenv("OPENAI_API_KEY"):
             try:
                 logger.info("Starting LLM enhancement of cover letter draft")
-                
+
                 # Prepare metadata for enhancement
                 metadata = {
-                    'company_name': job.company_name,
-                    'position_title': job.job_title,
-                    'job_type': job.job_type,
-                    'job_score': job.score,
-                    'case_study_tags': [blurb.tags for blurb in selected_blurbs.values() if blurb.tags],
-                    'role_alignment': 'strong' if job.score > 7.0 else 'moderate',
-                    'targeting_score': job.targeting.targeting_score if job.targeting else 0.0,
-                    'go_no_go': job.go_no_go
+                    "company_name": job.company_name,
+                    "position_title": job.job_title,
+                    "job_type": job.job_type,
+                    "job_score": job.score,
+                    "case_study_tags": [blurb.tags for blurb in selected_blurbs.values() if blurb.tags],
+                    "role_alignment": "strong" if job.score > 7.0 else "moderate",
+                    "targeting_score": job.targeting.targeting_score if job.targeting else 0.0,
+                    "go_no_go": job.go_no_go,
                 }
-                
+
                 # Import and use LLM enhancement
                 try:
                     from features.enhance_with_contextual_llm import enhance_with_contextual_llm
-                    enhancement_result = enhance_with_contextual_llm(
-                        jd_text=job_text,
-                        cl_text=cover_letter,
-                        metadata=metadata
-                    )
-                    
+
+                    enhancement_result = enhance_with_contextual_llm(jd_text=job_text, cl_text=cover_letter, metadata=metadata)
+
                     if enhancement_result.confidence_score > 0.5:
                         cover_letter = enhancement_result.enhanced_draft
                         logger.info(f"LLM enhancement applied with confidence: {enhancement_result.confidence_score:.2f}")
                     else:
-                        logger.warning(f"LLM enhancement confidence too low ({enhancement_result.confidence_score:.2f}), keeping original draft")
-                        
+                        logger.warning(
+                            f"LLM enhancement confidence too low ({enhancement_result.confidence_score:.2f}), keeping original draft"
+                        )
+
                 except ImportError:
                     logger.warning("LLM enhancement module not available")
                 except Exception as e:
                     logger.error(f"Error in LLM enhancement: {e}")
-                    
+
             except Exception as e:
                 logger.error(f"Failed to apply LLM enhancement: {e}")
-        
+
         # Save draft comparison if enhancement was applied
         if enhancement_result and enhancement_result.confidence_score > 0.5:
             try:
                 from agents.draft_cover_letter import DraftCoverLetterAgent
-                draft_agent = DraftCoverLetterAgent(user_id=getattr(self, 'user_id', None), config=self.config)
+
+                draft_agent = DraftCoverLetterAgent(user_id=getattr(self, "user_id", None), config=self.config)
                 comparison_file = draft_agent.save_draft_comparison(
-                    original_draft=original_draft,
-                    enhanced_draft=cover_letter,
-                    enhancement_result=enhancement_result
+                    original_draft=original_draft, enhanced_draft=cover_letter, enhancement_result=enhancement_result
                 )
                 logger.info(f"Saved draft comparison to: {comparison_file}")
             except Exception as e:
@@ -2222,7 +2221,7 @@ Draft Cover Letter:
         else:
             # Save locally when Google Drive is not available
             self._save_cover_letter_locally(cover_letter, job)
-        
+
         if debug or explain:
             return job, cover_letter, suggestions, debug_info
         return job, cover_letter, suggestions
@@ -2304,19 +2303,19 @@ Draft Cover Letter:
         try:
             from datetime import datetime
             import os
-            
+
             # Create drafts directory if it doesn't exist
             drafts_dir = Path("drafts")
             drafts_dir.mkdir(exist_ok=True)
-            
+
             # Create filename with timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            safe_company = job.company_name.replace(' ', '_').replace('/', '_')[:30]
-            safe_position = job.job_title.replace(' ', '_').replace('/', '_')[:30]
-            
+            safe_company = job.company_name.replace(" ", "_").replace("/", "_")[:30]
+            safe_position = job.job_title.replace(" ", "_").replace("/", "_")[:30]
+
             filename = f"{safe_company}_{safe_position}_{timestamp}.txt"
             filepath = drafts_dir / filename
-            
+
             # Add metadata header
             metadata_header = f"""# Cover Letter Draft
 Company: {job.company_name}
@@ -2325,16 +2324,16 @@ Score: {job.score:.2f}
 Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
 """
-            
+
             full_content = metadata_header + cover_letter
-            
+
             # Save the file
-            with open(filepath, 'w', encoding='utf-8') as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(full_content)
-            
+
             logger.info(f"Cover letter saved locally: {filepath}")
             print(f"\n📄 Cover letter saved locally: {filepath}")
-            
+
         except Exception as e:
             logger.error(f"Error saving cover letter locally: {e}")
             print(f"\n⚠️  Could not save cover letter locally: {e}")

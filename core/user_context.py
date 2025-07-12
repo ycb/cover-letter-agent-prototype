@@ -46,7 +46,7 @@ class UserContext:
             # Use cached file loading
             file_cache = get_file_cache()
             config = file_cache.load_yaml_file(config_path)
-            
+
             logger.info(f"Loaded config for user: {self.user_id}")
             return config
         except Exception as e:
@@ -63,7 +63,7 @@ class UserContext:
             # Use cached file loading
             file_cache = get_file_cache()
             blurbs = file_cache.load_yaml_file(blurbs_path)
-            
+
             logger.info(f"Loaded blurbs for user: {self.user_id}")
             return blurbs
         except Exception as e:
@@ -80,7 +80,7 @@ class UserContext:
             # Use cached file loading
             file_cache = get_file_cache()
             logic = file_cache.load_yaml_file(logic_path)
-            
+
             logger.info(f"Loaded logic for user: {self.user_id}")
             return logic
         except Exception as e:
@@ -97,7 +97,7 @@ class UserContext:
             # Use cached file loading
             file_cache = get_file_cache()
             targeting = file_cache.load_yaml_file(targeting_path)
-            
+
             logger.info(f"Loaded targeting for user: {self.user_id}")
             return targeting
         except Exception as e:

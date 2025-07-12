@@ -231,40 +231,40 @@ def init_new_user(user_id: str, interactive: bool = False) -> bool:
 def setup_user_config_interactive(user_id: str, user_dir: Path):
     """Interactive setup for user configuration."""
     print_section("Interactive Configuration Setup")
-    
+
     if not confirm_action("Would you like to set up your basic configuration now?"):
         return
-    
+
     print_info("Let's set up your basic information...")
-    
+
     # Basic information
     name = input_with_validation("Enter your full name:", default="[USER_NAME]")
     role = input_with_validation("Enter your current role:", default="product leader")
     location = input_with_validation("Enter your location:", default="San Francisco, CA")
-    
+
     # Industry focus
     print_info("Enter your industry focus areas (comma-separated):")
     industry_input = input_with_validation("Industry focus:", default="clean tech, growth, AI/ML")
     industry_focus = [area.strip() for area in industry_input.split(",")]
-    
+
     # Update config file
     config_file = user_dir / "config.yaml"
     if config_file.exists():
         try:
-            with open(config_file, 'r') as f:
+            with open(config_file, "r") as f:
                 config = yaml.safe_load(f)
-            
+
             # Update basic info
-            config['name'] = name
-            config['role'] = role
-            config['location'] = location
-            config['industry_focus'] = industry_focus
-            
-            with open(config_file, 'w') as f:
+            config["name"] = name
+            config["role"] = role
+            config["location"] = location
+            config["industry_focus"] = industry_focus
+
+            with open(config_file, "w") as f:
                 yaml.dump(config, f, default_flow_style=False, sort_keys=False)
-            
+
             print_success("Configuration updated successfully!")
-            
+
         except Exception as e:
             print_error(f"Failed to update configuration: {e}")
     else:
@@ -305,7 +305,7 @@ def create_user_readme(user_id: str, user_dir: Path):
 def list_users():
     """List all existing users."""
     print_header("Available Users")
-    
+
     users_dir = Path("users")
     if not users_dir.exists():
         print_info("No users found.")
@@ -318,27 +318,23 @@ def list_users():
         for user in sorted(users):
             user_dir = Path("users") / user
             config_file = user_dir / "config.yaml"
-            
+
             if config_file.exists():
                 try:
-                    with open(config_file, 'r') as f:
+                    with open(config_file, "r") as f:
                         config = yaml.safe_load(f)
-                    name = config.get('name', 'Not set')
-                    role = config.get('role', 'Not set')
+                    name = config.get("name", "Not set")
+                    role = config.get("role", "Not set")
                 except:
                     name = "Error reading config"
                     role = "Unknown"
             else:
                 name = "No config"
                 role = "Unknown"
-            
+
             user_data.append([user, name, role])
-        
-        print_table(
-            headers=["User ID", "Name", "Role"],
-            rows=user_data,
-            title="User Directory"
-        )
+
+        print_table(headers=["User ID", "Name", "Role"], rows=user_data, title="User Directory")
     else:
         print_info("No users found.")
         print_info("Create a new user with: python init_user.py <user_id>")
@@ -348,7 +344,7 @@ def print_table(headers, rows, title=None):
     """Print a formatted table."""
     if not rows:
         return
-    
+
     # Calculate column widths
     col_widths = []
     for i in range(len(headers)):
@@ -357,23 +353,20 @@ def print_table(headers, rows, title=None):
             if i < len(row):
                 max_width = max(max_width, len(str(row[i])))
         col_widths.append(max_width)
-    
+
     # Print title
     if title:
         print_section(title)
-    
+
     # Print header
-    header_line = " | ".join(
-        f"{headers[i]:<{col_widths[i]}}" for i in range(len(headers))
-    )
+    header_line = " | ".join(f"{headers[i]:<{col_widths[i]}}" for i in range(len(headers)))
     print(f"  {header_line}")
     print(f"  {'-' * len(header_line)}")
-    
+
     # Print rows
     for row in rows:
         row_line = " | ".join(
-            f"{str(row[i]):<{col_widths[i]}}" if i < len(row) else " " * col_widths[i]
-            for i in range(len(headers))
+            f"{str(row[i]):<{col_widths[i]}}" if i < len(row) else " " * col_widths[i] for i in range(len(headers))
         )
         print(f"  {row_line}")
 

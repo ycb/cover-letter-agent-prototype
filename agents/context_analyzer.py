@@ -152,12 +152,8 @@ class ContextAnalyzer:
 
     def _assess_impact_level(self, action: str, result: str) -> str:
         """Assess the impact level of an achievement."""
-        high_impact_keywords = [
-            "40x", "10,000", "50,000", "millions", "billion", "95%", "30%"
-        ]
-        medium_impact_keywords = [
-            "doubled", "tripled", "50%", "25%", "1000", "5000"
-        ]
+        high_impact_keywords = ["40x", "10,000", "50,000", "millions", "billion", "95%", "30%"]
+        medium_impact_keywords = ["doubled", "tripled", "50%", "25%", "1000", "5000"]
 
         text = (action + " " + result).lower()
 
@@ -182,12 +178,8 @@ class ContextAnalyzer:
             "technical": ["AI", "ML", "algorithm", "system", "platform"],
             "business": ["revenue", "profit", "customer", "market", "business"],
             "innovation": ["launched", "created", "built", "developed", "innovated"],
-            "efficiency": [
-                "optimized", "improved", "reduced", "streamlined", "efficient"
-            ],
-            "trust": [
-                "trust", "transparent", "explainable", "reliable", "secure"
-            ],
+            "efficiency": ["optimized", "improved", "reduced", "streamlined", "efficient"],
+            "trust": ["trust", "transparent", "explainable", "reliable", "secure"],
         }
 
         text_lower = text.lower()
@@ -232,7 +224,7 @@ class ContextAnalyzer:
         achievement_patterns = [
             r"I\s+(?:led|managed|built|scaled|improved|increased)\s+[^.]*?\.",
             r"At\s+[^,]*,\s+I\s+[^.]*?\.",
-            r"My\s+experience\s+includes\s+[^.]*?\."
+            r"My\s+experience\s+includes\s+[^.]*?\.",
         ]
 
         for pattern in achievement_patterns:
@@ -246,15 +238,9 @@ class ContextAnalyzer:
         content_lower = content.lower()
 
         # Tone indicators
-        professional_indicators = [
-            "experience", "expertise", "leadership", "strategy", "management"
-        ]
-        conversational_indicators = [
-            "excited", "passionate", "love", "enjoy", "thrilled"
-        ]
-        technical_indicators = [
-            "algorithm", "system", "platform", "technology", "implementation"
-        ]
+        professional_indicators = ["experience", "expertise", "leadership", "strategy", "management"]
+        conversational_indicators = ["excited", "passionate", "love", "enjoy", "thrilled"]
+        technical_indicators = ["algorithm", "system", "platform", "technology", "implementation"]
 
         professional_score = sum(1 for word in professional_indicators if word in content_lower)
         conversational_score = sum(1 for word in conversational_indicators if word in content_lower)
@@ -294,9 +280,7 @@ class ContextAnalyzer:
         weaknesses = []
 
         # Check for generic language
-        generic_phrases = [
-            "I am excited", "I would love", "I believe", "I think"
-        ]
+        generic_phrases = ["I am excited", "I would love", "I believe", "I think"]
         generic_count = sum(1 for phrase in generic_phrases if phrase.lower() in content.lower())
         if generic_count > 2:
             weaknesses.append("Too many generic phrases")
@@ -336,9 +320,7 @@ class ContextAnalyzer:
                     ),
                     confidence=0.8,
                     source="achievement_analysis",
-                    recommended_action=(
-                        "Include specific metrics and outcomes from relevant achievements"
-                    ),
+                    recommended_action=("Include specific metrics and outcomes from relevant achievements"),
                 )
             )
 
@@ -352,10 +334,7 @@ class ContextAnalyzer:
                 insights.append(
                     StrategicInsight(
                         insight_type="company_specific",
-                        description=(
-                            f"Found {len(successful_letters)} successful applications to "
-                            f"{company_name}"
-                        ),
+                        description=(f"Found {len(successful_letters)} successful applications to " f"{company_name}"),
                         confidence=0.9,
                         source="past_applications",
                         recommended_action="Adapt successful elements from previous applications",
@@ -445,14 +424,11 @@ class ContextAnalyzer:
             return StrategicInsight(
                 insight_type="tone",
                 description=(
-                    f"Recommended tone: {recommended_tone} "
-                    f"(based on {len(successful_letters)} successful applications)"
+                    f"Recommended tone: {recommended_tone} " f"(based on {len(successful_letters)} successful applications)"
                 ),
                 confidence=0.7,
                 source="past_success_analysis",
-                recommended_action=(
-                    f"Use {recommended_tone} tone throughout the cover letter"
-                ),
+                recommended_action=(f"Use {recommended_tone} tone throughout the cover letter"),
             )
 
         return None

@@ -82,18 +82,18 @@ def save_cover_letter(cover_letter: str, output_file: str):
 def print_job_analysis(job):
     """Print detailed job analysis."""
     print_header("Job Analysis")
-    
+
     analysis_data = {
         "Company": job.company_name or "Not detected",
-        "Position": job.job_title or "Not detected", 
+        "Position": job.job_title or "Not detected",
         "Job Type": job.job_type or "Unknown",
         "Score": f"{job.score:.2f}",
         "Go/No-Go": "✅ GO" if job.go_no_go else "❌ NO-GO",
         "Keywords": ", ".join(job.keywords) if job.keywords else "None",
     }
-    
+
     print_key_value_pairs(analysis_data)
-    
+
     if job.extracted_info.get("requirements"):
         print_section("Requirements Found")
         for req in job.extracted_info["requirements"][:3]:  # Show first 3
@@ -136,18 +136,18 @@ def print_enhancement_log(agent, status: Optional[str] = None):
         return
 
     print_header("Enhancement Log")
-    
+
     # Group by status
     by_status = {}
     for suggestion in suggestions:
-        status_key = suggestion.get('status', 'unknown')
+        status_key = suggestion.get("status", "unknown")
         if status_key not in by_status:
             by_status[status_key] = []
         by_status[status_key].append(suggestion)
-    
+
     for status_key, status_suggestions in by_status.items():
         print_section(f"{status_key.title()} Suggestions ({len(status_suggestions)})")
-        
+
         for suggestion in status_suggestions:
             status_emoji = {"open": "⏳", "accepted": "✅", "rejected": "❌"}
             priority_emoji = {"high": "🔴", "medium": "🟡", "low": "🟢"}
@@ -166,11 +166,11 @@ def print_enhancement_log(agent, status: Optional[str] = None):
 def print_job_targeting(targeting):
     """Print job targeting evaluation results."""
     print_section("Job Targeting Evaluation")
-    
+
     if not targeting:
         print_info("No targeting criteria loaded.")
         return
-    
+
     targeting_data = {
         "Targeting Score": f"{targeting.targeting_score:.2f}",
         "Targeting Go/No-Go": "✅ GO" if targeting.targeting_go_no_go else "❌ NO-GO",
@@ -181,7 +181,7 @@ def print_job_targeting(targeting):
         "Company Stage Match": "✅" if targeting.company_stage_match else "❌",
         "Business Model Match": "✅" if targeting.business_model_match else "❌",
     }
-    
+
     print_key_value_pairs(targeting_data)
 
 
@@ -229,7 +229,7 @@ def main():
     """Main function."""
     # Check dependencies
     check_dependencies()
-    
+
     parser = argparse.ArgumentParser(
         description="Cover Letter Agent - Intelligent cover letter generation",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -239,7 +239,7 @@ Examples:
   %(prog)s --user john -t "Senior PM at TechCorp"    # Process text directly
   %(prog)s --user john --interactive -i job.txt      # Interactive mode
   %(prog)s --user john --log                         # View enhancement log
-        """
+        """,
     )
     parser.add_argument("--user", "-u", required=True, help="User ID (matches users/[id]/)")
     parser.add_argument("--input-file", "-i", help="Input job description file")
@@ -318,7 +318,7 @@ Examples:
     # Process job description with progress indicator
     with ProgressIndicator("Processing job description", 4) as progress:
         progress.update(1, "Parsing job description...")
-        
+
         # Process job description with debug/explain/track flags
         if any([args.debug, args.explain, args.track_enhance]):
             result = agent.process_job_description(
@@ -332,9 +332,9 @@ Examples:
         else:
             job, cover_letter, suggestions = agent.process_job_description(job_text)
             debug_info = None
-        
+
         progress.update(1, "Generating cover letter...")
-        
+
         # Print results
         print_job_analysis(job)
         if job.targeting:
@@ -351,7 +351,7 @@ Examples:
                 print_strategic_insights(contextual_analysis["strategic_insights"])
 
         progress.update(1, "Analyzing context...")
-        
+
         if args.explain or args.debug:
             # Print go/no-go reasoning, blurb selection, and filtering steps
             if debug_info:
@@ -385,8 +385,9 @@ Examples:
     # --- LLM-powered gap analysis and regeneration ---
     # Get API key using security manager
     from core.security import get_security_manager
+
     security_manager = get_security_manager()
-    
+
     try:
         api_key = security_manager.get_secret("OPENAI_API_KEY")
         if api_key:

@@ -67,15 +67,15 @@ class TestErrorHandling(unittest.TestCase):
         config_path = user_dir / "config.yaml"
         with open(config_path, "w") as f:
             f.write("invalid: yaml: content: [")
-        
+
         blurbs_path = user_dir / "blurbs.yaml"
         with open(blurbs_path, "w") as f:
             f.write("valid: content")
-        
+
         logic_path = user_dir / "blurb_logic.yaml"
         with open(logic_path, "w") as f:
             f.write("valid: content")
-        
+
         targeting_path = user_dir / "job_targeting.yaml"
         with open(targeting_path, "w") as f:
             f.write("valid: content")
@@ -117,6 +117,7 @@ class TestErrorHandling(unittest.TestCase):
     def test_config_validation_on_empty(self):
         """Test that config validation fails on empty config."""
         from core.config_manager import ConfigManager, ConfigurationError
+
         user_dir = Path("users") / "test_empty_yaml"
         ctx = UserContext("test_empty_yaml")
         config_manager = ConfigManager("test_empty_yaml", config_dir=Path("data"))

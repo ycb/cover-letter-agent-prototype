@@ -13,6 +13,7 @@ from pathlib import Path
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
@@ -21,15 +22,16 @@ except ImportError:
 project_root = Path(__file__).parent
 sys.path.append(str(project_root))
 
+
 def test_llm_enhancement():
     """Test the LLM enhancement functionality."""
-    
+
     # Check if OpenAI API key is available
     if not os.getenv("OPENAI_API_KEY"):
         print("❌ OPENAI_API_KEY not found in environment")
         print("Set it with: export OPENAI_API_KEY='your-key-here'")
         return False
-    
+
     # Test job description
     job_description = """
 Senior Product Manager - AI/ML
@@ -43,7 +45,7 @@ Requirements:
 - Strong technical background
 - Excellent communication skills
 """
-    
+
     # Test cover letter draft
     cover_letter_draft = """
 Dear Hiring Manager,
@@ -59,55 +61,51 @@ I look forward to discussing how I can help AudioEye continue to innovate in the
 Best regards,
 [Your Name]
 """
-    
+
     # Test metadata
     metadata = {
-        'company_name': 'AudioEye',
-        'position_title': 'Senior Product Manager - AI/ML',
-        'job_type': 'ai_ml',
-        'job_score': 9.0,
-        'case_study_tags': ['ai_ml', 'accessibility'],
-        'role_alignment': 'strong',
-        'targeting_score': 15.0,
-        'go_no_go': True
+        "company_name": "AudioEye",
+        "position_title": "Senior Product Manager - AI/ML",
+        "job_type": "ai_ml",
+        "job_score": 9.0,
+        "case_study_tags": ["ai_ml", "accessibility"],
+        "role_alignment": "strong",
+        "targeting_score": 15.0,
+        "go_no_go": True,
     }
-    
+
     try:
         # Import and test LLM enhancement
         from features.enhance_with_contextual_llm import enhance_with_contextual_llm
-        
+
         print("🤖 Testing LLM enhancement...")
         print(f"📄 Job Description: {len(job_description)} characters")
         print(f"📝 Cover Letter Draft: {len(cover_letter_draft)} characters")
         print(f"🏢 Company: {metadata['company_name']}")
-        
-        result = enhance_with_contextual_llm(
-            jd_text=job_description,
-            cl_text=cover_letter_draft,
-            metadata=metadata
-        )
-        
+
+        result = enhance_with_contextual_llm(jd_text=job_description, cl_text=cover_letter_draft, metadata=metadata)
+
         print(f"\n✅ LLM Enhancement Results:")
         print(f"Confidence Score: {result.confidence_score:.2f}")
         print(f"Changes Made: {len(result.changes_made)}")
-        
+
         if result.changes_made:
             print("\nChanges:")
             for change in result.changes_made:
                 print(f"  • {change}")
-        
+
         print(f"\nAnalysis: {result.analysis_summary}")
-        
+
         print(f"\nOriginal Length: {len(result.original_draft)} characters")
         print(f"Enhanced Length: {len(result.enhanced_draft)} characters")
-        
+
         if result.confidence_score > 0.5:
             print("\n✅ Enhancement successful!")
             return True
         else:
             print("\n⚠️ Enhancement confidence too low")
             return False
-            
+
     except ImportError as e:
         print(f"❌ Import error: {e}")
         return False
@@ -118,4 +116,4 @@ Best regards,
 
 if __name__ == "__main__":
     success = test_llm_enhancement()
-    sys.exit(0 if success else 1) 
+    sys.exit(0 if success else 1)

@@ -155,7 +155,7 @@ class ConfigManager:
             # Use cached file loading
             file_cache = get_file_cache()
             config = file_cache.load_yaml_file(config_file)
-            
+
             return config
         except Exception as e:
             logger.error(f"Unexpected error loading user config {config_file}: {e}")
@@ -172,7 +172,7 @@ class ConfigManager:
             # Use cached file loading
             file_cache = get_file_cache()
             config = file_cache.load_yaml_file(config_file)
-            
+
             return config
         except Exception as e:
             logger.error(f"Unexpected error loading global config {config_file}: {e}")

@@ -137,7 +137,7 @@ class TestConfigManagement(unittest.TestCase):
         self.assertTrue(config["llm"]["enabled"])
         self.assertEqual(config["llm"]["model"], "gpt-4")
         self.assertEqual(config["llm"]["temperature"], 0.9)
-        
+
         # Clear cache to ensure fresh load
         config_manager._config_cache.clear()
         self.assertEqual(config["profile"]["resume_file"], "my_resume.pdf")

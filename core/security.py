@@ -52,16 +52,16 @@ class SecurityManager:
     def get_secret(self, secret_name: str, default: Optional[str] = None) -> Optional[str]:
         """Get a secret from environment variables."""
         value = os.getenv(secret_name, default)
-        
+
         if secret_name in self.required_secrets and not value:
             logger.error(f"Required secret '{secret_name}' not found in environment")
             raise SecurityError(f"Required secret '{secret_name}' not found")
-        
+
         if value:
             logger.debug(f"Retrieved secret '{secret_name}' from environment")
         else:
             logger.debug(f"Secret '{secret_name}' not found (optional: {secret_name not in self.required_secrets})")
-        
+
         return value
 
     def validate_secret_format(self, secret_name: str, value: str) -> bool:
@@ -89,16 +89,18 @@ class SecurityManager:
             return []
 
         found_secrets = []
-        
+
         for secret_type, pattern in self.secret_patterns.items():
             matches = pattern.findall(content)
             for match in matches:
-                found_secrets.append({
-                    "type": secret_type,
-                    "value": match[:10] + "..." if len(match) > 10 else match,
-                    "file": str(file_path),
-                    "line": self._find_line_number(content, match)
-                })
+                found_secrets.append(
+                    {
+                        "type": secret_type,
+                        "value": match[:10] + "..." if len(match) > 10 else match,
+                        "file": str(file_path),
+                        "line": self._find_line_number(content, match),
+                    }
+                )
 
         return found_secrets
 
@@ -112,25 +114,18 @@ class SecurityManager:
 
     def audit_secrets(self, directory: Path) -> Dict[str, List[Dict[str, str]]]:
         """Audit a directory for secrets."""
-        audit_results = {
-            "secrets_found": [],
-            "files_scanned": 0,
-            "potential_issues": []
-        }
+        audit_results = {"secrets_found": [], "files_scanned": 0, "potential_issues": []}
 
         # Files to scan
         scan_extensions = {".py", ".yaml", ".yml", ".json", ".md", ".txt"}
-        skip_patterns = {
-            "__pycache__", ".git", "venv", "env", ".pytest_cache",
-            "node_modules", ".cache", "build", "dist"
-        }
+        skip_patterns = {"__pycache__", ".git", "venv", "env", ".pytest_cache", "node_modules", ".cache", "build", "dist"}
 
         for file_path in directory.rglob("*"):
             if file_path.is_file():
                 # Skip certain directories and files
                 if any(pattern in str(file_path) for pattern in skip_patterns):
                     continue
-                
+
                 if file_path.suffix in scan_extensions:
                     audit_results["files_scanned"] += 1
                     secrets = self.scan_for_secrets(file_path)
@@ -191,7 +186,7 @@ class EnvironmentConfig:
         """Register required and optional secrets."""
         # Required secrets
         self.security_manager.register_required_secret("OPENAI_API_KEY")
-        
+
         # Optional secrets
         self.security_manager.register_optional_secret("GOOGLE_CREDENTIALS_FILE")
         self.security_manager.register_optional_secret("GOOGLE_FOLDER_ID")
@@ -200,7 +195,7 @@ class EnvironmentConfig:
     def load_environment_config(self) -> Dict[str, str]:
         """Load configuration from environment variables."""
         config = {}
-        
+
         # Load required secrets
         try:
             config["openai_api_key"] = self.security_manager.get_secret("OPENAI_API_KEY")
@@ -218,7 +213,7 @@ class EnvironmentConfig:
     def validate_config(self, config: Dict[str, str]) -> List[str]:
         """Validate configuration for security issues."""
         issues = []
-        
+
         # Check OpenAI API key
         if config.get("openai_api_key"):
             if not self.security_manager.validate_secret_format("OPENAI_API_KEY", config["openai_api_key"]):
@@ -251,22 +246,22 @@ class SecretsValidator:
             "audit_results": self.security_manager.audit_secrets(project_dir),
             "environment_config": self._validate_environment(),
             "file_permissions": self._check_critical_files(project_dir),
-            "overall_score": 0
+            "overall_score": 0,
         }
-        
+
         # Calculate security score
         score = 100
-        
+
         # Deduct points for found secrets
         if results["audit_results"]["secrets_found"]:
             score -= len(results["audit_results"]["secrets_found"]) * 10
-        
+
         # Deduct points for permission issues
         if results["file_permissions"]["issues"]:
             score -= len(results["file_permissions"]["issues"]) * 5
-        
+
         results["overall_score"] = max(0, score)
-        
+
         return results
 
     def _validate_environment(self) -> Dict[str, any]:
@@ -274,12 +269,8 @@ class SecretsValidator:
         env_config = EnvironmentConfig()
         config = env_config.load_environment_config()
         issues = env_config.validate_config(config)
-        
-        return {
-            "config": config,
-            "issues": issues,
-            "valid": len(issues) == 0
-        }
+
+        return {"config": config, "issues": issues, "valid": len(issues) == 0}
 
     def _check_critical_files(self, project_dir: Path) -> Dict[str, any]:
         """Check permissions on critical files."""
@@ -288,19 +279,15 @@ class SecretsValidator:
             project_dir / ".env",
             project_dir / "users" / "peter" / "config.yaml",
         ]
-        
+
         issues = []
         for file_path in critical_files:
             if file_path.exists():
                 permissions = self.security_manager.check_file_permissions(file_path)
                 if not permissions["owner_only"]:
                     issues.append(f"Insecure permissions on {file_path}")
-        
-        return {
-            "files_checked": len(critical_files),
-            "issues": issues,
-            "secure": len(issues) == 0
-        }
+
+        return {"files_checked": len(critical_files), "issues": issues, "secure": len(issues) == 0}
 
 
 # Global instances
@@ -326,4 +313,4 @@ def get_secrets_validator() -> SecretsValidator:
 
 def validate_secrets() -> Dict[str, any]:
     """Validate all secrets and configuration."""
-    return secrets_validator.validate_project_security(Path(".")) 
+    return secrets_validator.validate_project_security(Path("."))
