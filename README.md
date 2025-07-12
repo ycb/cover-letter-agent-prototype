@@ -216,7 +216,56 @@ job_classification:
     min_keyword_count: 1
 ```
 
-## 🤖 AI Enhancement
+## LLM Integration
+
+The agent now includes AI-powered enhancement that improves cover letter quality while preserving factual accuracy.
+
+### Configuration
+
+Add LLM settings to your `agent_config.yaml`:
+
+```yaml
+llm_enhancement:
+  enabled: true
+  model: "gpt-4o-mini"
+  temperature: 0.3
+  confidence_threshold: 0.5
+  preserve_metrics: true
+  preserve_user_voice: true
+```
+
+### Testing LLM Enhancement
+
+Test the LLM enhancement functionality:
+
+```bash
+# Test with mock data (no API key required)
+python test_llm_mock.py
+
+# Test with real API calls (requires OpenAI API key)
+python test_llm_enhancement.py
+
+# Test with CLI tool
+python cli/test_llm_enhancement.py --jd job.txt --cl draft.txt
+```
+
+### LLM Enhancement Features
+
+- **Post-Draft Enhancement**: Improves clarity, flow, and tone after blurb assembly
+- **Truth Preservation**: Never changes factual claims, metrics, or achievements
+- **Contextual Alignment**: Uses job description and metadata for targeted improvements
+- **Confidence Scoring**: Only applies enhancements above a confidence threshold
+- **Draft Comparison**: Saves both original and enhanced drafts for review
+- **Safety Features**: Validates changes and warns about potential issues
+
+```yaml
+# LLM Enhancement Configuration
+llm_enhance: true
+llm_model: "gpt-4"
+llm_temperature: 0.5
+llm_preserve_truth: true
+llm_add_comments: true
+```
 
 ### How It Works
 

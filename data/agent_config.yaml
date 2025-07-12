@@ -123,3 +123,41 @@ llm_model: "gpt-4"
 llm_temperature: 0.5
 llm_preserve_truth: true
 llm_add_comments: true
+
+# Agent Configuration
+# =================
+
+# Google Drive Integration
+google_drive:
+  enabled: true
+  credentials_file: "credentials.json"
+  folder_id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
+
+# LLM Enhancement Configuration
+llm_enhancement:
+  enabled: true
+  model: "gpt-4o-mini"
+  temperature: 0.3
+  max_tokens: 2000
+  confidence_threshold: 0.5
+  
+  # Enhancement preferences
+  preserve_metrics: true
+  preserve_user_voice: true
+  focus_on_alignment: true
+  
+  # Safety features
+  validate_facts: true
+  preserve_truth: true
+  warn_on_changes: true
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Performance Configuration
+performance:
+  max_concurrent_requests: 5
+  timeout_seconds: 30
+  retry_attempts: 3
