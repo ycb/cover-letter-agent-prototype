@@ -13,6 +13,15 @@ NEW_BLURBS_PATH = os.path.join(os.path.dirname(__file__), "../data/new_blurbs_st
 
 # --- LLM Integration ---
 def extract_requirements_llm(jd_text: str, api_key: str) -> Dict[str, List[str]]:
+    # Import configuration
+    from config.llm_config import should_use_mock, get_model_for_task, get_temperature_for_task, get_max_tokens_for_task, strip_job_description
+    from core.cache import use_llm_cache, create_mock_response, log_llm_io
+    
+    # Check if mock mode is enabled
+    if should_use_mock():
+        print("🤖 Using mock mode for requirements extraction")
+        return create_mock_response("requirements_extraction")
+    
     import openai
 
     # Validate API key format
@@ -24,6 +33,9 @@ def extract_requirements_llm(jd_text: str, api_key: str) -> Dict[str, List[str]]
         raise ValueError("Invalid OpenAI API key format")
 
     client = openai.OpenAI(api_key=api_key)
+    
+    # Strip job description to reduce tokens
+    stripped_jd = strip_job_description(jd_text)
     prompt = f"""
 Extract all explicit and implicit requirements from this job description. 
 Categorize them as: tools, team_dynamics, domain_knowledge, soft_skills, responsibilities, outcomes.
@@ -37,9 +49,23 @@ Be SPECIFIC in your extraction:
 Output as JSON with each category as a list of strings.
 
 Job Description:
-{jd_text}
+{stripped_jd}
 """
-    response = client.chat.completions.create(model="gpt-4", messages=[{"role": "user", "content": prompt}], temperature=0)
+    
+    # Log the prompt for debugging
+    log_llm_io(prompt, "", "requirements_extraction_debug.jsonl")
+    
+    # Use appropriate model and settings
+    model = get_model_for_task("gap_analysis")
+    temperature = get_temperature_for_task("gap_analysis")
+    max_tokens = get_max_tokens_for_task("gap_analysis")
+    
+    response = client.chat.completions.create(
+        model=model, 
+        messages=[{"role": "user", "content": prompt}], 
+        temperature=temperature,
+        max_tokens=max_tokens
+    )
     content = response.choices[0].message.content
     if content is None:
         raise ValueError("No content returned from OpenAI API for requirements extraction.")
@@ -55,6 +81,15 @@ Job Description:
 
 
 def gap_analysis_llm(jd_requirements: Dict[str, List[str]], cover_letter: str, api_key: str) -> Dict[str, Tuple[str, str]]:
+    # Import configuration
+    from config.llm_config import should_use_mock, get_model_for_task, get_temperature_for_task, get_max_tokens_for_task
+    from core.cache import use_llm_cache, create_mock_response, log_llm_io
+    
+    # Check if mock mode is enabled
+    if should_use_mock():
+        print("🤖 Using mock mode for gap analysis")
+        return create_mock_response("gap_analysis")
+    
     import openai
 
     # Validate API key format
@@ -99,7 +134,20 @@ Output as a JSON object where each requirement is a key and the value is an obje
 Requirements: {json.dumps(jd_requirements)}
 Cover Letter: {cover_letter}
 """
-    response = client.chat.completions.create(model="gpt-4", messages=[{"role": "user", "content": prompt}], temperature=0)
+    # Log the prompt for debugging
+    log_llm_io(prompt, "", "gap_analysis_debug.jsonl")
+    
+    # Use appropriate model and settings
+    model = get_model_for_task("gap_analysis")
+    temperature = get_temperature_for_task("gap_analysis")
+    max_tokens = get_max_tokens_for_task("gap_analysis")
+    
+    response = client.chat.completions.create(
+        model=model, 
+        messages=[{"role": "user", "content": prompt}], 
+        temperature=temperature,
+        max_tokens=max_tokens
+    )
     content = response.choices[0].message.content
     if content is None:
         raise ValueError("No content returned from OpenAI API for gap analysis.")
