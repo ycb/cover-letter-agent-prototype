@@ -12,11 +12,11 @@ google_drive:
   folder_id: ''
   credentials_file: credentials.json
   materials:
-    presentations: presentations/
-    spreadsheets: spreadsheets/
-    cover_letters: cover_letters/
-    case_studies: case_studies/
-    drafts: drafts/
+    cover_letters: 0B9PEBLmrpxxiX29qaHlUb3RLME0
+    portfolio_work: 0B9PEBLmrpxxibkNlaTZmSVB6MUE
+    presentations: 1cNjWcSc7c2a9OVpGTFblQ7XXZdwnQxUG
+    job_tracker: 1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc
+    star_stories: 16zJzR_XVZtdtuQfacZXRZm9yHHyKNWkp6YTeueI085E
 profile:
   resume_file: resume.pdf
   linkedin_url: https://linkedin.com/in/[username]
