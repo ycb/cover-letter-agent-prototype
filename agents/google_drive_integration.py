@@ -5,17 +5,20 @@ Google Drive Integration
 
 Module for accessing supporting materials (presentations, spreadsheets,
 past cover letters) from Google Drive and uploading cover letter drafts.
+Uses OAuth delegation for regular Google accounts.
 """
 
 import logging
 import os
+import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 try:
     import io
-
-    from google.oauth2 import service_account
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from google.auth.transport.requests import Request
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
 
@@ -28,34 +31,53 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+# OAuth 2.0 scopes
+SCOPES = ['https://www.googleapis.com/auth/drive']
+
 
 class GoogleDriveIntegration:
-    """Handles Google Drive integration for accessing supporting materials and uploading drafts."""
+    """Handles Google Drive integration using OAuth delegation for regular Google accounts."""
 
     def __init__(self, credentials_file: str = "credentials.json", folder_id: str = ""):
-        """Initialize Google Drive integration."""
+        """Initialize Google Drive integration with OAuth."""
         self.credentials_file = credentials_file
         self.folder_id = folder_id
         self.service = None
         self.available = False
+        self.token_file = "token.json"
 
         if GOOGLE_DRIVE_AVAILABLE:
             self._initialize_service()
 
     def _initialize_service(self):
-        """Initialize Google Drive service."""
+        """Initialize Google Drive service with OAuth authentication."""
         try:
-            if not os.path.exists(self.credentials_file):
-                logger.warning(f"Credentials file not found: {self.credentials_file}")
-                return
+            creds = None
+            
+            # Load existing token
+            if os.path.exists(self.token_file):
+                creds = Credentials.from_authorized_user_file(self.token_file, SCOPES)
+            
+            # If no valid credentials available, let the user log in
+            if not creds or not creds.valid:
+                if creds and creds.expired and creds.refresh_token:
+                    creds.refresh(Request())
+                else:
+                    if not os.path.exists(self.credentials_file):
+                        logger.error(f"OAuth credentials file not found: {self.credentials_file}")
+                        logger.info("Please download OAuth credentials from Google Cloud Console")
+                        return
+                    
+                    flow = InstalledAppFlow.from_client_secrets_file(self.credentials_file, SCOPES)
+                    creds = flow.run_local_server(port=0)
+                
+                # Save the credentials for the next run
+                with open(self.token_file, 'w') as token:
+                    token.write(creds.to_json())
 
-            credentials = service_account.Credentials.from_service_account_file(
-                self.credentials_file, scopes=["https://www.googleapis.com/auth/drive"]
-            )
-
-            self.service = build("drive", "v3", credentials=credentials)
+            self.service = build("drive", "v3", credentials=creds)
             self.available = True
-            logger.info("Google Drive service initialized successfully")
+            logger.info("Google Drive service initialized successfully with OAuth")
 
         except Exception as e:
             logger.error(f"Failed to initialize Google Drive service: {e}")
@@ -287,32 +309,22 @@ Generated: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
 
 def setup_google_drive_instructions():
-    """Print instructions for setting up Google Drive integration."""
+    """Print instructions for setting up Google Drive integration with OAuth."""
     print("\n" + "=" * 60)
-    print("GOOGLE DRIVE SETUP INSTRUCTIONS")
+    print("GOOGLE DRIVE SETUP INSTRUCTIONS (OAuth)")
     print("=" * 60)
     print("1. Go to Google Cloud Console (https://console.cloud.google.com)")
     print("2. Create a new project or select an existing one")
     print("3. Enable the Google Drive API")
-    print("4. Create a Service Account:")
-    print("   - Go to 'IAM & Admin' > 'Service Accounts'")
-    print("   - Click 'Create Service Account'")
-    print("   - Give it a name like 'cover-letter-agent'")
-    print("   - Grant 'Editor' role")
-    print("5. Create and download credentials:")
-    print("   - Click on your service account")
-    print("   - Go to 'Keys' tab")
-    print("   - Click 'Add Key' > 'Create new key'")
-    print("   - Choose JSON format")
-    print("   - Download the file as 'credentials.json'")
-    print("6. Share your Google Drive folder:")
-    print("   - Right-click your materials folder in Google Drive")
-    print("   - Click 'Share'")
-    print("   - Add your service account email (found in credentials.json)")
-    print("   - Give it 'Editor' access")
-    print("7. Update agent_config.yaml with your folder ID")
-    print("   - Get folder ID from the URL when you open the folder")
-    print("   - Enable Google Drive integration")
+    print("4. Create OAuth 2.0 credentials:")
+    print("   - Go to 'APIs & Services' > 'Credentials'")
+    print("   - Click 'Create Credentials' > 'OAuth 2.0 Client IDs'")
+    print("   - Choose 'Desktop application'")
+    print("   - Download the JSON file as 'credentials.json'")
+    print("5. Place credentials.json in the project root")
+    print("6. Run the agent - it will open a browser for authentication")
+    print("7. Grant permissions to access your Google Drive")
+    print("8. Update agent_config.yaml with your folder ID")
     print("\nRequired packages:")
     print("pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client")
     print("=" * 60)

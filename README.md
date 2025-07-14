@@ -411,6 +411,10 @@ python scripts/run_cover_letter_agent.py --user your_name --update-status JOB_00
 - **Easy Access**: All drafts are available in your Google Drive folder under `drafts/`
 - **Separation**: Drafts are kept separate from approved/submitted cover letters
 
+### ⚠️ Important: OAuth Authentication
+
+The integration uses OAuth 2.0 for regular Google accounts (no storage quota limitations). See **[Google Drive Setup Guide](docs/GOOGLE_DRIVE_FIX.md)** for setup instructions.
+
 ### Setup
 
 1. **Run the setup script**:
@@ -421,12 +425,18 @@ python scripts/run_cover_letter_agent.py --user your_name --update-status JOB_00
 2. **Follow the interactive setup**:
    - Create Google Cloud project
    - Enable Google Drive API
-   - Create service account
-   - Download credentials
-   - Share your Google Drive folder
+   - Create OAuth 2.0 credentials
+   - Download credentials.json
+   - Create Google Drive folder
    - Update configuration
 
-3. **Test integration**:
+3. **First-time authentication**:
+   ```bash
+   # Run the agent - browser will open for Google authentication
+   python scripts/run_cover_letter_agent.py --user your_name -i job_description.txt
+   ```
+
+4. **Test integration**:
    ```bash
    python scripts/test_drive_upload.py
    ```
@@ -440,6 +450,8 @@ google_drive:
   enabled: true
   folder_id: "your_google_drive_folder_id"
   credentials_file: "credentials.json"
+  use_oauth: true
+  token_file: "token.json"
   materials:
     presentations: "presentations/"
     spreadsheets: "spreadsheets/"
