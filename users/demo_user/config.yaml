@@ -12,20 +12,17 @@ google_drive:
   folder_id: ''
   credentials_file: credentials.json
   materials:
-    cover_letters: 0B9PEBLmrpxxiX29qaHlUb3RLME0
-    portfolio_work: 0B9PEBLmrpxxibkNlaTZmSVB6MUE
-    presentations: 1cNjWcSc7c2a9OVpGTFblQ7XXZdwnQxUG
-    job_tracker: 1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc
-    star_stories: 16zJzR_XVZtdtuQfacZXRZm9yHHyKNWkp6YTeueI085E
+    presentations: presentations/
+    spreadsheets: spreadsheets/
+    cover_letters: cover_letters/
+    case_studies: case_studies/
+    drafts: drafts/
 profile:
-  resume_file: resume.pdf
-  linkedin_url: https://linkedin.com/in/[username]
-  portfolio_url: https://[username].com/
-  github_url: https://github.com/[username]
   achievements:
-  - Add your key achievements here
-  - Quantify your impact with metrics
-  - Focus on leadership and growth
+    - Add your key achievements here
+    - Quantify your impact with metrics
+    - Focus on leadership and growth
+  resume_file: resume.pdf
 cover_letter:
   personal_brand:
     tagline: Product leader focused on [your focus area]
@@ -46,3 +43,8 @@ pm_inference:
   leverage_ratio: null
   notes: null
 work_samples_file: work_samples.yaml
+external_profiles:
+  linkedin: https://www.linkedin.com/in/username
+  portfolio_url: https://janedoe.com
+  blog_url: https://medium.com/@janedoe
+  github: https://github.com/janedoe

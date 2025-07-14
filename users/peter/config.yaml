@@ -63,11 +63,11 @@ google_drive:
   enabled: true
   folder_id: 1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x
   materials:
-    case_studies: case_studies/
-    cover_letters: cover_letters/
-    drafts: drafts/
-    presentations: presentations/
-    spreadsheets: spreadsheets/
+    cover_letters: 0B9PEBLmrpxxiX29qaHlUb3RLME0
+    portfolio_work: 0B9PEBLmrpxxibkNlaTZmSVB6MUE
+    presentations: 1cNjWcSc7c2a9OVpGTFblQ7XXZdwnQxUG
+    job_tracker: 1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc
+    star_stories: 16zJzR_XVZtdtuQfacZXRZm9yHHyKNWkp6YTeueI085E
 integrations:
   google_drive_setup:
     steps:
@@ -112,7 +112,11 @@ profile:
     team, $4B valuation'
   - 'Improved customer care for 20M Samsung users: +160% MAUs, +200% engagement, NLP
     chatbot'
-  github_url: https://github.com/ycb
-  linkedin_url: https://linkedin.com/in/pspan
-  portfolio_url: https://peterspannagle.com/
   resume_file: Peter Spannagle-Resume.pdf
+
+external_profiles:
+  linkedin: https://www.linkedin.com/in/pspan
+  portfolio_url: https://peterspannagle.com/
+  github: https://github.com/ycb
+  substack: https://roadmaps.substack.com/
+  medium: https://medium.com/@spatialthink
