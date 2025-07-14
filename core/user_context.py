@@ -35,6 +35,8 @@ class UserContext:
         self.logic = self._load_logic()
         self.targeting = self._load_targeting()
         self.resume_path = self._get_resume_path()
+        self.pm_inference = self.config.get("pm_inference", {})
+        self.work_samples = self._load_work_samples()
 
     def _load_config(self) -> ConfigDict:
         """Load user configuration."""
@@ -104,6 +106,22 @@ class UserContext:
             logger.error(f"Unexpected error loading targeting for user {self.user_id}: {e}")
             raise FileLoadError(f"Failed to load targeting for user {self.user_id}: {e}")
 
+    def _load_work_samples(self):
+        """Load user work samples (STAR stories, case studies, etc.)."""
+        work_samples_file = self.config.get("work_samples_file", "work_samples.yaml")
+        work_samples_path = self.user_dir / work_samples_file
+        if not work_samples_path.exists():
+            logger.warning(f"Work samples file not found: {work_samples_path}")
+            return []
+        try:
+            file_cache = get_file_cache()
+            work_samples = file_cache.load_yaml_file(work_samples_path)
+            logger.info(f"Loaded work samples for user: {self.user_id}")
+            return work_samples
+        except Exception as e:
+            logger.error(f"Unexpected error loading work samples for user {self.user_id}: {e}")
+            return []
+
     def _get_resume_path(self) -> Optional[Path]:
         """Get user resume path."""
         resume_path = self.user_dir / "resume.pdf"
@@ -151,6 +169,14 @@ class UserContext:
         examples_dir = self.user_dir / "examples"
         examples_dir.mkdir(exist_ok=True)
         return examples_dir
+
+    def get_pm_inference(self) -> Dict:
+        """Get PM inference results for user."""
+        return self.pm_inference
+
+    def get_work_samples(self) -> List[Dict]:
+        """Get user's work samples (STAR stories, case studies, etc.)."""
+        return self.work_samples
 
     def save_enhancement_log(self, log_data: List[EnhancementLogEntry]) -> None:
         """Save enhancement log for user."""

@@ -552,3 +552,20 @@ To use the LLM-powered enhancement features, you must provide your OpenAI API ke
 
 3. **Do not commit your real `.env` file to version control.**
    - Use `.env.example` as a template for sharing setup instructions. 
+
+## PM Role + Level Inference System (pm-levels branch)
+
+This feature introduces a structured system for inferring a user's Product Manager (PM) role type, level, archetype, and core competencies using resume, LinkedIn, and work samples (STAR stories, case studies, shipped products, etc.).
+
+- **Data Model:**
+  - `pm_inference` section in user config stores the latest inference results.
+  - `work_samples.yaml` stores structured STAR stories and case studies, each with metadata (title, type, source, role, tags, impact, etc.).
+- **UserContext:**
+  - Now loads and exposes `pm_inference` and `work_samples` for each user.
+- **Inference Logic:**
+  - `agents/pm_inference.py` scaffolds an LLM-based inference function to analyze user data and return a PM profile.
+- **Next Steps:**
+  - Integrate inference into onboarding and data upload flows.
+  - Add user feedback and LLM prompt logic.
+
+This system enables personalized cover letter generation, benchmarking, and gap analysis based on a user's real experience and strengths. 

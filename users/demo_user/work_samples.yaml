@@ -1,0 +1,19 @@
+# Work Samples (STAR stories, case studies, shipped products, etc.)
+- title: "Growth System for SaaS Platform"
+  type: "shipped-product"
+  source: "resume"
+  role: "PM"
+  description: "Led cross-functional team to deliver 10x user growth in 18 months."
+  url: "https://example.com/case-study-1"
+  date: "2022-03"
+  tags: [growth, SaaS, leadership]
+  impact: "Increased MAUs by 210% and revenue by 169%."
+- title: "AI Chatbot for Customer Care"
+  type: "case-study"
+  source: "manual"
+  role: "PM"
+  description: "Designed and launched NLP chatbot for 20M users."
+  url: "https://example.com/case-study-2"
+  date: "2021-07"
+  tags: [AI, chatbot, customer-care]
+  impact: "+160% MAUs, +200% engagement." 

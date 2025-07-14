@@ -38,3 +38,11 @@ cover_letter:
     startup: conversational
     enterprise: professional
     AI_ML: technical
+pm_inference:
+  role_type: null
+  level: null
+  archetype: null
+  competencies: {}
+  leverage_ratio: null
+  notes: null
+work_samples_file: work_samples.yaml
