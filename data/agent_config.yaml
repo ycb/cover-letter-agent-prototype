@@ -132,6 +132,8 @@ google_drive:
   enabled: true
   credentials_file: "credentials.json"
   folder_id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
+  use_oauth: true  # Use OAuth 2.0 instead of service account
+  token_file: "token.json"  # OAuth token file
 
 # LLM Enhancement Configuration
 llm_enhancement:

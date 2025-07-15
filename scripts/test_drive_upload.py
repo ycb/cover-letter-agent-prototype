@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Test Google Drive Upload
-=======================
+Test Google Drive Upload (OAuth)
+===============================
 
-Test script to verify Google Drive upload functionality.
+Test script to verify Google Drive upload functionality using OAuth 2.0.
 """
 
 import sys
@@ -16,16 +16,20 @@ from google_drive_integration import GoogleDriveIntegration
 
 
 def test_drive_upload():
-    """Test uploading a cover letter draft to Google Drive."""
+    """Test uploading a cover letter draft to Google Drive using OAuth."""
 
-    # Initialize Google Drive integration with correct credentials file and folder ID
-    drive = GoogleDriveIntegration("cover-letter-agent-02f33aa315d7.json", "1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x")
+    # Initialize Google Drive integration with OAuth
+    drive = GoogleDriveIntegration(
+        credentials_file="credentials.json", 
+        folder_id="1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x"
+    )
 
     if not drive.available:
         print("❌ Google Drive integration not available")
         print("Make sure you have:")
-        print("1. Google Drive API credentials file")
+        print("1. OAuth credentials.json file (not service account)")
         print("2. Required packages installed: google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client")
+        print("3. Run the agent first to authenticate with Google")
         return False
 
     print("✅ Google Drive integration available")
@@ -46,14 +50,28 @@ linkedin.com/in/pspan"""
     # Test upload
     print("\n📤 Uploading test cover letter to Google Drive...")
 
-    file_id = drive.upload_cover_letter_draft(test_cover_letter, "Test Company", "Senior Product Manager", 8.5)
+    try:
+        file_id = drive.upload_cover_letter_draft(test_cover_letter, "Test Company", "Senior Product Manager", 8.5)
 
-    if file_id:
-        print(f"✅ Successfully uploaded to Google Drive drafts folder with ID: {file_id}")
-        print("📁 File saved in: [Your Drive Folder]/drafts/")
-        return True
-    else:
-        print("❌ Failed to upload to Google Drive")
+        if file_id:
+            print(f"✅ Successfully uploaded to Google Drive drafts folder with ID: {file_id}")
+            print("📁 File saved in: [Your Drive Folder]/drafts/")
+            return True
+        else:
+            print("❌ Failed to upload to Google Drive")
+            print("\n🔧 Troubleshooting:")
+            print("1. Check if you have OAuth credentials (not service account)")
+            print("2. Verify you've authenticated with Google (run agent first)")
+            print("3. Check the error message above for specific issues")
+            print("\n📖 See setup_google_drive.py for OAuth setup instructions")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error during upload: {e}")
+        if "storageQuotaExceeded" in str(e):
+            print("\n🚨 STORAGE QUOTA ISSUE DETECTED!")
+            print("This shouldn't happen with OAuth - check your credentials type.")
+            print("Make sure you're using OAuth 2.0 credentials, not service account.")
         return False
 
 
@@ -63,3 +81,4 @@ if __name__ == "__main__":
         print("\n🎉 Google Drive upload test passed!")
     else:
         print("\n💥 Google Drive upload test failed!")
+        print("\n💡 Need help? Run: python setup_google_drive.py")

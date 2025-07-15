@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Google Drive Setup Script
-========================
+Google Drive Setup Script (OAuth)
+=================================
 
-Interactive script to help set up Google Drive integration for the cover letter agent.
+Interactive script to help set up Google Drive integration using OAuth 2.0
+for regular Google accounts (no storage quota limitations).
 """
 
 import json
@@ -11,9 +12,9 @@ from pathlib import Path
 
 
 def print_setup_instructions():
-    """Print detailed setup instructions."""
+    """Print detailed setup instructions for OAuth."""
     print("\n" + "=" * 60)
-    print("GOOGLE DRIVE SETUP INSTRUCTIONS")
+    print("GOOGLE DRIVE SETUP INSTRUCTIONS (OAuth)")
     print("=" * 60)
     print("Follow these steps to enable Google Drive integration:")
     print()
@@ -22,30 +23,27 @@ def print_setup_instructions():
     print("   - Create a new project or select existing")
     print("   - Enable Google Drive API")
     print()
-    print("2. CREATE SERVICE ACCOUNT:")
-    print("   - Go to 'IAM & Admin' > 'Service Accounts'")
-    print("   - Click 'Create Service Account'")
-    print("   - Name: 'cover-letter-agent'")
-    print("   - Description: 'Service account for cover letter agent'")
-    print("   - Grant 'Editor' role")
+    print("2. CREATE OAUTH 2.0 CREDENTIALS:")
+    print("   - Go to 'APIs & Services' > 'Credentials'")
+    print("   - Click 'Create Credentials' > 'OAuth 2.0 Client IDs'")
+    print("   - Application type: 'Desktop application'")
+    print("   - Name: 'Cover Letter Agent'")
+    print("   - Download the JSON file")
     print()
-    print("3. DOWNLOAD CREDENTIALS:")
-    print("   - Click on your service account")
-    print("   - Go to 'Keys' tab")
-    print("   - Click 'Add Key' > 'Create new key'")
-    print("   - Choose JSON format")
-    print("   - Download as 'credentials.json' to project root")
+    print("3. SETUP CREDENTIALS:")
+    print("   - Rename the downloaded file to 'credentials.json'")
+    print("   - Place it in the project root directory")
     print()
-    print("4. SHARE GOOGLE DRIVE FOLDER:")
-    print("   - Create a folder in Google Drive for your materials")
-    print("   - Right-click folder > 'Share'")
-    print("   - Add your service account email (from credentials.json)")
-    print("   - Give 'Editor' access")
+    print("4. CREATE GOOGLE DRIVE FOLDER:")
+    print("   - Create a folder in your Google Drive for materials")
+    print("   - Right-click folder > 'Share' > 'Copy link'")
+    print("   - Get the folder ID from the URL")
     print()
-    print("5. GET FOLDER ID:")
-    print("   - Open your Google Drive folder in browser")
-    print("   - Copy folder ID from URL")
-    print("   - URL format: https://drive.google.com/drive/folders/FOLDER_ID")
+    print("5. FIRST RUN AUTHENTICATION:")
+    print("   - Run the agent for the first time")
+    print("   - A browser window will open for authentication")
+    print("   - Grant permissions to access your Google Drive")
+    print("   - A token.json file will be created automatically")
     print()
     print("6. UPDATE CONFIGURATION:")
     print("   - Edit data/agent_config.yaml")
@@ -57,28 +55,26 @@ def print_setup_instructions():
     print("=" * 60)
 
 
-# The following is a SAMPLE credentials.json structure for documentation/testing only.
-# DO NOT use real secrets in this file.
 def create_sample_credentials():
-    """Create a sample credentials.json file."""
+    """Create a sample OAuth credentials.json file."""
     sample_credentials = {
-        "type": "service_account",
-        "project_id": "your-project-id",
-        "private_key_id": "your-private-key-id",
-        "private_key": "-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n",
-        "client_email": "your-service-account@your-project.iam.gserviceaccount.com",
-        "client_id": "your-client-id",
-        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        "token_uri": "https://oauth2.googleapis.com/token",
-        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/your-service-account%40your-project.iam.gserviceaccount.com",
+        "installed": {
+            "client_id": "your-client-id.apps.googleusercontent.com",
+            "project_id": "your-project-id",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_secret": "your-client-secret",
+            "redirect_uris": ["http://localhost"]
+        }
     }
 
     with open("credentials.json", "w") as f:
         json.dump(sample_credentials, f, indent=2)
 
     print("✅ Created sample credentials.json file")
-    print("⚠️  Replace with your actual credentials from Google Cloud Console")
+    print("⚠️  Replace with your actual OAuth credentials from Google Cloud Console")
+    print("📖 See setup instructions above for how to get real credentials")
 
 
 def update_agent_config():
@@ -112,6 +108,7 @@ def update_agent_config():
     config["google_drive"]["enabled"] = True
     config["google_drive"]["folder_id"] = folder_id
     config["google_drive"]["credentials_file"] = "credentials.json"
+    config["google_drive"]["use_oauth"] = True  # Mark as using OAuth
 
     # Write updated config
     with open(config_path, "w") as f:
@@ -120,6 +117,7 @@ def update_agent_config():
     print("✅ Updated agent_config.yaml with Google Drive settings")
     print(f"   Folder ID: {folder_id}")
     print("   Enabled: true")
+    print("   Authentication: OAuth 2.0")
 
 
 def test_google_drive_integration():
@@ -144,7 +142,7 @@ def test_google_drive_integration():
                     print(f"   - {file['name']} ({file['mimeType']})")
         else:
             print("❌ Google Drive integration failed")
-            print("   Check your credentials.json and folder permissions")
+            print("   Check your credentials.json and authentication")
 
     except ImportError:
         print("❌ Google Drive dependencies not installed")
@@ -155,7 +153,7 @@ def test_google_drive_integration():
 
 def main():
     """Main setup function."""
-    print("🚀 Google Drive Setup for Cover Letter Agent")
+    print("🚀 Google Drive Setup for Cover Letter Agent (OAuth)")
     print("=" * 60)
 
     while True:
