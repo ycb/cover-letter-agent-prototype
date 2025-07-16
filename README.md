@@ -135,6 +135,7 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - Blurb selection performance improvements
 - LLM API call caching and memoization
 - Comprehensive performance monitoring and metrics
+- **File-based YAML config caching is automatically invalidated when the file changes (mtime-based cache key)**
 
 ## 🏗️ Architecture
 
@@ -569,3 +570,22 @@ This feature introduces a structured system for inferring a user's Product Manag
   - Add user feedback and LLM prompt logic.
 
 This system enables personalized cover letter generation, benchmarking, and gap analysis based on a user's real experience and strengths. 
+
+## Work Sample Workflow: Staging and Source of Truth
+
+- `work_samples.yaml`: **Staging area** for new, imported, or LLM-generated work samples (STAR stories, case studies, shipped products, etc.).
+  - Used for enrichment, analysis, and as a holding area for items pending review.
+  - May include raw, unapproved, or experimental content.
+  - Not used directly in cover letter generation.
+
+- `blurbs.yaml`: **Source of truth** for approved work samples.
+  - Only user-reviewed and approved stories are included here.
+  - All content used in cover letter generation and agent output comes from this file.
+
+**Workflow:**
+1. New work samples are imported or generated and added to `work_samples.yaml`.
+2. User (or admin) reviews, edits, and approves selected work samples.
+3. Approved work samples are moved/copied to `blurbs.yaml`.
+4. Only `blurbs.yaml` is used for cover letter and agent output.
+
+This separation ensures high-quality, curated content for outputs, while allowing experimentation and enrichment in the staging area. 

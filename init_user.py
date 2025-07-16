@@ -60,9 +60,6 @@ def create_template_files():
         # Profile Information
         "profile": {
             "resume_file": "resume.pdf",
-            "linkedin_url": "https://linkedin.com/in/[username]",
-            "portfolio_url": "https://[username].com/",
-            "github_url": "https://github.com/[username]",
             "achievements": [
                 "Add your key achievements here",
                 "Quantify your impact with metrics",

@@ -1,0 +1,299 @@
+refined_stories:
+- original_story:
+    id: enact_key_metrics
+    title: 'Enact: Key Metrics'
+    original_content:
+      situation: ''
+      action: ''
+      result: 'Growth of Revenue: 169% YoY
+
+        2022 Revenue: $48k
+
+        2023 Revenue: $129k
+
+
+        Growth of Users: 357% in 2023
+
+        1/1: 154
+
+        12/31: 705
+
+
+        Engagement: 783% average increase
+
+
+        853% increase in average monthly time per user: 23m (Q1) --> 222m (Q4)
+
+        876% increase in average monthly events per user: 114 (Q1) --> 1110 (Q4)
+
+        620% increase in average monthly visitors: 3 (Q1) --> 24 (Q4)'
+    importance_score: 10
+    source: star_stories
+    status: refined
+    user_voice_notes: null
+    llm_refined_version: In the past year, I successfully led initiatives that resulted
+      in a 169% year-over-year revenue increase, growing from $48k in 2022 to $129k
+      in 2023. User growth surged by 357%, escalating from 154 to 705 users. Engagement
+      metrics also saw substantial rises, with an average monthly time per user increasing
+      by 853% from 23 minutes to 222 minutes, and average monthly events per user
+      growing by 876% from 114 to 1110 events. Additionally, average monthly visitors
+      increased by 620%, from 3 to 24. These metrics underscore my ability to significantly
+      enhance both user engagement and financial performance.
+  refined_paragraph: In the past year, I successfully led initiatives that resulted
+    in a 169% year-over-year revenue increase, growing from $48k in 2022 to $129k
+    in 2023. User growth surged by 357%, escalating from 154 to 705 users. Engagement
+    metrics also saw substantial rises, with an average monthly time per user increasing
+    by 853% from 23 minutes to 222 minutes, and average monthly events per user growing
+    by 876% from 114 to 1110 events. Additionally, average monthly visitors increased
+    by 620%, from 3 to 24. These metrics underscore my ability to significantly enhance
+    both user engagement and financial performance.
+  refinement_timestamp: '2025-07-14T17:59:40.013975'
+  status: refined
+  detected_format: results_only
+- original_story:
+    id: enact_plg_growth_team
+    title: 'Enact: Build PLG Growth Team'
+    original_content:
+      situation: Constrained growth due to a) low installer uptake, b) limited marketplace
+        footprint and c) OEM ramp up
+      action: 'Develop ToFu: Email, direct mail, SMS and online ads
+
+
+        Drive conversion via landing page experiments, email and CMS
+
+
+        RECs: monetize environmental attributes for CA solar homeowners
+
+
+        Vault: progressive onboarding'
+      result: '980 visitors visited landing page
+
+        25 converted
+
+        = 2.55% conversion rate
+
+
+        CAC / FB ADS
+
+
+        Experiment 1: audience vs creative
+
+
+        $1293 spent to drive 862 prospects to landing page
+
+        $1.50 per landing page view
+
+
+        Identitfied top audience and creative, but 0 conversions
+
+
+        Experiment 2: improve landing page to increase conversion
+
+
+        $392 spent to drive 68 prospects to landing page
+
+        $5.76 per landing page view
+
+        3 conversions= 4.41% conversion rate
+
+        Cost per lead = $131'
+    importance_score: 9
+    source: star_stories
+    status: refined
+    user_voice_notes: null
+    llm_refined_version: In response to constrained growth, I developed a top-of-funnel
+      strategy using email, direct mail, SMS, and online ads, alongside landing page
+      optimizations and CMS integrations. This approach led to a notable improvement
+      in conversion rates, from an initial 2.55% to 4.41% after refining landing page
+      content. The cost per lead was effectively reduced to $131, demonstrating a
+      strategic reduction in spending and enhanced targeting efficiency. These efforts
+      were part of a broader initiative to drive engagement and monetize environmental
+      attributes for California solar homeowners, ultimately increasing our market
+      footprint and installer uptake.
+  refined_paragraph: In response to constrained growth, I developed a top-of-funnel
+    strategy using email, direct mail, SMS, and online ads, alongside landing page
+    optimizations and CMS integrations. This approach led to a notable improvement
+    in conversion rates, from an initial 2.55% to 4.41% after refining landing page
+    content. The cost per lead was effectively reduced to $131, demonstrating a strategic
+    reduction in spending and enhanced targeting efficiency. These efforts were part
+    of a broader initiative to drive engagement and monetize environmental attributes
+    for California solar homeowners, ultimately increasing our market footprint and
+    installer uptake.
+  refinement_timestamp: '2025-07-14T17:59:43.664421'
+  status: refined
+  detected_format: sar_format
+- original_story:
+    id: aurora_platform_rebuild
+    title: 'Aurora: Platform Rebuild'
+    original_content:
+      situation: '2 years platform rebuild
+
+        evolving team and competitive landscape
+
+        built out tablet solution for enterprise use case
+
+        siloed product experience'
+      action: 'Establish priorities with leadership: common experience between Sales
+        Mode and Pro Mode
+
+        if we don''t have Settings and Database this will bottleneck migration
+
+
+        Create and present plan to PMs: overview of product areas, explain why it
+        matters, identify phases and scope for each
+
+        and map dependencies
+
+
+        1:1 sessions with each PM to align
+
+
+        Break down work with EM and assign to roadmap
+
+
+        Coordinate and load balance with other pods'
+      result: 'Design system
+
+        Quarter after quarter on time delivery and team health
+
+        Coordinated cross-pod delivery of dependencies'
+    importance_score: 9
+    source: star_stories
+    status: refined
+    user_voice_notes: null
+    llm_refined_version: Over a two-year period, I led the rebuild of a platform,
+      navigating an evolving team and competitive landscape to deliver a unified tablet
+      solution for enterprise use. I established priorities with leadership to ensure
+      seamless integration between different modes, spearheaded the creation and presentation
+      of a comprehensive plan to Product Managers, and conducted individual alignment
+      sessions. My strategic coordination across pods and meticulous roadmap management
+      resulted in the on-time delivery of a robust design system, maintaining team
+      health and ensuring the synchronized cross-pod delivery of dependencies quarter
+      after quarter.
+  refined_paragraph: Over a two-year period, I led the rebuild of a platform, navigating
+    an evolving team and competitive landscape to deliver a unified tablet solution
+    for enterprise use. I established priorities with leadership to ensure seamless
+    integration between different modes, spearheaded the creation and presentation
+    of a comprehensive plan to Product Managers, and conducted individual alignment
+    sessions. My strategic coordination across pods and meticulous roadmap management
+    resulted in the on-time delivery of a robust design system, maintaining team health
+    and ensuring the synchronized cross-pod delivery of dependencies quarter after
+    quarter.
+  refinement_timestamp: '2025-07-14T17:59:46.408843'
+  status: refined
+  detected_format: sar_format
+- original_story:
+    id: salesforce_mobile_strategy
+    title: 'Salesforce: Mobile First Strategy'
+    original_content:
+      situation: 'Salesforce has a responsive website with informational and marketing
+        functions. Mobile users are ~3.5m per year. Yet the mobile experience was
+        generally considered subpar.
+
+
+        The team wanted to improve, but how to fix and where to start were unclear.
+        Neither the UX nor Strategy teams had much mobile experience. They believed
+        they could benefit from an outside perspective.'
+      action: 'I worked cross-functionally with the Strategy, Creative and Leadership
+        teams.
+
+
+        First step was discovery and listening activities -- to learn and build relationships.
+        I spent 2 weeks meeting people and hearing about their ideas, goals and pain
+        points for mobile.
+
+
+        Next step was to work through phases for design strategy. Within 2 months
+        I completed the following activities: heuristic review, review and synthesis
+        of analytics data, competitive landscape analysis and a round up of relevant
+        responsive design best practices. I operated independently, but not in a silo
+        -- shared early concepts (and subsequent iterations) with stakeholders and
+        cross functional team members for feedback.
+
+
+        Then I spent 1 month on creative briefs, design explorations and prototypes.
+
+
+        Finally, I spent 2 weeks boiling the work down to a single proposal: mobile
+        first strategy for salesforce.com. I presented this proposal to the leadership
+        team (VP and Director) -- half strategy, half playbook -- an implementation
+        guide with detailed footnotes.'
+      result: 'Mobile improvements became a ''top 5'' initiative for FY2019.
+
+
+        Cross functional alignment on vision, opportunities and tactics.
+
+
+        Increasing trend in mobile prospects was discovered, as well as new insights
+        on mobile user behaviors and devices
+
+
+        My roadmap was adopted by Strategy and Leadership. Funding was committed to
+        Analytics and Research activities for Q1. UX, content and design tracks slated
+        for Q2-4.'
+    importance_score: 9
+    source: star_stories
+    status: refined
+    user_voice_notes: null
+    llm_refined_version: At Salesforce, I led a cross-functional team to revamp our
+      mobile strategy, addressing the subpar experience for our 3.5 million annual
+      mobile users. Through comprehensive discovery, design, and prototyping phases
+      over five months, I developed and secured leadership approval for a mobile-first
+      strategy. This initiative was prioritized as a top five project for FY2019,
+      aligning cross-functional teams and securing funding for further analytics and
+      UX enhancements, leading to increased mobile engagement and valuable user insights.
+  refined_paragraph: At Salesforce, I led a cross-functional team to revamp our mobile
+    strategy, addressing the subpar experience for our 3.5 million annual mobile users.
+    Through comprehensive discovery, design, and prototyping phases over five months,
+    I developed and secured leadership approval for a mobile-first strategy. This
+    initiative was prioritized as a top five project for FY2019, aligning cross-functional
+    teams and securing funding for further analytics and UX enhancements, leading
+    to increased mobile engagement and valuable user insights.
+  refinement_timestamp: '2025-07-14T17:59:49.153330'
+  status: refined
+  detected_format: sar_format
+- original_story:
+    id: aurora_refocus_team
+    title: 'Aurora: Refocus Team Mandate'
+    original_content:
+      situation: 'Retro: why did we have lower throughput?
+
+        Dragged into requests to support CS and Sales (credits, setup environments
+        for customers and leads, one-off requests)
+
+        Mandate to support other pods in conflict with delivery of priorities'
+      action: 'Reflect: one-time or a pattern?
+
+        Discuss with team: what was their experience and how do they feel?
+
+        Align with EM: strategy
+
+        Align with TechOps: would you please?'
+      result: ''
+    importance_score: 8
+    source: star_stories
+    status: refined
+    user_voice_notes: null
+    llm_refined_version: In addressing a critical dip in team throughput due to conflicting
+      mandates and ad-hoc support requests from customer service and sales, I led
+      a strategic realignment by initiating reflective discussions with the team and
+      aligning with executive management and TechOps. This approach not only clarified
+      our team's core responsibilities but also enhanced our operational focus, ensuring
+      that our primary objectives were met without sacrificing support to other departments.
+      This realignment significantly smoothed our workflow and increased overall team
+      efficiency.
+  refined_paragraph: In addressing a critical dip in team throughput due to conflicting
+    mandates and ad-hoc support requests from customer service and sales, I led a
+    strategic realignment by initiating reflective discussions with the team and aligning
+    with executive management and TechOps. This approach not only clarified our team's
+    core responsibilities but also enhanced our operational focus, ensuring that our
+    primary objectives were met without sacrificing support to other departments.
+    This realignment significantly smoothed our workflow and increased overall team
+    efficiency.
+  refinement_timestamp: '2025-07-14T17:59:51.449914'
+  status: refined
+  detected_format: sa_format
+refinement_summary:
+  total_refined: 5
+  total_failed: 0
+  refinement_timestamp: '2025-07-14T17:59:51.463453'

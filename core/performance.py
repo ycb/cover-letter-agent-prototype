@@ -234,17 +234,24 @@ class FileCache:
         self.cache_manager = CacheManager(cache_dir)
         self.monitor = PerformanceMonitor()
 
-    @memoize(max_age_hours=1, cache_key_prefix="yaml_load")
     def load_yaml_file(self, file_path: Union[str, Path]) -> Dict[str, Any]:
-        """Load and cache YAML file content."""
-        self.monitor.start_timer("yaml_load")
+        """Load and cache YAML file content, with cache key including file mtime."""
+        # Get file modification time to include in cache key
+        if isinstance(file_path, Path):
+            mtime = file_path.stat().st_mtime if file_path.exists() else 0
+        else:
+            p = Path(file_path)
+            mtime = p.stat().st_mtime if p.exists() else 0
+        return self._load_yaml_file_with_mtime(file_path, mtime)
 
+    @memoize(max_age_hours=1, cache_key_prefix="yaml_load")
+    def _load_yaml_file_with_mtime(self, file_path: Union[str, Path], mtime: float) -> Dict[str, Any]:
+        self.monitor.start_timer("yaml_load")
         try:
             with open(file_path, "r") as f:
                 data = yaml.safe_load(f)
                 if data is None:
                     data = {}
-
             self.monitor.end_timer("yaml_load")
             return data
         except Exception as e:

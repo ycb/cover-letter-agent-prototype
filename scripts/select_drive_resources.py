@@ -17,7 +17,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from agents.google_drive_integration import GoogleDriveIntegration
 
-USER_ID = 'demo_user'  # Change as needed
+USER_ID = 'peter'  # Change as needed
 CONFIG_PATH = f'users/{USER_ID}/config.yaml'
 FOLDER_IDS = {
     'cover_letters': '0B9PEBLmrpxxiX29qaHlUb3RLME0',

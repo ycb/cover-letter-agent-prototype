@@ -118,9 +118,6 @@ class GoogleDriveConfig(TypedDict):
 
 class ProfileConfig(TypedDict):
     resume_file: str
-    linkedin_url: str
-    portfolio_url: str
-    github_url: str
     achievements: List[str]
 
 

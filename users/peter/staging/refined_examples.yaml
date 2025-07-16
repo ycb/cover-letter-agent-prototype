@@ -1,0 +1,39 @@
+- id: aurora_phased_rollout
+  company: Aurora Solar
+  role: Senior Product Manager
+  title: 'Aurora: phased roll out'
+  situation: |
+    Looking top line KPI: migrate 100% of users by EOY.
+  action: |
+    Coordinate product and GTM teams. Coordinate with CS and Sales. Identify groups of customers that could be a potential match (amplitude + data scientist). Outreach to confirm participants. Generate cross-pod product roadmap to establish phases of readiness.
+  result: |
+    Phased roll out. Feature flag strategy. Improved coordination and collaboration with GTM. Able to release to multiple targeted segments, gathering qual + quant data.
+  text: "As Senior Product Manager at Aurora Solar, I successfully spearheaded a strategic initiative to migrate 100% of our users by the end of the year, a top-line KPI. In the face of a complex customer landscape, I coordinated closely with the product, go-to-market (GTM), customer service, and sales teams to identify potential user groups for migration, leveraging data analysis and insights from our data scientists. I also established a cross-pod product roadmap, outlining clear phases of readiness for improved coordination. Our meticulous phased rollout, underpinned by a feature flag strategy, facilitated targeted releases to distinct customer segments. This allowed us to gather both qualitative and quantitative data, enhancing our user understanding while ensuring seamless integration. The result of this effort was not only improved cross-pod collaboration but also the successful migration of all users within the stipulated timeline."
+  tags: [phased, rollout, cross-functional, gtm, migration]
+  importance_score: 8
+- id: samsung_design_process
+  company: Samsung
+  role: Design Lead
+  title: 'Samsung: Design Process Improvements'
+  situation: |
+    Team was reactive, design was tacked on at the end. Depended on agency for large efforts. Hierarchy in the org reflected in the team. Needed a design leader to improve methods and process.
+  action: |
+    Re-organize team: end to end product designers. Design Process: discovery, concepts, testing, prototypes. Collaboration - Design as a strategic partner: work with Business, Product and Engineering for roadmap and sprint planning.
+  result: |
+    Higher quality work done faster. New tools: InVision, Trello, User Testing.com, Principle. Better visibility and collaboration within the team and across the org, including better alignment to business objectives. Research became a regular part of design.
+  text: "As Design Lead at Samsung, I transformed a reactive team into a proactive, strategic unit, driving the improvement of our design methods and processes. Addressing the hierarchical organizational challenges, I re-organized the team into end-to-end product designers, establishing a design process that encompassed discovery, concept development, testing, and prototyping. I also fostered collaboration by integrating design as a strategic partner across Business, Product, and Engineering sectors for roadmap and sprint planning. This comprehensive approach to design leadership not only accelerated the pace of high-quality work but also enhanced visibility and collaboration within the team and across the organization. Through the adoption of new tools like InVision, Trello, UserTesting.com, and Principle, and by making research a regular part of design, we achieved better alignment with our business objectives."
+  tags: [design, process, leadership, team, improvement]
+  importance_score: 8
+- id: samsung_chatbot_care
+  company: Samsung
+  role: Product Manager
+  title: 'Samsung: Chatbot for Customer Care'
+  situation: |
+    EVP wanted to develop a chatbot for customer care, to supplement text chat as a support channel.
+  action: |
+    Validate need: commissioned remote moderated focus groups to understand customer pain points and perceptions. Assemble cross functional team: PM, UX and Eng and align on vision. Define chatbot design process, start in parallel on BE and UX. Model chatbot and AEM content. Style guide, components and identity / use cases, process flow and script. Present proposal. Test prototypes and synthesize --> present findings.
+  result: |
+    Undefined to actionable in 2+ months. Validate need, features and interactions. Sidestep constraints around content creation. Define choose + converse modes for MVP.
+  text: "As Product Manager at Samsung, I spearheaded the development of a customer care chatbot to enhance our support channels. Recognizing an executive vision, I swiftly commissioned remote moderated focus groups to comprehend customer experiences and validate the need for this innovation. I assembled a dynamic cross-functional team encompassing Product Management, User Experience, and Engineering, and guided them in aligning on a shared vision. We collaboratively worked on the chatbot design process, simultaneously focusing on backend and user experience aspects. Over two months, we transformed an undefined concept into an actionable plan, defining key features, interactions, and modes for our minimum viable product. By sidestepping constraints around content creation, we effectively modeled the chatbot and Adobe Experience Manager content, established a style guide, identified use cases, and designed the process flow and script. Rigorous testing of prototypes and synthesizing findings led to a comprehensive proposal that significantly improved our customer support system."
+  tags: [chatbot, customer_care, product_manager, ux, cross-functional]
+  importance_score: 8

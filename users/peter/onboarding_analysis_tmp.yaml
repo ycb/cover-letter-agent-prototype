@@ -1,0 +1,5219 @@
+files_scanned:
+- type: resume
+  path: users/peter/Peter Spannagle-Resume.pdf
+  count: 1
+- type: work_samples
+  path: users/peter/work_samples.yaml
+  count: 0
+- type: job_tracker
+  path: 'Drive: job_tracker sheet'
+  count: 68
+- type: cover_letters
+  path: 'Drive: cover_letters folder'
+  count: 100
+- type: google_slides
+  path: 'Drive: presentations folder'
+  count: 6
+- type: drive_files
+  path: 'Drive: portfolio_work and star_stories folders'
+  count: 36
+- type: star_stories
+  path: 'Drive: Resume Grid spreadsheet'
+  count: 22
+summary:
+  external_work_samples: []
+  external_job_tracker:
+  - status: OPEN ROLES
+  - status: NETWORKING
+  - status: ''
+    ? ''
+    : ''
+    company: ServiceTitan
+    ranking: ''
+    title: Stay in touch with Eddie on new opportunities
+  - status: ''
+    ? ''
+    : ''
+    company: NextEra
+    ranking: ''
+    title: Stay in touch with Jim about new opportunities
+  - status: No response
+    ? ''
+    : Spoke with CEO
+    company: Texture
+    ranking: '2'
+    title: CPO in Q2
+    role type: Leadership
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $7.5M
+    office: NYC
+    salary: TBD
+  - status: ''
+    ? ''
+    : Intro call with co-founder
+    company: '257'
+    ranking: ''
+    title: Thinking about first product hire in 2 quarters
+  - status: ''
+    ? ''
+    : LI chat with founder
+    company: Exygy
+    ranking: ''
+    title: Check in March
+  - status: Round 2
+    ? ''
+    : Completed
+    company: Rewiring America
+    ranking: ''
+    title: Started interview process - waiting for a suitable role.  Emailed Oct 3
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Watershed
+    ranking: ''
+    title: Started interview process - waiting for a suitable role
+  - status: ''
+    ? ''
+    : Completed
+    company: Climatize
+    ranking: ''
+    title: Emailed Aug 6 - waiting for a suitable role
+  - status: WAITING
+  - status: ''
+    ? ''
+    : ''
+    company: Chino
+    ranking: ''
+    title: Spoke Fr Aug 30 / SMS Sep 5
+  - status: ADVISORY
+  - status: ''
+    ? ''
+    : ''
+    company: Teledyne / Raymarine
+    ranking: ''
+    title: 'Director of Product Management: Digital Services'
+    role type: Leadership / IC
+  - status: Internal candidate
+    ? ''
+    : Completed HR screen
+    company: ServiceTitan
+    ranking: ''
+    title: ''
+    role type: Leadership
+  - status: ''
+    ? ''
+    : Completed video screen
+    company: Genentech / Roche
+    ranking: ''
+    title: Sr. Director, Targeting & Recommendation - Business Product Owner
+    role type: Leadership
+    company type: Public
+    valuation: $230B
+    stage: ''
+    funding: ''
+    office: 'South San Francisco '
+    salary: $200k - $370k
+  - status: Recruiter > CEO > On-site > Pass
+    ? ''
+    : ''
+    company: Banyan
+    ranking: ''
+    title: Head of Product
+    role type: Leadership
+    company type: Private
+    valuation: ''
+    stage: Series B
+    funding: $43M
+    office: San Francisco (Hybrid)
+    salary: $225k?
+    bonus: ''
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 'yes'
+  - status: Not selected
+    ? ''
+    : ''
+    company: NextTracker
+    ranking: ''
+    title: Sr. Product Manager - Solar Plant Automation
+    role type: IC
+    company type: Public
+    valuation: $6.8B
+    stage: ''
+    funding: ''
+    office: ''
+    salary: $200k
+  - status: ''
+    ? ''
+    : ''
+    company: Dandy
+    ranking: ''
+    title: Director of Product Management
+    role type: Leadership
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $4.2M
+    office: NYC (Remote)
+    salary: $300k
+  - status: Prefer candidates in LA with operations background
+    ? ''
+    : Spoke with Recruiter
+    company: Elephant Energy
+    ranking: ''
+    title: GM
+    role type: Leadership
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $3.5M
+    office: Covina, CA
+    salary: $170k
+    bonus: ~$50k
+  - status: ''
+    ? ''
+    : ''
+    company: Roo
+    ranking: ''
+    title: Sr PM
+    role type: IC
+    company type: Private
+    valuation: ''
+    stage: Series A
+    funding: $18.5M
+    office: Remote
+    salary: $170k - $200k
+  - status: ''
+    ? ''
+    : Completed onsite
+    company: NextEra
+    ranking: ''
+    title: Project Director, Grid Services
+    role type: IC
+    company type: Public
+    valuation: $140B
+    stage: ''
+    funding: ''
+    office: Juno Park, FL / Remote
+    salary: $200k+
+    bonus: 20%
+  - status: ''
+    ? ''
+    : Spoke with Hiring Manager
+    company: American Honda Motor Company / TinkerDIY
+    ranking: ''
+    title: GM
+    role type: Leadership
+    company type: TBD
+    valuation: ''
+    stage: Series A
+    funding: $28M
+    office: Torrance, CA
+    salary: $250k - $275k
+    bonus: 21%
+  - status: Too late in process / role too junior
+    ? ''
+    : ''
+    company: Amperon
+    ranking: ''
+    title: Sr Technical PM
+    role type: IC
+    company type: Private
+    valuation: ''
+    stage: Series B
+    funding: $30M
+    office: Remote
+    salary: TBD
+  - status: No response
+    ? ''
+    : ''
+    company: PG&E
+    ranking: ''
+    title: PPM GMT DERMS
+    role type: IC
+  - status: No response
+    ? ''
+    : ''
+    company: GoodLeap
+    ranking: ''
+    title: PPM VPP
+    role type: IC
+  - status: ''
+    ? ''
+    : Completed
+    company: Plural Energy
+    ranking: ''
+    title: Intro call Product Founder - Aug 15, emailed Mar 6th
+    role type: Growth / TBD
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $2.8M
+    office: San Francisco / NYC
+  - status: No response
+    ? ''
+    : ''
+    company: Leap
+    ranking: ''
+    title: LI message Aug 7 - nudge via Vera
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Euclid
+    ranking: ''
+    title: Staff PM
+    role type: Manager
+    company type: Private
+    valuation: ''
+    stage: Series A
+    funding: $5.2M
+    office: San Francisco / NYC
+    salary: $180k - $210k
+    bonus: TBD
+    401k: TBD
+    holidays: TBD
+    pension: ''
+    equity: TBD
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Duke Energy
+    ranking: ''
+    title: 'Senior Product Owner - Energy Orchestration '
+    role type: IC
+    company type: Public
+    valuation: $91B
+    stage: ''
+    funding: ''
+    office: Charlotte
+  - status: Round 1
+    ? ''
+    : Scheduled
+    company: 'Haven Energy '
+    ranking: ''
+    title: 'Senior PM '
+    role type: IC
+  - status: Round 4
+    ? ''
+    : Completed
+    company: King Energy
+    ranking: ''
+    title: TBD
+    role type: Leadership
+  - status: Round 3
+    ? ''
+    : Scheduled
+    company: Goodleap
+    ranking: ''
+    title: Staff PM B2B
+    role type: IC / Leadership
+    company type: Private
+    valuation: $12B
+    stage: ''
+    funding: ''
+    office: San Francisco (Hybrid)
+    salary: $170 - $215k
+    bonus: 'yes'
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 'yes'
+  - status: Round 3
+    ? ''
+    : Scheduled
+    company: Nido
+    ranking: ''
+    title: Product Manager, Certification
+    role type: Advisory
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: ''
+    office: Madrid
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Enode
+    ranking: ''
+    title: Met with Founder and PM - last Aug 8
+    role type: Manager
+    company type: Private
+    valuation: ''
+    stage: Series A
+    funding: $17.4M
+    office: Norway
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Amperon
+    ranking: ''
+    title: Chat with CEO - email Oct 3 - waiting for a suitable role
+    role type: Product Leader / TBD
+  - status: No response
+    ? ''
+    : Completed
+    company: Halcyon
+    ranking: ''
+    title: Met with Hammon @ HQ - Sept 10
+    role type: TBD
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $10.8M
+    office: San Francisco
+  - status: Round 1
+    ? ''
+    : Completed
+    company: Mona Lee
+    ranking: ''
+    title: Intro call CEO - Aug 13
+    role type: Product Leader / TBD
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $3.5M
+  - status: Round 2
+    ? ''
+    : In Progress
+    company: Daylight Energy
+    ranking: ''
+    title: TBD
+    role type: ''
+    company type: ''
+    valuation: ''
+    stage: Series A
+    funding: $12M
+    office: NYC
+    salary: TBD
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: Typeface
+    ranking: ''
+    title: Product Manager-User Experience & Growth
+    role type: IC
+    company type: ''
+    valuation: ''
+    stage: Series B
+    funding: $165M
+    office: Palo Alto
+    salary: $200k
+  - status: 'Round 1 '
+    ? ''
+    : Scheduled
+    company: Scheduled
+    ranking: ''
+    title: Product Manager
+    role type: IC
+    company type: ''
+    valuation: ''
+    stage: Series A
+    funding: $13.8M
+    office: Brooklyn
+    salary: $175k
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: Monta
+    ranking: ''
+    title: 'Senior Product Manager - Hub '
+    role type: IC
+    company type: Private
+    valuation: ''
+    stage: Series B
+    funding: $130M
+    office: 'Berlin
+
+      Copenhagen'
+    salary: $153k
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: LineVision
+    ranking: ''
+    title: ''
+    role type: ''
+    company type: ''
+    valuation: ''
+    stage: Series C
+    funding: $47.6M
+    office: "Boston \nDenver/Boulder"
+    salary: $170k
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: Yardzen
+    ranking: ''
+    title: VP of Product
+    role type: Leadership
+    company type: Private
+    valuation: ''
+    stage: Series A
+    funding: $9.6M
+    office: Mill Valley
+    salary: TBD
+  - status: Round 2
+    ? ''
+    : Completed
+    company: Homebound
+    ranking: ''
+    title: Staff Product Manager
+    role type: Senior IC
+    company type: Private
+    valuation: ''
+    stage: Series C
+    funding: $148M
+    office: "San Francisco \nColorado"
+    salary: $194k
+    bonus: ''
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: ''
+    extras: 'Yes'
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: Arbor
+    ranking: ''
+    title: Product Manager
+    role type: IC
+    company type: Private
+    valuation: ''
+    stage: Series A
+    funding: $9M
+    office: Boston
+    salary: TBD
+  - status: 'Round 1 '
+    ? ''
+    : Completed
+    company: Level10
+    ranking: ''
+    title: Senior Product Manager
+    role type: ''
+    company type: ''
+    valuation: ''
+    stage: Series D
+    funding: $137M
+    office: Seattle
+    salary: $170k
+    bonus: Y
+    401k: Y
+    holidays: '11'
+    pension: N
+    equity: Y
+    extras: 'wellness credit
+
+      flex vacation'
+  - status: Round 3
+    ? ''
+    : Completed
+    company: Eliq
+    ranking: ''
+    title: Director of Product
+    role type: Manager
+    company type: ''
+    valuation: ''
+    stage: Series B
+    funding: $21M
+    office: 'Gothenberg
+
+      London'
+    salary: "$130k \n\nup to $150k?"
+    bonus: 'No'
+    401k: Yes - TBD
+    holidays: ''
+    pension: 'No'
+    equity: Yes - TBD
+    extras: education and wellness stipend
+  - status: Round 1
+    ? ''
+    : Scheduled
+    company: SolarEdge
+    ranking: ''
+    title: VP of Product
+    role type: Manager
+    company type: Public
+  - status: Not selected
+    ? ''
+    : Completed
+    company: EverBright
+    ranking: ''
+    title: Manager of Product Management > Sales Platform  (D2C)
+    role type: Manager
+    company type: Public
+    valuation: $160B
+    stage: '-'
+    funding: '-'
+    office: Remote
+    salary: $220k
+    bonus: 'annual = 10-20%
+
+      sign on = $30k?'
+    401k: 4.75% match up to 7%
+    holidays: '5-7 weeks off
+
+
+      15 days vacation
+
+      11 holidays
+
+      2 week buy up'
+    pension: $10k per year + intrest
+    equity: 'No'
+    extras: '4 weeks parental leave
+
+      Life + LTD + STD'
+    total comp: $315,050
+  - status: Not selected
+    ? ''
+    : Completed
+    company: Climate.ai
+    ranking: ''
+    title: Product Manager (Lead Founding PM)
+    role type: ''
+    company type: ''
+    valuation: ''
+    stage: Series B
+    funding: $37.5M
+  - status: Not selected
+    ? ''
+    : Completed
+    company: Cambio
+    ranking: ''
+    title: Product Manager
+    role type: IC
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: ''
+    office: SF / NY / Toronto
+    salary: $170k
+  - status: Not selected
+    ? ''
+    : Scheduling
+    company: PermitFlow
+    ranking: ''
+    title: ''
+    role type: ''
+    company type: ''
+    valuation: ''
+    stage: ''
+    funding: ''
+    office: New York
+  - status: No response
+    ? ''
+    : Completed
+    company: Duet
+    ranking: ''
+    title: Head of Product
+    role type: Manager
+    company type: Private
+    valuation: ''
+    stage: Seed
+    funding: $7.5M
+  - status: Not selected
+    ? ''
+    : ''
+    company: ConduitTech
+    ranking: ''
+    title: Started interview process - salary issues.  Emailed Aug 1
+  - status: Internal + local candidate
+    ? ''
+    : ''
+    company: PVcase
+    ranking: ''
+    title: Director of Product > Platform
+    role type: Manager
+    company type: Private
+    valuation: ''
+    stage: Series B
+    funding: $123M
+    office: 'Berlin
+
+      Barcelona/Madrid
+
+      London
+
+      California
+
+      Boston'
+    salary: "\u20AC120k - \u20AC150k"
+    bonus: ''
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 'yes'
+  - status: No response
+    ? ''
+    : ''
+    company: GoodLeap
+    ranking: ''
+    title: 'Principal Product Manager '
+    role type: IC
+    company type: Private
+    valuation: $12B
+    stage: ''
+    funding: ''
+    office: San Francisco (Hybrid)
+    salary: $210 - $240k
+    bonus: 'yes'
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 'yes'
+  - status: Not selected
+    ? ''
+    : ''
+    company: PG&E
+    ranking: ''
+    title: Principal Product Manager - Distributed Energy Resource Management System
+      Load Management
+    role type: Manager
+    company type: Public
+    valuation: $39B
+    stage: ''
+    funding: ''
+    office: Oakland
+    salary: $140k - $238k
+    bonus: 15%
+    401k: 6%
+    holidays: ''
+    pension: 6 - 7%
+  - status: P&L experience
+    ? ''
+    : ''
+    company: Ecobee
+    ranking: ''
+    title: Director of Product Management, Smart Security
+    role type: Manager
+    company type: Public
+    valuation: $8.6B
+    stage: ''
+    funding: ''
+    office: USA - Remote
+    salary: $210k - $225k
+    bonus: 8%
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 15%
+  - status: Need UK visa
+    ? ''
+    : ''
+    company: Carbon Chain
+    ranking: ''
+    title: Senior Product Manager
+    role type: IC
+    company type: ''
+    valuation: ''
+    stage: ''
+    funding: ''
+    office: London
+  - status: No response
+    ? ''
+    : ''
+    company: Infogrid
+  - status: No response
+    ? ''
+    : ''
+    company: 1KOMMA5
+  - status: Salary mismatch
+    ? ''
+    : ''
+    company: KUGU Home
+    ranking: ''
+    title: Senior Product Manager
+    role type: IC
+    company type: ''
+    valuation: ''
+    stage: Seed
+    funding: $2M
+    office: Berlin
+    salary: "\u20AC90k - \u20AC100k"
+    bonus: ''
+    401k: ''
+    holidays: ''
+    pension: ''
+    equity: 'yes'
+  - status: No response
+    ? ''
+    : ''
+    company: Novisto
+  - status: Position closed
+    ? ''
+    : ''
+    company: AiDash
+    ranking: ''
+    title: PPM
+  - status: LOST
+  - status: https://www.tealhq.com/interview-questions/director-of-product-management
+  - status: https://producthq.org/career/director-of-product/director-of-product-interview-questions/
+  external_cover_letters:
+  - id: 1Jzv77l4aKoFmUXs4coVA_NKC6dVsxpret9CCSubf7mo
+    name: Overstory
+    type: google_doc
+    modified: '2025-07-14T05:57:52.563Z'
+    size: '3275'
+  - id: 1CzBFYhjlwap28LkEmOdbqAeKzz2VgLY8OFbqbPamKv0
+    name: EnergyHub - Director of Product
+    type: google_doc
+    modified: '2025-07-10T09:52:55.693Z'
+    size: '2725'
+  - id: 1NolxcZyAm84a59gPcXhNm_rSTgCoAvjz7yf2Y8KMzgI
+    name: Headspace - Lead PM
+    type: google_doc
+    modified: '2025-07-03T20:29:13.437Z'
+    size: '2174'
+  - id: 10hHI-3kP8tYkT-eRZf2JrgklWeNa_V68IifD9eHwhEQ
+    name: Pano - Manager of Technical Program Management - v1
+    type: google_doc
+    modified: '2025-06-26T21:42:43.373Z'
+    size: '3301'
+  - id: 1WaliKw2ffYu9v8KfkFqw2rfmstlE8c-H_rpdT83QrEg
+    name: Pivot Bio
+    type: google_doc
+    modified: '2025-06-26T19:36:01.514Z'
+    size: '2643'
+  - id: 1sjzJ49qbpV3vxfJtTLef5kI_Z62fILstwJr60ltR5Vw
+    name: Lucid-GPM
+    type: google_doc
+    modified: '2025-06-26T19:23:20.022Z'
+    size: '3870'
+  - id: 1AJLmNRE9HUe36lr6xG0hY8vea-sXLJCE7yvwsEvU0xg
+    name: Diagram-v4
+    type: google_doc
+    modified: '2025-06-26T17:50:37.094Z'
+    size: '3293'
+  - id: 1MAK-5LaAbplp9tpGA8P5eVQiJOJD2HpXLyBFDrnMZKE
+    name: DNV
+    type: google_doc
+    modified: '2025-06-24T18:17:48.327Z'
+    size: '1770'
+  - id: 1mtIjllJJxhIbxp1ycZ7tqqrPOS19Ic-uuXFNn9tfBuo
+    name: Assured
+    type: google_doc
+    modified: '2025-06-20T21:54:24.788Z'
+    size: '2010'
+  - id: 1NEWCjigx8rrZ8WhJ__tKQQCS4KwulxjA003CGsTagAA
+    name: Walmart
+    type: google_doc
+    modified: '2025-06-20T19:19:38.349Z'
+    size: '2861'
+  - id: 1hKYFiqVh8rbJqpZC6ezbcNhD1P0POIB191yVvkR1pDU
+    name: HubSpot Ventures
+    type: google_doc
+    modified: '2025-06-20T19:06:09.599Z'
+    size: '2551'
+  - id: 1CZvbnSTkNrTdIydjI_MyMLcN0vG_GzaUcMx4y2_NmsM
+    name: Mixpanel
+    type: google_doc
+    modified: '2025-06-20T18:58:16.627Z'
+    size: '2455'
+  - id: 1Izz4nNKoaH2uRqujNYPp2BlaEWARjlBwjw53Qxxxes4
+    name: OpenAI Model Behavior
+    type: google_doc
+    modified: '2025-06-20T18:44:10.627Z'
+    size: '2412'
+  - id: 1nqyw9lh-HvcL_mdNnf4yqMLDU3c857CIc5bGMcgW3A4
+    name: Hilton Foundation
+    type: google_doc
+    modified: '2025-06-20T18:43:19.671Z'
+    size: '2763'
+  - id: 1BYPnsqfFandin-M0Z8qc9z5fyHbrbRKW3mXljvl51qw
+    name: Wittkiefer (N4P)
+    type: google_doc
+    modified: '2025-06-19T21:13:42.811Z'
+    size: '5688'
+  - id: 1iddA89v-83TRhflB3Ao0nhCvftyqr5dPhxl_lOtnMss
+    name: Five9
+    type: google_doc
+    modified: '2025-06-19T20:07:37.122Z'
+    size: '2313'
+  - id: 13C5PWpiw0Uc7hSlNo32Ou-259skBGWVUETrJckWVaxk
+    name: Klaviyo
+    type: google_doc
+    modified: '2025-06-19T19:07:41.888Z'
+    size: '2542'
+  - id: 1IhFgjGCwpbHB-3Wj6Zz-OjqDa7cSipemqM3PZDETodo
+    name: Zillow
+    type: google_doc
+    modified: '2025-06-19T18:57:27.188Z'
+    size: '2648'
+  - id: 1YysztRTqNO5VM7LRZ6jhLKnelfS510uU9eLvX-QIdlM
+    name: AccuWeather
+    type: google_doc
+    modified: '2025-06-19T18:44:28.962Z'
+    size: '2310'
+  - id: 1TvPQrMoMo8uC84KWPvIOCODmNBJafvC6gC7B-_ScXUc
+    name: Hillspire
+    type: google_doc
+    modified: '2025-06-19T18:28:14.633Z'
+    size: '2706'
+  - id: 1rNbLSQBKwk4Je3u27rk2VJNXsugNnOlZ6vF1osWsjOc
+    name: Wikimedia
+    type: google_doc
+    modified: '2025-06-19T18:06:48.023Z'
+    size: '2588'
+  - id: 1yRwr1ErQPhulVOXD1il91zQTmL83Olu_xd7UxlYLQ_4
+    name: LaunchDarkly
+    type: google_doc
+    modified: '2025-06-18T17:45:56.150Z'
+    size: '3482'
+  - id: 1MegQ9CLNjKeWy8bi1BayDaBK5ZGn8G5L_xWhzw6-cF8
+    name: Lumin
+    type: google_doc
+    modified: '2025-06-17T17:25:17.575Z'
+    size: '3453'
+  - id: 1RCLqmqTQUlfeOyC1GkDi_wW9q4l2VSZtzkyiDiy9clM
+    name: 1Password
+    type: google_doc
+    modified: '2025-06-16T17:53:15.827Z'
+    size: '2862'
+  - id: 1fRPdqGo5HT1yVRoyPRqIhWcWCJWYVH6cUGhToYYgQ0Y
+    name: Earnest - GPM
+    type: google_doc
+    modified: '2025-06-13T22:17:55.425Z'
+    size: '2480'
+  - id: 1bWlk2UcJpM4nOToRxpCUBTOSqpioFGz6yDcHlvsxt2A
+    name: Chime
+    type: google_doc
+    modified: '2025-06-13T22:13:55.354Z'
+    size: '2676'
+  - id: 1jqYZe_4aq6PMmf0HCH2X3-tU1J3VThPJrzcf-m4WKzY
+    name: ecoATM
+    type: google_doc
+    modified: '2025-06-13T20:25:44.713Z'
+    size: '2382'
+  - id: 1DTz0s1mQQcCG4w6K2VKLrZX-0s4fjKn8f_x6JNCc-uQ
+    name: Niantic
+    type: google_doc
+    modified: '2025-06-12T22:53:36.215Z'
+    size: '4613'
+  - id: 1ZsppljPjj7b6sBveUMt9uIppM3ZMCy7A_kqVw9NXhK8
+    name: Mainspring - Senior Product Manager, Data Center and Utility Solutions
+    type: google_doc
+    modified: '2025-06-12T22:45:36.420Z'
+    size: '5210'
+  - id: 1FdfGW99VwP4sHTyDUsNM5GKVpbTVLqdsUH8yXSO0M-k
+    name: Mercury Team - Sr PM, Activation
+    type: google_doc
+    modified: '2025-06-12T22:33:18.157Z'
+    size: '2729'
+  - id: 1CcBTkbkETS4-pioOK-SRr0A_7YLkmPI3rt47pL63fEQ
+    name: Trunk Tools
+    type: google_doc
+    modified: '2025-06-12T20:42:11.336Z'
+    size: '2278'
+  - id: 1xnIU0dliD6UrycKPur9Oxdu0NUe_vvl9kYEATwjx-uY
+    name: OpenGov
+    type: google_doc
+    modified: '2025-06-12T20:30:54.903Z'
+    size: '3233'
+  - id: 1phA3pDjuhNixtK7zK3HM7zQGVIMsgMIE2d6Zpqu8dq4
+    name: Vimeo - Sr Principal PM, Growth
+    type: google_doc
+    modified: '2025-06-12T20:30:27.937Z'
+    size: '2308'
+  - id: 1ry7XZLXjE-gqzrCM71nweDiFx7FX1m0ETW5fdZ6IKrA
+    name: Guild
+    type: google_doc
+    modified: '2025-06-12T00:19:00.968Z'
+    size: '2059'
+  - id: 1xU_6AzAaZQ7v0k-8WmajSyj6SwJkclXITlvl5w7orJk
+    name: 'Esusu '
+    type: google_doc
+    modified: '2025-06-12T00:09:55.573Z'
+    size: '2537'
+  - id: 1BNOQWngmU6FDsgqt6tYUCIOSFdgyLFtqBgBVZBgydCo
+    name: Coalition
+    type: google_doc
+    modified: '2025-06-12T00:03:56.787Z'
+    size: '2205'
+  - id: 1Z6N6LClBdm1xvwcdVTSn95_pnDwXEWZECiCMQzrJpq4
+    name: Product Manager II, Google Store, Customer Support Products
+    type: google_doc
+    modified: '2025-06-11T23:15:11.070Z'
+    size: '2376'
+  - id: 1ppDAzli76o1UiQlK6v22KE15iLYBLIGqVCbpyCPD5Xk
+    name: Acorns - Sr PM, Growth
+    type: google_doc
+    modified: '2025-06-09T23:33:43.652Z'
+    size: '1940'
+  - id: 16r0FJFtU6daKkmdv6_xv5f8TVC75RYoZtQr0ezhDNO4
+    name: Webflow - Staff Product Manager, CMS Authoring
+    type: google_doc
+    modified: '2025-06-09T21:49:26.658Z'
+    size: '2242'
+  - id: 18opMO7M79WZkFNca1DC2ECMr6C0LUS-3b1PZ0BXN1xQ
+    name: Edison - Growth and Innovation Advisor
+    type: google_doc
+    modified: '2025-06-09T17:52:59.908Z'
+    size: '2152'
+  - id: 1i5JgnM_hKBA8gfxfUMviHJ2zSD3hdKbHqhkgr-bVFkU
+    name: GoodLeap - Staff Product Manager, Homeowner
+    type: google_doc
+    modified: '2025-06-05T19:31:38.390Z'
+    size: '2012'
+  - id: 1uOP5UMQqnsIMNIy5UQF4l9YzxZ853WazqwIW44vilos
+    name: Via - Head of Product, Mobile
+    type: google_doc
+    modified: '2025-06-04T23:59:45.373Z'
+    size: '2025'
+  - id: 1-sV0cg3rnhvU5dL87jXgNhOwRwqgo6d0xle_KX0-Sjs
+    name: Director, Product Management- Nispera
+    type: google_doc
+    modified: '2025-06-04T23:07:19.082Z'
+    size: '1946'
+  - id: 1Qb_DEtIRd9wek2pW8FoTahhpfwvqHpYbN97gOemjCQE
+    name: Ancesty - Director of Product Management, DNA
+    type: google_doc
+    modified: '2025-05-22T21:27:28.076Z'
+    size: '4708995'
+  - id: 1IKfyywN3JDSDTayBMSquoqSNunFCBU-N9p1RY0qE63E
+    name: Anthropic - Product Manager, Consumer Growth
+    type: google_doc
+    modified: '2025-05-22T19:18:47.837Z'
+    size: '4626'
+  - id: 15GqrDOG8qohZXn7XpYrSEFdxbRiqqSEQO7qaYAagLDM
+    name: Amplitude - Senior Product Manager, Marketing Analytics
+    type: google_doc
+    modified: '2025-05-22T17:38:21.739Z'
+    size: '2884'
+  - id: 1FYRTEIwAoFbAJo9gc2W54ZU0b-gd4YPA0cwBm274hn4
+    name: 'WordPress - Senior Director, Growth & Digital Experience (VIP) '
+    type: google_doc
+    modified: '2025-05-21T17:42:50.684Z'
+    size: '4910'
+  - id: 1h4natOi-VjaRaGhc1eadQjb5HKAo3gZlWaOITOolmM8
+    name: BitGo - Group PM
+    type: google_doc
+    modified: '2025-05-16T22:59:30.645Z'
+    size: '4213'
+  - id: 1H3IT6-cpdqF2VnAXta9Mgfxcme5qgo0vlxuCo0k3Cck
+    name: Robinhood - Director of Product Creative
+    type: google_doc
+    modified: '2025-05-16T22:58:52.872Z'
+    size: '3913'
+  - id: 13rSPd6LFcs7r1GywgcxPwYTaW6jWA5F8Y-OT3LI8cfA
+    name: Coinbase - Group PM (Platform)
+    type: google_doc
+    modified: '2025-05-16T22:46:11.978Z'
+    size: '4181'
+  - id: 11k87XMpmUJAgnMIhhBnVJyMecaDJQcKad6gr6QWUZ9k
+    name: SoFi - Senior Product Manager, Invest
+    type: google_doc
+    modified: '2025-05-16T22:00:26.750Z'
+    size: '3751'
+  - id: 1fqTD3gZo6n3prhBlJoLSoho8LgxpQtdcEU12sW3DPiY
+    name: Assured
+    type: google_doc
+    modified: '2025-05-16T21:33:12.429Z'
+    size: '3257'
+  - id: 18OlRWgseiQz1IS4HrSMPJUWrAaYqmHGFVF8Qf3I-uN8
+    name: "Senior Product Manager \u2013 Gen AI Assistants, Cisco AI Software and\
+      \ Platforms Job 1443143"
+    type: google_doc
+    modified: '2025-05-16T19:36:25.032Z'
+    size: '2334'
+  - id: 1rcwUku19WVpUtXQrLblutp0VgOigHefqqKmXe_QvVyU
+    name: Lucid Motors - Staff PM
+    type: google_doc
+    modified: '2025-05-16T18:29:14.131Z'
+    size: '3070'
+  - id: 1azRzNnVm0XOkb1ONRXiCpuZFR8D3qnxxcEmCkTcE7QU
+    name: Lucid Motors
+    type: google_doc
+    modified: '2025-05-16T18:27:27.796Z'
+    size: '2339'
+  - id: 1jOS0jWQRsErkrTUSIjlzZU9tyQFkbFI4LTCFQb9a3aU
+    name: Synop
+    type: google_doc
+    modified: '2025-05-16T17:40:44.855Z'
+    size: '3283'
+  - id: 1uRElqEHrj_8Piv7V5tELxdepZsQRmPD1QvZYLtUx1ew
+    name: Credit Karma - Director, Product Management - Applied ML and Platform
+    type: google_doc
+    modified: '2025-05-16T02:09:33.019Z'
+    size: '4408'
+  - id: 1ipXeQazafuSeyMWohmr1MBBsnmpt_j4Q-h_QabPHKDA
+    name: DocuSign - Lead Product Manager, Data Onboarding
+    type: google_doc
+    modified: '2025-05-16T00:39:20.192Z'
+    size: '4025'
+  - id: 1vrJ-subZnCAv4yOeZLU1JD-mib6cUUZYrB1IzOROVo0
+    name: Via - Director of Product Management, On-demand Transit, Mobile Apps
+    type: google_doc
+    modified: '2025-05-16T00:33:41.483Z'
+    size: '4027'
+  - id: 1WvVomNDsQ5uaRUN4oOBy9E0tMgs0DKDzYuG0aPXBFDI
+    name: Dropbox - Staff Product Manager, Growth
+    type: google_doc
+    modified: '2025-05-15T20:52:48.018Z'
+    size: '4450'
+  - id: 11gy4vnNqPaGn2IzH8YkPonPvXFdUQ0a0fFSUuXgVhv0
+    name: LastPass - Principal Product Manager (Product Led Growth)
+    type: google_doc
+    modified: '2025-05-15T17:34:39.744Z'
+    size: '2097'
+  - id: 1Qm-Igv6wEwzZHeFjI8BiGbphJBxXxACqWoA8ESmHEeg
+    name: Sentry
+    type: google_doc
+    modified: '2025-05-15T17:26:23.918Z'
+    size: '2497'
+  - id: 1xTX584Lx5rFiSquSoPAGZ6F8NRod_tCAPoKMMRi-iHE
+    name: Glean - Product Management Lead, Enterprise
+    type: google_doc
+    modified: '2025-05-15T17:19:36.619Z'
+    size: '2226'
+  - id: 1iKdHQQJ0biqPQNLvMVH6_VPZfVrWc0ruyHFJIkMFtA0
+    name: BetterHelp - Principal Product Manager, Monetization
+    type: google_doc
+    modified: '2025-05-14T22:51:47.637Z'
+    size: '2318'
+  - id: 1uvW9O6QHo91TPpiNCyrvaFEvMHCGpxO7W6jXYeT9u4U
+    name: Academia
+    type: google_doc
+    modified: '2025-05-14T22:46:34.767Z'
+    size: '2322'
+  - id: 16KYajL7W3RI6Y98-VDgTww5MAyOlEcWHWvX5tm34e6k
+    name: EarnIn - Staff Product Manager
+    type: google_doc
+    modified: '2025-05-14T22:14:45.305Z'
+    size: '2088'
+  - id: 1hwLJVvMReqGsVXOkQCILrYF-czn9NRagh0ewKruzBM4
+    name: Hinge Health - Senior Product Manager, Enso Software
+    type: google_doc
+    modified: '2025-05-14T22:01:36.199Z'
+    size: '2262'
+  - id: 1rj72REkZQv71hOWwTamKLubfplyuSxfdYFvF2cROaNk
+    name: Affirm - Staff Product Manager, Consumer Servicing
+    type: google_doc
+    modified: '2025-05-14T21:43:44.868Z'
+    size: '3299'
+  - id: 1Jz1-KkOvwqcfsl-bikkGsEObgS_varRdbWiGMkeJfj0
+    name: Genentech - Director, Web/Mobile (202505-111590)
+    type: google_doc
+    modified: '2025-05-14T18:05:15.839Z'
+    size: '2507'
+  - id: 1duqOxoVBZFGGHmbdrNIJWQ0TkAjEOr2ua5ZXOd0_R1A
+    name: Fictiv
+    type: google_doc
+    modified: '2025-05-14T00:28:45.111Z'
+    size: '2123'
+  - id: 1tWLG2P1tDBGRK5-MYidtbKdmsnmI6qQYqlqbEteAXwQ
+    name: Applied Intuition
+    type: google_doc
+    modified: '2025-05-13T19:43:06.010Z'
+    size: '2388'
+  - id: 1lEHy6nSW4coh3uJEUpx8vfgNUDdwFqVbmcPXtOc2T8g
+    name: Mastercard
+    type: google_doc
+    modified: '2025-05-13T19:20:13.077Z'
+    size: '2339'
+  - id: 1F1AOiO2weyfecFq0kWJWXRw8JApfht6dZYYbTV9Cbzk
+    name: Cisco Meraki - Senior Product Manager Dashboard Frameworks
+    type: google_doc
+    modified: '2025-05-13T19:05:30.392Z'
+    size: '2429'
+  - id: 1_-eRsQGzgzH3Th12V6wLzaRyA93641uqLy3Bh9pSgPU
+    name: ' Nextracker '
+    type: google_doc
+    modified: '2025-05-12T23:21:51.073Z'
+    size: '2473'
+  - id: 188CriJsiM1JTGGloEosDtMNZwX9mggneqRKk9F91scw
+    name: GoFundMe - Staff PM
+    type: google_doc
+    modified: '2025-05-12T18:13:44.282Z'
+    size: '2080'
+  - id: 1ZwppVqSNX4LcJIDkWCC25AZMUQAO8KT0vNqbthTsTt0
+    name: Okta
+    type: google_doc
+    modified: '2025-05-09T23:23:19.494Z'
+    size: '2317'
+  - id: 1drp-rXi_AtU_s-GUAchEJInO3xTgu46_FhwxNPlHW1w
+    name: Platform Science
+    type: google_doc
+    modified: '2025-05-09T23:09:18.859Z'
+    size: '2300'
+  - id: 1dFnozXYSAn4LocghMUTDwcU-oQKkX_aQgvRotqfn1OE
+    name: Samsara
+    type: google_doc
+    modified: '2025-05-09T19:51:55.340Z'
+    size: '2360'
+  - id: 1ehbvUGn0f8aMD0geV-wCttS0Ed-9SaXG10w1V_SgoOs
+    name: Via - SrPM Remix
+    type: google_doc
+    modified: '2025-05-08T23:01:34.879Z'
+    size: '2813'
+  - id: 1d-MZbjLzi11Y6vyECH3tX5djexGWjofKd2vzUuSsnt0
+    name: Conduit
+    type: google_doc
+    modified: '2025-05-08T22:36:33.698Z'
+    size: '2438'
+  - id: 1C5h09phwyEliEIcm0-B3jQtultD0xrX8H3TAgcr8nmY
+    name: Runwise
+    type: google_doc
+    modified: '2025-05-08T21:52:07.134Z'
+    size: '2372'
+  - id: 1ikVxh-_5r7xxaRI3lCkDZo6D5C9K2NgJCHBYdV7diz0
+    name: Ethic - Director of Product
+    type: google_doc
+    modified: '2025-05-08T21:42:39.281Z'
+    size: '4211'
+  - id: 1skq9MeutsVWCTMWEqgN5ruOoQd_2ooFwcN9rkewoiSg
+    name: Duke Energy-CS
+    type: google_doc
+    modified: '2025-05-08T18:50:49.596Z'
+    size: '3704'
+  - id: 15OQVyyi5AcmFL0CrEj9wHAcfOirm9tM7l0UuzUyvDrk
+    name: MS Copilot
+    type: google_doc
+    modified: '2025-05-08T18:17:08.498Z'
+    size: '3309'
+  - id: 1ANOU7SkB4AvOTGT6zzcbILMbw4CGPLKn6lV3dPzacdg
+    name: Netflix
+    type: google_doc
+    modified: '2025-05-07T23:49:28.858Z'
+    size: '2322'
+  - id: 1mJVXNJACAUDA0DvefkD1SU15dWyCIAhYuUyh_vkspUI
+    name: Leap-PM
+    type: google_doc
+    modified: '2025-05-07T23:37:54.808Z'
+    size: '2616'
+  - id: 1BPGM2-NmTnC48Sl3ssDt_pmg6AtOtD5x2ClF_BOdih0
+    name: Engine
+    type: google_doc
+    modified: '2025-05-07T18:43:48.677Z'
+    size: '2511'
+  - id: 1pdrfqUcLr9sxoAyWveweAF5KWK6uaUbtrDtvGvhItgE
+    name: Snorkel
+    type: google_doc
+    modified: '2025-05-07T18:37:47.210Z'
+    size: '2709'
+  - id: 1XeutfkPDoyGBb-PC4bNI9TAQfWNLbhsdIBfsg6MNhzo
+    name: Lattice
+    type: google_doc
+    modified: '2025-05-07T18:32:23.795Z'
+    size: '2221'
+  - id: 1dxSYfZVweaawqJ64JL26T5h01Q6jW1Qqz0hbSkdRim0
+    name: Keyfactor - Director of Product Management
+    type: google_doc
+    modified: '2025-05-07T18:22:36.802Z'
+    size: '2276'
+  - id: 1Yh2gaME86bW1rYnQnQvIMYHKWxTyZ_rAGg1dv83vFC8
+    name: Chainguard
+    type: google_doc
+    modified: '2025-05-07T18:06:45.035Z'
+    size: '1675'
+  - id: 11gdrLJkZJm8arIbyXdDukVpximxWCaVDDzEC6kE5Xsw
+    name: Yes Energy
+    type: google_doc
+    modified: '2025-05-07T18:01:18.267Z'
+    size: '2496'
+  - id: 11nczUSkVGk_oWw---f4oMHLRaStDsCAy7h9ZweLB5DQ
+    name: 'Roofr '
+    type: google_doc
+    modified: '2025-05-06T22:20:48.007Z'
+    size: '2505'
+  - id: 1kZ4_LaY_bzljoSXxcvR_Z8Wt8Id0QlSLyNYGxY-2VYU
+    name: Block - Product Lead, Engagement
+    type: google_doc
+    modified: '2025-05-06T22:09:45.552Z'
+    size: '2362'
+  - id: 1UIBPL4m_iXNM8Mq8Xh1O0X5YxeR_uhsitRBMkHhva7M
+    name: Syndio
+    type: google_doc
+    modified: '2025-05-06T22:08:25.947Z'
+    size: '2556'
+  - id: 1vwNnEqtHGMEGyHCK2xVS1qh2DU-Qcl79wRwfJTr3GhE
+    name: Coactive
+    type: google_doc
+    modified: '2025-05-06T21:56:26.429Z'
+    size: '2330'
+  - id: 1yiheAcUMRFQ1EoQTSg-6CFT_W_Hg5zHiknhUkrv2wck
+    name: Everlaw-May-2025
+    type: google_doc
+    modified: '2025-05-05T21:05:04.380Z'
+    size: '3712'
+  - id: 1Ucc1BUZOfSXfV0WOPnCd4kTA5Nno-JsUAzWgBpMvpeE
+    name: Rubrik
+    type: google_doc
+    modified: '2025-05-05T20:53:09.675Z'
+    size: '2648'
+  - id: 1tvQv8cVknVO1hae1sFrGSMvCvjVWFHUwTJ2Un6D8rVQ
+    name: Hover - Staff Product Manager Core Product
+    type: google_doc
+    modified: '2025-05-05T20:40:33.412Z'
+    size: '3693'
+  - id: 1xB8xnlQOoviUHTrpXN1idsaoa2sTCBqAmVsVscLDu2A
+    name: Affirm
+    type: google_doc
+    modified: '2025-05-03T00:24:04.013Z'
+    size: '2147'
+  external_slides_presentations:
+  - id: 1wzjfJvblc69BG3ahNx-NywSogQwJ2gfjQ3YQVeGfns4
+    name: 'FB:  2018 DPM Presentation'
+    type: google_slides
+    modified: '2025-07-14T18:31:48.238Z'
+    size: null
+    error: Could not extract content
+  - id: 1-DxDinX-A2OiqSP03jtHveNxPS5FaC67B-RhXrX0am0
+    name: 2024 - Background
+    type: google_slides
+    modified: '2025-07-14T18:28:35.476Z'
+    size: '38899965'
+    error: Could not extract content
+  - id: 1Htx7GaLyy4ub9Tgn9Lfc4_4bqrLn5mIPb1-NL8l4eY4
+    name: Meta-Testing
+    type: google_slides
+    modified: '2025-07-03T20:38:24.692Z'
+    size: '4383522'
+    error: Could not extract content
+  - id: 1fTzC2LF3SU5NEeEVlnzkvL2SRFz-J4EmA6fOorf2cIk
+    name: Samsung-Chatbot
+    type: google_slides
+    modified: '2025-07-03T20:37:35.209Z'
+    size: '5295696'
+    error: Could not extract content
+  - id: 1GC4rL8MYiURwA8nA5DA8SOuk5e2_mMUIwfNzATIc-QM
+    name: FalconX
+    type: google_slides
+    modified: '2025-05-16T22:39:26.223Z'
+    size: '39979535'
+    error: Could not extract content
+  - id: 14QgNRtIZxLypYL50eSvw5TthzG_K_v8z-uuGz4fxPHU
+    name: Background Presentation
+    type: google_slides
+    modified: '2025-05-15T20:23:21.353Z'
+    size: '81349957'
+    error: Could not extract content
+  external_drive_files:
+    portfolio_work:
+    - id: 1D36-naQ83zK78MUtyRWNzp1f3EQpdHSd
+      name: Samsung
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:23:58.863Z'
+    - id: 1mGHa2YtmObc3IlIYPgkKOTMW1LdBzasv
+      name: Salesforce
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:23:53.253Z'
+    - id: 18Ry0Akq2U-d-QGwjMPbjewhyoZJFA-Jj
+      name: Mobiquity
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:23:49.263Z'
+    - id: 1E5d0HZ4vMWuoAdY5fZWcTTe-bjvbG40l
+      name: Meta
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T17:53:44.200Z'
+    - id: 1zpeuYAhcRYMHFAmn9vspgQQeES9jt7YB
+      name: Enact
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-01-04T22:18:55.454Z'
+    - id: 1durLq1ruyEBggnsVDBGEmscbKc8cN2R7
+      name: ETOPS
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-01-04T22:16:31.959Z'
+    - id: 1OpbgvuRZQlCFcXgYUTnr4h_-kAYcYhPy
+      name: Design_Presentation.pdf
+      mimeType: application/pdf
+      modifiedTime: '2019-01-07T19:00:10.254Z'
+      size: '13783424'
+    - id: 1yy6QjVSUx5AGRSxrVrTMwzuPJHRTZPSS
+      name: Google Design Presentation.pdf
+      mimeType: application/pdf
+      modifiedTime: '2018-10-24T21:57:35.075Z'
+      size: '2438935'
+    - id: 1wxK-0aSLTA1_WbbZORxGekE-WfwmnSgfHbY3_WaAh3o
+      name: 'Design Manager: Background Presentation'
+      mimeType: application/vnd.google-apps.presentation
+      modifiedTime: '2018-05-03T20:52:25.324Z'
+    - id: 1W0UK-EdpYxMxISe-3ZE6PzB6B5Qcwcft10FJLAv7ciw
+      name: FB DPM Presentation - Speaker Notes
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2018-04-16T16:52:16.004Z'
+    star_stories:
+    - id: 1cNjWcSc7c2a9OVpGTFblQ7XXZdwnQxUG
+      name: Presentations
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:30:36.100Z'
+    - id: 1m6cD7Kun6l4HZcPDlS0OXOdm4KTJCCmQ
+      name: Interviewed
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T17:55:37.826Z'
+    - id: 1abYGwCskoS_QZEIl0zOFMlbM35vnAH98UTVZCv8_gZU
+      name: Cover letter blurbs
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-07-10T19:49:14.958Z'
+      size: '12587'
+    - id: 1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x
+      name: Cover Letter Agent
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-10T02:13:40.758Z'
+    - id: 1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc
+      name: '2025'
+      mimeType: application/vnd.google-apps.spreadsheet
+      modifiedTime: '2025-07-08T17:53:49.174Z'
+      size: '16935207'
+    - id: 13kSm91W0Zu1n5e_W7L32zr-BiYIW46Zp1Htvl1k_mf0
+      name: 'Tier 3: Recruiters, etc'
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-06-26T21:35:08.577Z'
+      size: '2716'
+    - id: 1HyzDgLyTdaz5oeprmZOusHZAP4Kr0om_BUEYMRmLkO4
+      name: 'Core Context Summary for New LLM Thread: Cleantech Product Leadership
+        Job Search (Condensed)'
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-06-12T22:41:44.407Z'
+      size: '12306'
+    - id: 16zJzR_XVZtdtuQfacZXRZm9yHHyKNWkp6YTeueI085E
+      name: Resume Grid
+      mimeType: application/vnd.google-apps.spreadsheet
+      modifiedTime: '2025-05-28T00:32:50.279Z'
+      size: '49295'
+    - id: 1xdrVpxlRTtbne8TYJXE2rtuhB_M6_4BB0SUOQ3rVz1U
+      name: Samsung Chatbot
+      mimeType: application/vnd.google-apps.presentation
+      modifiedTime: '2025-05-15T20:24:25.845Z'
+      size: '5295695'
+    - id: 1vEMMPipzvrlEIqhlFzLsS_JXLc3lLScbF-mOC8hDWfk
+      name: Cover Letter Framework
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-05-07T17:53:42.685Z'
+      size: '4400'
+    - id: 121f1f0I2sTwKHGvWtikeURMStcBjlvHFuctQb56Xyrw
+      name: Cover-Letter-PM
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-03-18T19:56:52.064Z'
+      size: '3818'
+    - id: 1t8kqbeVb7iy7YOxgkc8O4t2oGdubel2W4YeHS1mfuEQ
+      name: PM
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2025-01-22T19:23:10.746Z'
+      size: '3129'
+    - id: 1pc7tQLOvOtuEcmfRicZtshdfVJLuNuPm
+      name: Peter Spannagle Resume.pdf
+      mimeType: application/pdf
+      modifiedTime: '2024-06-12T20:23:23.509Z'
+      size: '24386'
+    - id: 1I9L19GAxbq5djb1ys9ro0unbt_t7_XyOob_Yw2UMRzo
+      name: Cover Letter - B2B/ENT
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2024-05-30T18:15:04.637Z'
+      size: '2911204'
+    - id: 1dk-GsF8CaJihvjJONDgnb9KpyjXLJ2jHCOA2wiXYR0Q
+      name: Infogrid
+      mimeType: application/vnd.google-apps.spreadsheet
+      modifiedTime: '2024-05-01T22:44:14.439Z'
+      size: '8401378'
+    - id: 1EEA45l0-xuLY6U4Y7-WsTr1Il4HRwQyzaVy_-XNtEUk
+      name: Cover Letter - B2B Cleantech
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2024-04-24T19:39:14.196Z'
+      size: '3540385'
+    - id: 1VB8dfKqZ6elaY2KZkPwT6iU78RG9_CSF
+      name: Peter Spannagle - Resume.pdf
+      mimeType: application/pdf
+      modifiedTime: '2024-04-24T19:23:55.747Z'
+      size: '24518'
+    - id: 1G6uaun-IVkbklm7aWiZmcja7yZU21ll8qUlCJ0ocTVY
+      name: Cover Letter - B2C Growth Leader
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2024-04-23T19:24:35.200Z'
+      size: '3539888'
+    - id: 0B9PEBLmrpxxiX29qaHlUb3RLME0
+      name: Applied
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-04-16T18:15:03.592Z'
+    - id: 1pUkg5r-8z6fFZbeg0Zk9KBod3ethNsvF
+      name: Archive
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-04-12T18:31:42.174Z'
+    - id: 13I_ca9fOjv7KAcCwdp983Iy7fvRpByiY
+      name: Peter Spannagle, Design.pdf
+      mimeType: application/pdf
+      modifiedTime: '2024-04-04T19:29:01.778Z'
+      size: '24383'
+    - id: 1lbrLBHxGzKLSYLtgHlpkecQhU1aRCH3Jz_SmyhxduEE
+      name: Cover Letter to Paste
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2024-04-04T19:06:37.790Z'
+      size: '2047'
+    - id: 1veTXsnJsG7cbsempakXHWVfMn46X5H21
+      name: Peter Spannagle, Product Management.pdf
+      mimeType: application/pdf
+      modifiedTime: '2024-03-29T19:36:39.032Z'
+      size: '24518'
+    - id: 15JMw-w0p5vLWEsJq_kSKu_sNFozD-8ulMMi9MX4j38w
+      name: 2019 - job prospects
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2019-04-10T21:31:15.969Z'
+    - id: 15vFQfDSE496Cj2LEYhiqy9bM81_X1DaTGkr32VrbxiY
+      name: 2018 Job Prospects
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2018-06-19T01:35:19.403Z'
+    - id: 1LaTruHrHZ9NNZtu78QP6CpaOeVPEviKahKSuS3hbSlo
+      name: 2017 Job Prospects - Archive
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2017-11-22T19:54:30.763Z'
+  external_star_stories:
+  - title: 'Enact:  key metrics'
+    situation: ''
+    action: ''
+    result: "Growth of Revenue: 169% YoY\n2022 Revenue:  $48k\n2023 Revenue:  $129k\n\
+      \nGrowth of Users:  357% in 2023 \n1/1:  154 \n12/31:  705\n\nEngagement:  783%\
+      \ average increase   \n\n\n853% increase in average monthly time per user: \
+      \ 23m (Q1) --> 222m (Q4)\n876% increase in average monthly events per user:\
+      \  114 (Q1) --> 1110 (Q4)\n620% increase in average monthly visitors:  3 (Q1)\
+      \ --> 24 (Q4)"
+  - title: 'Enact:  build PLG growth team'
+    situation: Constrained growth due to a) low installer uptake, b) limited marketplace
+      footprint and c) OEM ramp up
+    action: "Develop ToFu:  Email, direct mail, SMS and online ads\n\nDrive conversion\
+      \ via landing page experiments, email and CMS \n\nRECs:  monetize environmental\
+      \ attributes for CA solar homeowners\n\nVault:  progressive onboarding"
+    result: "980 visitors visited landing page \n25 converted \n= 2.55% conversion\
+      \ rate\n\n\nCAC / FB ADS\n\nExperiment 1:  audience vs creative\n\n$1293 spent\
+      \ to drive 862 prospects to landing page\n$1.50 per landing page view \n\nIdentitfied\
+      \ top audience and creative, but 0 conversions\n\nExperiment 2:  improve landing\
+      \ page to increase conversion \n\n$392 spent to drive 68 prospects to landing\
+      \ page\n$5.76 per landing page view \n3 conversions= 4.41% conversion rate\n\
+      Cost per lead = $131"
+  - title: 'Aurora:  refocus team mandate'
+    situation: "Retro:  why did we have lower throughput? \nDragged into requests\
+      \ to support CS and Sales (credits, setup environments for customers and leads,\
+      \ one-off requests)\nMandate to support other pods in conflict with delivery\
+      \ of priorities"
+    action: 'Reflect:  one-time or a pattern?
+
+      Disucss with team:  what was their experience and how do they feel?
+
+      Align with EM:  strategy
+
+      Align with TechOps:  would you please?
+
+      Align with Eng + Product VPs:  buy-in
+
+      Communicate with GTM teams'
+    result: "Increase scope for TechOps and refocus work around KPIs relative to needs\
+      \ for infra and scaling\nWholly focus the team on Customer needs and Business\
+      \ goals\nTransition plan for internal tools and needs of internal users \nPairing:\
+      \  we fix, but show a TechOps member how\nNext time:  they fix, we support\n\
+      Good documentation for hand off"
+  - title: 'Aurora:  usability + beta testing'
+    situation: 'Product team working in a silo
+
+      New team members and significant time between strategy and execution
+
+      Questions about defining scope for MVP'
+    action: 'de-risk and validate:
+
+      -prototypes
+
+      -internal "pizza testing"
+
+      -share current state for evaluative concept testing
+
+      -conduct in-depth user interviews
+
+
+      Work with Head of Design to develop and execute plan
+
+
+      Work with Sales and CS to source participants'
+    result: 'clear view across the org of design vision and input from all departments
+
+
+      Bug bounty --> rewards
+
+
+      New tools for collecting user feedback
+
+
+      Synthesized findings to guide design and prioritization
+
+
+      Built user research funciton'
+  - title: 'Aurora:  platform rebuild'
+    situation: '2 years platform rebuild
+
+      evolving team and competitive landscape
+
+      built out tablet solution for enterprise use case
+
+      siloed product experience'
+    action: "Establish priorities with leadership:  common experience between Sales\
+      \ Mode and Pro Mode\nif we don't have Settings and Database this will bottleneck\
+      \ migration\n\nCreate and present plan to PMs:  overview of product areas, explain\
+      \ why it matters, identify phases and scope for each\n and map dependencies\n\
+      \n1:1 sessions with each PM to align \n\nBreak down work  with EM and assign\
+      \ to roadmap\n\nCoordinate and load balance with other pods"
+    result: 'Design system
+
+      Quarter after quarter on time delivery and team health
+
+      Coordinated cross-pod delivery of dependencies'
+  - title: 'Aurora:  phased roll out'
+    situation: 'Looking top line KPI:  migrate 100% of users by EOY'
+    action: 'coordinate product and GTM teams:
+
+
+      -coordinate with CS and Sales-coordinate with CS and Sales
+
+      -identify groups of customers that could be a potential match (amplitude  +
+      data scientist)
+
+      -outreach to confirm participants
+
+      -generate cross-pod product roadmap to establish phases of readiness'
+    result: "Phased rolll out \nFeature flag strategy\nImproved coordination and collaboration\
+      \ with GTM\nAble to release to multiple targeted segments, gathering qual +\
+      \ quant data"
+  - title: 'Aurora:  Pendo'
+    situation: Need to welcome and guide users to Aurora v2
+    action: 'Aligh with leadership on vision
+
+      Evaluate options:  demos with XFN working group
+
+      Negotiate and sign contract
+
+      Kick off with tiger team (dedicated resources)
+
+      Create content matrix to prioritize users and flows
+
+      All hands demo
+
+      Work with data analyst to refine targeted customers
+
+      Create dashboard to monitor guide engagement'
+    result: "Launch on time\n100% of guides received\nUpdates to leadership and XFN\
+      \ teams\nSelf service dashboards \nHand over tool to PMM and CS"
+  - title: 'Salesforce:  Mobile First Strategy
+
+
+      Collaborative Problem Solving and Project Planning'
+    situation: "Salesforce has a responsive website with informational and marketing\
+      \ functions.  Mobile users are ~3.5m  per year.  Yet the mobile experience was\
+      \ generally considered subpar.  \n\nThe team wanted to improve, but how to fix\
+      \ and where to start were unclear. Neither the UX nor Strategy teams had much\
+      \ mobile experience. They believed they could benefit from an outside perspective."
+    action: "I worked cross-functionally with the Strategy, Creative and Leadership\
+      \ teams.\n\nFirst step was discovery and listening activities -- to learn and\
+      \ build relationships.  I spent 2 weeks meeting people and hearing about their\
+      \ ideas, goals and pain points for mobile.\n \nNext step was to work through\
+      \ phases for design strategy.  WIthin 2 months I completed the following activiites:\
+      \  heuristic review, review and synthesis of analytics data, competitive landscape\
+      \ analysis and a round up of relevant responsive design best practices.   I\
+      \ operated independently, but not in a silo -- shared early concepts (and subsequent\
+      \ iterations) with stakeholders and cross functional team members for feedback.\
+      \   \n\nThen I spent 1 month on creative briefs, design explorations and prototypes.\
+      \  \n\nFinally, I spent 2 weeks boiling the work down to a single proposal:\
+      \  mobile first strategy for salesforce.com.   I presented this proposal to\
+      \ the leadership team (VP and Director) -- half strategy, half playbook -- an\
+      \ implementation guide with detailed footnotes."
+    result: "Mobile improvements became a \u201Ctop 5\u201D initiative for FY2019.\n\
+      \nCross functional alignment on vision, opportunities and tactics.  \n\nIncreasing\
+      \ trend in mobile prospects was discovered, as well as new insights on mobile\
+      \ user behaviors and devices\n\nMy roadmap was adopted by Strategy and Leadership.\
+      \  Funding was committed to Analytics and Research activities for Q1.  UX, content\
+      \ and design tracks slated for Q2-4."
+  - title: 'Salesforce:  Design Process Improvements'
+    situation: 'Part of my consulting project was to assess and optimize design process
+      for the UX team.  Positioned as an agency within Marketing, they had two modes
+      of operating:  pitching ideas, and engaging with other Product Marketing teams
+      as "clients".  Idea generation was working well, so I focused my efforts on
+      bring product design best practices to digital UX for marketing.'
+    action: 'I embedded within the UX team and led UX for two projects.  Changes included:
+
+
+      Discovery - synthesis of product/marketing inputs, interviews with stakeholders
+      and SME''s
+
+
+      User Reserach - leverage research team for analytics and card sorts
+
+
+      IA - determine regions and interactions on a page, then explore options on a
+      module basis
+
+
+      User Centric Design - focus on benefits, not features.  Support user flow and
+      journey.
+
+
+      Testing - validate concepts early'
+    result: 'On time delivery
+
+
+      Increased stakeholder engagement and satisfaction
+
+
+      Data based and SME insights
+
+
+      UX became a more strategic partner, guiding the process and work (not being
+      pulled along or tasked with execution)
+
+
+      New global templates and components
+
+
+      Early testing validated many hypotheses and allowed us to do fine tuning before
+      engaging Dev'
+  - title: 'Samsung:  Design Process Improvements'
+    situation: Team was reactive, design was tacked on at the end.  Depended on agency
+      for large efforts.  Hierarchy in the org reflected in the team.  Needed a design
+      leader to improve methods and process.
+    action: 'Re-organize team:  end to end product designers
+
+
+      Design Process:  discovery, concepts, testing, prototypes
+
+
+      Collaboration - Design as a strategic partner:  work with Business, Product
+      and Engineering for roadmap and sprint planning'
+    result: 'Higher quality work done faster
+
+
+      New tools:  InVision, Trello, User Testing.com, Principle
+
+
+      Better visiblity and collaboration within the team and across the org, including
+      better alignment to business objectives
+
+
+      Research became a regular part of design'
+  - title: 'Samsung:  Overhaul of S+'
+    situation: 'App moved from marketing to support focus.  Business was considering
+      a pivot to e-commerce.
+
+
+      Overhaul was needed -- only direction was to make the focus "world class customer
+      care"'
+    action: 'Research:  understand users, analytics, competitive landscape
+
+
+      Listen:  work with Business and cross funcitonal leads (PM, Eng)
+
+
+      Evangalize a Vision:  support is not about problems.  Samsung has your back
+
+
+      Execute:  concepts, wireframes, prototypes --> hand off to agency for visual
+      design and testing'
+    result: "New:  IA and menus, style guide, cards, content types, home, diagnostics,\
+      \ learn, get help \n\nWithin 2 months:  200% increase in engaged users, 300%\
+      \ engagement with Community, improved app rating from 3.7 to 4.2\n\nWithin 1\
+      \ year:  increased user base from 12 to 20m installs and 5 to 8m monthly active\
+      \ users"
+  - title: 'Samsung:  Chatbot for Customer Care'
+    situation: EVP wanted to develop a chatbot for customer care, to supplement text
+      chat as a support channel
+    action: 'Validate need:  commissioned remote moderated focus groups to understand
+      customer pain points and perceptions.
+
+
+      Assemble cross functional team:  PM, UX and Eng and align on vision
+
+
+      Define chatbot design process, start in parallel on BE and UX
+
+
+      Model chatbot and AEM content
+
+
+      Style guide, compnents and identity / use cases, process flow and script
+
+
+      Present proposal
+
+
+      Test prototypes and synthesize --> present findings'
+    result: 'Undefined to actionable in 2+ months
+
+
+      Validate need, features and interactions
+
+
+      Sidestep constraints around content creation
+
+
+      Define choose + converse modes for MVP'
+  - title: 'Etops AG:  Product Roadmap
+
+
+      MVP definition, design process and rebranding'
+    situation: "In 2016 I worked with a Swiss Fintech startup to jumpstart their efforts\
+      \ to design and build the company\u2019s first cloud based SaaS product. Founded\
+      \ in 2010, Etops has ~50 employees in three countries. The founders had a product\
+      \ vision and deep understanding of their industry, but little experience with\
+      \ UX or product design."
+    action: "Product roadmap:\u200B create the first detailed description of total\
+      \ features and functions\n\nMVP definition\u200B: prioritize according to business\
+      \ and user needs to define the initial release \n\nBranding\u200B: new name,\
+      \ brand identity and logo.  Revise company mission and values\n\nAs the Head\
+      \ of Design, I worked alongside the founders as part of their executive team.\
+      \  I met with clients and partners.  I led branding workshops to establish priorities\
+      \ and brand strategy, then selected and managed an agency for creative services.\
+      \  I worked with cross functional team members in the US, Switzerland and Slovakia,\
+      \ including Engineering, Operations, Product and Legal."
+    result: 'On time delivery:  all milestones were met and deliverables completed
+      on time
+
+
+      Undefined to actionable:  the combined deliverables constituted a considered,
+      achievable and actionable plan.  These included:  user survey, creative brief,
+      personas, MVP definition, design/dev estimates and roadmap.
+
+
+      Utilization of best practices:  the proposals reflected and contained design
+      best practices, as applicable to the company size, stage, location and industry.  These
+      included:  user centric approach, iterative design process, dependency tracking
+      and ROM estimates.'
+  - title: 'Mobiquity:  Creative Team Project Management
+
+
+      Tracking creative deliverables'
+    situation: "During my time at Mobiquity I worked as a Project Manager and UX Architect.\
+      \  Our small team used an informal system of verbal check-ins to understand\
+      \ the status of features. But we had no \u201Cbig picture\u201D view, and ran\
+      \ the risk of missing something that had been requested or promised as we rushed\
+      \ to deliver, refine and evolve."
+    action: 'I created a spreadsheet to track cretaive deliverables to address this
+      problem.
+
+
+      status: which items are done vs in-flight?
+
+      sprint planning with filters for each IC
+
+      phases: where are we in the design process?
+
+      integrations: include links to design assets'
+    result: This tool helped us connect planning to execution, communicate status
+      to clients, track revisions and change orders and ensure timely delivery on
+      our contractual and verbal agreements.
+  - title: Other Interviews
+    situation: Examples of working closely with cross functional partners
+    action: Action
+    result: Result
+  - title: Hire and Develop The Best
+    situation: ''
+    action: ''
+    result: Dive Deep
+  - title: Tell me about a time when you had to deal with a poor performer on your
+      team.
+    situation: ''
+    action: ''
+    result: Tell me about a time when you had to dive deep into data and the results
+      you achieved.
+  - title: Situation
+    situation: Action
+    action: Result
+    result: Situation
+  - title: Inherited contract designers had production skillsets
+    situation: 'One designer had to be let go.  The other was interested and able
+      to expand their skill set to become more end to end.  Improvement plan:  pairing,
+      design reviews, curriculum, process/best practices, regular check ins'
+    action: The designer made considerable progress over a period of three months.  Ultimately
+      was not the best fit for the new team we were building, so the contract was
+      not renewed.
+    result: Sunset of a feature - data plan monitoring
+  - title: Why should we hire you?
+    situation: My top strengths are being strategic, efficient, collaborative and
+      adaptable.
+    action: I help teams move from undefined to actionable.  I establish clear goals
+      and vision, identify dependencies and ensure cross funtional representation.   Together
+      we prioritize, estimate, adapt and align on process.  Then we pursue miletones,
+      making progress visible and re-calibrating as needed.
+    result: ''
+  - title: "Why shouldn't we hire you?\n\nassess their self-awareness, integrity,\
+      \ and honesty\n\nShow pattern recognition, and draw examples from \u201Cexperience,\
+      \ intuition, and common sense.\u201D Body language:  if someone crossed their\
+      \ arms, for example, that \u201Cunconsciously communicates arrogance and defensiveness.\u201D"
+    situation: "I am willing to push boundaries to drive things ahead.  Ex: use a\
+      \ qualified team member from research instead of engaging an overburdened analyitcs\
+      \ team.  Preparing the team to release a new version of a logo, in parallel\
+      \ with getting all the sign offs needed.  \n\nSometimes I get too task/goal\
+      \ oriented.  The goal matters, but so do perceptions, feelings, new ideas. \
+      \ I"
+    action: ''
+    result: ''
+  - title: 'What were you doing on your very best day at work?
+
+
+      It was probably a day where you lost track of time because you were so engrossed
+      in your work.  We want you to do that not just on your best day, but every day.'
+    situation: 'Mobiquity:  got a lead from AWS for a biotech startup in San Diego
+      who wanted to build a  baby tracking + genetics mobile app.'
+    action: Led the team through discovery.  Put together a presentation for HLI on
+      competitve landscape and the relevance of features at different stages (conception,
+      pregnancy, childbirth, infancy).   Flew to San Diego with the sales team to
+      give the presentation.  Led a workshop to understand the product vision and
+      brainstorm features.
+    result: 'Back to back contracts:  visual narrative and prototype for fundraising.  Roadmap
+      and estimates for MVP.'
+  resume_experience:
+  - company: Nonprofit Founder
+    title: ''
+    duration: ''
+    location: ''
+    description:
+    - 'Oakland Artists Inc: 401(c)3 01/2002 - 07/2006'
+    - Engineered a local "gig economy" platform to connect creatives with paid opportunities
+    achievements:
+    - Created hundreds of jobs via a marketplace that linked artists, individuals,
+      businesses and nonprofits
+    skills_used: []
+net_new:
+  work_history: []
+  non_work:
+  - source: cover_letters
+    content:
+      id: 1Jzv77l4aKoFmUXs4coVA_NKC6dVsxpret9CCSubf7mo
+      name: Overstory
+      type: google_doc
+      modified: '2025-07-14T05:57:52.563Z'
+      size: '3275'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1CzBFYhjlwap28LkEmOdbqAeKzz2VgLY8OFbqbPamKv0
+      name: EnergyHub - Director of Product
+      type: google_doc
+      modified: '2025-07-10T09:52:55.693Z'
+      size: '2725'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1NolxcZyAm84a59gPcXhNm_rSTgCoAvjz7yf2Y8KMzgI
+      name: Headspace - Lead PM
+      type: google_doc
+      modified: '2025-07-03T20:29:13.437Z'
+      size: '2174'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 10hHI-3kP8tYkT-eRZf2JrgklWeNa_V68IifD9eHwhEQ
+      name: Pano - Manager of Technical Program Management - v1
+      type: google_doc
+      modified: '2025-06-26T21:42:43.373Z'
+      size: '3301'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1WaliKw2ffYu9v8KfkFqw2rfmstlE8c-H_rpdT83QrEg
+      name: Pivot Bio
+      type: google_doc
+      modified: '2025-06-26T19:36:01.514Z'
+      size: '2643'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1sjzJ49qbpV3vxfJtTLef5kI_Z62fILstwJr60ltR5Vw
+      name: Lucid-GPM
+      type: google_doc
+      modified: '2025-06-26T19:23:20.022Z'
+      size: '3870'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1AJLmNRE9HUe36lr6xG0hY8vea-sXLJCE7yvwsEvU0xg
+      name: Diagram-v4
+      type: google_doc
+      modified: '2025-06-26T17:50:37.094Z'
+      size: '3293'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1MAK-5LaAbplp9tpGA8P5eVQiJOJD2HpXLyBFDrnMZKE
+      name: DNV
+      type: google_doc
+      modified: '2025-06-24T18:17:48.327Z'
+      size: '1770'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1mtIjllJJxhIbxp1ycZ7tqqrPOS19Ic-uuXFNn9tfBuo
+      name: Assured
+      type: google_doc
+      modified: '2025-06-20T21:54:24.788Z'
+      size: '2010'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1NEWCjigx8rrZ8WhJ__tKQQCS4KwulxjA003CGsTagAA
+      name: Walmart
+      type: google_doc
+      modified: '2025-06-20T19:19:38.349Z'
+      size: '2861'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1hKYFiqVh8rbJqpZC6ezbcNhD1P0POIB191yVvkR1pDU
+      name: HubSpot Ventures
+      type: google_doc
+      modified: '2025-06-20T19:06:09.599Z'
+      size: '2551'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1CZvbnSTkNrTdIydjI_MyMLcN0vG_GzaUcMx4y2_NmsM
+      name: Mixpanel
+      type: google_doc
+      modified: '2025-06-20T18:58:16.627Z'
+      size: '2455'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Izz4nNKoaH2uRqujNYPp2BlaEWARjlBwjw53Qxxxes4
+      name: OpenAI Model Behavior
+      type: google_doc
+      modified: '2025-06-20T18:44:10.627Z'
+      size: '2412'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1nqyw9lh-HvcL_mdNnf4yqMLDU3c857CIc5bGMcgW3A4
+      name: Hilton Foundation
+      type: google_doc
+      modified: '2025-06-20T18:43:19.671Z'
+      size: '2763'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1BYPnsqfFandin-M0Z8qc9z5fyHbrbRKW3mXljvl51qw
+      name: Wittkiefer (N4P)
+      type: google_doc
+      modified: '2025-06-19T21:13:42.811Z'
+      size: '5688'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1iddA89v-83TRhflB3Ao0nhCvftyqr5dPhxl_lOtnMss
+      name: Five9
+      type: google_doc
+      modified: '2025-06-19T20:07:37.122Z'
+      size: '2313'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 13C5PWpiw0Uc7hSlNo32Ou-259skBGWVUETrJckWVaxk
+      name: Klaviyo
+      type: google_doc
+      modified: '2025-06-19T19:07:41.888Z'
+      size: '2542'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1IhFgjGCwpbHB-3Wj6Zz-OjqDa7cSipemqM3PZDETodo
+      name: Zillow
+      type: google_doc
+      modified: '2025-06-19T18:57:27.188Z'
+      size: '2648'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1YysztRTqNO5VM7LRZ6jhLKnelfS510uU9eLvX-QIdlM
+      name: AccuWeather
+      type: google_doc
+      modified: '2025-06-19T18:44:28.962Z'
+      size: '2310'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1TvPQrMoMo8uC84KWPvIOCODmNBJafvC6gC7B-_ScXUc
+      name: Hillspire
+      type: google_doc
+      modified: '2025-06-19T18:28:14.633Z'
+      size: '2706'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1rNbLSQBKwk4Je3u27rk2VJNXsugNnOlZ6vF1osWsjOc
+      name: Wikimedia
+      type: google_doc
+      modified: '2025-06-19T18:06:48.023Z'
+      size: '2588'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1yRwr1ErQPhulVOXD1il91zQTmL83Olu_xd7UxlYLQ_4
+      name: LaunchDarkly
+      type: google_doc
+      modified: '2025-06-18T17:45:56.150Z'
+      size: '3482'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1MegQ9CLNjKeWy8bi1BayDaBK5ZGn8G5L_xWhzw6-cF8
+      name: Lumin
+      type: google_doc
+      modified: '2025-06-17T17:25:17.575Z'
+      size: '3453'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1RCLqmqTQUlfeOyC1GkDi_wW9q4l2VSZtzkyiDiy9clM
+      name: 1Password
+      type: google_doc
+      modified: '2025-06-16T17:53:15.827Z'
+      size: '2862'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1fRPdqGo5HT1yVRoyPRqIhWcWCJWYVH6cUGhToYYgQ0Y
+      name: Earnest - GPM
+      type: google_doc
+      modified: '2025-06-13T22:17:55.425Z'
+      size: '2480'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1bWlk2UcJpM4nOToRxpCUBTOSqpioFGz6yDcHlvsxt2A
+      name: Chime
+      type: google_doc
+      modified: '2025-06-13T22:13:55.354Z'
+      size: '2676'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1jqYZe_4aq6PMmf0HCH2X3-tU1J3VThPJrzcf-m4WKzY
+      name: ecoATM
+      type: google_doc
+      modified: '2025-06-13T20:25:44.713Z'
+      size: '2382'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1DTz0s1mQQcCG4w6K2VKLrZX-0s4fjKn8f_x6JNCc-uQ
+      name: Niantic
+      type: google_doc
+      modified: '2025-06-12T22:53:36.215Z'
+      size: '4613'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ZsppljPjj7b6sBveUMt9uIppM3ZMCy7A_kqVw9NXhK8
+      name: Mainspring - Senior Product Manager, Data Center and Utility Solutions
+      type: google_doc
+      modified: '2025-06-12T22:45:36.420Z'
+      size: '5210'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1FdfGW99VwP4sHTyDUsNM5GKVpbTVLqdsUH8yXSO0M-k
+      name: Mercury Team - Sr PM, Activation
+      type: google_doc
+      modified: '2025-06-12T22:33:18.157Z'
+      size: '2729'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1CcBTkbkETS4-pioOK-SRr0A_7YLkmPI3rt47pL63fEQ
+      name: Trunk Tools
+      type: google_doc
+      modified: '2025-06-12T20:42:11.336Z'
+      size: '2278'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1xnIU0dliD6UrycKPur9Oxdu0NUe_vvl9kYEATwjx-uY
+      name: OpenGov
+      type: google_doc
+      modified: '2025-06-12T20:30:54.903Z'
+      size: '3233'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1phA3pDjuhNixtK7zK3HM7zQGVIMsgMIE2d6Zpqu8dq4
+      name: Vimeo - Sr Principal PM, Growth
+      type: google_doc
+      modified: '2025-06-12T20:30:27.937Z'
+      size: '2308'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ry7XZLXjE-gqzrCM71nweDiFx7FX1m0ETW5fdZ6IKrA
+      name: Guild
+      type: google_doc
+      modified: '2025-06-12T00:19:00.968Z'
+      size: '2059'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1xU_6AzAaZQ7v0k-8WmajSyj6SwJkclXITlvl5w7orJk
+      name: 'Esusu '
+      type: google_doc
+      modified: '2025-06-12T00:09:55.573Z'
+      size: '2537'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1BNOQWngmU6FDsgqt6tYUCIOSFdgyLFtqBgBVZBgydCo
+      name: Coalition
+      type: google_doc
+      modified: '2025-06-12T00:03:56.787Z'
+      size: '2205'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Z6N6LClBdm1xvwcdVTSn95_pnDwXEWZECiCMQzrJpq4
+      name: Product Manager II, Google Store, Customer Support Products
+      type: google_doc
+      modified: '2025-06-11T23:15:11.070Z'
+      size: '2376'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ppDAzli76o1UiQlK6v22KE15iLYBLIGqVCbpyCPD5Xk
+      name: Acorns - Sr PM, Growth
+      type: google_doc
+      modified: '2025-06-09T23:33:43.652Z'
+      size: '1940'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 16r0FJFtU6daKkmdv6_xv5f8TVC75RYoZtQr0ezhDNO4
+      name: Webflow - Staff Product Manager, CMS Authoring
+      type: google_doc
+      modified: '2025-06-09T21:49:26.658Z'
+      size: '2242'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 18opMO7M79WZkFNca1DC2ECMr6C0LUS-3b1PZ0BXN1xQ
+      name: Edison - Growth and Innovation Advisor
+      type: google_doc
+      modified: '2025-06-09T17:52:59.908Z'
+      size: '2152'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1i5JgnM_hKBA8gfxfUMviHJ2zSD3hdKbHqhkgr-bVFkU
+      name: GoodLeap - Staff Product Manager, Homeowner
+      type: google_doc
+      modified: '2025-06-05T19:31:38.390Z'
+      size: '2012'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1uOP5UMQqnsIMNIy5UQF4l9YzxZ853WazqwIW44vilos
+      name: Via - Head of Product, Mobile
+      type: google_doc
+      modified: '2025-06-04T23:59:45.373Z'
+      size: '2025'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1-sV0cg3rnhvU5dL87jXgNhOwRwqgo6d0xle_KX0-Sjs
+      name: Director, Product Management- Nispera
+      type: google_doc
+      modified: '2025-06-04T23:07:19.082Z'
+      size: '1946'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Qb_DEtIRd9wek2pW8FoTahhpfwvqHpYbN97gOemjCQE
+      name: Ancesty - Director of Product Management, DNA
+      type: google_doc
+      modified: '2025-05-22T21:27:28.076Z'
+      size: '4708995'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1IKfyywN3JDSDTayBMSquoqSNunFCBU-N9p1RY0qE63E
+      name: Anthropic - Product Manager, Consumer Growth
+      type: google_doc
+      modified: '2025-05-22T19:18:47.837Z'
+      size: '4626'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 15GqrDOG8qohZXn7XpYrSEFdxbRiqqSEQO7qaYAagLDM
+      name: Amplitude - Senior Product Manager, Marketing Analytics
+      type: google_doc
+      modified: '2025-05-22T17:38:21.739Z'
+      size: '2884'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1FYRTEIwAoFbAJo9gc2W54ZU0b-gd4YPA0cwBm274hn4
+      name: 'WordPress - Senior Director, Growth & Digital Experience (VIP) '
+      type: google_doc
+      modified: '2025-05-21T17:42:50.684Z'
+      size: '4910'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1h4natOi-VjaRaGhc1eadQjb5HKAo3gZlWaOITOolmM8
+      name: BitGo - Group PM
+      type: google_doc
+      modified: '2025-05-16T22:59:30.645Z'
+      size: '4213'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1H3IT6-cpdqF2VnAXta9Mgfxcme5qgo0vlxuCo0k3Cck
+      name: Robinhood - Director of Product Creative
+      type: google_doc
+      modified: '2025-05-16T22:58:52.872Z'
+      size: '3913'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 13rSPd6LFcs7r1GywgcxPwYTaW6jWA5F8Y-OT3LI8cfA
+      name: Coinbase - Group PM (Platform)
+      type: google_doc
+      modified: '2025-05-16T22:46:11.978Z'
+      size: '4181'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 11k87XMpmUJAgnMIhhBnVJyMecaDJQcKad6gr6QWUZ9k
+      name: SoFi - Senior Product Manager, Invest
+      type: google_doc
+      modified: '2025-05-16T22:00:26.750Z'
+      size: '3751'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1fqTD3gZo6n3prhBlJoLSoho8LgxpQtdcEU12sW3DPiY
+      name: Assured
+      type: google_doc
+      modified: '2025-05-16T21:33:12.429Z'
+      size: '3257'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 18OlRWgseiQz1IS4HrSMPJUWrAaYqmHGFVF8Qf3I-uN8
+      name: "Senior Product Manager \u2013 Gen AI Assistants, Cisco AI Software and\
+        \ Platforms Job 1443143"
+      type: google_doc
+      modified: '2025-05-16T19:36:25.032Z'
+      size: '2334'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1rcwUku19WVpUtXQrLblutp0VgOigHefqqKmXe_QvVyU
+      name: Lucid Motors - Staff PM
+      type: google_doc
+      modified: '2025-05-16T18:29:14.131Z'
+      size: '3070'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1azRzNnVm0XOkb1ONRXiCpuZFR8D3qnxxcEmCkTcE7QU
+      name: Lucid Motors
+      type: google_doc
+      modified: '2025-05-16T18:27:27.796Z'
+      size: '2339'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1jOS0jWQRsErkrTUSIjlzZU9tyQFkbFI4LTCFQb9a3aU
+      name: Synop
+      type: google_doc
+      modified: '2025-05-16T17:40:44.855Z'
+      size: '3283'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1uRElqEHrj_8Piv7V5tELxdepZsQRmPD1QvZYLtUx1ew
+      name: Credit Karma - Director, Product Management - Applied ML and Platform
+      type: google_doc
+      modified: '2025-05-16T02:09:33.019Z'
+      size: '4408'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ipXeQazafuSeyMWohmr1MBBsnmpt_j4Q-h_QabPHKDA
+      name: DocuSign - Lead Product Manager, Data Onboarding
+      type: google_doc
+      modified: '2025-05-16T00:39:20.192Z'
+      size: '4025'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1vrJ-subZnCAv4yOeZLU1JD-mib6cUUZYrB1IzOROVo0
+      name: Via - Director of Product Management, On-demand Transit, Mobile Apps
+      type: google_doc
+      modified: '2025-05-16T00:33:41.483Z'
+      size: '4027'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1WvVomNDsQ5uaRUN4oOBy9E0tMgs0DKDzYuG0aPXBFDI
+      name: Dropbox - Staff Product Manager, Growth
+      type: google_doc
+      modified: '2025-05-15T20:52:48.018Z'
+      size: '4450'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 11gy4vnNqPaGn2IzH8YkPonPvXFdUQ0a0fFSUuXgVhv0
+      name: LastPass - Principal Product Manager (Product Led Growth)
+      type: google_doc
+      modified: '2025-05-15T17:34:39.744Z'
+      size: '2097'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Qm-Igv6wEwzZHeFjI8BiGbphJBxXxACqWoA8ESmHEeg
+      name: Sentry
+      type: google_doc
+      modified: '2025-05-15T17:26:23.918Z'
+      size: '2497'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1xTX584Lx5rFiSquSoPAGZ6F8NRod_tCAPoKMMRi-iHE
+      name: Glean - Product Management Lead, Enterprise
+      type: google_doc
+      modified: '2025-05-15T17:19:36.619Z'
+      size: '2226'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1iKdHQQJ0biqPQNLvMVH6_VPZfVrWc0ruyHFJIkMFtA0
+      name: BetterHelp - Principal Product Manager, Monetization
+      type: google_doc
+      modified: '2025-05-14T22:51:47.637Z'
+      size: '2318'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1uvW9O6QHo91TPpiNCyrvaFEvMHCGpxO7W6jXYeT9u4U
+      name: Academia
+      type: google_doc
+      modified: '2025-05-14T22:46:34.767Z'
+      size: '2322'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 16KYajL7W3RI6Y98-VDgTww5MAyOlEcWHWvX5tm34e6k
+      name: EarnIn - Staff Product Manager
+      type: google_doc
+      modified: '2025-05-14T22:14:45.305Z'
+      size: '2088'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1hwLJVvMReqGsVXOkQCILrYF-czn9NRagh0ewKruzBM4
+      name: Hinge Health - Senior Product Manager, Enso Software
+      type: google_doc
+      modified: '2025-05-14T22:01:36.199Z'
+      size: '2262'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1rj72REkZQv71hOWwTamKLubfplyuSxfdYFvF2cROaNk
+      name: Affirm - Staff Product Manager, Consumer Servicing
+      type: google_doc
+      modified: '2025-05-14T21:43:44.868Z'
+      size: '3299'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Jz1-KkOvwqcfsl-bikkGsEObgS_varRdbWiGMkeJfj0
+      name: Genentech - Director, Web/Mobile (202505-111590)
+      type: google_doc
+      modified: '2025-05-14T18:05:15.839Z'
+      size: '2507'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1duqOxoVBZFGGHmbdrNIJWQ0TkAjEOr2ua5ZXOd0_R1A
+      name: Fictiv
+      type: google_doc
+      modified: '2025-05-14T00:28:45.111Z'
+      size: '2123'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1tWLG2P1tDBGRK5-MYidtbKdmsnmI6qQYqlqbEteAXwQ
+      name: Applied Intuition
+      type: google_doc
+      modified: '2025-05-13T19:43:06.010Z'
+      size: '2388'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1lEHy6nSW4coh3uJEUpx8vfgNUDdwFqVbmcPXtOc2T8g
+      name: Mastercard
+      type: google_doc
+      modified: '2025-05-13T19:20:13.077Z'
+      size: '2339'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1F1AOiO2weyfecFq0kWJWXRw8JApfht6dZYYbTV9Cbzk
+      name: Cisco Meraki - Senior Product Manager Dashboard Frameworks
+      type: google_doc
+      modified: '2025-05-13T19:05:30.392Z'
+      size: '2429'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1_-eRsQGzgzH3Th12V6wLzaRyA93641uqLy3Bh9pSgPU
+      name: ' Nextracker '
+      type: google_doc
+      modified: '2025-05-12T23:21:51.073Z'
+      size: '2473'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 188CriJsiM1JTGGloEosDtMNZwX9mggneqRKk9F91scw
+      name: GoFundMe - Staff PM
+      type: google_doc
+      modified: '2025-05-12T18:13:44.282Z'
+      size: '2080'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ZwppVqSNX4LcJIDkWCC25AZMUQAO8KT0vNqbthTsTt0
+      name: Okta
+      type: google_doc
+      modified: '2025-05-09T23:23:19.494Z'
+      size: '2317'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1drp-rXi_AtU_s-GUAchEJInO3xTgu46_FhwxNPlHW1w
+      name: Platform Science
+      type: google_doc
+      modified: '2025-05-09T23:09:18.859Z'
+      size: '2300'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1dFnozXYSAn4LocghMUTDwcU-oQKkX_aQgvRotqfn1OE
+      name: Samsara
+      type: google_doc
+      modified: '2025-05-09T19:51:55.340Z'
+      size: '2360'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ehbvUGn0f8aMD0geV-wCttS0Ed-9SaXG10w1V_SgoOs
+      name: Via - SrPM Remix
+      type: google_doc
+      modified: '2025-05-08T23:01:34.879Z'
+      size: '2813'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1d-MZbjLzi11Y6vyECH3tX5djexGWjofKd2vzUuSsnt0
+      name: Conduit
+      type: google_doc
+      modified: '2025-05-08T22:36:33.698Z'
+      size: '2438'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1C5h09phwyEliEIcm0-B3jQtultD0xrX8H3TAgcr8nmY
+      name: Runwise
+      type: google_doc
+      modified: '2025-05-08T21:52:07.134Z'
+      size: '2372'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ikVxh-_5r7xxaRI3lCkDZo6D5C9K2NgJCHBYdV7diz0
+      name: Ethic - Director of Product
+      type: google_doc
+      modified: '2025-05-08T21:42:39.281Z'
+      size: '4211'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1skq9MeutsVWCTMWEqgN5ruOoQd_2ooFwcN9rkewoiSg
+      name: Duke Energy-CS
+      type: google_doc
+      modified: '2025-05-08T18:50:49.596Z'
+      size: '3704'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 15OQVyyi5AcmFL0CrEj9wHAcfOirm9tM7l0UuzUyvDrk
+      name: MS Copilot
+      type: google_doc
+      modified: '2025-05-08T18:17:08.498Z'
+      size: '3309'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1ANOU7SkB4AvOTGT6zzcbILMbw4CGPLKn6lV3dPzacdg
+      name: Netflix
+      type: google_doc
+      modified: '2025-05-07T23:49:28.858Z'
+      size: '2322'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1mJVXNJACAUDA0DvefkD1SU15dWyCIAhYuUyh_vkspUI
+      name: Leap-PM
+      type: google_doc
+      modified: '2025-05-07T23:37:54.808Z'
+      size: '2616'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1BPGM2-NmTnC48Sl3ssDt_pmg6AtOtD5x2ClF_BOdih0
+      name: Engine
+      type: google_doc
+      modified: '2025-05-07T18:43:48.677Z'
+      size: '2511'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1pdrfqUcLr9sxoAyWveweAF5KWK6uaUbtrDtvGvhItgE
+      name: Snorkel
+      type: google_doc
+      modified: '2025-05-07T18:37:47.210Z'
+      size: '2709'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1XeutfkPDoyGBb-PC4bNI9TAQfWNLbhsdIBfsg6MNhzo
+      name: Lattice
+      type: google_doc
+      modified: '2025-05-07T18:32:23.795Z'
+      size: '2221'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1dxSYfZVweaawqJ64JL26T5h01Q6jW1Qqz0hbSkdRim0
+      name: Keyfactor - Director of Product Management
+      type: google_doc
+      modified: '2025-05-07T18:22:36.802Z'
+      size: '2276'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Yh2gaME86bW1rYnQnQvIMYHKWxTyZ_rAGg1dv83vFC8
+      name: Chainguard
+      type: google_doc
+      modified: '2025-05-07T18:06:45.035Z'
+      size: '1675'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 11gdrLJkZJm8arIbyXdDukVpximxWCaVDDzEC6kE5Xsw
+      name: Yes Energy
+      type: google_doc
+      modified: '2025-05-07T18:01:18.267Z'
+      size: '2496'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 11nczUSkVGk_oWw---f4oMHLRaStDsCAy7h9ZweLB5DQ
+      name: 'Roofr '
+      type: google_doc
+      modified: '2025-05-06T22:20:48.007Z'
+      size: '2505'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1kZ4_LaY_bzljoSXxcvR_Z8Wt8Id0QlSLyNYGxY-2VYU
+      name: Block - Product Lead, Engagement
+      type: google_doc
+      modified: '2025-05-06T22:09:45.552Z'
+      size: '2362'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1UIBPL4m_iXNM8Mq8Xh1O0X5YxeR_uhsitRBMkHhva7M
+      name: Syndio
+      type: google_doc
+      modified: '2025-05-06T22:08:25.947Z'
+      size: '2556'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1vwNnEqtHGMEGyHCK2xVS1qh2DU-Qcl79wRwfJTr3GhE
+      name: Coactive
+      type: google_doc
+      modified: '2025-05-06T21:56:26.429Z'
+      size: '2330'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1yiheAcUMRFQ1EoQTSg-6CFT_W_Hg5zHiknhUkrv2wck
+      name: Everlaw-May-2025
+      type: google_doc
+      modified: '2025-05-05T21:05:04.380Z'
+      size: '3712'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1Ucc1BUZOfSXfV0WOPnCd4kTA5Nno-JsUAzWgBpMvpeE
+      name: Rubrik
+      type: google_doc
+      modified: '2025-05-05T20:53:09.675Z'
+      size: '2648'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1tvQv8cVknVO1hae1sFrGSMvCvjVWFHUwTJ2Un6D8rVQ
+      name: Hover - Staff Product Manager Core Product
+      type: google_doc
+      modified: '2025-05-05T20:40:33.412Z'
+      size: '3693'
+    texts: []
+    type: application_material
+  - source: cover_letters
+    content:
+      id: 1xB8xnlQOoviUHTrpXN1idsaoa2sTCBqAmVsVscLDu2A
+      name: Affirm
+      type: google_doc
+      modified: '2025-05-03T00:24:04.013Z'
+      size: '2147'
+    texts: []
+    type: application_material
+  - source: star_stories
+    content:
+      title: 'Enact:  key metrics'
+      situation: ''
+      action: ''
+      result: "Growth of Revenue: 169% YoY\n2022 Revenue:  $48k\n2023 Revenue:  $129k\n\
+        \nGrowth of Users:  357% in 2023 \n1/1:  154 \n12/31:  705\n\nEngagement:\
+        \  783% average increase   \n\n\n853% increase in average monthly time per\
+        \ user:  23m (Q1) --> 222m (Q4)\n876% increase in average monthly events per\
+        \ user:  114 (Q1) --> 1110 (Q4)\n620% increase in average monthly visitors:\
+        \  3 (Q1) --> 24 (Q4)"
+    texts:
+    - 'enact:  key metrics'
+    - "growth of revenue: 169% yoy\n2022 revenue:  $48k\n2023 revenue:  $129k\n\n\
+      growth of users:  357% in 2023 \n1/1:  154 \n12/31:  705\n\nengagement:  783%\
+      \ average increase   \n\n\n853% increase in average monthly time per user: \
+      \ 23m (q1) --> 222m (q4)\n876% increase in average monthly events per user:\
+      \  114 (q1) --> 1110 (q4)\n620% increase in average monthly visitors:  3 (q1)\
+      \ --> 24 (q4)"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Enact:  build PLG growth team'
+      situation: Constrained growth due to a) low installer uptake, b) limited marketplace
+        footprint and c) OEM ramp up
+      action: "Develop ToFu:  Email, direct mail, SMS and online ads\n\nDrive conversion\
+        \ via landing page experiments, email and CMS \n\nRECs:  monetize environmental\
+        \ attributes for CA solar homeowners\n\nVault:  progressive onboarding"
+      result: "980 visitors visited landing page \n25 converted \n= 2.55% conversion\
+        \ rate\n\n\nCAC / FB ADS\n\nExperiment 1:  audience vs creative\n\n$1293 spent\
+        \ to drive 862 prospects to landing page\n$1.50 per landing page view \n\n\
+        Identitfied top audience and creative, but 0 conversions\n\nExperiment 2:\
+        \  improve landing page to increase conversion \n\n$392 spent to drive 68\
+        \ prospects to landing page\n$5.76 per landing page view \n3 conversions=\
+        \ 4.41% conversion rate\nCost per lead = $131"
+    texts:
+    - 'enact:  build plg growth team'
+    - constrained growth due to a) low installer uptake, b) limited marketplace footprint
+      and c) oem ramp up
+    - "develop tofu:  email, direct mail, sms and online ads\n\ndrive conversion via\
+      \ landing page experiments, email and cms \n\nrecs:  monetize environmental\
+      \ attributes for ca solar homeowners\n\nvault:  progressive onboarding"
+    - "980 visitors visited landing page \n25 converted \n= 2.55% conversion rate\n\
+      \n\ncac / fb ads\n\nexperiment 1:  audience vs creative\n\n$1293 spent to drive\
+      \ 862 prospects to landing page\n$1.50 per landing page view \n\nidentitfied\
+      \ top audience and creative, but 0 conversions\n\nexperiment 2:  improve landing\
+      \ page to increase conversion \n\n$392 spent to drive 68 prospects to landing\
+      \ page\n$5.76 per landing page view \n3 conversions= 4.41% conversion rate\n\
+      cost per lead = $131"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Aurora:  refocus team mandate'
+      situation: "Retro:  why did we have lower throughput? \nDragged into requests\
+        \ to support CS and Sales (credits, setup environments for customers and leads,\
+        \ one-off requests)\nMandate to support other pods in conflict with delivery\
+        \ of priorities"
+      action: 'Reflect:  one-time or a pattern?
+
+        Disucss with team:  what was their experience and how do they feel?
+
+        Align with EM:  strategy
+
+        Align with TechOps:  would you please?
+
+        Align with Eng + Product VPs:  buy-in
+
+        Communicate with GTM teams'
+      result: "Increase scope for TechOps and refocus work around KPIs relative to\
+        \ needs for infra and scaling\nWholly focus the team on Customer needs and\
+        \ Business goals\nTransition plan for internal tools and needs of internal\
+        \ users \nPairing:  we fix, but show a TechOps member how\nNext time:  they\
+        \ fix, we support\nGood documentation for hand off"
+    texts:
+    - 'aurora:  refocus team mandate'
+    - "retro:  why did we have lower throughput? \ndragged into requests to support\
+      \ cs and sales (credits, setup environments for customers and leads, one-off\
+      \ requests)\nmandate to support other pods in conflict with delivery of priorities"
+    - 'reflect:  one-time or a pattern?
+
+      disucss with team:  what was their experience and how do they feel?
+
+      align with em:  strategy
+
+      align with techops:  would you please?
+
+      align with eng + product vps:  buy-in
+
+      communicate with gtm teams'
+    - "increase scope for techops and refocus work around kpis relative to needs for\
+      \ infra and scaling\nwholly focus the team on customer needs and business goals\n\
+      transition plan for internal tools and needs of internal users \npairing:  we\
+      \ fix, but show a techops member how\nnext time:  they fix, we support\ngood\
+      \ documentation for hand off"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Aurora:  platform rebuild'
+      situation: '2 years platform rebuild
+
+        evolving team and competitive landscape
+
+        built out tablet solution for enterprise use case
+
+        siloed product experience'
+      action: "Establish priorities with leadership:  common experience between Sales\
+        \ Mode and Pro Mode\nif we don't have Settings and Database this will bottleneck\
+        \ migration\n\nCreate and present plan to PMs:  overview of product areas,\
+        \ explain why it matters, identify phases and scope for each\n and map dependencies\n\
+        \n1:1 sessions with each PM to align \n\nBreak down work  with EM and assign\
+        \ to roadmap\n\nCoordinate and load balance with other pods"
+      result: 'Design system
+
+        Quarter after quarter on time delivery and team health
+
+        Coordinated cross-pod delivery of dependencies'
+    texts:
+    - 'aurora:  platform rebuild'
+    - '2 years platform rebuild
+
+      evolving team and competitive landscape
+
+      built out tablet solution for enterprise use case
+
+      siloed product experience'
+    - "establish priorities with leadership:  common experience between sales mode\
+      \ and pro mode\nif we don't have settings and database this will bottleneck\
+      \ migration\n\ncreate and present plan to pms:  overview of product areas, explain\
+      \ why it matters, identify phases and scope for each\n and map dependencies\n\
+      \n1:1 sessions with each pm to align \n\nbreak down work  with em and assign\
+      \ to roadmap\n\ncoordinate and load balance with other pods"
+    - 'design system
+
+      quarter after quarter on time delivery and team health
+
+      coordinated cross-pod delivery of dependencies'
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Aurora:  phased roll out'
+      situation: 'Looking top line KPI:  migrate 100% of users by EOY'
+      action: 'coordinate product and GTM teams:
+
+
+        -coordinate with CS and Sales-coordinate with CS and Sales
+
+        -identify groups of customers that could be a potential match (amplitude  +
+        data scientist)
+
+        -outreach to confirm participants
+
+        -generate cross-pod product roadmap to establish phases of readiness'
+      result: "Phased rolll out \nFeature flag strategy\nImproved coordination and\
+        \ collaboration with GTM\nAble to release to multiple targeted segments, gathering\
+        \ qual + quant data"
+    texts:
+    - 'aurora:  phased roll out'
+    - 'looking top line kpi:  migrate 100% of users by eoy'
+    - 'coordinate product and gtm teams:
+
+
+      -coordinate with cs and sales-coordinate with cs and sales
+
+      -identify groups of customers that could be a potential match (amplitude  +
+      data scientist)
+
+      -outreach to confirm participants
+
+      -generate cross-pod product roadmap to establish phases of readiness'
+    - "phased rolll out \nfeature flag strategy\nimproved coordination and collaboration\
+      \ with gtm\nable to release to multiple targeted segments, gathering qual +\
+      \ quant data"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Aurora:  Pendo'
+      situation: Need to welcome and guide users to Aurora v2
+      action: 'Aligh with leadership on vision
+
+        Evaluate options:  demos with XFN working group
+
+        Negotiate and sign contract
+
+        Kick off with tiger team (dedicated resources)
+
+        Create content matrix to prioritize users and flows
+
+        All hands demo
+
+        Work with data analyst to refine targeted customers
+
+        Create dashboard to monitor guide engagement'
+      result: "Launch on time\n100% of guides received\nUpdates to leadership and\
+        \ XFN teams\nSelf service dashboards \nHand over tool to PMM and CS"
+    texts:
+    - 'aurora:  pendo'
+    - need to welcome and guide users to aurora v2
+    - 'aligh with leadership on vision
+
+      evaluate options:  demos with xfn working group
+
+      negotiate and sign contract
+
+      kick off with tiger team (dedicated resources)
+
+      create content matrix to prioritize users and flows
+
+      all hands demo
+
+      work with data analyst to refine targeted customers
+
+      create dashboard to monitor guide engagement'
+    - "launch on time\n100% of guides received\nupdates to leadership and xfn teams\n\
+      self service dashboards \nhand over tool to pmm and cs"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Salesforce:  Mobile First Strategy
+
+
+        Collaborative Problem Solving and Project Planning'
+      situation: "Salesforce has a responsive website with informational and marketing\
+        \ functions.  Mobile users are ~3.5m  per year.  Yet the mobile experience\
+        \ was generally considered subpar.  \n\nThe team wanted to improve, but how\
+        \ to fix and where to start were unclear. Neither the UX nor Strategy teams\
+        \ had much mobile experience. They believed they could benefit from an outside\
+        \ perspective."
+      action: "I worked cross-functionally with the Strategy, Creative and Leadership\
+        \ teams.\n\nFirst step was discovery and listening activities -- to learn\
+        \ and build relationships.  I spent 2 weeks meeting people and hearing about\
+        \ their ideas, goals and pain points for mobile.\n \nNext step was to work\
+        \ through phases for design strategy.  WIthin 2 months I completed the following\
+        \ activiites:  heuristic review, review and synthesis of analytics data, competitive\
+        \ landscape analysis and a round up of relevant responsive design best practices.\
+        \   I operated independently, but not in a silo -- shared early concepts (and\
+        \ subsequent iterations) with stakeholders and cross functional team members\
+        \ for feedback.   \n\nThen I spent 1 month on creative briefs, design explorations\
+        \ and prototypes.  \n\nFinally, I spent 2 weeks boiling the work down to a\
+        \ single proposal:  mobile first strategy for salesforce.com.   I presented\
+        \ this proposal to the leadership team (VP and Director) -- half strategy,\
+        \ half playbook -- an implementation guide with detailed footnotes."
+      result: "Mobile improvements became a \u201Ctop 5\u201D initiative for FY2019.\n\
+        \nCross functional alignment on vision, opportunities and tactics.  \n\nIncreasing\
+        \ trend in mobile prospects was discovered, as well as new insights on mobile\
+        \ user behaviors and devices\n\nMy roadmap was adopted by Strategy and Leadership.\
+        \  Funding was committed to Analytics and Research activities for Q1.  UX,\
+        \ content and design tracks slated for Q2-4."
+    texts:
+    - 'salesforce:  mobile first strategy
+
+
+      collaborative problem solving and project planning'
+    - "salesforce has a responsive website with informational and marketing functions.\
+      \  mobile users are ~3.5m  per year.  yet the mobile experience was generally\
+      \ considered subpar.  \n\nthe team wanted to improve, but how to fix and where\
+      \ to start were unclear. neither the ux nor strategy teams had much mobile experience.\
+      \ they believed they could benefit from an outside perspective."
+    - "i worked cross-functionally with the strategy, creative and leadership teams.\n\
+      \nfirst step was discovery and listening activities -- to learn and build relationships.\
+      \  i spent 2 weeks meeting people and hearing about their ideas, goals and pain\
+      \ points for mobile.\n \nnext step was to work through phases for design strategy.\
+      \  within 2 months i completed the following activiites:  heuristic review,\
+      \ review and synthesis of analytics data, competitive landscape analysis and\
+      \ a round up of relevant responsive design best practices.   i operated independently,\
+      \ but not in a silo -- shared early concepts (and subsequent iterations) with\
+      \ stakeholders and cross functional team members for feedback.   \n\nthen i\
+      \ spent 1 month on creative briefs, design explorations and prototypes.  \n\n\
+      finally, i spent 2 weeks boiling the work down to a single proposal:  mobile\
+      \ first strategy for salesforce.com.   i presented this proposal to the leadership\
+      \ team (vp and director) -- half strategy, half playbook -- an implementation\
+      \ guide with detailed footnotes."
+    - "mobile improvements became a \u201Ctop 5\u201D initiative for fy2019.\n\ncross\
+      \ functional alignment on vision, opportunities and tactics.  \n\nincreasing\
+      \ trend in mobile prospects was discovered, as well as new insights on mobile\
+      \ user behaviors and devices\n\nmy roadmap was adopted by strategy and leadership.\
+      \  funding was committed to analytics and research activities for q1.  ux, content\
+      \ and design tracks slated for q2-4."
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Salesforce:  Design Process Improvements'
+      situation: 'Part of my consulting project was to assess and optimize design
+        process for the UX team.  Positioned as an agency within Marketing, they had
+        two modes of operating:  pitching ideas, and engaging with other Product Marketing
+        teams as "clients".  Idea generation was working well, so I focused my efforts
+        on bring product design best practices to digital UX for marketing.'
+      action: 'I embedded within the UX team and led UX for two projects.  Changes
+        included:
+
+
+        Discovery - synthesis of product/marketing inputs, interviews with stakeholders
+        and SME''s
+
+
+        User Reserach - leverage research team for analytics and card sorts
+
+
+        IA - determine regions and interactions on a page, then explore options on
+        a module basis
+
+
+        User Centric Design - focus on benefits, not features.  Support user flow
+        and journey.
+
+
+        Testing - validate concepts early'
+      result: 'On time delivery
+
+
+        Increased stakeholder engagement and satisfaction
+
+
+        Data based and SME insights
+
+
+        UX became a more strategic partner, guiding the process and work (not being
+        pulled along or tasked with execution)
+
+
+        New global templates and components
+
+
+        Early testing validated many hypotheses and allowed us to do fine tuning before
+        engaging Dev'
+    texts:
+    - 'salesforce:  design process improvements'
+    - 'part of my consulting project was to assess and optimize design process for
+      the ux team.  positioned as an agency within marketing, they had two modes of
+      operating:  pitching ideas, and engaging with other product marketing teams
+      as "clients".  idea generation was working well, so i focused my efforts on
+      bring product design best practices to digital ux for marketing.'
+    - 'i embedded within the ux team and led ux for two projects.  changes included:
+
+
+      discovery - synthesis of product/marketing inputs, interviews with stakeholders
+      and sme''s
+
+
+      user reserach - leverage research team for analytics and card sorts
+
+
+      ia - determine regions and interactions on a page, then explore options on a
+      module basis
+
+
+      user centric design - focus on benefits, not features.  support user flow and
+      journey.
+
+
+      testing - validate concepts early'
+    - 'on time delivery
+
+
+      increased stakeholder engagement and satisfaction
+
+
+      data based and sme insights
+
+
+      ux became a more strategic partner, guiding the process and work (not being
+      pulled along or tasked with execution)
+
+
+      new global templates and components
+
+
+      early testing validated many hypotheses and allowed us to do fine tuning before
+      engaging dev'
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Samsung:  Design Process Improvements'
+      situation: Team was reactive, design was tacked on at the end.  Depended on
+        agency for large efforts.  Hierarchy in the org reflected in the team.  Needed
+        a design leader to improve methods and process.
+      action: 'Re-organize team:  end to end product designers
+
+
+        Design Process:  discovery, concepts, testing, prototypes
+
+
+        Collaboration - Design as a strategic partner:  work with Business, Product
+        and Engineering for roadmap and sprint planning'
+      result: 'Higher quality work done faster
+
+
+        New tools:  InVision, Trello, User Testing.com, Principle
+
+
+        Better visiblity and collaboration within the team and across the org, including
+        better alignment to business objectives
+
+
+        Research became a regular part of design'
+    texts:
+    - 'samsung:  design process improvements'
+    - team was reactive, design was tacked on at the end.  depended on agency for
+      large efforts.  hierarchy in the org reflected in the team.  needed a design
+      leader to improve methods and process.
+    - 're-organize team:  end to end product designers
+
+
+      design process:  discovery, concepts, testing, prototypes
+
+
+      collaboration - design as a strategic partner:  work with business, product
+      and engineering for roadmap and sprint planning'
+    - 'higher quality work done faster
+
+
+      new tools:  invision, trello, user testing.com, principle
+
+
+      better visiblity and collaboration within the team and across the org, including
+      better alignment to business objectives
+
+
+      research became a regular part of design'
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Samsung:  Overhaul of S+'
+      situation: 'App moved from marketing to support focus.  Business was considering
+        a pivot to e-commerce.
+
+
+        Overhaul was needed -- only direction was to make the focus "world class customer
+        care"'
+      action: 'Research:  understand users, analytics, competitive landscape
+
+
+        Listen:  work with Business and cross funcitonal leads (PM, Eng)
+
+
+        Evangalize a Vision:  support is not about problems.  Samsung has your back
+
+
+        Execute:  concepts, wireframes, prototypes --> hand off to agency for visual
+        design and testing'
+      result: "New:  IA and menus, style guide, cards, content types, home, diagnostics,\
+        \ learn, get help \n\nWithin 2 months:  200% increase in engaged users, 300%\
+        \ engagement with Community, improved app rating from 3.7 to 4.2\n\nWithin\
+        \ 1 year:  increased user base from 12 to 20m installs and 5 to 8m monthly\
+        \ active users"
+    texts:
+    - 'samsung:  overhaul of s+'
+    - 'app moved from marketing to support focus.  business was considering a pivot
+      to e-commerce.
+
+
+      overhaul was needed -- only direction was to make the focus "world class customer
+      care"'
+    - 'research:  understand users, analytics, competitive landscape
+
+
+      listen:  work with business and cross funcitonal leads (pm, eng)
+
+
+      evangalize a vision:  support is not about problems.  samsung has your back
+
+
+      execute:  concepts, wireframes, prototypes --> hand off to agency for visual
+      design and testing'
+    - "new:  ia and menus, style guide, cards, content types, home, diagnostics, learn,\
+      \ get help \n\nwithin 2 months:  200% increase in engaged users, 300% engagement\
+      \ with community, improved app rating from 3.7 to 4.2\n\nwithin 1 year:  increased\
+      \ user base from 12 to 20m installs and 5 to 8m monthly active users"
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: 'Samsung:  Chatbot for Customer Care'
+      situation: EVP wanted to develop a chatbot for customer care, to supplement
+        text chat as a support channel
+      action: 'Validate need:  commissioned remote moderated focus groups to understand
+        customer pain points and perceptions.
+
+
+        Assemble cross functional team:  PM, UX and Eng and align on vision
+
+
+        Define chatbot design process, start in parallel on BE and UX
+
+
+        Model chatbot and AEM content
+
+
+        Style guide, compnents and identity / use cases, process flow and script
+
+
+        Present proposal
+
+
+        Test prototypes and synthesize --> present findings'
+      result: 'Undefined to actionable in 2+ months
+
+
+        Validate need, features and interactions
+
+
+        Sidestep constraints around content creation
+
+
+        Define choose + converse modes for MVP'
+    texts:
+    - 'samsung:  chatbot for customer care'
+    - evp wanted to develop a chatbot for customer care, to supplement text chat as
+      a support channel
+    - 'validate need:  commissioned remote moderated focus groups to understand customer
+      pain points and perceptions.
+
+
+      assemble cross functional team:  pm, ux and eng and align on vision
+
+
+      define chatbot design process, start in parallel on be and ux
+
+
+      model chatbot and aem content
+
+
+      style guide, compnents and identity / use cases, process flow and script
+
+
+      present proposal
+
+
+      test prototypes and synthesize --> present findings'
+    - 'undefined to actionable in 2+ months
+
+
+      validate need, features and interactions
+
+
+      sidestep constraints around content creation
+
+
+      define choose + converse modes for mvp'
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Other Interviews
+      situation: Examples of working closely with cross functional partners
+      action: Action
+      result: Result
+    texts:
+    - other interviews
+    - examples of working closely with cross functional partners
+    - action
+    - result
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Hire and Develop The Best
+      situation: ''
+      action: ''
+      result: Dive Deep
+    texts:
+    - hire and develop the best
+    - dive deep
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Tell me about a time when you had to deal with a poor performer on your
+        team.
+      situation: ''
+      action: ''
+      result: Tell me about a time when you had to dive deep into data and the results
+        you achieved.
+    texts:
+    - tell me about a time when you had to deal with a poor performer on your team.
+    - tell me about a time when you had to dive deep into data and the results you
+      achieved.
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Situation
+      situation: Action
+      action: Result
+      result: Situation
+    texts:
+    - situation
+    - action
+    - result
+    - situation
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Inherited contract designers had production skillsets
+      situation: 'One designer had to be let go.  The other was interested and able
+        to expand their skill set to become more end to end.  Improvement plan:  pairing,
+        design reviews, curriculum, process/best practices, regular check ins'
+      action: The designer made considerable progress over a period of three months.  Ultimately
+        was not the best fit for the new team we were building, so the contract was
+        not renewed.
+      result: Sunset of a feature - data plan monitoring
+    texts:
+    - inherited contract designers had production skillsets
+    - 'one designer had to be let go.  the other was interested and able to expand
+      their skill set to become more end to end.  improvement plan:  pairing, design
+      reviews, curriculum, process/best practices, regular check ins'
+    - the designer made considerable progress over a period of three months.  ultimately
+      was not the best fit for the new team we were building, so the contract was
+      not renewed.
+    - sunset of a feature - data plan monitoring
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: Why should we hire you?
+      situation: My top strengths are being strategic, efficient, collaborative and
+        adaptable.
+      action: I help teams move from undefined to actionable.  I establish clear goals
+        and vision, identify dependencies and ensure cross funtional representation.   Together
+        we prioritize, estimate, adapt and align on process.  Then we pursue miletones,
+        making progress visible and re-calibrating as needed.
+      result: ''
+    texts:
+    - why should we hire you?
+    - my top strengths are being strategic, efficient, collaborative and adaptable.
+    - i help teams move from undefined to actionable.  i establish clear goals and
+      vision, identify dependencies and ensure cross funtional representation.   together
+      we prioritize, estimate, adapt and align on process.  then we pursue miletones,
+      making progress visible and re-calibrating as needed.
+    type: behavioral_example
+  - source: star_stories
+    content:
+      title: "Why shouldn't we hire you?\n\nassess their self-awareness, integrity,\
+        \ and honesty\n\nShow pattern recognition, and draw examples from \u201Cexperience,\
+        \ intuition, and common sense.\u201D Body language:  if someone crossed their\
+        \ arms, for example, that \u201Cunconsciously communicates arrogance and defensiveness.\u201D"
+      situation: "I am willing to push boundaries to drive things ahead.  Ex: use\
+        \ a qualified team member from research instead of engaging an overburdened\
+        \ analyitcs team.  Preparing the team to release a new version of a logo,\
+        \ in parallel with getting all the sign offs needed.  \n\nSometimes I get\
+        \ too task/goal oriented.  The goal matters, but so do perceptions, feelings,\
+        \ new ideas.  I"
+      action: ''
+      result: ''
+    texts:
+    - "why shouldn't we hire you?\n\nassess their self-awareness, integrity, and honesty\n\
+      \nshow pattern recognition, and draw examples from \u201Cexperience, intuition,\
+      \ and common sense.\u201D body language:  if someone crossed their arms, for\
+      \ example, that \u201Cunconsciously communicates arrogance and defensiveness.\u201D"
+    - "i am willing to push boundaries to drive things ahead.  ex: use a qualified\
+      \ team member from research instead of engaging an overburdened analyitcs team.\
+      \  preparing the team to release a new version of a logo, in parallel with getting\
+      \ all the sign offs needed.  \n\nsometimes i get too task/goal oriented.  the\
+      \ goal matters, but so do perceptions, feelings, new ideas.  i"
+    type: behavioral_example
+  - source: job_tracker
+    content:
+      status: OPEN ROLES
+    texts:
+    - open roles
+    type: application_data
+  - source: job_tracker
+    content:
+      status: NETWORKING
+    texts:
+    - networking
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: ServiceTitan
+      ranking: ''
+      title: Stay in touch with Eddie on new opportunities
+    texts:
+    - servicetitan
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: NextEra
+      ranking: ''
+      title: Stay in touch with Jim about new opportunities
+    texts:
+    - nextera
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : Spoke with CEO
+      company: Texture
+      ranking: '2'
+      title: CPO in Q2
+      role type: Leadership
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $7.5M
+      office: NYC
+      salary: TBD
+    texts:
+    - texture
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Intro call with co-founder
+      company: '257'
+      ranking: ''
+      title: Thinking about first product hire in 2 quarters
+    texts:
+    - '257'
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : LI chat with founder
+      company: Exygy
+      ranking: ''
+      title: Check in March
+    texts:
+    - exygy
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 2
+      ? ''
+      : Completed
+      company: Rewiring America
+      ranking: ''
+      title: Started interview process - waiting for a suitable role.  Emailed Oct
+        3
+    texts:
+    - rewiring america
+    - round 2
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Watershed
+      ranking: ''
+      title: Started interview process - waiting for a suitable role
+    texts:
+    - watershed
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Completed
+      company: Climatize
+      ranking: ''
+      title: Emailed Aug 6 - waiting for a suitable role
+    texts:
+    - climatize
+    type: application_data
+  - source: job_tracker
+    content:
+      status: WAITING
+    texts:
+    - waiting
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: Chino
+      ranking: ''
+      title: Spoke Fr Aug 30 / SMS Sep 5
+    texts:
+    - chino
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ADVISORY
+    texts:
+    - advisory
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: Teledyne / Raymarine
+      ranking: ''
+      title: 'Director of Product Management: Digital Services'
+      role type: Leadership / IC
+    texts:
+    - teledyne / raymarine
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Internal candidate
+      ? ''
+      : Completed HR screen
+      company: ServiceTitan
+      ranking: ''
+      title: ''
+      role type: Leadership
+    texts:
+    - servicetitan
+    - internal candidate
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Completed video screen
+      company: Genentech / Roche
+      ranking: ''
+      title: Sr. Director, Targeting & Recommendation - Business Product Owner
+      role type: Leadership
+      company type: Public
+      valuation: $230B
+      stage: ''
+      funding: ''
+      office: 'South San Francisco '
+      salary: $200k - $370k
+    texts:
+    - genentech / roche
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Recruiter > CEO > On-site > Pass
+      ? ''
+      : ''
+      company: Banyan
+      ranking: ''
+      title: Head of Product
+      role type: Leadership
+      company type: Private
+      valuation: ''
+      stage: Series B
+      funding: $43M
+      office: San Francisco (Hybrid)
+      salary: $225k?
+      bonus: ''
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 'yes'
+    texts:
+    - banyan
+    - recruiter > ceo > on-site > pass
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : ''
+      company: NextTracker
+      ranking: ''
+      title: Sr. Product Manager - Solar Plant Automation
+      role type: IC
+      company type: Public
+      valuation: $6.8B
+      stage: ''
+      funding: ''
+      office: ''
+      salary: $200k
+    texts:
+    - nexttracker
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: Dandy
+      ranking: ''
+      title: Director of Product Management
+      role type: Leadership
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $4.2M
+      office: NYC (Remote)
+      salary: $300k
+    texts:
+    - dandy
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Prefer candidates in LA with operations background
+      ? ''
+      : Spoke with Recruiter
+      company: Elephant Energy
+      ranking: ''
+      title: GM
+      role type: Leadership
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $3.5M
+      office: Covina, CA
+      salary: $170k
+      bonus: ~$50k
+    texts:
+    - elephant energy
+    - prefer candidates in la with operations background
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : ''
+      company: Roo
+      ranking: ''
+      title: Sr PM
+      role type: IC
+      company type: Private
+      valuation: ''
+      stage: Series A
+      funding: $18.5M
+      office: Remote
+      salary: $170k - $200k
+    texts:
+    - roo
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Completed onsite
+      company: NextEra
+      ranking: ''
+      title: Project Director, Grid Services
+      role type: IC
+      company type: Public
+      valuation: $140B
+      stage: ''
+      funding: ''
+      office: Juno Park, FL / Remote
+      salary: $200k+
+      bonus: 20%
+    texts:
+    - nextera
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Spoke with Hiring Manager
+      company: American Honda Motor Company / TinkerDIY
+      ranking: ''
+      title: GM
+      role type: Leadership
+      company type: TBD
+      valuation: ''
+      stage: Series A
+      funding: $28M
+      office: Torrance, CA
+      salary: $250k - $275k
+      bonus: 21%
+    texts:
+    - american honda motor company / tinkerdiy
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Too late in process / role too junior
+      ? ''
+      : ''
+      company: Amperon
+      ranking: ''
+      title: Sr Technical PM
+      role type: IC
+      company type: Private
+      valuation: ''
+      stage: Series B
+      funding: $30M
+      office: Remote
+      salary: TBD
+    texts:
+    - amperon
+    - too late in process / role too junior
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: PG&E
+      ranking: ''
+      title: PPM GMT DERMS
+      role type: IC
+    texts:
+    - pg&e
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: GoodLeap
+      ranking: ''
+      title: PPM VPP
+      role type: IC
+    texts:
+    - goodleap
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: ''
+      ? ''
+      : Completed
+      company: Plural Energy
+      ranking: ''
+      title: Intro call Product Founder - Aug 15, emailed Mar 6th
+      role type: Growth / TBD
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $2.8M
+      office: San Francisco / NYC
+    texts:
+    - plural energy
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: Leap
+      ranking: ''
+      title: LI message Aug 7 - nudge via Vera
+    texts:
+    - leap
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Euclid
+      ranking: ''
+      title: Staff PM
+      role type: Manager
+      company type: Private
+      valuation: ''
+      stage: Series A
+      funding: $5.2M
+      office: San Francisco / NYC
+      salary: $180k - $210k
+      bonus: TBD
+      401k: TBD
+      holidays: TBD
+      pension: ''
+      equity: TBD
+    texts:
+    - euclid
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Duke Energy
+      ranking: ''
+      title: 'Senior Product Owner - Energy Orchestration '
+      role type: IC
+      company type: Public
+      valuation: $91B
+      stage: ''
+      funding: ''
+      office: Charlotte
+    texts:
+    - duke energy
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Scheduled
+      company: 'Haven Energy '
+      ranking: ''
+      title: 'Senior PM '
+      role type: IC
+    texts:
+    - haven energy
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 4
+      ? ''
+      : Completed
+      company: King Energy
+      ranking: ''
+      title: TBD
+      role type: Leadership
+    texts:
+    - king energy
+    - round 4
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 3
+      ? ''
+      : Scheduled
+      company: Goodleap
+      ranking: ''
+      title: Staff PM B2B
+      role type: IC / Leadership
+      company type: Private
+      valuation: $12B
+      stage: ''
+      funding: ''
+      office: San Francisco (Hybrid)
+      salary: $170 - $215k
+      bonus: 'yes'
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 'yes'
+    texts:
+    - goodleap
+    - round 3
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 3
+      ? ''
+      : Scheduled
+      company: Nido
+      ranking: ''
+      title: Product Manager, Certification
+      role type: Advisory
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: ''
+      office: Madrid
+    texts:
+    - nido
+    - round 3
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Enode
+      ranking: ''
+      title: Met with Founder and PM - last Aug 8
+      role type: Manager
+      company type: Private
+      valuation: ''
+      stage: Series A
+      funding: $17.4M
+      office: Norway
+    texts:
+    - enode
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Amperon
+      ranking: ''
+      title: Chat with CEO - email Oct 3 - waiting for a suitable role
+      role type: Product Leader / TBD
+    texts:
+    - amperon
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : Completed
+      company: Halcyon
+      ranking: ''
+      title: Met with Hammon @ HQ - Sept 10
+      role type: TBD
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $10.8M
+      office: San Francisco
+    texts:
+    - halcyon
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Completed
+      company: Mona Lee
+      ranking: ''
+      title: Intro call CEO - Aug 13
+      role type: Product Leader / TBD
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $3.5M
+    texts:
+    - mona lee
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 2
+      ? ''
+      : In Progress
+      company: Daylight Energy
+      ranking: ''
+      title: TBD
+      role type: ''
+      company type: ''
+      valuation: ''
+      stage: Series A
+      funding: $12M
+      office: NYC
+      salary: TBD
+    texts:
+    - daylight energy
+    - round 2
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: Typeface
+      ranking: ''
+      title: Product Manager-User Experience & Growth
+      role type: IC
+      company type: ''
+      valuation: ''
+      stage: Series B
+      funding: $165M
+      office: Palo Alto
+      salary: $200k
+    texts:
+    - typeface
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Scheduled
+      company: Scheduled
+      ranking: ''
+      title: Product Manager
+      role type: IC
+      company type: ''
+      valuation: ''
+      stage: Series A
+      funding: $13.8M
+      office: Brooklyn
+      salary: $175k
+    texts:
+    - scheduled
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: Monta
+      ranking: ''
+      title: 'Senior Product Manager - Hub '
+      role type: IC
+      company type: Private
+      valuation: ''
+      stage: Series B
+      funding: $130M
+      office: 'Berlin
+
+        Copenhagen'
+      salary: $153k
+    texts:
+    - monta
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: LineVision
+      ranking: ''
+      title: ''
+      role type: ''
+      company type: ''
+      valuation: ''
+      stage: Series C
+      funding: $47.6M
+      office: "Boston \nDenver/Boulder"
+      salary: $170k
+    texts:
+    - linevision
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: Yardzen
+      ranking: ''
+      title: VP of Product
+      role type: Leadership
+      company type: Private
+      valuation: ''
+      stage: Series A
+      funding: $9.6M
+      office: Mill Valley
+      salary: TBD
+    texts:
+    - yardzen
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 2
+      ? ''
+      : Completed
+      company: Homebound
+      ranking: ''
+      title: Staff Product Manager
+      role type: Senior IC
+      company type: Private
+      valuation: ''
+      stage: Series C
+      funding: $148M
+      office: "San Francisco \nColorado"
+      salary: $194k
+      bonus: ''
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: ''
+      extras: 'Yes'
+    texts:
+    - homebound
+    - round 2
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: Arbor
+      ranking: ''
+      title: Product Manager
+      role type: IC
+      company type: Private
+      valuation: ''
+      stage: Series A
+      funding: $9M
+      office: Boston
+      salary: TBD
+    texts:
+    - arbor
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: 'Round 1 '
+      ? ''
+      : Completed
+      company: Level10
+      ranking: ''
+      title: Senior Product Manager
+      role type: ''
+      company type: ''
+      valuation: ''
+      stage: Series D
+      funding: $137M
+      office: Seattle
+      salary: $170k
+      bonus: Y
+      401k: Y
+      holidays: '11'
+      pension: N
+      equity: Y
+      extras: 'wellness credit
+
+        flex vacation'
+    texts:
+    - level10
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 3
+      ? ''
+      : Completed
+      company: Eliq
+      ranking: ''
+      title: Director of Product
+      role type: Manager
+      company type: ''
+      valuation: ''
+      stage: Series B
+      funding: $21M
+      office: 'Gothenberg
+
+        London'
+      salary: "$130k \n\nup to $150k?"
+      bonus: 'No'
+      401k: Yes - TBD
+      holidays: ''
+      pension: 'No'
+      equity: Yes - TBD
+      extras: education and wellness stipend
+    texts:
+    - eliq
+    - round 3
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Round 1
+      ? ''
+      : Scheduled
+      company: SolarEdge
+      ranking: ''
+      title: VP of Product
+      role type: Manager
+      company type: Public
+    texts:
+    - solaredge
+    - round 1
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : Completed
+      company: EverBright
+      ranking: ''
+      title: Manager of Product Management > Sales Platform  (D2C)
+      role type: Manager
+      company type: Public
+      valuation: $160B
+      stage: '-'
+      funding: '-'
+      office: Remote
+      salary: $220k
+      bonus: 'annual = 10-20%
+
+        sign on = $30k?'
+      401k: 4.75% match up to 7%
+      holidays: '5-7 weeks off
+
+
+        15 days vacation
+
+        11 holidays
+
+        2 week buy up'
+      pension: $10k per year + intrest
+      equity: 'No'
+      extras: '4 weeks parental leave
+
+        Life + LTD + STD'
+      total comp: $315,050
+    texts:
+    - everbright
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : Completed
+      company: Climate.ai
+      ranking: ''
+      title: Product Manager (Lead Founding PM)
+      role type: ''
+      company type: ''
+      valuation: ''
+      stage: Series B
+      funding: $37.5M
+    texts:
+    - climate.ai
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : Completed
+      company: Cambio
+      ranking: ''
+      title: Product Manager
+      role type: IC
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: ''
+      office: SF / NY / Toronto
+      salary: $170k
+    texts:
+    - cambio
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : Scheduling
+      company: PermitFlow
+      ranking: ''
+      title: ''
+      role type: ''
+      company type: ''
+      valuation: ''
+      stage: ''
+      funding: ''
+      office: New York
+    texts:
+    - permitflow
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : Completed
+      company: Duet
+      ranking: ''
+      title: Head of Product
+      role type: Manager
+      company type: Private
+      valuation: ''
+      stage: Seed
+      funding: $7.5M
+    texts:
+    - duet
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : ''
+      company: ConduitTech
+      ranking: ''
+      title: Started interview process - salary issues.  Emailed Aug 1
+    texts:
+    - conduittech
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Internal + local candidate
+      ? ''
+      : ''
+      company: PVcase
+      ranking: ''
+      title: Director of Product > Platform
+      role type: Manager
+      company type: Private
+      valuation: ''
+      stage: Series B
+      funding: $123M
+      office: 'Berlin
+
+        Barcelona/Madrid
+
+        London
+
+        California
+
+        Boston'
+      salary: "\u20AC120k - \u20AC150k"
+      bonus: ''
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 'yes'
+    texts:
+    - pvcase
+    - internal + local candidate
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: GoodLeap
+      ranking: ''
+      title: 'Principal Product Manager '
+      role type: IC
+      company type: Private
+      valuation: $12B
+      stage: ''
+      funding: ''
+      office: San Francisco (Hybrid)
+      salary: $210 - $240k
+      bonus: 'yes'
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 'yes'
+    texts:
+    - goodleap
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Not selected
+      ? ''
+      : ''
+      company: PG&E
+      ranking: ''
+      title: Principal Product Manager - Distributed Energy Resource Management System
+        Load Management
+      role type: Manager
+      company type: Public
+      valuation: $39B
+      stage: ''
+      funding: ''
+      office: Oakland
+      salary: $140k - $238k
+      bonus: 15%
+      401k: 6%
+      holidays: ''
+      pension: 6 - 7%
+    texts:
+    - pg&e
+    - not selected
+    type: application_data
+  - source: job_tracker
+    content:
+      status: P&L experience
+      ? ''
+      : ''
+      company: Ecobee
+      ranking: ''
+      title: Director of Product Management, Smart Security
+      role type: Manager
+      company type: Public
+      valuation: $8.6B
+      stage: ''
+      funding: ''
+      office: USA - Remote
+      salary: $210k - $225k
+      bonus: 8%
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 15%
+    texts:
+    - ecobee
+    - p&l experience
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Need UK visa
+      ? ''
+      : ''
+      company: Carbon Chain
+      ranking: ''
+      title: Senior Product Manager
+      role type: IC
+      company type: ''
+      valuation: ''
+      stage: ''
+      funding: ''
+      office: London
+    texts:
+    - carbon chain
+    - need uk visa
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: Infogrid
+    texts:
+    - infogrid
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: 1KOMMA5
+    texts:
+    - 1komma5
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Salary mismatch
+      ? ''
+      : ''
+      company: KUGU Home
+      ranking: ''
+      title: Senior Product Manager
+      role type: IC
+      company type: ''
+      valuation: ''
+      stage: Seed
+      funding: $2M
+      office: Berlin
+      salary: "\u20AC90k - \u20AC100k"
+      bonus: ''
+      401k: ''
+      holidays: ''
+      pension: ''
+      equity: 'yes'
+    texts:
+    - kugu home
+    - salary mismatch
+    type: application_data
+  - source: job_tracker
+    content:
+      status: No response
+      ? ''
+      : ''
+      company: Novisto
+    texts:
+    - novisto
+    - no response
+    type: application_data
+  - source: job_tracker
+    content:
+      status: Position closed
+      ? ''
+      : ''
+      company: AiDash
+      ranking: ''
+      title: PPM
+    texts:
+    - aidash
+    - position closed
+    type: application_data
+  - source: job_tracker
+    content:
+      status: LOST
+    texts:
+    - lost
+    type: application_data
+  - source: job_tracker
+    content:
+      status: https://www.tealhq.com/interview-questions/director-of-product-management
+    texts:
+    - https://www.tealhq.com/interview-questions/director-of-product-management
+    type: application_data
+  - source: job_tracker
+    content:
+      status: https://producthq.org/career/director-of-product/director-of-product-interview-questions/
+    texts:
+    - https://producthq.org/career/director-of-product/director-of-product-interview-questions/
+    type: application_data
+  - source: portfolio_work
+    content:
+      id: 1D36-naQ83zK78MUtyRWNzp1f3EQpdHSd
+      name: Samsung
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:23:58.863Z'
+    texts:
+    - samsung
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1mGHa2YtmObc3IlIYPgkKOTMW1LdBzasv
+      name: Salesforce
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2025-07-14T18:23:53.253Z'
+    texts:
+    - salesforce
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1zpeuYAhcRYMHFAmn9vspgQQeES9jt7YB
+      name: Enact
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-01-04T22:18:55.454Z'
+    texts:
+    - enact
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1durLq1ruyEBggnsVDBGEmscbKc8cN2R7
+      name: ETOPS
+      mimeType: application/vnd.google-apps.folder
+      modifiedTime: '2024-01-04T22:16:31.959Z'
+    texts:
+    - etops
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1OpbgvuRZQlCFcXgYUTnr4h_-kAYcYhPy
+      name: Design_Presentation.pdf
+      mimeType: application/pdf
+      modifiedTime: '2019-01-07T19:00:10.254Z'
+      size: '13783424'
+    texts:
+    - design_presentation.pdf
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1yy6QjVSUx5AGRSxrVrTMwzuPJHRTZPSS
+      name: Google Design Presentation.pdf
+      mimeType: application/pdf
+      modifiedTime: '2018-10-24T21:57:35.075Z'
+      size: '2438935'
+    texts:
+    - google design presentation.pdf
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1wxK-0aSLTA1_WbbZORxGekE-WfwmnSgfHbY3_WaAh3o
+      name: 'Design Manager: Background Presentation'
+      mimeType: application/vnd.google-apps.presentation
+      modifiedTime: '2018-05-03T20:52:25.324Z'
+    texts:
+    - 'design manager: background presentation'
+    type: portfolio_material
+  - source: portfolio_work
+    content:
+      id: 1W0UK-EdpYxMxISe-3ZE6PzB6B5Qcwcft10FJLAv7ciw
+      name: FB DPM Presentation - Speaker Notes
+      mimeType: application/vnd.google-apps.document
+      modifiedTime: '2018-04-16T16:52:16.004Z'
+    texts:
+    - fb dpm presentation - speaker notes
+    type: portfolio_material
+  - source: presentations
+    content:
+      id: 1wzjfJvblc69BG3ahNx-NywSogQwJ2gfjQ3YQVeGfns4
+      name: 'FB:  2018 DPM Presentation'
+      type: google_slides
+      modified: '2025-07-14T18:31:48.238Z'
+      size: null
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+  - source: presentations
+    content:
+      id: 1-DxDinX-A2OiqSP03jtHveNxPS5FaC67B-RhXrX0am0
+      name: 2024 - Background
+      type: google_slides
+      modified: '2025-07-14T18:28:35.476Z'
+      size: '38899965'
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+  - source: presentations
+    content:
+      id: 1Htx7GaLyy4ub9Tgn9Lfc4_4bqrLn5mIPb1-NL8l4eY4
+      name: Meta-Testing
+      type: google_slides
+      modified: '2025-07-03T20:38:24.692Z'
+      size: '4383522'
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+  - source: presentations
+    content:
+      id: 1fTzC2LF3SU5NEeEVlnzkvL2SRFz-J4EmA6fOorf2cIk
+      name: Samsung-Chatbot
+      type: google_slides
+      modified: '2025-07-03T20:37:35.209Z'
+      size: '5295696'
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+  - source: presentations
+    content:
+      id: 1GC4rL8MYiURwA8nA5DA8SOuk5e2_mMUIwfNzATIc-QM
+      name: FalconX
+      type: google_slides
+      modified: '2025-05-16T22:39:26.223Z'
+      size: '39979535'
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+  - source: presentations
+    content:
+      id: 14QgNRtIZxLypYL50eSvw5TthzG_K_v8z-uuGz4fxPHU
+      name: Background Presentation
+      type: google_slides
+      modified: '2025-05-15T20:23:21.353Z'
+      size: '81349957'
+      error: Could not extract content
+    texts: []
+    type: presentation_material
+ranked_net_new:
+- rank: 1
+  importance_score: 10
+  reason: Shows significant business impact with detailed metrics on revenue, user
+    growth, and engagement.
+  item:
+    source: star_stories
+    content:
+      title: 'Enact:  key metrics'
+      situation: ''
+      action: ''
+      result: "Growth of Revenue: 169% YoY\n2022 Revenue:  $48k\n2023 Revenue:  $129k\n\
+        \nGrowth of Users:  357% in 2023 \n1/1:  154 \n12/31:  705\n\nEngagement:\
+        \  783% average increase   \n\n\n853% increase in average monthly time per\
+        \ user:  23m (Q1) --> 222m (Q4)\n876% increase in average monthly events per\
+        \ user:  114 (Q1) --> 1110 (Q4)\n620% increase in average monthly visitors:\
+        \  3 (Q1) --> 24 (Q4)"
+    texts:
+    - 'enact:  key metrics'
+    - "growth of revenue: 169% yoy\n2022 revenue:  $48k\n2023 revenue:  $129k\n\n\
+      growth of users:  357% in 2023 \n1/1:  154 \n12/31:  705\n\nengagement:  783%\
+      \ average increase   \n\n\n853% increase in average monthly time per user: \
+      \ 23m (q1) --> 222m (q4)\n876% increase in average monthly events per user:\
+      \  114 (q1) --> 1110 (q4)\n620% increase in average monthly visitors:  3 (q1)\
+      \ --> 24 (q4)"
+    type: behavioral_example
+- rank: 2
+  importance_score: 9
+  reason: Illustrates strategic thinking in building a growth team and addressing
+    market challenges.
+  item:
+    source: star_stories
+    content:
+      title: 'Enact:  build PLG growth team'
+      situation: Constrained growth due to a) low installer uptake, b) limited marketplace
+        footprint and c) OEM ramp up
+      action: "Develop ToFu:  Email, direct mail, SMS and online ads\n\nDrive conversion\
+        \ via landing page experiments, email and CMS \n\nRECs:  monetize environmental\
+        \ attributes for CA solar homeowners\n\nVault:  progressive onboarding"
+      result: "980 visitors visited landing page \n25 converted \n= 2.55% conversion\
+        \ rate\n\n\nCAC / FB ADS\n\nExperiment 1:  audience vs creative\n\n$1293 spent\
+        \ to drive 862 prospects to landing page\n$1.50 per landing page view \n\n\
+        Identitfied top audience and creative, but 0 conversions\n\nExperiment 2:\
+        \  improve landing page to increase conversion \n\n$392 spent to drive 68\
+        \ prospects to landing page\n$5.76 per landing page view \n3 conversions=\
+        \ 4.41% conversion rate\nCost per lead = $131"
+    texts:
+    - 'enact:  build plg growth team'
+    - constrained growth due to a) low installer uptake, b) limited marketplace footprint
+      and c) oem ramp up
+    - "develop tofu:  email, direct mail, sms and online ads\n\ndrive conversion via\
+      \ landing page experiments, email and cms \n\nrecs:  monetize environmental\
+      \ attributes for ca solar homeowners\n\nvault:  progressive onboarding"
+    - "980 visitors visited landing page \n25 converted \n= 2.55% conversion rate\n\
+      \n\ncac / fb ads\n\nexperiment 1:  audience vs creative\n\n$1293 spent to drive\
+      \ 862 prospects to landing page\n$1.50 per landing page view \n\nidentitfied\
+      \ top audience and creative, but 0 conversions\n\nexperiment 2:  improve landing\
+      \ page to increase conversion \n\n$392 spent to drive 68 prospects to landing\
+      \ page\n$5.76 per landing page view \n3 conversions= 4.41% conversion rate\n\
+      cost per lead = $131"
+    type: behavioral_example
+- rank: 3
+  importance_score: 9
+  reason: Demonstrates leadership and technical depth in managing a complex platform
+    rebuild.
+  item:
+    source: star_stories
+    content:
+      title: 'Aurora:  platform rebuild'
+      situation: '2 years platform rebuild
+
+        evolving team and competitive landscape
+
+        built out tablet solution for enterprise use case
+
+        siloed product experience'
+      action: "Establish priorities with leadership:  common experience between Sales\
+        \ Mode and Pro Mode\nif we don't have Settings and Database this will bottleneck\
+        \ migration\n\nCreate and present plan to PMs:  overview of product areas,\
+        \ explain why it matters, identify phases and scope for each\n and map dependencies\n\
+        \n1:1 sessions with each PM to align \n\nBreak down work  with EM and assign\
+        \ to roadmap\n\nCoordinate and load balance with other pods"
+      result: 'Design system
+
+        Quarter after quarter on time delivery and team health
+
+        Coordinated cross-pod delivery of dependencies'
+    texts:
+    - 'aurora:  platform rebuild'
+    - '2 years platform rebuild
+
+      evolving team and competitive landscape
+
+      built out tablet solution for enterprise use case
+
+      siloed product experience'
+    - "establish priorities with leadership:  common experience between sales mode\
+      \ and pro mode\nif we don't have settings and database this will bottleneck\
+      \ migration\n\ncreate and present plan to pms:  overview of product areas, explain\
+      \ why it matters, identify phases and scope for each\n and map dependencies\n\
+      \n1:1 sessions with each pm to align \n\nbreak down work  with em and assign\
+      \ to roadmap\n\ncoordinate and load balance with other pods"
+    - 'design system
+
+      quarter after quarter on time delivery and team health
+
+      coordinated cross-pod delivery of dependencies'
+    type: behavioral_example
+- rank: 4
+  importance_score: 9
+  reason: Showcases a comprehensive approach to a mobile-first strategy with cross-functional
+    collaboration.
+  item:
+    source: star_stories
+    content:
+      title: 'Salesforce:  Mobile First Strategy
+
+
+        Collaborative Problem Solving and Project Planning'
+      situation: "Salesforce has a responsive website with informational and marketing\
+        \ functions.  Mobile users are ~3.5m  per year.  Yet the mobile experience\
+        \ was generally considered subpar.  \n\nThe team wanted to improve, but how\
+        \ to fix and where to start were unclear. Neither the UX nor Strategy teams\
+        \ had much mobile experience. They believed they could benefit from an outside\
+        \ perspective."
+      action: "I worked cross-functionally with the Strategy, Creative and Leadership\
+        \ teams.\n\nFirst step was discovery and listening activities -- to learn\
+        \ and build relationships.  I spent 2 weeks meeting people and hearing about\
+        \ their ideas, goals and pain points for mobile.\n \nNext step was to work\
+        \ through phases for design strategy.  WIthin 2 months I completed the following\
+        \ activiites:  heuristic review, review and synthesis of analytics data, competitive\
+        \ landscape analysis and a round up of relevant responsive design best practices.\
+        \   I operated independently, but not in a silo -- shared early concepts (and\
+        \ subsequent iterations) with stakeholders and cross functional team members\
+        \ for feedback.   \n\nThen I spent 1 month on creative briefs, design explorations\
+        \ and prototypes.  \n\nFinally, I spent 2 weeks boiling the work down to a\
+        \ single proposal:  mobile first strategy for salesforce.com.   I presented\
+        \ this proposal to the leadership team (VP and Director) -- half strategy,\
+        \ half playbook -- an implementation guide with detailed footnotes."
+      result: "Mobile improvements became a \u201Ctop 5\u201D initiative for FY2019.\n\
+        \nCross functional alignment on vision, opportunities and tactics.  \n\nIncreasing\
+        \ trend in mobile prospects was discovered, as well as new insights on mobile\
+        \ user behaviors and devices\n\nMy roadmap was adopted by Strategy and Leadership.\
+        \  Funding was committed to Analytics and Research activities for Q1.  UX,\
+        \ content and design tracks slated for Q2-4."
+    texts:
+    - 'salesforce:  mobile first strategy
+
+
+      collaborative problem solving and project planning'
+    - "salesforce has a responsive website with informational and marketing functions.\
+      \  mobile users are ~3.5m  per year.  yet the mobile experience was generally\
+      \ considered subpar.  \n\nthe team wanted to improve, but how to fix and where\
+      \ to start were unclear. neither the ux nor strategy teams had much mobile experience.\
+      \ they believed they could benefit from an outside perspective."
+    - "i worked cross-functionally with the strategy, creative and leadership teams.\n\
+      \nfirst step was discovery and listening activities -- to learn and build relationships.\
+      \  i spent 2 weeks meeting people and hearing about their ideas, goals and pain\
+      \ points for mobile.\n \nnext step was to work through phases for design strategy.\
+      \  within 2 months i completed the following activiites:  heuristic review,\
+      \ review and synthesis of analytics data, competitive landscape analysis and\
+      \ a round up of relevant responsive design best practices.   i operated independently,\
+      \ but not in a silo -- shared early concepts (and subsequent iterations) with\
+      \ stakeholders and cross functional team members for feedback.   \n\nthen i\
+      \ spent 1 month on creative briefs, design explorations and prototypes.  \n\n\
+      finally, i spent 2 weeks boiling the work down to a single proposal:  mobile\
+      \ first strategy for salesforce.com.   i presented this proposal to the leadership\
+      \ team (vp and director) -- half strategy, half playbook -- an implementation\
+      \ guide with detailed footnotes."
+    - "mobile improvements became a \u201Ctop 5\u201D initiative for fy2019.\n\ncross\
+      \ functional alignment on vision, opportunities and tactics.  \n\nincreasing\
+      \ trend in mobile prospects was discovered, as well as new insights on mobile\
+      \ user behaviors and devices\n\nmy roadmap was adopted by strategy and leadership.\
+      \  funding was committed to analytics and research activities for q1.  ux, content\
+      \ and design tracks slated for q2-4."
+    type: behavioral_example
+- rank: 5
+  importance_score: 8
+  reason: Focuses on refocusing team mandate to align with strategic business goals,
+    showing leadership.
+  item:
+    source: star_stories
+    content:
+      title: 'Aurora:  refocus team mandate'
+      situation: "Retro:  why did we have lower throughput? \nDragged into requests\
+        \ to support CS and Sales (credits, setup environments for customers and leads,\
+        \ one-off requests)\nMandate to support other pods in conflict with delivery\
+        \ of priorities"
+      action: 'Reflect:  one-time or a pattern?
+
+        Disucss with team:  what was their experience and how do they feel?
+
+        Align with EM:  strategy
+
+        Align with TechOps:  would you please?
+
+        Align with Eng + Product VPs:  buy-in
+
+        Communicate with GTM teams'
+      result: "Increase scope for TechOps and refocus work around KPIs relative to\
+        \ needs for infra and scaling\nWholly focus the team on Customer needs and\
+        \ Business goals\nTransition plan for internal tools and needs of internal\
+        \ users \nPairing:  we fix, but show a TechOps member how\nNext time:  they\
+        \ fix, we support\nGood documentation for hand off"
+    texts:
+    - 'aurora:  refocus team mandate'
+    - "retro:  why did we have lower throughput? \ndragged into requests to support\
+      \ cs and sales (credits, setup environments for customers and leads, one-off\
+      \ requests)\nmandate to support other pods in conflict with delivery of priorities"
+    - 'reflect:  one-time or a pattern?
+
+      disucss with team:  what was their experience and how do they feel?
+
+      align with em:  strategy
+
+      align with techops:  would you please?
+
+      align with eng + product vps:  buy-in
+
+      communicate with gtm teams'
+    - "increase scope for techops and refocus work around kpis relative to needs for\
+      \ infra and scaling\nwholly focus the team on customer needs and business goals\n\
+      transition plan for internal tools and needs of internal users \npairing:  we\
+      \ fix, but show a techops member how\nnext time:  they fix, we support\ngood\
+      \ documentation for hand off"
+    type: behavioral_example
+- rank: 6
+  importance_score: 8
+  reason: Details a phased rollout plan, demonstrating strategic project planning
+    and user impact.
+  item:
+    source: star_stories
+    content:
+      title: 'Aurora:  phased roll out'
+      situation: 'Looking top line KPI:  migrate 100% of users by EOY'
+      action: 'coordinate product and GTM teams:
+
+
+        -coordinate with CS and Sales-coordinate with CS and Sales
+
+        -identify groups of customers that could be a potential match (amplitude  +
+        data scientist)
+
+        -outreach to confirm participants
+
+        -generate cross-pod product roadmap to establish phases of readiness'
+      result: "Phased rolll out \nFeature flag strategy\nImproved coordination and\
+        \ collaboration with GTM\nAble to release to multiple targeted segments, gathering\
+        \ qual + quant data"
+    texts:
+    - 'aurora:  phased roll out'
+    - 'looking top line kpi:  migrate 100% of users by eoy'
+    - 'coordinate product and gtm teams:
+
+
+      -coordinate with cs and sales-coordinate with cs and sales
+
+      -identify groups of customers that could be a potential match (amplitude  +
+      data scientist)
+
+      -outreach to confirm participants
+
+      -generate cross-pod product roadmap to establish phases of readiness'
+    - "phased rolll out \nfeature flag strategy\nimproved coordination and collaboration\
+      \ with gtm\nable to release to multiple targeted segments, gathering qual +\
+      \ quant data"
+    type: behavioral_example
+- rank: 7
+  importance_score: 8
+  reason: Highlights the use of Pendo to guide users, showing user-centric strategy
+    and implementation.
+  item:
+    source: star_stories
+    content:
+      title: 'Aurora:  Pendo'
+      situation: Need to welcome and guide users to Aurora v2
+      action: 'Aligh with leadership on vision
+
+        Evaluate options:  demos with XFN working group
+
+        Negotiate and sign contract
+
+        Kick off with tiger team (dedicated resources)
+
+        Create content matrix to prioritize users and flows
+
+        All hands demo
+
+        Work with data analyst to refine targeted customers
+
+        Create dashboard to monitor guide engagement'
+      result: "Launch on time\n100% of guides received\nUpdates to leadership and\
+        \ XFN teams\nSelf service dashboards \nHand over tool to PMM and CS"
+    texts:
+    - 'aurora:  pendo'
+    - need to welcome and guide users to aurora v2
+    - 'aligh with leadership on vision
+
+      evaluate options:  demos with xfn working group
+
+      negotiate and sign contract
+
+      kick off with tiger team (dedicated resources)
+
+      create content matrix to prioritize users and flows
+
+      all hands demo
+
+      work with data analyst to refine targeted customers
+
+      create dashboard to monitor guide engagement'
+    - "launch on time\n100% of guides received\nupdates to leadership and xfn teams\n\
+      self service dashboards \nhand over tool to pmm and cs"
+    type: behavioral_example
+- rank: 8
+  importance_score: 8
+  reason: Improves design processes at Samsung, showing leadership in enhancing team
+    capabilities and output.
+  item:
+    source: star_stories
+    content:
+      title: 'Samsung:  Design Process Improvements'
+      situation: Team was reactive, design was tacked on at the end.  Depended on
+        agency for large efforts.  Hierarchy in the org reflected in the team.  Needed
+        a design leader to improve methods and process.
+      action: 'Re-organize team:  end to end product designers
+
+
+        Design Process:  discovery, concepts, testing, prototypes
+
+
+        Collaboration - Design as a strategic partner:  work with Business, Product
+        and Engineering for roadmap and sprint planning'
+      result: 'Higher quality work done faster
+
+
+        New tools:  InVision, Trello, User Testing.com, Principle
+
+
+        Better visiblity and collaboration within the team and across the org, including
+        better alignment to business objectives
+
+
+        Research became a regular part of design'
+    texts:
+    - 'samsung:  design process improvements'
+    - team was reactive, design was tacked on at the end.  depended on agency for
+      large efforts.  hierarchy in the org reflected in the team.  needed a design
+      leader to improve methods and process.
+    - 're-organize team:  end to end product designers
+
+
+      design process:  discovery, concepts, testing, prototypes
+
+
+      collaboration - design as a strategic partner:  work with business, product
+      and engineering for roadmap and sprint planning'
+    - 'higher quality work done faster
+
+
+      new tools:  invision, trello, user testing.com, principle
+
+
+      better visiblity and collaboration within the team and across the org, including
+      better alignment to business objectives
+
+
+      research became a regular part of design'
+    type: behavioral_example
+- rank: 9
+  importance_score: 8
+  reason: Describes the development of a customer care chatbot, emphasizing user experience
+    and technical solutions.
+  item:
+    source: star_stories
+    content:
+      title: 'Samsung:  Chatbot for Customer Care'
+      situation: EVP wanted to develop a chatbot for customer care, to supplement
+        text chat as a support channel
+      action: 'Validate need:  commissioned remote moderated focus groups to understand
+        customer pain points and perceptions.
+
+
+        Assemble cross functional team:  PM, UX and Eng and align on vision
+
+
+        Define chatbot design process, start in parallel on BE and UX
+
+
+        Model chatbot and AEM content
+
+
+        Style guide, compnents and identity / use cases, process flow and script
+
+
+        Present proposal
+
+
+        Test prototypes and synthesize --> present findings'
+      result: 'Undefined to actionable in 2+ months
+
+
+        Validate need, features and interactions
+
+
+        Sidestep constraints around content creation
+
+
+        Define choose + converse modes for MVP'
+    texts:
+    - 'samsung:  chatbot for customer care'
+    - evp wanted to develop a chatbot for customer care, to supplement text chat as
+      a support channel
+    - 'validate need:  commissioned remote moderated focus groups to understand customer
+      pain points and perceptions.
+
+
+      assemble cross functional team:  pm, ux and eng and align on vision
+
+
+      define chatbot design process, start in parallel on be and ux
+
+
+      model chatbot and aem content
+
+
+      style guide, compnents and identity / use cases, process flow and script
+
+
+      present proposal
+
+
+      test prototypes and synthesize --> present findings'
+    - 'undefined to actionable in 2+ months
+
+
+      validate need, features and interactions
+
+
+      sidestep constraints around content creation
+
+
+      define choose + converse modes for mvp'
+    type: behavioral_example
+- rank: 10
+  importance_score: 7
+  reason: Focuses on process improvements within a design team, demonstrating strategic
+    and operational leadership.
+  item:
+    source: star_stories
+    content:
+      title: 'Salesforce:  Design Process Improvements'
+      situation: 'Part of my consulting project was to assess and optimize design
+        process for the UX team.  Positioned as an agency within Marketing, they had
+        two modes of operating:  pitching ideas, and engaging with other Product Marketing
+        teams as "clients".  Idea generation was working well, so I focused my efforts
+        on bring product design best practices to digital UX for marketing.'
+      action: 'I embedded within the UX team and led UX for two projects.  Changes
+        included:
+
+
+        Discovery - synthesis of product/marketing inputs, interviews with stakeholders
+        and SME''s
+
+
+        User Reserach - leverage research team for analytics and card sorts
+
+
+        IA - determine regions and interactions on a page, then explore options on
+        a module basis
+
+
+        User Centric Design - focus on benefits, not features.  Support user flow
+        and journey.
+
+
+        Testing - validate concepts early'
+      result: 'On time delivery
+
+
+        Increased stakeholder engagement and satisfaction
+
+
+        Data based and SME insights
+
+
+        UX became a more strategic partner, guiding the process and work (not being
+        pulled along or tasked with execution)
+
+
+        New global templates and components
+
+
+        Early testing validated many hypotheses and allowed us to do fine tuning before
+        engaging Dev'
+    texts:
+    - 'salesforce:  design process improvements'
+    - 'part of my consulting project was to assess and optimize design process for
+      the ux team.  positioned as an agency within marketing, they had two modes of
+      operating:  pitching ideas, and engaging with other product marketing teams
+      as "clients".  idea generation was working well, so i focused my efforts on
+      bring product design best practices to digital ux for marketing.'
+    - 'i embedded within the ux team and led ux for two projects.  changes included:
+
+
+      discovery - synthesis of product/marketing inputs, interviews with stakeholders
+      and sme''s
+
+
+      user reserach - leverage research team for analytics and card sorts
+
+
+      ia - determine regions and interactions on a page, then explore options on a
+      module basis
+
+
+      user centric design - focus on benefits, not features.  support user flow and
+      journey.
+
+
+      testing - validate concepts early'
+    - 'on time delivery
+
+
+      increased stakeholder engagement and satisfaction
+
+
+      data based and sme insights
+
+
+      ux became a more strategic partner, guiding the process and work (not being
+      pulled along or tasked with execution)
+
+
+      new global templates and components
+
+
+      early testing validated many hypotheses and allowed us to do fine tuning before
+      engaging dev'
+    type: behavioral_example
+cover_letter_effectiveness:
+  note: 'TODO: Implement Drive/Sheets integration for effectiveness analysis.'
+pm_hypothesis:
+  error: PM hypothesis generation disabled as per new_net_new_content.py
+note: 'TODO: Implement Drive/Sheets integration for job tracker and cover letters.'

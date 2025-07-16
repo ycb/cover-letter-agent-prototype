@@ -9,7 +9,7 @@ source of truth for cover letter generation.
 
 import logging
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict, is_dataclass
 from typing import Any, Dict, List
 
 import pdfplumber
@@ -84,13 +84,13 @@ class ResumeParser:
     def __init__(self):
         """Initialize the resume parser."""
         self.section_patterns = {
-            "experience": r"(experience|work\s+history|professional\s+experience|employment)",
-            "education": r"(education|academic|degree)",
-            "skills": r"(skills|technical\s+skills|competencies)",
-            "summary": r"(summary|profile|objective)",
-            "achievements": r"(achievements|accomplishments|highlights)",
-            "certifications": r"(certifications|certificates)",
-            "projects": r"(projects|portfolio)",
+            "experience": r"^(experience|work\s+history|professional\s+experience|employment|work\s+experience)$",
+            "education": r"^(education|academic|degree)$",
+            "skills": r"^(skills|technical\s+skills|competencies)$",
+            "summary": r"^(summary|profile|objective)$",
+            "achievements": r"^(achievements|accomplishments|highlights)$",
+            "certifications": r"^(certifications|certificates)$",
+            "projects": r"^(projects|portfolio)$",
         }
 
         self.skill_categories = {
@@ -214,6 +214,7 @@ class ResumeParser:
             line_lower = line.lower().strip()
 
             # Check if this line starts a new section
+            section_found = False
             for section_name, pattern in self.section_patterns.items():
                 if re.search(pattern, line_lower):
                     # Save previous section if exists
@@ -226,8 +227,10 @@ class ResumeParser:
                     current_section = section_name
                     section_start = i
                     section_content = [line]
+                    section_found = True
                     break
-            else:
+            
+            if not section_found:
                 # Add line to current section
                 if current_section:
                     section_content.append(line)
@@ -481,6 +484,17 @@ class ResumeParser:
                     break
 
         return relevant_skills
+
+
+def dataclass_to_dict(obj):
+    if is_dataclass(obj):
+        return {k: dataclass_to_dict(v) for k, v in asdict(obj).items()}
+    elif isinstance(obj, list):
+        return [dataclass_to_dict(i) for i in obj]
+    elif isinstance(obj, dict):
+        return {k: dataclass_to_dict(v) for k, v in obj.items()}
+    else:
+        return obj
 
 
 if __name__ == "__main__":

@@ -36,7 +36,7 @@ class ConfigDefaults:
                 "add_comments": False,
             },
             "google_drive": {"enabled": False, "folder_id": "", "credentials_file": "credentials.json", "materials": {}},
-            "profile": {"resume_file": "", "linkedin_url": "", "portfolio_url": "", "github_url": "", "achievements": []},
+            "profile": {"resume_file": "", "achievements": []},
             "cover_letter": {
                 "personal_brand": {"tagline": "", "key_strengths": []},
                 "tone": {"default": "professional", "startup": "conversational", "enterprise": "professional"},
@@ -155,7 +155,9 @@ class ConfigManager:
             # Use cached file loading
             file_cache = get_file_cache()
             config = file_cache.load_yaml_file(config_file)
-
+            print(f"[DEBUG] Loaded user config from {config_file}:")
+            import pprint
+            pprint.pprint(config)
             return config
         except Exception as e:
             logger.error(f"Unexpected error loading user config {config_file}: {e}")
@@ -190,15 +192,40 @@ class ConfigManager:
             return {}
 
     def _merge_configs(self, *configs: ConfigDict) -> ConfigDict:
-        """Merge multiple configurations with later configs overriding earlier ones."""
+        # Debug: print configs being merged
+        import pprint
+        print("[DEBUG] _merge_configs called with configs:")
+        for i, config in enumerate(configs):
+            print(f"  Config {i}:")
+            pprint.pprint(config)
         merged = {}
         for config in configs:
             if config:
                 self._deep_merge(merged, config)
+        # After merging, fill in any missing keys from the first config (defaults)
+        if configs:
+            def fill_missing_keys(default, merged):
+                for key, value in default.items():
+                    if key not in merged:
+                        merged[key] = value
+                    elif isinstance(value, dict) and isinstance(merged[key], dict):
+                        fill_missing_keys(value, merged[key])
+            fill_missing_keys(configs[0], merged)
+        # Debug output for profile
+        if 'profile' in merged:
+            print("[DEBUG] Merged profile config:")
+            pprint.pprint(merged['profile'])
         return merged
 
     def _deep_merge(self, base: ConfigDict, override: ConfigDict) -> None:
-        """Deep merge override into base dictionary."""
+        # Debug output for profile
+        if 'profile' in override or 'profile' in base:
+            import pprint
+            print("[DEBUG] _deep_merge called for 'profile':")
+            print("  base:")
+            pprint.pprint(base.get('profile', base))
+            print("  override:")
+            pprint.pprint(override.get('profile', override))
         for key, value in override.items():
             if key in base and isinstance(base[key], dict) and isinstance(value, dict):
                 self._deep_merge(base[key], value)

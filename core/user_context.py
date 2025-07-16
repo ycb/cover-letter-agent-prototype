@@ -123,13 +123,14 @@ class UserContext:
             return []
 
     def _get_resume_path(self) -> Optional[Path]:
-        """Get user resume path."""
-        resume_path = self.user_dir / "resume.pdf"
+        """Get user resume path from config.yaml profile.resume_file."""
+        resume_file = self.config.get("profile", {}).get("resume_file", "resume.pdf")
+        resume_path = self.user_dir / resume_file
         if resume_path.exists():
             logger.info(f"Found resume for user: {self.user_id}")
             return resume_path
         else:
-            logger.warning(f"No resume found for user: {self.user_id}")
+            logger.warning(f"No resume found for user: {self.user_id} at {resume_path}")
             return None
 
     def get_google_drive_config(self) -> ConfigDict:
