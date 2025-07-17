@@ -118,9 +118,6 @@ class GoogleDriveConfig(TypedDict):
 
 class ProfileConfig(TypedDict):
     resume_file: str
-    linkedin_url: str
-    portfolio_url: str
-    github_url: str
     achievements: List[str]
 
 
@@ -148,6 +145,27 @@ class LLMConfig(TypedDict):
     max_tokens: int
     preserve_truth: bool
     add_comments: bool
+
+
+class PMInferenceResult(TypedDict, total=False):
+    role_type: str
+    level: str
+    archetype: str
+    competencies: Dict[str, str]  # e.g., {"Product Execution": "strong"}
+    leverage_ratio: str
+    notes: Optional[str]
+
+class WorkSample(TypedDict, total=False):
+    title: str
+    type: str  # 'shipped-product' | 'case-study'
+    source: str  # 'resume' | 'drive' | 'linkedin' | 'manual'
+    role: str  # 'PM' | 'UX' | 'ENG' | 'OTHER'
+    description: Optional[str]
+    url: Optional[str]
+    date: Optional[str]
+    tags: Optional[List[str]]
+    impact: Optional[str]
+    # Add more fields as needed
 
 
 # Function type aliases

@@ -18,14 +18,11 @@ google_drive:
     case_studies: case_studies/
     drafts: drafts/
 profile:
-  resume_file: resume.pdf
-  linkedin_url: https://linkedin.com/in/[username]
-  portfolio_url: https://[username].com/
-  github_url: https://github.com/[username]
   achievements:
-  - Add your key achievements here
-  - Quantify your impact with metrics
-  - Focus on leadership and growth
+    - Add your key achievements here
+    - Quantify your impact with metrics
+    - Focus on leadership and growth
+  resume_file: resume.pdf
 cover_letter:
   personal_brand:
     tagline: Product leader focused on [your focus area]
@@ -38,3 +35,16 @@ cover_letter:
     startup: conversational
     enterprise: professional
     AI_ML: technical
+pm_inference:
+  role_type: null
+  level: null
+  archetype: null
+  competencies: {}
+  leverage_ratio: null
+  notes: null
+work_samples_file: work_samples.yaml
+external_profiles:
+  linkedin: https://www.linkedin.com/in/username
+  portfolio_url: https://janedoe.com
+  blog_url: https://medium.com/@janedoe
+  github: https://github.com/janedoe

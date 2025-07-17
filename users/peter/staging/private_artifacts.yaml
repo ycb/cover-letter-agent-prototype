@@ -1,0 +1,164 @@
+- company: Portfolio Work
+  file_name: Samsung
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1D36-naQ83zK78MUtyRWNzp1f3EQpdHSd
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Samsung'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Samsung
+    url: https://drive.google.com/file/d/1D36-naQ83zK78MUtyRWNzp1f3EQpdHSd
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Salesforce
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1mGHa2YtmObc3IlIYPgkKOTMW1LdBzasv
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Salesforce'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Salesforce
+    url: https://drive.google.com/file/d/1mGHa2YtmObc3IlIYPgkKOTMW1LdBzasv
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Mobiquity
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/18Ry0Akq2U-d-QGwjMPbjewhyoZJFA-Jj
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Mobiquity'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Mobiquity
+    url: https://drive.google.com/file/d/18Ry0Akq2U-d-QGwjMPbjewhyoZJFA-Jj
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Meta
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1E5d0HZ4vMWuoAdY5fZWcTTe-bjvbG40l
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Meta'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Meta
+    url: https://drive.google.com/file/d/1E5d0HZ4vMWuoAdY5fZWcTTe-bjvbG40l
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Enact
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1zpeuYAhcRYMHFAmn9vspgQQeES9jt7YB
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Enact'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Enact
+    url: https://drive.google.com/file/d/1zpeuYAhcRYMHFAmn9vspgQQeES9jt7YB
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: ETOPS
+  file_type: application/vnd.google-apps.folder
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1durLq1ruyEBggnsVDBGEmscbKc8cN2R7
+  type: portfolio_artifact
+  text: 'Portfolio artifact: ETOPS'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: ETOPS
+    url: https://drive.google.com/file/d/1durLq1ruyEBggnsVDBGEmscbKc8cN2R7
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Design_Presentation.pdf
+  file_type: application/pdf
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1OpbgvuRZQlCFcXgYUTnr4h_-kAYcYhPy
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Design_Presentation.pdf'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Design_Presentation.pdf
+    url: https://drive.google.com/file/d/1OpbgvuRZQlCFcXgYUTnr4h_-kAYcYhPy
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: Google Design Presentation.pdf
+  file_type: application/pdf
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1yy6QjVSUx5AGRSxrVrTMwzuPJHRTZPSS
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Google Design Presentation.pdf'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: Google Design Presentation.pdf
+    url: https://drive.google.com/file/d/1yy6QjVSUx5AGRSxrVrTMwzuPJHRTZPSS
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: 'Design Manager: Background Presentation'
+  file_type: application/vnd.google-apps.presentation
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1wxK-0aSLTA1_WbbZORxGekE-WfwmnSgfHbY3_WaAh3o
+  type: portfolio_artifact
+  text: 'Portfolio artifact: Design Manager: Background Presentation'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: 'Design Manager: Background Presentation'
+    url: https://drive.google.com/file/d/1wxK-0aSLTA1_WbbZORxGekE-WfwmnSgfHbY3_WaAh3o
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Portfolio Work
+  file_name: FB DPM Presentation - Speaker Notes
+  file_type: application/vnd.google-apps.document
+  source_folder: Portfolio Work
+  source_url: https://drive.google.com/file/d/1W0UK-EdpYxMxISe-3ZE6PzB6B5Qcwcft10FJLAv7ciw
+  type: portfolio_artifact
+  text: 'Portfolio artifact: FB DPM Presentation - Speaker Notes'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: FB DPM Presentation - Speaker Notes
+    url: https://drive.google.com/file/d/1W0UK-EdpYxMxISe-3ZE6PzB6B5Qcwcft10FJLAv7ciw
+    visibility: private
+  tags:
+  - portfolio
+  - artifact
+- company: Presentations
+  file_name: 'FB:  2018 DPM Presentation'
+  file_type: application/vnd.google-apps.presentation
+  source_folder: Presentations
+  source_url: https://docs.google.com/presentation/d/1wzjfJvblc69BG3ahNx-NywSogQwJ2gfjQ3YQVeGfns4
+  type: presentation
+  text: 'Presentation: FB:  2018 DPM Presentation'
+  expanded_case_study: null
+  supporting_artifacts:
+  - title: 'FB:  2018 DPM Presentation'
+    url: https://docs.google.com/presentation/d/1wzjfJvblc69BG3ahNx-NywSogQwJ2gfjQ3YQVeGfns4
+    visibility: private
+  tags:
+  - presentation 

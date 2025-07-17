@@ -135,6 +135,7 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - Blurb selection performance improvements
 - LLM API call caching and memoization
 - Comprehensive performance monitoring and metrics
+- **File-based YAML config caching is automatically invalidated when the file changes (mtime-based cache key)**
 
 ## 🏗️ Architecture
 
@@ -552,3 +553,39 @@ To use the LLM-powered enhancement features, you must provide your OpenAI API ke
 
 3. **Do not commit your real `.env` file to version control.**
    - Use `.env.example` as a template for sharing setup instructions. 
+
+## PM Role + Level Inference System (pm-levels branch)
+
+This feature introduces a structured system for inferring a user's Product Manager (PM) role type, level, archetype, and core competencies using resume, LinkedIn, and work samples (STAR stories, case studies, shipped products, etc.).
+
+- **Data Model:**
+  - `pm_inference` section in user config stores the latest inference results.
+  - `work_samples.yaml` stores structured STAR stories and case studies, each with metadata (title, type, source, role, tags, impact, etc.).
+- **UserContext:**
+  - Now loads and exposes `pm_inference` and `work_samples` for each user.
+- **Inference Logic:**
+  - `agents/pm_inference.py` scaffolds an LLM-based inference function to analyze user data and return a PM profile.
+- **Next Steps:**
+  - Integrate inference into onboarding and data upload flows.
+  - Add user feedback and LLM prompt logic.
+
+This system enables personalized cover letter generation, benchmarking, and gap analysis based on a user's real experience and strengths. 
+
+## Work Sample Workflow: Staging and Source of Truth
+
+- `work_samples.yaml`: **Staging area** for new, imported, or LLM-generated work samples (STAR stories, case studies, shipped products, etc.).
+  - Used for enrichment, analysis, and as a holding area for items pending review.
+  - May include raw, unapproved, or experimental content.
+  - Not used directly in cover letter generation.
+
+- `blurbs.yaml`: **Source of truth** for approved work samples.
+  - Only user-reviewed and approved stories are included here.
+  - All content used in cover letter generation and agent output comes from this file.
+
+**Workflow:**
+1. New work samples are imported or generated and added to `work_samples.yaml`.
+2. User (or admin) reviews, edits, and approves selected work samples.
+3. Approved work samples are moved/copied to `blurbs.yaml`.
+4. Only `blurbs.yaml` is used for cover letter and agent output.
+
+This separation ensures high-quality, curated content for outputs, while allowing experimentation and enrichment in the staging area. 

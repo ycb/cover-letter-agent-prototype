@@ -1,92 +1,442 @@
 intro:
-  - id: standard
-    tags: [all]
-    text: "I'm a [product leader/manager] with 15+ years of experience building user-centric products that deliver business results. My background includes leading 0–1 at hypergrowth startups (Aurora Solar, FalconX) and driving impact at scale for global brands (Meta, Samsung, Salesforce). I began my career as a front-end engineer, transitioned through UX leadership, and moved into product management 8 years ago to lead full-lifecycle execution. My approach emphasizes customer empathy, human-centered design, and data-driven decision-making."
-
+- id: standard
+  tags:
+  - all
+  text: "I'm a [product leader/manager] with 15+ years of experience building user-centric\
+    \ products that deliver business results. My background includes leading 0\u2013\
+    1 at hypergrowth startups (Aurora Solar, FalconX) and driving impact at scale\
+    \ for global brands (Meta, Samsung, Salesforce). I began my career as a front-end\
+    \ engineer, transitioned through UX leadership, and moved into product management\
+    \ 8 years ago to lead full-lifecycle execution. My approach emphasizes customer\
+    \ empathy, human-centered design, and data-driven decision-making."
 paragraph2:
-  - id: cleantech
-    tags: [cleantech, climate, energy, solar]
-    text: "Five years in solar SaaS has given me a deep understanding of the needs of homeowners, installers, OEMs, and utilities. I’ve built B2B2C tools for design, sales, and post-install engagement—helping customers monitor system performance and monetize cleantech assets through referrals and RECs. I see DERMs as a near-term path to grid flexibility, unlocking new revenue streams for utilities and distributed asset owners."
-
-  - id: aec
-    tags: [aec, construction, trades, physical_systems]
-    text: "My professional passion is building tools that bridge digital and physical systems to solve real-world problems. At Aurora, I helped scale a B2B2C platform for system design, energy modeling, sales, and installation—used by 90% of the top solar installers in the U.S. At Enact, I led product for post-sale tools that monitor performance and help homeowners and contractors maintain system health. As co-founder of SpatialThink, I built a no-code platform for skilled trades training using reality capture and Web3D—enabling instructors to deliver simulation-based learning for hands-on workers in the Mechanical, Engineering, and Plumbing trades."
-
-  - id: growth
-    tags: [growth, plg, activation, engagement]
-    text: "I build growth systems that align cross-functional teams around measurable outcomes. I uncover product gaps through behavioral analytics, user interviews, and collaboration with customer success, sales and product marketing. I lead a hypothesis-driven development process that includes iteration and beta testing. I develop roadmaps grounded in differentiated value and lead delivery with a focus on activation, engagement, and sustained retention. I also work closely with marketing to launch GTM campaigns and implement PLG systems that drive adoption across key segments."
-
-  - id: ai_focused
-    tags: [AI, ML, artificial_intelligence, machine_learning, trust, genai]
-    text: "I bring 5 years of experience improving the usability of AI/ML systems—helping users trust and adopt complex technologies. At Meta, I led explainable AI for internal recruiting tools. At Samsung, I designed NLP-powered support flows. At Aurora, I improved workflows for ML-based solar modeling. I specialize in clarifying ambiguity, aligning stakeholders, and accelerating delivery using AI tools—without losing sight of user needs or business impact. I'm a daily GenAI power user. I moderated a panel on GenAI and DERs for SF Climate Week, and created a voice assistant for home energy upgrades that was a finalist at the Hacking for Clean Energy hackathon."
-
-  - id: founding_pm
-    tags: [founding_pm, first_pm, early_stage, startup, 0_to_1]
-    text: "As a founding PM, I thrive in ambiguity and know how to deliver with limited resources. I’ve been the first product hire at multiple startups—clarifying the roadmap, unblocking engineering, and shipping V1 while building trust with users and execs. I define vision through direct customer discovery, prototype rapidly, and work across functions to align product and GTM. I enjoy moving fast, solving messy problems, and building the foundations that support long-term growth."
-
+- id: cleantech
+  tags:
+  - cleantech
+  - climate
+  - energy
+  - solar
+  text: "Five years in solar SaaS has given me a deep understanding of the needs of\
+    \ homeowners, installers, OEMs, and utilities. I\u2019ve built B2B2C tools for\
+    \ design, sales, and post-install engagement\u2014helping customers monitor system\
+    \ performance and monetize cleantech assets through referrals and RECs. I see\
+    \ DERMs as a near-term path to grid flexibility, unlocking new revenue streams\
+    \ for utilities and distributed asset owners."
+- id: aec
+  tags:
+  - aec
+  - construction
+  - trades
+  - physical_systems
+  text: "My professional passion is building tools that bridge digital and physical\
+    \ systems to solve real-world problems. At Aurora, I helped scale a B2B2C platform\
+    \ for system design, energy modeling, sales, and installation\u2014used by 90%\
+    \ of the top solar installers in the U.S. At Enact, I led product for post-sale\
+    \ tools that monitor performance and help homeowners and contractors maintain\
+    \ system health. As co-founder of SpatialThink, I built a no-code platform for\
+    \ skilled trades training using reality capture and Web3D\u2014enabling instructors\
+    \ to deliver simulation-based learning for hands-on workers in the Mechanical,\
+    \ Engineering, and Plumbing trades."
+- id: growth
+  tags:
+  - growth
+  - plg
+  - activation
+  - engagement
+  text: I build growth systems that align cross-functional teams around measurable
+    outcomes. I uncover product gaps through behavioral analytics, user interviews,
+    and collaboration with customer success, sales and product marketing. I lead a
+    hypothesis-driven development process that includes iteration and beta testing.
+    I develop roadmaps grounded in differentiated value and lead delivery with a focus
+    on activation, engagement, and sustained retention. I also work closely with marketing
+    to launch GTM campaigns and implement PLG systems that drive adoption across key
+    segments.
+- id: ai_focused
+  tags:
+  - AI
+  - ML
+  - artificial_intelligence
+  - machine_learning
+  - trust
+  - genai
+  text: "I bring 5 years of experience improving the usability of AI/ML systems\u2014\
+    helping users trust and adopt complex technologies. At Meta, I led explainable\
+    \ AI for internal recruiting tools. At Samsung, I designed NLP-powered support\
+    \ flows. At Aurora, I improved workflows for ML-based solar modeling. I specialize\
+    \ in clarifying ambiguity, aligning stakeholders, and accelerating delivery using\
+    \ AI tools\u2014without losing sight of user needs or business impact. I'm a daily\
+    \ GenAI power user. I moderated a panel on GenAI and DERs for SF Climate Week,\
+    \ and created a voice assistant for home energy upgrades that was a finalist at\
+    \ the Hacking for Clean Energy hackathon."
+- id: founding_pm
+  tags:
+  - founding_pm
+  - first_pm
+  - early_stage
+  - startup
+  - 0_to_1
+  text: "As a founding PM, I thrive in ambiguity and know how to deliver with limited\
+    \ resources. I\u2019ve been the first product hire at multiple startups\u2014\
+    clarifying the roadmap, unblocking engineering, and shipping V1 while building\
+    \ trust with users and execs. I define vision through direct customer discovery,\
+    \ prototype rapidly, and work across functions to align product and GTM. I enjoy\
+    \ moving fast, solving messy problems, and building the foundations that support\
+    \ long-term growth."
 examples:
-  - id: enact
-    tags: [growth, leadership, founding_pm, cleantech, b2b2c, startup, gtm, xfn, 0_to_1, strategy, data_driven]
-    text: "At Enact Systems, I led a cross-functional team from 0–1 to improve home energy management. As part of the Series A management team, I owned P&L for the consumer line of business and defined product strategy based on customer insights and financial modeling. I built a unified roadmap for 2 pods and 3 products (web, mobile, and white-label), hired and coached the team, and drove consistent quarterly execution. These efforts delivered +210% MAUs, +876% event growth, +853% time-in-app, and +169% revenue growth."
-
-  - id: aurora
-    tags: [platform, founding_pm, growth, cleantech, design_tools, b2b, b2b2c, scaleup, xfn, onboarding, internal_tools, plg, data_driven, usability]
-    text: "At Aurora Solar, I was a founding PM and helped scale the company from Series A to Series C. I led a platform rebuild that transformed a solar design tool into a full sales engine—broadening adoption from designers to sales teams and supporting a shift from SMB to enterprise. I introduced beta testing, behavioral analytics, and PLG onboarding to accelerate launches. I also aligned marketing, support, and engineering through shared prioritization, integrated support workflows, and the v1 design system. These efforts helped Aurora reach 90% adoption among top U.S. EPCs and achieve a $4B valuation."
-
-  - id: meta
-    tags: [ai_ml, ux, platform, analytics, internal_tools, public, xfn, trust, explainability, data_driven, usability]
-    text: "At Meta, I led a cross-functional ML team to scale global recruiting tools. High-precision candidate recommendations had low adoption, so I conducted discovery to identify trust and UX barriers. I introduced explainable AI and a co-pilot UX to improve transparency and control, and rolled out these changes in phases. The result: a 130% increase in claims within 30 days and a 10x lift in ML usage by year’s end."
-
-  - id: samsung
-    tags: [growth, ux, b2c, public, onboarding, usability, mobile, support, engagement, product_quality, consumer]
-    text: "At Samsung, I led the overhaul of the Samsung+ app to restore trust after the Note7 crisis. I introduced new support features (video chat, remote host, SMS, warranty program) and designed personalized content (Skills and Tips) to reduce returns. I led customer discovery and usability testing and aligned cross-functional teams in marketing, e-commerce, and content strategy. These efforts drove a 160% increase in MAUs, 200% higher engagement, and improved our Play Store rating from 3.7 to 4.3."
-
-  - id: samsung_chatbot
-    tags: [ai_ml, ux, b2c, public, trust, support, nlp, genai, automation, scale, consumer]
-    text: "At Samsung, I led the design of a chatbot for 20M users of Samsung+. Built to restore trust and scale support after the Note7 crisis, the system used NLP to identify issues, deliver self-service content, and escalate to live agents when needed. It reduced average response time by 20x, cut Tier 1 support costs by 60%, and increased CSAT by 80%. The chatbot later became Samsung’s global reference model for digital care."
-
-  - id: spatialthink
-    tags: [founding_pm, aec, cleantech, startup, digital_tools, b2b, 0_to_1, gtm, simulation, no_code, platform, design_tools]
-    text: "As co-founder of SpatialThink, I led development of a no-code simulation platform for skilled trades training. We used reality capture and Web3D to create interactive modules for Mechanical, Electrical, and Plumbing (MEP) instructors. I validated market need, led GTM and onboarding, and helped secure $300K in pilot revenue. Our platform was used by organizations like UA.org (400K+ members), and I worked directly with instructors to refine workflows and outcomes. This experience deepened my empathy for hands-on professionals and honed my ability to build digital tools for physical systems."
-
+- id: enact
+  tags:
+  - growth
+  - leadership
+  - founding_pm
+  - cleantech
+  - b2b2c
+  - startup
+  - gtm
+  - xfn
+  - 0_to_1
+  - strategy
+  - data_driven
+  text: "At Enact Systems, I led a cross-functional team from 0\u20131 to improve\
+    \ home energy management. As part of the Series A management team, I owned P&L\
+    \ for the consumer line of business and defined product strategy based on customer\
+    \ insights and financial modeling. I built a unified roadmap for 2 pods and 3\
+    \ products (web, mobile, and white-label), hired and coached the team, and drove\
+    \ consistent quarterly execution. These efforts delivered +210% MAUs, +876% event\
+    \ growth, +853% time-in-app, and +169% revenue growth."
+- id: aurora
+  tags:
+  - platform
+  - founding_pm
+  - growth
+  - cleantech
+  - design_tools
+  - b2b
+  - b2b2c
+  - scaleup
+  - xfn
+  - onboarding
+  - internal_tools
+  - plg
+  - data_driven
+  - usability
+  text: "At Aurora Solar, I was a founding PM and helped scale the company from Series\
+    \ A to Series C. I led a platform rebuild that transformed a solar design tool\
+    \ into a full sales engine\u2014broadening adoption from designers to sales teams\
+    \ and supporting a shift from SMB to enterprise. I introduced beta testing, behavioral\
+    \ analytics, and PLG onboarding to accelerate launches. I also aligned marketing,\
+    \ support, and engineering through shared prioritization, integrated support workflows,\
+    \ and the v1 design system. These efforts helped Aurora reach 90% adoption among\
+    \ top U.S. EPCs and achieve a $4B valuation."
+- id: meta
+  tags:
+  - ai_ml
+  - ux
+  - platform
+  - analytics
+  - internal_tools
+  - public
+  - xfn
+  - trust
+  - explainability
+  - data_driven
+  - usability
+  text: "At Meta, I led a cross-functional ML team to scale global recruiting tools.\
+    \ High-precision candidate recommendations had low adoption, so I conducted discovery\
+    \ to identify trust and UX barriers. I introduced explainable AI and a co-pilot\
+    \ UX to improve transparency and control, and rolled out these changes in phases.\
+    \ The result: a 130% increase in claims within 30 days and a 10x lift in ML usage\
+    \ by year\u2019s end."
+- id: samsung
+  tags:
+  - growth
+  - ux
+  - b2c
+  - public
+  - onboarding
+  - usability
+  - mobile
+  - support
+  - engagement
+  - product_quality
+  - consumer
+  text: At Samsung, I led the overhaul of the Samsung+ app to restore trust after
+    the Note7 crisis. I introduced new support features (video chat, remote host,
+    SMS, warranty program) and designed personalized content (Skills and Tips) to
+    reduce returns. I led customer discovery and usability testing and aligned cross-functional
+    teams in marketing, e-commerce, and content strategy. These efforts drove a 160%
+    increase in MAUs, 200% higher engagement, and improved our Play Store rating from
+    3.7 to 4.3.
+- id: samsung_chatbot
+  tags:
+  - ai_ml
+  - ux
+  - b2c
+  - public
+  - trust
+  - support
+  - nlp
+  - genai
+  - automation
+  - scale
+  - consumer
+  text: "At Samsung, I led the design of a chatbot for 20M users of Samsung+. Built\
+    \ to restore trust and scale support after the Note7 crisis, the system used NLP\
+    \ to identify issues, deliver self-service content, and escalate to live agents\
+    \ when needed. It reduced average response time by 20x, cut Tier 1 support costs\
+    \ by 60%, and increased CSAT by 80%. The chatbot later became Samsung\u2019s global\
+    \ reference model for digital care."
+- id: spatialthink
+  tags:
+  - founding_pm
+  - aec
+  - cleantech
+  - startup
+  - digital_tools
+  - b2b
+  - 0_to_1
+  - gtm
+  - simulation
+  - no_code
+  - platform
+  - design_tools
+  text: As co-founder of SpatialThink, I led development of a no-code simulation platform
+    for skilled trades training. We used reality capture and Web3D to create interactive
+    modules for Mechanical, Electrical, and Plumbing (MEP) instructors. I validated
+    market need, led GTM and onboarding, and helped secure $300K in pilot revenue.
+    Our platform was used by organizations like UA.org (400K+ members), and I worked
+    directly with instructors to refine workflows and outcomes. This experience deepened
+    my empathy for hands-on professionals and honed my ability to build digital tools
+    for physical systems.
+- id: star_enact_key_metrics
+  tags:
+  - star_story
+  - case_study
+  - work_example
+  text: In the past year, I successfully led initiatives that resulted in a 169% year-over-year
+    revenue increase, growing from $48k in 2022 to $129k in 2023. User growth surged
+    by 357%, escalating from 154 to 705 users. Engagement metrics also saw substantial
+    rises, with an average monthly time per user increasing by 853% from 23 minutes
+    to 222 minutes, and average monthly events per user growing by 876% from 114 to
+    1110 events. Additionally, average monthly visitors increased by 620%, from 3
+    to 24. These metrics underscore my ability to significantly enhance both user
+    engagement and financial performance.
+  importance_score: 10
+  source: star_stories
+  original_story_id: enact_key_metrics
+- id: star_enact_plg_growth_team
+  tags:
+  - star_story
+  - case_study
+  - work_example
+  text: In response to constrained growth, I developed a top-of-funnel strategy using
+    email, direct mail, SMS, and online ads, alongside landing page optimizations
+    and CMS integrations. This approach led to a notable improvement in conversion
+    rates, from an initial 2.55% to 4.41% after refining landing page content. The
+    cost per lead was effectively reduced to $131, demonstrating a strategic reduction
+    in spending and enhanced targeting efficiency. These efforts were part of a broader
+    initiative to drive engagement and monetize environmental attributes for California
+    solar homeowners, ultimately increasing our market footprint and installer uptake.
+  importance_score: 9
+  source: star_stories
+  original_story_id: enact_plg_growth_team
+- id: star_aurora_platform_rebuild
+  tags:
+  - star_story
+  - case_study
+  - work_example
+  text: Over a two-year period, I led the rebuild of a platform, navigating an evolving
+    team and competitive landscape to deliver a unified tablet solution for enterprise
+    use. I established priorities with leadership to ensure seamless integration between
+    different modes, spearheaded the creation and presentation of a comprehensive
+    plan to Product Managers, and conducted individual alignment sessions. My strategic
+    coordination across pods and meticulous roadmap management resulted in the on-time
+    delivery of a robust design system, maintaining team health and ensuring the synchronized
+    cross-pod delivery of dependencies quarter after quarter.
+  importance_score: 9
+  source: star_stories
+  original_story_id: aurora_platform_rebuild
+- id: star_salesforce_mobile_strategy
+  tags:
+  - star_story
+  - case_study
+  - work_example
+  text: At Salesforce, I led a cross-functional team to revamp our mobile strategy,
+    addressing the subpar experience for our 3.5 million annual mobile users. Through
+    comprehensive discovery, design, and prototyping phases over five months, I developed
+    and secured leadership approval for a mobile-first strategy. This initiative was
+    prioritized as a top five project for FY2019, aligning cross-functional teams
+    and securing funding for further analytics and UX enhancements, leading to increased
+    mobile engagement and valuable user insights.
+  importance_score: 9
+  source: star_stories
+  original_story_id: salesforce_mobile_strategy
+- id: star_aurora_refocus_team
+  tags:
+  - star_story
+  - case_study
+  - work_example
+  text: In addressing a critical dip in team throughput due to conflicting mandates
+    and ad-hoc support requests from customer service and sales, I led a strategic
+    realignment by initiating reflective discussions with the team and aligning with
+    executive management and TechOps. This approach not only clarified our team's
+    core responsibilities but also enhanced our operational focus, ensuring that our
+    primary objectives were met without sacrificing support to other departments.
+    This realignment significantly smoothed our workflow and increased overall team
+    efficiency.
+  importance_score: 8
+  source: star_stories
+  original_story_id: aurora_refocus_team
 role_specific_alignment:
-  - id: curiosity_grid
-    tags: [grid, interconnection, curiosity, learning]
-    text: "While I haven’t worked directly on grid interconnection, I’m eager to dive into this domain. I ramp quickly and enjoy learning from technical experts—especially when it drives climate impact. I have led user research and workflow analysis to uncover pain points and inform product decisions, ensuring solutions are grounded in real user needs."
-  - id: product_data_metrics
-    tags: [data_analysis, python, product_metrics, optimization]
-    text: "I regularly analyze user data and behavioral metrics to identify opportunities for product improvement, optimize performance, and build trust with users."
-  - id: fairness_trust
-    tags: [trust, ethics, transparency, fairness]
-    text: "I am committed to building products that are fair, transparent, and trustworthy. At Meta, I led efforts to improve explainability and reduce bias in AI-powered features. I have experience building trust with enterprise customers by delivering reliable solutions and maintaining open, transparent communication."
-  - id: duke
-    tags: [cleantech, strategy, vpp, derms, utilities, energy, pilot, roi_modeling, proposal, research, user_behavior, grid, resilience, segmentation, thought_leadership, product_strategy, trust, customer_engagement, b2b, product_strategy, stage_pilot]
-    text: "I developed a DERMS/VPP pilot proposal for a major utility in under 24 hours as part of a product leadership interview. Drawing on public data, I segmented customers by device type and flexibility, identified participation barriers, and scoped a pilot designed to build trust and deliver measurable load impact. I proposed a phased roadmap, including load forecasting and ROI modeling, with a long-term vision to scale across regions. This work highlights my ability to rapidly synthesize domain knowledge, craft credible GTM strategy, and drive product impact in complex, regulated markets."
-  - id: genai_voice
-    tags: [ai_ml, genai, cleantech, founding_pm, 0_to_1, prototype, d2c, energy_coaching, hackathon, voice_interface, assistant, nlp, user_experience, usability, innovation]
-    text: "I developed a GenAI-powered voice assistant to help homeowners optimize their energy use and access incentives. Built using open-source tools and energy APIs, the assistant could answer questions, identify savings opportunities, and recommend next steps. We validated the UX through a live demo, and the project was named a finalist at the Hacking for Clean Energy hackathon."
-  - id: sf_climate_week
-    tags: [cleantech, genai, thought_leadership, public_speaking, energy, der, vpp, community, facilitation, event, sf_climate_week, ecosystem, influence, networking]
-    text: "I moderated a panel on “GenAI in Climate: DERs and Energy Efficiency” during SF Climate Week, bringing together over 150 participants from energy, software, and AI backgrounds. We explored how GenAI can accelerate DER deployment, streamline customer engagement, and support energy equity. I facilitated the conversation to ensure diverse perspectives, practical insights, and actionable ideas emerged from the discussion."
-
+- id: curiosity_grid
+  tags:
+  - grid
+  - interconnection
+  - curiosity
+  - learning
+  text: "While I haven\u2019t worked directly on grid interconnection, I\u2019m eager\
+    \ to dive into this domain. I ramp quickly and enjoy learning from technical experts\u2014\
+    especially when it drives climate impact. I have led user research and workflow\
+    \ analysis to uncover pain points and inform product decisions, ensuring solutions\
+    \ are grounded in real user needs."
+- id: product_data_metrics
+  tags:
+  - data_analysis
+  - python
+  - product_metrics
+  - optimization
+  text: I regularly analyze user data and behavioral metrics to identify opportunities
+    for product improvement, optimize performance, and build trust with users.
+- id: fairness_trust
+  tags:
+  - trust
+  - ethics
+  - transparency
+  - fairness
+  text: I am committed to building products that are fair, transparent, and trustworthy.
+    At Meta, I led efforts to improve explainability and reduce bias in AI-powered
+    features. I have experience building trust with enterprise customers by delivering
+    reliable solutions and maintaining open, transparent communication.
+- id: duke
+  tags:
+  - cleantech
+  - strategy
+  - vpp
+  - derms
+  - utilities
+  - energy
+  - pilot
+  - roi_modeling
+  - proposal
+  - research
+  - user_behavior
+  - grid
+  - resilience
+  - segmentation
+  - thought_leadership
+  - product_strategy
+  - trust
+  - customer_engagement
+  - b2b
+  - product_strategy
+  - stage_pilot
+  text: I developed a DERMS/VPP pilot proposal for a major utility in under 24 hours
+    as part of a product leadership interview. Drawing on public data, I segmented
+    customers by device type and flexibility, identified participation barriers, and
+    scoped a pilot designed to build trust and deliver measurable load impact. I proposed
+    a phased roadmap, including load forecasting and ROI modeling, with a long-term
+    vision to scale across regions. This work highlights my ability to rapidly synthesize
+    domain knowledge, craft credible GTM strategy, and drive product impact in complex,
+    regulated markets.
+- id: genai_voice
+  tags:
+  - ai_ml
+  - genai
+  - cleantech
+  - founding_pm
+  - 0_to_1
+  - prototype
+  - d2c
+  - energy_coaching
+  - hackathon
+  - voice_interface
+  - assistant
+  - nlp
+  - user_experience
+  - usability
+  - innovation
+  text: I developed a GenAI-powered voice assistant to help homeowners optimize their
+    energy use and access incentives. Built using open-source tools and energy APIs,
+    the assistant could answer questions, identify savings opportunities, and recommend
+    next steps. We validated the UX through a live demo, and the project was named
+    a finalist at the Hacking for Clean Energy hackathon.
+- id: sf_climate_week
+  tags:
+  - cleantech
+  - genai
+  - thought_leadership
+  - public_speaking
+  - energy
+  - der
+  - vpp
+  - community
+  - facilitation
+  - event
+  - sf_climate_week
+  - ecosystem
+  - influence
+  - networking
+  text: "I moderated a panel on \u201CGenAI in Climate: DERs and Energy Efficiency\u201D\
+    \ during SF Climate Week, bringing together over 150 participants from energy,\
+    \ software, and AI backgrounds. We explored how GenAI can accelerate DER deployment,\
+    \ streamline customer engagement, and support energy equity. I facilitated the\
+    \ conversation to ensure diverse perspectives, practical insights, and actionable\
+    \ ideas emerged from the discussion."
 leadership:
-  - id: cross_functional_ic
-    tags: [cross_functional, ic, collaboration]
-    text: "I’ve spent 8+ years leading cross-functional execution with engineering, UX, GTM, and support teams. I identify high-leverage opportunities, validate solutions with stakeholders, and align teams to business outcomes. My approach centers on empathy, candor, and crisp prioritization to keep customer insights and revenue at the heart of product decisions."
-
-  - id: leadership
-    tags: [leadership, management, team_building]
-    text: "I have 6+ years of experience leading and mentoring high-performing product teams. I build systems that increase collaboration, accountability, and alignment to company goals. My leadership philosophy centers on empathy, candor, and psychological safety. I attract and develop diverse talent and foster cultures of mutual respect and consistent, purpose-driven execution."  
-
+- id: cross_functional_ic
+  tags:
+  - cross_functional
+  - ic
+  - collaboration
+  text: "I\u2019ve spent 8+ years leading cross-functional execution with engineering,\
+    \ UX, GTM, and support teams. I identify high-leverage opportunities, validate\
+    \ solutions with stakeholders, and align teams to business outcomes. My approach\
+    \ centers on empathy, candor, and crisp prioritization to keep customer insights\
+    \ and revenue at the heart of product decisions."
+- id: leadership
+  tags:
+  - leadership
+  - management
+  - team_building
+  text: I have 6+ years of experience leading and mentoring high-performing product
+    teams. I build systems that increase collaboration, accountability, and alignment
+    to company goals. My leadership philosophy centers on empathy, candor, and psychological
+    safety. I attract and develop diverse talent and foster cultures of mutual respect
+    and consistent, purpose-driven execution.
 closing:
-  - id: standard
-    tags: [all]
-    text: "I’d be excited to bring my experience in product strategy and execution to [Company Name]. Let’s connect on how I can contribute to your next chapter."
-
-  - id: mission_aligned
-    tags: [mission, purpose, impact]
-    text: "I’m particularly excited about [Company Name]’s mission to [specific mission]. My experience building products that create real impact aligns perfectly with your vision. I’d love to discuss how I can contribute to your team and help achieve your ambitious goals."
-
-  - id: growth_focused
-    tags: [growth, scaling, startup]
-    text: "I'm excited about the opportunity to help [Company Name] scale and grow. My experience building systems that align teams around measurable outcomes would be valuable as you continue to expand. I'd love to discuss how my background can contribute to your growth trajectory."
+- id: standard
+  tags:
+  - all
+  text: "I\u2019d be excited to bring my experience in product strategy and execution\
+    \ to [Company Name]. Let\u2019s connect on how I can contribute to your next chapter."
+- id: mission_aligned
+  tags:
+  - mission
+  - purpose
+  - impact
+  text: "I\u2019m particularly excited about [Company Name]\u2019s mission to [specific\
+    \ mission]. My experience building products that create real impact aligns perfectly\
+    \ with your vision. I\u2019d love to discuss how I can contribute to your team\
+    \ and help achieve your ambitious goals."
+- id: growth_focused
+  tags:
+  - growth
+  - scaling
+  - startup
+  text: I'm excited about the opportunity to help [Company Name] scale and grow. My
+    experience building systems that align teams around measurable outcomes would
+    be valuable as you continue to expand. I'd love to discuss how my background can
+    contribute to your growth trajectory.
+star_stories: []
+metadata:
+  last_updated: '2025-07-14T18:03:50.704633'
+  total_examples: 11

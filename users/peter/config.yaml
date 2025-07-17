@@ -1,118 +1,146 @@
-case_studies:
-  urls:
-  - description: Scaling B2B platform from Series A to C
-    name: Aurora Solar Growth Case Study
-    tags:
-    - growth
-    - B2B
-    - clean_energy
-    - scaling
-    url: https://tinyurl.com/series-a-to-c
-  - description: Explainable AI for recruiting
-    name: Meta Explainable AI Case Study
-    tags:
-    - AI
-    - ML
-    - trust
-    - internal_tools
-    - explainable
-    url: https://tinyurl.com/ml-at-meta
-  - description: PMF for home energy management
-    name: Enact 0 to 1 Case Study
-    tags:
-    - growth
-    - consumer
-    - clean_energy
-    - user_experience
-    url: https://tinyurl.com/vp-of-product
-  - description: VPP / DERMS proposal
-    name: Duke Energy Case Study
-    tags:
-    - B2C
-    - clean_energy
-    url: https://tinyurl.com/duke-vpp
-  - description: GenAI and DERs
-    name: SF Climate Week Roundtable
-    tags:
-    - AI
-    - ML
-    - trust
-    - internal_tools
-    - explainable
-    url: https://www.linkedin.com/feed/update/urn:li:activity:7320603049863835648/
-cover_letter:
-  personal_brand:
-    key_strengths:
-    - Building systems that align teams around measurable outcomes
-    - Clarifying ambiguity in complex environments
-    - Creating trust in AI and ML systems
-    - Scaling products from zero to millions of users
-    tagline: Product leader focused on clarifying ambiguity and building trust
-  placeholders:
-    case_study_reference: '[Case Study Reference]'
-    company_name: '[Company Name]'
-    position_title: '[Position Title]'
-    specific_achievement: '[Specific Achievement]'
-  tone:
-    AI_ML: technical
-    default: professional
-    enterprise: professional
-    startup: conversational
+# User Configuration for Cover Letter Agent
+# User: Peter Spannagle
+
+profile:
+  name: "Peter Spannagle"
+  email: "peter@example.com"
+  resume_file: "Peter Spannagle-Resume.pdf"
+  linkedin_url: "https://www.linkedin.com/in/pspan"
+  
+  # Voice and Communication Preferences
+  voice_preferences:
+    tone: "concise, exacting, and strategically direct"
+    style: "clarity over flourish, precision over verbosity"
+    approach: "maximum insight with minimal friction"
+    characteristics:
+      - "Avoids jargon, fluff, or over-explanation"
+      - "Communicates credibility through substance, structure, and measured confidence"
+      - "Intelligent but unpretentious"
+      - "Persuasive but never salesy"
+      - "Deeply attuned to executive, technical, and mission-driven audiences"
+      - "Respects reader's time and intellect"
+    writing_guidelines:
+      - "Each sentence delivers maximum insight with minimal friction"
+      - "Every phrase reflects respect for the reader's time and intellect"
+      - "Favor clarity over flourish"
+      - "Precision over verbosity"
+      - "Measured confidence without pretension"
+
+# Data Model - Sources of Truth and Staging Areas
+# All Drive, LLM, and mined content is first staged in users/{user}/staging/ until user approval.
+# Only approved/curated content is moved to the main files (work_history.yaml, blurbs.yaml, etc.)
+data_model:
+  # Sources of Truth (Approved Content)
+  sources_of_truth:
+    - "blurbs.yaml"           # Approved work samples and content
+    - "resume_contents.yaml"  # Parsed resume data
+    - "config.yaml"           # User profile and preferences
+  
+  # Staging Areas (External/Drive Content)
+  staging_areas:
+    - "work_samples.yaml"     # Work samples pending approval
+    - "private_artifacts.yaml" # Raw artifacts to be mined for stories
+    - "google_drive"          # All Drive content (cover letters, STAR stories, etc.)
+    - "external_profiles"     # LinkedIn, GitHub, etc.
+    - "job_tracker"           # Job application data
+  
+  # Net-New Detection
+  net_new_detection:
+    enabled: true
+    sources_to_check:
+      - "cover_letters"
+      - "star_stories" 
+      - "job_tracker"
+      - "portfolio_work"
+      - "presentations"
+      - "external_profiles"
+    ranking_enabled: true
+    auto_approval: false  # Manual approval required
+
 google_drive:
   credentials_file: credentials.json
   enabled: true
-  folder_id: 1rCpW912CrPC6K0NvYdwnyXFw-f_V66_x
   materials:
-    case_studies: case_studies/
-    cover_letters: cover_letters/
-    drafts: drafts/
-    presentations: presentations/
-    spreadsheets: spreadsheets/
-integrations:
-  google_drive_setup:
-    steps:
-    - 1. Go to Google Cloud Console
-    - 2. Create a new project or select existing
-    - 3. Enable Google Drive API
-    - 4. Create service account credentials
-    - 5. Download credentials.json to project root
-    - 6. Share your Google Drive folder with the service account email
-  supported_file_types:
-  - pdf
-  - docx
-  - pptx
-  - xlsx
-  - txt
-  - md
-output:
-  export_formats:
-  - txt
-  - md
-  - docx
-  file_naming:
-    date_format: '%Y%m%d'
-    pattern: '{company}_{position}_{date}'
-  format:
-    include_footer: true
-    include_header: true
-    max_length: 400
-    preferred_sections:
-    - intro
-    - experience
-    - examples
-    - closing
-profile:
-  achievements:
-  - Co-founded spatial intelligence startup that earned $250k revenue and onboarded
-    100+ users
-  - Led 0-1 (Series A management team) delivering 10X growth of user base, +210% MAUs,
-    +876% engagement and +169% revenue
-  - Drove 10X increase in adoption of AI/ML tools for recruiting at Meta
-  - 'Founding PM (Series A-C): captured majority of US solar installer market, 10X
-    team, $4B valuation'
-  - 'Improved customer care for 20M Samsung users: +160% MAUs, +200% engagement, NLP
-    chatbot'
-  github_url: https://github.com/ycb
-  linkedin_url: https://linkedin.com/in/pspan
-  portfolio_url: https://peterspannagle.com/
-  resume_file: Peter Spannagle-Resume.pdf
+    cover_letters: 0B9PEBLmrpxxiX29qaHlUb3RLME0
+    portfolio_work: 0B9PEBLmrpxxibkNlaTZmSVB6MUE
+    presentations: 1cNjWcSc7c2a9OVpGTFblQ7XXZdwnQxUG
+    job_tracker: 1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc
+    star_stories: 16zJzR_XVZtdtuQfacZXRZm9yHHyKNWkp6YTeueI085E
+  # Flexible file discovery configuration
+  file_discovery:
+    # Auto-discover files by name patterns
+    star_stories_patterns:
+      - "resume grid"
+      - "star stories"
+      - "behavioral examples"
+      - "situation action result"
+      - "STAR"
+    job_tracker_patterns:
+      - "job tracker"
+      - "applications"
+      - "2025"
+    cover_letter_patterns:
+      - "cover letter"
+      - "application"
+      - "resume"
+    # Fallback folders for discovery
+    fallback_folders:
+      star_stories: "0B9PEBLmrpxxiQTFycllWTDVOUVk"
+      job_tracker: "1QoCzbriR9hyRyIldOZ8TpK03SB-j7xu3UKuAu-iZ5qc"
+  # Spreadsheet parsing configuration
+  spreadsheet_parsing:
+    star_stories:
+      column_layouts:
+        - ["title", "situation", "action", "result"]
+        - ["company", "situation", "action", "result"]
+        - ["role", "situation", "action", "result"]
+      title_patterns:
+        - "company"
+        - "role"
+        - "project"
+        - "situation"
+    # Tabs containing STAR stories
+    tabs:
+      - "Stories"
+      - "2024 Stories (Behavioral)"
+
+# PM Level and Role Inference
+pm_inference:
+  enabled: true
+  confidence_threshold: 0.7
+  levels:
+    - "Junior PM"
+    - "Senior PM" 
+    - "Principal PM"
+    - "Director of Product"
+    - "VP of Product"
+    - "CPO"
+  skills_to_assess:
+    - "Product Strategy"
+    - "User Research"
+    - "Data Analytics"
+    - "Cross-functional Leadership"
+    - "Technical Depth"
+    - "Business Acumen"
+
+# Cover Letter Generation
+cover_letter_generation:
+  enabled: true
+  max_length: 400
+  tone: "professional"
+  include_specific_examples: true
+  use_star_format: true
+  target_companies: []
+  custom_prompts: {}
+
+# External Profile Integration
+external_profiles:
+  linkedin:
+    enabled: true
+    url: "https://www.linkedin.com/in/pspan"
+  github:
+    enabled: false
+    username: ""
+  portfolio:
+    enabled: true
+    url: ""

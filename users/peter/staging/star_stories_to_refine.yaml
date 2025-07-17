@@ -1,0 +1,251 @@
+- situation: The team was undefined and lacked actionable goals.
+  task: Establish clear goals and vision, identify dependencies and ensure cross functional
+    representation.
+  action: Prioritized, estimated, adapted, and aligned on process. Pursued milestones,
+    made progress visible and recalibrated as needed.
+  result: The team moved from being undefined to actionable.
+- situation: A biotech startup in San Diego wanted to build a baby tracking + genetics
+    mobile app.
+  task: Lead the team through discovery and understand the product vision.
+  action: Put together a presentation on competitive landscape and the relevance of
+    features at different stages. Flew to San Diego with the sales team to give the
+    presentation and led a workshop to brainstorm features.
+  result: Secured back to back contracts for visual narrative and prototype for fundraising,
+    and roadmap and estimates for MVP.
+- situation: The need to push boundaries to drive things ahead, sometimes leading
+    to being too task/goal oriented.
+  task: Balance the goal orientation with perceptions, feelings, and new ideas.
+  action: Used a qualified team member from research instead of engaging an overburdened
+    analytics team. Prepared the team to release a new version of a logo, in parallel
+    with getting all the sign offs needed.
+  result: ''
+- situation: When did you resolve a conflict at work?  Tell me about a time you had
+    a difficult interaction with a colleague...
+  task: null
+  action: null
+  result: null
+- situation: When did you have to adapt at work?
+  task: null
+  action: null
+  result: null
+- situation: Think about what you would do to improve Facebook Pages
+  task: null
+  action: null
+  result: null
+- situation: How do you find the time to stay inspired, acquire new knowledge, innovate
+    in your work?
+  task: null
+  action: "Books: Edward Tufte “Visual Display of Quantitative Information” Don Norman\
+    \ “The Design of Everyday Things” Jef Raskin “The Humane Interface” \n\nWWW: Dribble\
+    \ BeHance Medium Smashing Magazine Neilsen Norman Group A List Apart Stack Exchange\n\
+    \nLeaders: Luke Wroblewski Jesse James Garrett Jared Spool Alan Cooper Steve Krug\n\
+    \nI attend design and technology conferences and meetups, such as SF Design Week,\
+    \ Designers + Geeks and UX Week\n\nI take classes, such as \"Leading for Creativity\"\
+    \ with IDEO"
+  result: null
+- situation: Describe how you would handle a busy situation where three people are
+    waiting for help from you.
+  task: Make time to understand the needs.  What are the priorities, deadlines and
+    dependencies?  What is the impact of a delay?
+  action: I would strive to deliver all the help needed.  If not possible, I would
+    see about delegating or asking for help.  As a last resort, I would request to
+    revise the timeline, and give them a firm commitment by when I can help.
+  result: null
+- situation: Tell me about a time when you had a challenging partner or client - how
+    did you resolve it?
+  task: null
+  action: null
+  result: null
+- situation: What was the last hurdle you faced and how did you overcome it?
+  task: null
+  action: null
+  result: null
+- situation: What are you most passionate about and what peaks your interest?
+  task: null
+  action: null
+  result: null
+- situation: Enjoying using the Strava app
+  task: Stay healthy and connect with people through personal data-based insights
+  action: Used Strava to map runs, connect with people, and stay active while on vacation
+  result: Increased activity levels, explored new areas, and made progress towards
+    future goals
+- situation: Need to encourage customers/users to use a new version of a product
+  task: null
+  action: null
+  result: null
+- situation: A time when influence was needed over engineers
+  task: null
+  action: null
+  result: null
+- situation: A time when two competing technical solutions had to be evaluated
+  task: null
+  action: null
+  result: null
+- situation: A time when faced with a tight deadline
+  task: null
+  action: null
+  result: null
+- situation: A time when an issue had to be escalated to management appropriately
+  task: null
+  action: null
+  result: null
+- situation: A time when you rolled up your sleeves to get the job done.
+  task: null
+  action: null
+  result: null
+- situation: A time when you thought strategically about the product.
+  task: null
+  action: null
+  result: null
+- situation: A time when you owned an engineering program from concept to launch.
+  task: null
+  action: null
+  result: null
+- situation: A time when you identified major risks in a program.
+  task: null
+  action: What did you do?
+  result: null
+- situation: Your program management style.
+  task: null
+  action: null
+  result: null
+- situation: Types of people (developers, designers) you have worked with in the past.
+  task: null
+  action: null
+  result: null
+- situation: Platform rebuild, extended timeline. Rapid growth, lack of context and
+    institutional knowledge. Many ideas from bright and passionate people.
+  task: Revise product planning and roadmap
+  action: Ask people to trust and be patient. Work within the product team only. Overhaul
+    to increase transparency and collaboration.
+  result: 'Increased stakeholder engagement. More collaboration with GTM. Created
+    new functions: Solutions Architect, PMM.'
+- situation: 'CP requests battery control feature. 3 prong growth strategy: New sales
+    (direct), New sales (channel partners), Existing systems.'
+  task: Decline channel partner feature request
+  action: 'Gather data: explore API: data is available. Mock up solution: TOU 7 days
+    per week charge/discharge. Identify risks: too complex / users don''t have backup
+    power when needed / revised savings forecast. Get input: talk to CEO, CTO, PM
+    and EM. Present findings.'
+  result: 'Low effort fix: contact channel partner to adjust settings. Longer term
+    fix: work with OEM partners to incorporate smart settings.'
+- situation: 'Monetization and growth: free money. Too complex / ambiguous.'
+  task: RECs pilot
+  action: 'Evaluate opportunity: financial model (TAM > SOM). Resi and commercial
+    systems in CA. Work with CEO, advisors and investors. Establish end-to-end functionality.
+    Work with PM, PMM and CS. Broker: takes commission, avoids 6 month registration,
+    pays all fees, pays immediately (finds buyers). Legal: contract for transfer of
+    ownership. Eligibility: owned (not leased) with supported RGM inverter. Surprise:
+    RGM is a capability. Manual → automated. Enrollment: document collection, status
+    tracking and roll-up metrics. PMM: landing page, FAQ, email and assets – gain
+    new customers. CS: campaigns to existing customers.'
+  result: 'EOY 2023: Achieved OKR to onboard first DGG resi systems ($10k) +10 commercial
+    systems ($40k) for 5 year sign-up. Next step: scale up → 5X target for 2024.'
+- situation: We were halfway through a platform rebuild and had recently scaled up
+    the team to accelerate delivery. New Design Manager wanted to plan a 3 week design
+    sprint to come up with new ideas. I said it wasn't needed and wouldn't be the
+    best use of time, given existing strategy and roadmap. A week later, my manager
+    mentioned the person felt shut down and thought I was unwilling to collaborate.
+  task: Answered when I needed to listen
+  action: 'I asked if we could brainstorm alternatives. We came up wth a few: 1) include
+    in future quarterly planning 2) use a hackathon approach to take this on over
+    a weekend or in the evening 3) to have a series of smaller design sprints planned
+    that could accomlish the same goals over time. We settled on option 3. I took
+    time to talk it through with manager and to personally reflect on the situation.
+    I realized how this looked and felt to the other person like unwillingness to
+    collaborate. I took them out for coffee and apoligized for being abrupt. I asked
+    about the activities and outcomes they had in mind. I learned that a multi-week
+    design sprint was intended to help with team-building and serve as a holistic
+    design exercise to align the pods. I showed enthusiasm for the idea. And shared
+    my concern that, In the short-term, it would impact delivery to lose design support
+    in upcoming sprints.'
+  result: We found a mutual compromise and over time, refreshed our "north star" vision
+    for UX, which became an important tool for managing design debt and identifying
+    new opportunities. I learned how important it is to match people in conversation.
+    Sharing in the excitement instead of shutting it down was key. I had to address
+    my own feelings -- the desire to make progress towards commitments. So I could
+    understand and empathize with a new team member -- and strengthen a new relationship
+    via co-creation. Northstar created opportunity for $1m sales of tablet based sales
+    solution. Worked together on next project for usability testing and user interviews
+    with ENT orgs.
+- situation: Product was nearly ready with new features and UI. Legacy SMB users were
+    resistant to change and accustomed to high-touch support. CS was concerned about
+    being inundated with requests. Needed to reserve high-touch support for ENT customers.
+  task: Work cross-functionally to achieve a goal (welcome and guide users)
+  action: 'Aligh with leadership on vision
+
+
+    Kick off with tiger team (partial resources)
+
+
+    Evaluate options:  demos with XFN working group
+
+
+    Negotiate and sign contract
+
+
+    Create content matrix to prioritize users and flows
+
+
+    All hands demo
+
+
+    Work with data analyst to refine targeted customers
+
+
+    Create dashboard to monitor guide engagement'
+  result: "Launch on time\n100% of guides received\nUpdates to leadership and XFN\
+    \ teams\nSelf service dashboards \nHand over tool to PMM and CS"
+- situation: Built a product that addressed unmet consumer needs and showed high levels
+    of engagement. Initial user base small. Acquired via direct sales -- software
+    bundled with hardware at time of purchase. 3m existing solar homeowners / SOM
+    of 200k (last 3-5 years, CA only). Could we acquire customers by marketing directly
+    to existing solar homeowners?
+  task: Acquisition efforts unsuccessful
+  action: "1) Stick to direct sales / new installs. People-intensive with limited\
+    \ ability to scale. 5 salespeople closing 5-10 deals a month = 300 per year. Need\
+    \ a solution that can add thousands of users\n\n2) Leverage B2B2C partnerships:\
+    \ had 2 contracts with battery manufacturers. Growth was slow and constrained:\
+    \ small players would sell 2-5k systems per year. Value props mis-aligned. End\
+    \ users loved hardware-agnostic savings and monetization. Manufacturers wanted\
+    \ controls for their ecosystem of products. \n \n3) Direct to consumer / existing\
+    \ installs: largest opportunity -- but difficult to reach, educate and displace"
+  result: ''
+- situation: "Pandemic > hackathon \n\nmajor pain point for training orgs:  request\
+    \ to continue building\n\ntook on as side project \n\nco-founder went FT, developed\
+    \ general architecture and specific solutions \n\nNegotiated $100k contract to\
+    \ build POC\n\nI joined FT to focus on GTM and fundraising"
+  task: lost an anchor client
+  action: "Present updates 1X per month to training directors\n\nWorked with SME to\
+    \ develop POC\n\nPresent at national conference -- train 87 instructors over 4\
+    \ days\n\nFeedback overwhelmingly positive\n\nNegotiate expansion contract:  work\
+    \ with (2) local training facilities \n\nSticking point:  subscription vs fixed\
+    \ fee"
+  result: ''
+- situation: Growth feature delayed 6 months
+  task: 'Seeking PMF: new UX and features live = activate dormant users'
+  action: "1) focus exclusively on acquiring new customers \n2) anchor on existing\
+    \ customers\n3) 70/30 split \nEng: Leverage alert capability to send monthly reports\
+    \ \nUX: design monthly report"
+  result: ''
+- situation: Snuck in a 'last minute' feature and delayed a release
+  task: SVP was working with an agency to create a new logo for Samsung Customer Care.
+    Single brand experience for all devices (from electronics to appliances) in physical
+    and digital mediums. Had a personal relationship with SVP. He liked that we operated
+    as a startup within the enterprise, and that we had 20m users. Roll-out was scheduled
+    to take time. SVP asked if I could include updated logo in the upcoming release.
+  action: I said we could take this on. I asked design and front end to drop what
+    they were doing to make this small change. They had to hustle to prepare different
+    sizes based for supported screen resoutions. Then I asked QA to quickly review.
+    We got this done in a single day. But, the release process involved cross-functional
+    review. The marketing team saw the new logo and pointed out that we'd have a fragmented
+    brand experience. Marketing materials would need to be updated. And then S+ would
+    be out of sync with other products. They had other work in progress (commercials,
+    conferences) and couldn't hustle to support this change. Escalated to VP of Marketing,
+    who vetoed.
+  result: 'Release delayed by 1 day. Impacted team: Engineers had to roll back the
+    changes and create a new build. I learned the important of release-readiness and
+    coordination with GTM teams. Image update is a small change, but part of a larger
+    effort. To be mindful of commiting to personal favors that require more than my
+    efforts to deliver. And to be cautious about introducing last-minute changes that
+    tax the team.'

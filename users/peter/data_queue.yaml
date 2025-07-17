@@ -1,0 +1,114 @@
+# Data Queue - Prioritized Sources Not Yet Analyzed
+# This tracks data sources that need to be processed and incorporated into cover letter creation
+# Generated: 2025-01-21
+
+queue:
+  high_priority:
+    - id: "cover_letters_content_extraction"
+      source: "cover_letters"
+      description: "Extract company-specific achievements and language patterns from 100 cover letters"
+      status: "pending"
+      priority: 1
+      estimated_effort: "2-3 hours"
+      notes: "Need to extract specific achievements, company positioning, and language patterns"
+      
+    - id: "portfolio_work_analysis"
+      source: "portfolio_work"
+      description: "Analyze 36 portfolio files for case studies and project details"
+      status: "pending"
+      priority: 2
+      estimated_effort: "4-6 hours"
+      notes: "Manual review needed for PDFs and presentations"
+      
+    - id: "presentations_content_extraction"
+      source: "presentations"
+      description: "Extract content from 6 Google Slides presentations"
+      status: "blocked"
+      priority: 3
+      estimated_effort: "1-2 hours"
+      notes: "Blocked by Google Slides API - need to enable API"
+      
+    - id: "job_tracker_effectiveness_analysis"
+      source: "job_tracker"
+      description: "Analyze 68 job applications for effectiveness patterns"
+      status: "pending"
+      priority: 4
+      estimated_effort: "2-3 hours"
+      notes: "Map cover letters to job tracker results, analyze success patterns"
+
+  medium_priority:
+    - id: "star_stories_remaining"
+      source: "star_stories"
+      description: "Review remaining 17 STAR stories (not in top 5)"
+      status: "pending"
+      priority: 5
+      estimated_effort: "1-2 hours"
+      notes: "17 additional STAR stories available for review"
+      
+    - id: "external_profiles_linkedin"
+      source: "external_profiles"
+      description: "Extract content from LinkedIn profile"
+      status: "pending"
+      priority: 6
+      estimated_effort: "30 minutes"
+      notes: "LinkedIn profile URL available in config"
+
+  low_priority:
+    - id: "work_samples_review"
+      source: "work_samples"
+      description: "Review work_samples.yaml for additional content"
+      status: "pending"
+      priority: 7
+      estimated_effort: "30 minutes"
+      notes: "Currently empty, but structure exists"
+
+# Queue Statistics
+queue_stats:
+  total_items: 8
+  high_priority: 4
+  medium_priority: 2
+  low_priority: 2
+  pending: 7
+  blocked: 1
+  completed: 0
+  total_estimated_effort: "11-17 hours"
+
+# Processing Status
+processing_status:
+  last_analysis_run: "2025-01-21"
+  next_priority: "cover_letters_content_extraction"
+  current_focus: "STAR stories refinement"
+  blockers: ["Google Slides API not enabled"]
+
+# Data Source Inventory
+data_sources:
+  cover_letters:
+    total_files: 100
+    analyzed: 0
+    extracted_content: 0
+    status: "pending_extraction"
+    
+  portfolio_work:
+    total_files: 36
+    analyzed: 0
+    extracted_content: 0
+    status: "pending_manual_review"
+    
+  presentations:
+    total_files: 6
+    analyzed: 0
+    extracted_content: 0
+    status: "blocked_by_api"
+    
+  job_tracker:
+    total_entries: 68
+    analyzed: 0
+    effectiveness_patterns: 0
+    status: "pending_analysis"
+    
+  star_stories:
+    total_stories: 22
+    approved: 5
+    pending_review: 17
+    refined: 0
+    status: "in_progress" 

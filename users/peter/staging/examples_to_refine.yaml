@@ -1,0 +1,72 @@
+- id: aurora_platform_rebuild
+  company: Aurora Solar
+  role: Senior Product Manager
+  title: 'Aurora: platform rebuild'
+  situation: |
+    2 years platform rebuild; evolving team and competitive landscape; built out tablet solution for enterprise use case; siloed product experience.
+  action: |
+    Establish priorities with leadership: common experience between Sales Mode and Pro Mode. If we don't have Settings and Database this will bottleneck migration. Create and present plan to PMs: overview of product areas, explain why it matters, identify phases and scope for each and map dependencies. 1:1 sessions with each PM to align. Break down work with EM and assign to roadmap. Coordinate and load balance with other pods.
+  result: |
+    Design system. Quarter after quarter on time delivery and team health. Coordinated cross-pod delivery of dependencies.
+  tags: [platform, rebuild, leadership, cross-functional, delivery]
+  importance_score: 9
+- id: salesforce_mobile_first
+  company: Salesforce
+  role: Consultant
+  title: 'Salesforce: Mobile First Strategy'
+  situation: |
+    Salesforce has a responsive website with informational and marketing functions. Mobile users are ~3.5m per year. Yet the mobile experience was generally considered subpar. The team wanted to improve, but how to fix and where to start were unclear. Neither the UX nor Strategy teams had much mobile experience. They believed they could benefit from an outside perspective.
+  action: |
+    I worked cross-functionally with the Strategy, Creative and Leadership teams. First step was discovery and listening activities -- to learn and build relationships. I spent 2 weeks meeting people and hearing about their ideas, goals and pain points for mobile. Next step was to work through phases for design strategy. Within 2 months I completed the following activiites: heuristic review, review and synthesis of analytics data, competitive landscape analysis and a round up of relevant responsive design best practices. I operated independently, but not in a silo -- shared early concepts (and subsequent iterations) with stakeholders and cross functional team members for feedback. Then I spent 1 month on creative briefs, design explorations and prototypes. Finally, I spent 2 weeks boiling the work down to a single proposal: mobile first strategy for salesforce.com. I presented this proposal to the leadership team (VP and Director) -- half strategy, half playbook -- an implementation guide with detailed footnotes.
+  result: |
+    Mobile improvements became a “top 5” initiative for FY2019. Cross functional alignment on vision, opportunities and tactics. Increasing trend in mobile prospects was discovered, as well as new insights on mobile user behaviors and devices. My roadmap was adopted by Strategy and Leadership. Funding was committed to Analytics and Research activities for Q1. UX, content and design tracks slated for Q2-4.
+  tags: [mobile, strategy, consulting, cross-functional, ux]
+  importance_score: 9
+- id: aurora_refocus_team
+  company: Aurora Solar
+  role: Senior Product Manager
+  title: 'Aurora: refocus team mandate'
+  situation: |
+    Retro: why did we have lower throughput? Dragged into requests to support CS and Sales (credits, setup environments for customers and leads, one-off requests). Mandate to support other pods in conflict with delivery of priorities.
+  action: |
+    Reflect: one-time or a pattern? Discuss with team: what was their experience and how do they feel? Align with EM: strategy. Align with TechOps: would you please? Align with Eng + Product VPs: buy-in. Communicate with GTM teams.
+  result: |
+    Increase scope for TechOps and refocus work around KPIs relative to needs for infra and scaling. Wholly focus the team on Customer needs and Business goals. Transition plan for internal tools and needs of internal users. Pairing: we fix, but show a TechOps member how. Next time: they fix, we support. Good documentation for hand off.
+  tags: [team, mandate, leadership, strategy, refocus]
+  importance_score: 8
+- id: aurora_phased_rollout
+  company: Aurora Solar
+  role: Senior Product Manager
+  title: 'Aurora: phased roll out'
+  situation: |
+    Looking top line KPI: migrate 100% of users by EOY.
+  action: |
+    Coordinate product and GTM teams. Coordinate with CS and Sales. Identify groups of customers that could be a potential match (amplitude + data scientist). Outreach to confirm participants. Generate cross-pod product roadmap to establish phases of readiness.
+  result: |
+    Phased roll out. Feature flag strategy. Improved coordination and collaboration with GTM. Able to release to multiple targeted segments, gathering qual + quant data.
+  tags: [phased, rollout, cross-functional, gtm, migration]
+  importance_score: 8
+- id: samsung_design_process
+  company: Samsung
+  role: Design Lead
+  title: 'Samsung: Design Process Improvements'
+  situation: |
+    Team was reactive, design was tacked on at the end. Depended on agency for large efforts. Hierarchy in the org reflected in the team. Needed a design leader to improve methods and process.
+  action: |
+    Re-organize team: end to end product designers. Design Process: discovery, concepts, testing, prototypes. Collaboration - Design as a strategic partner: work with Business, Product and Engineering for roadmap and sprint planning.
+  result: |
+    Higher quality work done faster. New tools: InVision, Trello, User Testing.com, Principle. Better visibility and collaboration within the team and across the org, including better alignment to business objectives. Research became a regular part of design.
+  tags: [design, process, leadership, team, improvement]
+  importance_score: 8
+- id: samsung_chatbot_care
+  company: Samsung
+  role: Product Manager
+  title: 'Samsung: Chatbot for Customer Care'
+  situation: |
+    EVP wanted to develop a chatbot for customer care, to supplement text chat as a support channel.
+  action: |
+    Validate need: commissioned remote moderated focus groups to understand customer pain points and perceptions. Assemble cross functional team: PM, UX and Eng and align on vision. Define chatbot design process, start in parallel on BE and UX. Model chatbot and AEM content. Style guide, components and identity / use cases, process flow and script. Present proposal. Test prototypes and synthesize --> present findings.
+  result: |
+    Undefined to actionable in 2+ months. Validate need, features and interactions. Sidestep constraints around content creation. Define choose + converse modes for MVP.
+  tags: [chatbot, customer_care, product_manager, ux, cross-functional]
+  importance_score: 8 

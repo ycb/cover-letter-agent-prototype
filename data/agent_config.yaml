@@ -1,3 +1,4 @@
+current_user: peter
 case_studies:
   urls:
   - description: Scaling B2B platform from Series A to C

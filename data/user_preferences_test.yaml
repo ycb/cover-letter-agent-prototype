@@ -3,13 +3,30 @@ enhancement_guidelines:
   emphasize_outcomes: true
   maintain_professionalism: true
   max_sentence_length: 25
+  prohibit_passive_voice: true
   target_paragraph_length: 3
+enhancement_guidelines_legacy:
+  avoid_fluff: true
+  emphasize_outcomes: true
+  maintain_professionalism: true
 language_preferences:
+  paragraph_style: concise
+  sentence_length: short-medium
+  transition_style: smooth
+  voice_consistency: strict
+language_preferences_legacy:
   paragraph_style: concise
   sentence_length: varied
   transition_style: smooth
   voice_consistency: strict
 preservation_rules:
+  preserve_achievements: true
+  preserve_company_names: true
+  preserve_metrics: true
+  preserve_role_titles: true
+  preserve_structure: true
+  preserve_user_voice: true
+preservation_rules_legacy:
   preserve_achievements: true
   preserve_company_names: true
   preserve_metrics: true
@@ -23,5 +40,14 @@ tone_preferences:
   narrative_cohesion: high
   precision: high
   tighten_percent: 5
-  tone_style: executive
+  tone_style: executive_succinct
   verbosity: high
+tone_preferences_legacy:
+  authenticity: strict
+  formality: professional
+  metric_emphasis: high
+  narrative_cohesion: high
+  precision: high
+  tighten_percent: 15
+  tone_style: executive
+  verbosity: medium
