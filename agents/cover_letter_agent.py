@@ -1343,6 +1343,11 @@ class CoverLetterAgent:
             best_score = -1
             scores = []
             for blurb in blurb_list:
+                # --- BEGIN PATCH: Robust blurb validation ---
+                if not isinstance(blurb, dict) or "tags" not in blurb or "id" not in blurb or "text" not in blurb:
+                    logger.warning(f"Malformed blurb in '{blurb_type}': {blurb} (skipping)")
+                    continue
+                # --- END PATCH ---
                 score = self._calculate_blurb_score(blurb, job)
                 scores.append((blurb["id"], score))
                 if score > best_score:
@@ -2541,6 +2546,11 @@ class CoverLetterAgent:
             best_score = -1
             scores = []
             for blurb in blurb_list:
+                # --- BEGIN PATCH: Robust blurb validation ---
+                if not isinstance(blurb, dict) or "tags" not in blurb or "id" not in blurb or "text" not in blurb:
+                    logger.warning(f"Malformed blurb in '{blurb_type}': {blurb} (skipping)")
+                    continue
+                # --- END PATCH ---
                 score = self._calculate_blurb_score(blurb, job)
                 scores.append((blurb["id"], score))
                 if score > best_score:
@@ -3739,6 +3749,11 @@ class CoverLetterAgent:
             best_score = -1
             scores = []
             for blurb in blurb_list:
+                # --- BEGIN PATCH: Robust blurb validation ---
+                if not isinstance(blurb, dict) or "tags" not in blurb or "id" not in blurb or "text" not in blurb:
+                    logger.warning(f"Malformed blurb in '{blurb_type}': {blurb} (skipping)")
+                    continue
+                # --- END PATCH ---
                 score = self._calculate_blurb_score(blurb, job)
                 scores.append((blurb["id"], score))
                 if score > best_score:
@@ -4937,6 +4952,11 @@ class CoverLetterAgent:
             best_score = -1
             scores = []
             for blurb in blurb_list:
+                # --- BEGIN PATCH: Robust blurb validation ---
+                if not isinstance(blurb, dict) or "tags" not in blurb or "id" not in blurb or "text" not in blurb:
+                    logger.warning(f"Malformed blurb in '{blurb_type}': {blurb} (skipping)")
+                    continue
+                # --- END PATCH ---
                 score = self._calculate_blurb_score(blurb, job)
                 scores.append((blurb["id"], score))
                 if score > best_score:
