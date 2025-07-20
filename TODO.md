@@ -1,3 +1,59 @@
+# Phase 8: Gap Detection & Gap-Filling Completion Plan
+
+## 🎯 Goal
+Deliver a fully interactive, intelligent gap detection and gap-filling workflow, with dynamic templates, force-ranked/confidence-scored story suggestions, rationale surfacing, and user feedback integration, all accessible via the CLI.
+
+---
+
+### **Phase 8A: Core Gap Detection Logic**
+- [ ] **Restore/Create `gap_detection.py`**: Implement logic to compare job tags vs user tags and detect missing skills, industries, roles, and company stages
+- [ ] **Restore/Create `tag_schema.yaml`**: Unified tag taxonomy for gap detection
+- [ ] **Unit tests for gap detection**: Validate detection of all gap types
+- **Success Criteria:** Gaps are accurately detected and categorized by priority
+
+### **Phase 8B: Dynamic Gap Templates**
+- [ ] **Design YAML schema for gap templates**: Templates for each gap type (skill, industry, role, stage)
+- [ ] **Implement template loader**: Load and inject templates into gap-filling workflow
+- [ ] **Tests for template selection**: Ensure correct template is shown for each gap
+- **Success Criteria:** User sees relevant, structured template for each detected gap
+
+### **Phase 8C: Interactive Gap-Filling Dialogue**
+- [ ] **Implement `gap_fill_dialogue()`**: Interactive CLI workflow for user to fill a gap, using loaded template
+- [ ] **Integrate with CLI**: Trigger gap-filling when user selects 'add_new'
+- [ ] **Tests for dialogue flow**: Simulate user interaction and validate story capture
+- **Success Criteria:** User can fill a gap interactively via CLI, guided by template
+
+### **Phase 8D: Force-Ranked, Confidence-Scored Story Suggestions**
+- [ ] **Implement story suggestion engine**: Analyze work history and samples to suggest stories for a gap
+- [ ] **Add confidence scoring**: Each suggestion includes a confidence score
+- [ ] **Force-rank suggestions**: Present ranked list to user
+- [ ] **Tests for ranking and scoring**: Validate ranking and scoring logic
+- **Success Criteria:** User sees a ranked list of suggested stories with confidence scores
+
+### **Phase 8E: Rationale & Adjacency Surfacing**
+- [ ] **Add rationale and match_type fields**: Each suggestion includes rationale and match type (direct/adjacent)
+- [ ] **Display rationale in CLI**: Show why each story is suggested
+- [ ] **Tests for rationale surfacing**: Ensure rationale is present and accurate
+- **Success Criteria:** User sees clear rationale and match type for each suggestion
+
+### **Phase 8F: User Feedback on Gap-Filling**
+- [ ] **Capture structured feedback**: Record user edits, acceptance, and comments on gap-filling stories
+- [ ] **Integrate feedback into future suggestions**: Use feedback to improve LLM/story ranking
+- [ ] **Tests for feedback capture**: Validate feedback is stored and used
+- **Success Criteria:** User feedback is captured and influences future suggestions
+
+### **Phase 8G: Role-Level Mapping to Gap Fill Strategy**
+- [ ] **Tune schema to connect PM level to gap fill strategy**: Map inferred PM level to recommended gap fill approach
+- [ ] **Tests for role-level mapping**: Ensure correct strategy is recommended for each level
+- **Success Criteria:** Gap fill strategy adapts to user's PM level
+
+### **Phase 8H: Full CLI Integration & End-to-End Tests**
+- [ ] **Integrate all features into HIL CLI**: Seamless workflow from gap detection to story suggestion and feedback
+- [ ] **Comprehensive end-to-end tests**: Validate the complete user journey
+- **Success Criteria:** All features work together in the CLI; tests pass
+
+---
+
 # TODO
 
 ## ✅ COMPLETED: Founding PM Logic Fix
