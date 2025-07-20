@@ -40,6 +40,7 @@ class HLIApproval:
     llm_rank: Optional[int] = None  # LLM's ranking position
     user_rank: Optional[int] = None  # User's ranking position
     discrepancy_type: Optional[str] = None  # "user_higher", "llm_higher", "aligned"
+    discrepancy_reasoning: Optional[str] = None  # User's explanation for different rating
     
     def __post_init__(self):
         if self.timestamp is None:
@@ -122,6 +123,10 @@ class HLIApprovalCLI:
         llm_rankings = {}
         user_rankings = {}
         
+        # Track for feedback prompting
+        rejected_ai_suggestions = set()
+        approved_alternatives = set()
+        
         # Build LLM rankings from all_ranked_candidates
         if all_ranked_candidates:
             for i, candidate in enumerate(all_ranked_candidates):
@@ -132,6 +137,7 @@ class HLIApprovalCLI:
         current_candidates = selected_case_studies.copy()
         candidate_index = 0
         user_rank_counter = 1
+        rejection_count = 0
         
         while candidate_index < len(current_candidates):
             case_study = current_candidates[candidate_index]
@@ -142,7 +148,9 @@ class HLIApprovalCLI:
                 candidate_index += 1
                 continue
             
+            # Show progress
             print(f"\n📋 Case Study {len(feedback_list) + 1}")
+            print(f"Progress: {len(approved_case_studies)}/3 case studies added")
             print(f"Name: {case_study.get('name', case_study.get('id', 'Unknown'))}")
             print(f"Tags: {', '.join(case_study.get('tags', []))}")
             
@@ -162,12 +170,21 @@ class HLIApprovalCLI:
             # Get user approval
             approved = self._get_user_approval()
             user_score = self._get_user_score()
-            # comments = self._get_user_comments()  # Commented out for MVP - too much complexity
             comments = None  # Set to None for MVP
             
             # Track user ranking
             user_rankings[case_study_id] = user_rank_counter
             user_rank_counter += 1
+            
+            # Track for feedback prompting
+            if not approved:
+                # This was an AI suggestion that was rejected
+                if case_study_id in llm_rankings and llm_rankings[case_study_id] <= 3:
+                    rejected_ai_suggestions.add(case_study_id)
+            else:
+                # This was approved - check if it was an alternative
+                if case_study_id not in llm_rankings or llm_rankings[case_study_id] > 3:
+                    approved_alternatives.add(case_study_id)
             
             # Create feedback object with enhanced tracking
             feedback = HLIApproval(
@@ -185,16 +202,34 @@ class HLIApprovalCLI:
             feedback_list.append(feedback)
             reviewed_case_studies.add(case_study_id)
             
-            # Show ranking discrepancy insights
-            if feedback.ranking_discrepancy is not None:
-                self._show_ranking_insight(feedback)
-            
             if approved:
                 approved_case_studies.append(case_study)
                 print(f"✅ Approved case study: {case_study.get('name', case_study.get('id'))}")
+                
+                # Prompt for feedback if user rejected AI suggestion and approved alternative
+                if len(rejected_ai_suggestions) > 0 and case_study_id in approved_alternatives:
+                    feedback_reasoning = self._get_discrepancy_reasoning(feedback)
+                    feedback.discrepancy_reasoning = feedback_reasoning
+                
                 candidate_index += 1
+                
+                # Check if we have 3 approved case studies
+                if len(approved_case_studies) >= 3:
+                    print(f"\n🎉 All 3 case studies selected!")
+                    break
+                    
             else:
                 print(f"❌ Rejected case study: {case_study.get('name', case_study.get('id'))}")
+                rejection_count += 1
+                
+                # Check if we should ask about adding new vs continuing search
+                if rejection_count % 3 == 0:
+                    choice = self._ask_search_or_add_new()
+                    if choice == "add_new":
+                        print(f"\n📝 Add New Case Study")
+                        print(f"   (This will be implemented in Gap Detection phase)")
+                        # For now, just continue with search
+                        pass
                 
                 # If we have more ranked candidates, show the next best one
                 if all_ranked_candidates:
@@ -369,6 +404,27 @@ class HLIApprovalCLI:
             print(f"   This suggests the AI may be overvaluing certain aspects of this case study")
         else:
             print(f"✅ Alignment: Your rating closely matches the AI's assessment")
+    
+    def _ask_search_or_add_new(self) -> str:
+        """Ask user if they want to keep searching or add a new case study."""
+        while True:
+            print(f"\n🤔 Keep searching library or add new case study?")
+            response = input("(search/add_new): ").strip().lower()
+            if response in ['search', 's']:
+                return "search"
+            elif response in ['add_new', 'add', 'new', 'a']:
+                return "add_new"
+            else:
+                print("Please enter 'search' or 'add_new'")
+    
+    def _get_discrepancy_reasoning(self, feedback: HLIApproval) -> Optional[str]:
+        """Get user's reasoning for ranking discrepancy - only when rejecting AI suggestion and approving alternative."""
+        print(f"\n🤔 Why is this story the best fit?")
+        print(f"   (You rejected our suggestion but approved this alternative)")
+        print(f"   (This helps improve the system's understanding of what matters to you)")
+        
+        reasoning = input("Your reasoning (optional, press Enter to skip): ").strip()
+        return reasoning if reasoning else None
 
     def _generate_session_insights(self, feedback_list: List[HLIApproval], job_id: str) -> None:
         """Generate insights from the entire session."""
