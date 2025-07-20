@@ -224,40 +224,63 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
 ### **🔧 Phase 7: Gap Detection & Gap-Filling**
 **Goal**: Identify missing case studies and suggest gap-filling strategies
 
-**Tasks:**
-- [ ] **Gap Detection Logic**:
+**Phase 7A: Core Gap Detection (Week 1)**
+- [ ] **Tag Schema Alignment**: Create unified tag taxonomy in `config/tag_schema.yaml`
+- [ ] **Basic Gap Detection**: 
   ```python
-  def detect_gaps(job_requirements, available_case_studies):
-      # Identify missing skills, industries, or experiences
-      # Score gaps by importance and frequency
-      # Prioritize gaps for filling
-      return gap_analysis, priority_gaps
+  def detect_gaps(jd_tags: List[str], user_tags: List[str]) -> Dict:
+      """Simple tag-based gap detection"""
   ```
-- [ ] **Gap Analysis**:
-  - **Skill gaps**: Missing technical or soft skills
-  - **Industry gaps**: Missing industry experience
-  - **Level gaps**: Missing seniority/leadership experience
-  - **Company stage gaps**: Missing startup/enterprise experience
-- [ ] **Gap-Filling Strategies**:
+- [ ] **Simple Content Matching**:
   ```python
-  def suggest_gap_filling(gaps, user_profile):
-      # Suggest new case studies to create
-      # Recommend experiences to highlight
-      # Provide templates for gap-filling
-      return gap_filling_plan
+  def match_existing_content(gap: str, case_studies: List[Dict]) -> List[Dict]:
+      """Find direct or adjacent matches"""
   ```
-- [ ] **Gap Prioritization**:
-  - High priority: Critical skills for job requirements
-  - Medium priority: Nice-to-have experiences
-  - Low priority: Optional or rare requirements
-- [ ] **Gap Templates**:
-  - Case study templates for common gaps
-  - Experience highlighting strategies
-  - Story development guidance
+- [ ] **Gap Types**: Skills, Industries, Roles, Company Stage
+- [ ] **Priority Scoring**: High, Medium, Low priority gaps
 
-**Success Criteria:**
-- Accurately identifies missing requirements
-- Prioritizes gaps by importance
-- Provides actionable gap-filling strategies
-- Integrates with case study creation workflow
-- Improves overall case study coverage 
+**Phase 7B: HIL Integration (Week 2)**
+- [ ] **Extend HIL CLI**: Integrate gap detection into existing approval workflow
+- [ ] **Add "Gap Fill" Option**: Trigger when user chooses "add new" after 3 rejections
+- [ ] **Gap Fill Workflow**:
+  ```python
+  def _handle_add_new_option(self, jd_tags: List[str]) -> Dict:
+      """Trigger gap detection when user chooses 'add new'"""
+  ```
+- [ ] **User Choice Integration**: Direct match vs adjacent match vs new story creation
+
+**Phase 7C: Story Generation & Storage (Week 3)**
+- [ ] **LLM-Assisted Story Creation**:
+  ```python
+  def generate_gap_story(gap: str, user_context: str) -> str:
+      """LLM-assisted story creation"""
+  ```
+- [ ] **Extend Variant Storage**: Save new stories with gap-specific metadata
+- [ ] **Story Templates**: Basic prompts for common gap scenarios
+- [ ] **Version Control**: Track story evolution and improvements
+
+**MVP Success Criteria:**
+- ✅ **Gap Detection**: Tag comparison accuracy ≥90%
+- ✅ **Content Matching**: User approval of top match ≥75%
+- ✅ **Story Creation**: LLM + human collaboration working
+- ✅ **Storage**: Basic variant storage with gap metadata
+- ✅ **Integration**: Seamless HIL workflow integration
+
+**Technical Implementation:**
+- **File Structure**:
+  - `agents/gap_detection.py`: Core gap detection logic
+  - `agents/story_generation.py`: LLM-assisted story creation
+  - `config/tag_schema.yaml`: Unified tag taxonomy
+  - `test_phase7_gap_detection.py`: Comprehensive testing
+- **Integration Points**:
+  - Extend `agents/hil_approval_cli.py` with gap filling
+  - Use existing `CaseStudyVariant` model for storage
+  - Leverage existing LLM integration patterns
+  - Build on current tag-based matching system
+
+**Results:**
+- **Gap Detection**: Identifies missing skills, industries, roles, and company stages
+- **Content Matching**: Finds direct or adjacent existing content
+- **Story Creation**: LLM-assisted creation of new case studies
+- **Storage**: All new stories tagged and versioned for reuse
+- **User Experience**: Seamless integration with existing HIL workflow 
