@@ -34,7 +34,7 @@ class HLIApproval:
     comments: Optional[str] = None
     llm_score: Optional[float] = None
     llm_reason: Optional[str] = None
-    timestamp: str = None
+    timestamp: Optional[str] = None
     
     def __post_init__(self):
         if self.timestamp is None:
@@ -48,7 +48,7 @@ class CaseStudyVariant:
     summary: str
     tags: List[str]
     approved_for: List[str]
-    created_at: str = None
+    created_at: Optional[str] = None
     
     def __post_init__(self):
         if self.created_at is None:
@@ -100,9 +100,10 @@ class HLIApprovalCLI:
             print(f"Name: {case_study.get('name', case_study.get('id', 'Unknown'))}")
             print(f"Tags: {', '.join(case_study.get('tags', []))}")
             
-            # Show complete case study content
-            print(f"\n📄 Full Case Study:")
-            print(f"{case_study.get('description', 'No description available')}")
+            # Show complete case study content (the actual paragraph text)
+            print(f"\n📄 Full Case Study Paragraph:")
+            case_study_text = case_study.get('text', case_study.get('description', 'No case study content available'))
+            print(f"{case_study_text}")
             
             # Show LLM score if available
             if 'llm_score' in case_study:

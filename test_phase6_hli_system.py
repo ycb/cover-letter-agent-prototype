@@ -29,25 +29,25 @@ def test_phase6_hli_system():
     selector = HybridCaseStudySelector()
     hli = HLIApprovalCLI(user_profile="test_user")
     
-    # Test case studies
+    # Test case studies with real data from blurbs.yaml
     test_case_studies = [
         {
             'id': 'enact',
             'name': 'Enact 0 to 1 Case Study',
             'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
-            'description': 'Led cross-functional team from 0-1 to improve home energy management'
+            'text': 'At Enact Systems, I led a cross-functional team from 0–1 to improve home energy management. As part of the Series A management team, I owned P&L for the consumer line of business and defined product strategy based on customer insights and financial modeling. I built a unified roadmap for 2 pods and 3 products (web, mobile, and white-label), hired and coached the team, and drove consistent quarterly execution. These efforts delivered +210% MAUs, +876% event growth, +853% time-in-app, and +169% revenue growth.'
         },
         {
             'id': 'aurora',
             'name': 'Aurora Solar Growth Case Study',
             'tags': ['growth', 'B2B', 'clean_energy', 'scaling'],
-            'description': 'Helped scale company from Series A to Series C, leading platform rebuild'
+            'text': 'At Aurora Solar, I was a founding PM and helped scale the company from Series A to Series C. I led a platform rebuild that transformed a solar design tool into a full sales engine—broadening adoption from designers to sales teams and supporting a shift from SMB to enterprise. I introduced beta testing, behavioral analytics, and PLG onboarding to accelerate launches. I also aligned marketing, support, and engineering through shared prioritization, integrated support workflows, and the v1 design system. These efforts helped Aurora reach 90% adoption among top U.S. EPCs and achieve a $4B valuation.'
         },
         {
             'id': 'meta',
             'name': 'Meta Explainable AI Case Study',
             'tags': ['AI', 'ML', 'trust', 'internal_tools', 'explainable'],
-            'description': 'Led cross-functional ML team to scale global recruiting tools'
+            'text': 'At Meta, I led a cross-functional ML team to scale global recruiting tools. High-precision candidate recommendations had low adoption, so I conducted discovery to identify trust and UX barriers. I introduced explainable AI and a co-pilot UX to improve transparency and control, and rolled out these changes in phases. The result: a 130% increase in claims within 30 days and a 10x lift in ML usage by year\'s end.'
         }
     ]
     
