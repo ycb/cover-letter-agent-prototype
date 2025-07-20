@@ -250,14 +250,18 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
 - [ ] **User Choice Integration**: Direct match vs adjacent match vs new story creation
 
 **Phase 7C: Story Generation & Storage (Week 3)**
-- [ ] **LLM-Assisted Story Creation**:
-  ```python
-  def generate_gap_story(gap: str, user_context: str) -> str:
-      """LLM-assisted story creation"""
-  ```
+- [ ] **Template Reference System**: Show story templates as reference for manual entry
+- [ ] **Manual Story Entry**: Allow users to write custom stories with template guidance
+- [ ] **Web Interface Placeholder**: Prepare for future web-based story editing
 - [ ] **Extend Variant Storage**: Save new stories with gap-specific metadata
 - [ ] **Story Templates**: Basic prompts for common gap scenarios
 - [ ] **Version Control**: Track story evolution and improvements
+
+**Updated Approach:**
+- **Template Reference**: Show structured templates as guidance
+- **Manual Entry**: Users write custom stories with template help
+- **Web Interface**: Future enhancement for rich editing experience
+- **Storage**: Save completed stories with gap metadata
 
 **MVP Success Criteria:**
 - ✅ **Gap Detection**: Tag comparison accuracy ≥90%

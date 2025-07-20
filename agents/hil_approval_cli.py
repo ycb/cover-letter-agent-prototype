@@ -593,7 +593,7 @@ class HILApprovalCLI:
     
     def _gap_fill_workflow(self, gap_tag: str, user_context: str = "") -> Dict:
         """
-        Simple gap filling workflow with LLM assistance.
+        Simple gap filling workflow with template reference and manual entry.
         
         Args:
             gap_tag: The gap to fill
@@ -605,49 +605,47 @@ class HILApprovalCLI:
         print(f"\n📝 Gap Filling: {gap_tag}")
         print(f"Creating a new case study to address this gap...")
         
-        # Simple prompt for story generation
-        prompt = f"""
-        Create a compelling case study that demonstrates experience with {gap_tag}.
-        
-        Context: {user_context}
-        
-        Requirements:
-        - Focus on {gap_tag} experience
-        - Include specific metrics and outcomes
-        - Show leadership and impact
-        - Keep it concise but impactful
-        
-        Format the case study as a professional paragraph suitable for a cover letter.
+        # Show template as reference
+        print(f"\n📄 Story Template (for reference):")
+        template = f"""
+At [Company], I led [specific {gap_tag} initiative] that [specific challenge/opportunity]. 
+I [specific actions taken] and [specific outcomes achieved]. 
+This experience demonstrates my ability to [key skill/competency] and [business impact].
         """
+        print(f"{template}")
         
-        # For MVP, we'll use a simple template approach
-        # In Phase 7C, this will be enhanced with LLM integration
-        story_template = f"""
-        At [Company], I led [specific {gap_tag} initiative] that [specific challenge/opportunity]. 
-        I [specific actions taken] and [specific outcomes achieved]. 
-        This experience demonstrates my ability to [key skill/competency] and [business impact].
-        """
+        print(f"\n💡 Template Guidelines:")
+        print(f"  - Replace [Company] with actual company name")
+        print(f"  - Replace [specific {gap_tag} initiative] with your actual project")
+        print(f"  - Include specific metrics and outcomes")
+        print(f"  - Show leadership and impact")
+        print(f"  - Keep it concise but impactful")
         
-        print(f"📄 Generated Story Template:")
-        print(f"{story_template}")
+        # Prompt for manual entry
+        print(f"\n✏️  Manual Story Entry:")
+        print(f"   (Enter your custom story below, or press Enter to skip)")
+        print(f"   (Future: This will be enhanced with a web interface for editing)")
         
-        # Ask user for input
-        print(f"\n🤔 Would you like to customize this story?")
-        print(f"   (This will be enhanced with LLM assistance in Phase 7C)")
-        
-        custom_story = input("Your custom story (or press Enter to use template): ").strip()
+        custom_story = input("Your custom story: ").strip()
         
         if custom_story:
             final_story = custom_story
+            print(f"\n✅ Story saved!")
+            print(f"   Gap: {gap_tag}")
+            print(f"   Story: {final_story[:100]}...")
         else:
-            final_story = story_template
+            print(f"\n⏭️  Skipping story creation")
+            print(f"   (You can create this story later)")
+            final_story = ""
         
         return {
             'gap_tag': gap_tag,
             'story': final_story,
             'tags': [gap_tag],
             'source': 'gap_fill',
-            'strategy': 'new_story'
+            'strategy': 'manual_entry',
+            'template_used': True,
+            'web_interface_placeholder': True
         }
 
 
