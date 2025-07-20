@@ -647,7 +647,8 @@ class CoverLetterAgent:
                         initial_score += 3
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
-                    tag_matches.add(tag.lower())
+                    else:
+                        initial_score += 1
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -716,10 +717,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -1947,7 +1948,8 @@ class CoverLetterAgent:
                         initial_score += 3
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
-                    tag_matches.add(tag.lower())
+                    else:
+                        initial_score += 1
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -2016,10 +2018,12 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # FIXED: This penalty was incorrectly applied during scoring instead of selection
+            # The penalty logic is now handled in the selection phase below
+            # # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+            #     # final_score -= 3
+            #     # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -3226,7 +3230,8 @@ class CoverLetterAgent:
                         initial_score += 3
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
-                    tag_matches.add(tag.lower())
+                    else:
+                        initial_score += 1
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -3295,10 +3300,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -4505,7 +4510,8 @@ class CoverLetterAgent:
                         initial_score += 3
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
-                    tag_matches.add(tag.lower())
+                    else:
+                        initial_score += 1
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -4574,10 +4580,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
