@@ -154,6 +154,8 @@ class PMInferenceResult(TypedDict, total=False):
     competencies: Dict[str, str]  # e.g., {"Product Execution": "strong"}
     leverage_ratio: str
     notes: Optional[str]
+    confidence: Optional[float]
+    gaps: Optional[List[str]]
 
 class WorkSample(TypedDict, total=False):
     title: str

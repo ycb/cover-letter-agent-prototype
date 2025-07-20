@@ -141,21 +141,24 @@ PREFERENCE INSTRUCTIONS:
     preservation_instructions = """
 CRITICAL PRESERVATION RULES:
 - NEVER change specific numbers, percentages, or quantified achievements
-- NEVER alter company names, role titles, or strategic claims
+- NEVER alter company names in greetings (e.g., "Dear Duke Energy team," must stay exactly as written)
+- NEVER modify role titles or strategic claims
 - NEVER add unverified experiences or accomplishments
 - NEVER paraphrase approved blurbs or case studies
 - Preserve paragraph structure and voice throughout
 - Maintain all metrics and performance data exactly as written
+- Company names in greetings are SACRED and cannot be modified under any circumstances
 """
 
     enhancement_instructions = """
 ENHANCEMENT GUIDELINES:
-- Tighten language by removing redundancy and shortening phrases
+- Tighten language by removing redundancy and shortening phrases (EXCEPT company names in greetings)
 - Improve flow and transitions between paragraphs
 - Enhance clarity without changing meaning
 - Strengthen impact through better word choice
 - Ensure alignment with job description requirements
 - Maintain professional tone appropriate for the role
+- NEVER shorten or modify company names in greetings (e.g., "Duke Energy" must remain "Duke Energy")
 """
 
     # Configuration parameters

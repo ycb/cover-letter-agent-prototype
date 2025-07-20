@@ -86,6 +86,7 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - **[Developer Guide](docs/DEVELOPER_GUIDE.md)**: Architecture and contribution guide
 - **[API Reference](docs/API_REFERENCE.md)**: Complete API documentation
 - **[Testing Guide](TESTING.md)**: How to run tests and contribute
+- **[Enhanced LLM Parsing Tests](test_enhanced_llm_parsing.py)**: People management analysis test suite
 - **[LLM Integration Results](LLM_INTEGRATION_TEST_RESULTS.md)**: AI enhancement validation
 - **[Performance Demo](scripts/performance_demo.py)**: Performance optimization demonstration
 
@@ -125,6 +126,7 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 
 ### 🧪 **Comprehensive Testing**
 - Full test suite with pytest
+- **Enhanced LLM parsing tests** with 9 test cases covering people management analysis
 - Type checking with MyPy
 - Code quality with flake8, black, and isort
 - CI/CD integration with GitHub Actions
@@ -263,6 +265,73 @@ job_classification:
 ## 🤖 AI-Powered Enhancement
 
 The agent includes intelligent LLM-powered enhancement that improves cover letter quality while preserving factual accuracy.
+
+### Enhanced LLM Parsing with People Management Analysis
+
+The system now includes **intelligent job description parsing** that extracts detailed people management information and cross-references it with the PM levels framework for accurate leadership blurb selection.
+
+#### Key Features
+
+- **People Management Analysis**: Extracts direct reports, mentorship scope, and leadership type
+- **PM Levels Integration**: Cross-references with framework for validation
+- **Intelligent Blurb Selection**: Uses leadership type to choose correct blurb (people-manager vs XFN)
+- **Comprehensive Testing**: 9 test cases covering all scenarios and edge cases
+
+#### Leadership Type Classification
+
+The system intelligently classifies roles based on LLM parsing:
+
+- **`people_management`**: Has direct reports and people leadership responsibilities → Uses people-manager blurb
+- **`mentorship_only`**: Has mentorship but no direct reports → Uses XFN leadership blurb  
+- **`ic_leadership`**: Individual contributor with cross-functional leadership → Uses XFN leadership blurb
+- **`no_leadership`**: Pure IC role → Uses XFN leadership blurb
+
+#### PM Levels Framework Integration
+
+Cross-references parsed data with PM levels expectations:
+
+- **L2 (Product Manager)**: IC → XFN leadership blurb
+- **L3 (Senior PM)**: IC with mentorship → XFN leadership blurb
+- **L4 (Staff/Principal)**: IC with mentorship → XFN leadership blurb
+- **L5+ (Group PM)**: People management → People-manager blurb
+
+#### Example Output
+
+```json
+{
+  "people_management": {
+    "has_direct_reports": false,
+    "direct_reports": [],
+    "has_mentorship": true,
+    "mentorship_scope": ["Junior PMs", "Product Analysts"],
+    "leadership_type": "mentorship_only"
+  },
+  "leadership_type_validation": {
+    "llm_assessment": "mentorship_only",
+    "framework_expectation": "mentorship_only",
+    "confidence": "high"
+  }
+}
+```
+
+#### Testing
+
+The enhanced parsing includes comprehensive test coverage:
+
+```bash
+# Run all enhanced LLM parsing tests
+python -m pytest test_enhanced_llm_parsing.py -v
+
+# Test coverage includes:
+# - Field structure validation
+# - Leadership type classification
+# - PM levels cross-reference
+# - Fallback parsing behavior
+# - Edge case handling
+# - End-to-end integration
+```
+
+**All 9 tests passing** - validates field structure, classification logic, PM levels cross-reference, edge cases, and end-to-end integration.
 
 ### Configuration
 
@@ -474,6 +543,12 @@ make coverage
 
 # Run specific test file
 python -m pytest test_config_management.py -v
+
+# Run enhanced LLM parsing tests
+python -m pytest test_enhanced_llm_parsing.py -v
+
+# Run all tests with verbose output
+python -m pytest -v
 ```
 
 ### Code Quality

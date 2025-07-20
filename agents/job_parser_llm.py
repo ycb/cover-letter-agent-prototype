@@ -91,6 +91,19 @@ Extract and structure the following information:
 7. Company Context: Extract company size, stage, industry, business model
 8. Job Context: Extract team size, reporting structure, key stakeholders
 
+**CRITICAL: People Management Analysis**
+9. Direct Reports: Does this role have direct reports? (Yes/No)
+   - If Yes: List who reports to this role (e.g., "Product Managers", "Product Analysts", "Designers")
+   - If No: Leave empty
+10. Mentorship Scope: Does this role have mentorship responsibilities? (Yes/No)
+    - If Yes: List who this role mentors (e.g., "Junior PMs", "Product Analysts", "Cross-functional teams")
+    - If No: Leave empty
+11. Leadership Type: Based on the above, classify as:
+    - "people_management": Has direct reports and people leadership responsibilities
+    - "mentorship_only": Has mentorship but no direct reports
+    - "ic_leadership": Individual contributor with cross-functional leadership
+    - "no_leadership": Pure IC role
+
 Disregard any information that is irrelevant such as:
 - Content copied from source pages
 - Content overlaid by third-party job application tools
@@ -126,6 +139,13 @@ Respond in JSON format:
         "reporting_to": "Director of Product",
         "key_stakeholders": ["Engineering", "Design", "Marketing"]
     }},
+    "people_management": {{
+        "has_direct_reports": false,
+        "direct_reports": [],
+        "has_mentorship": true,
+        "mentorship_scope": ["Junior PMs", "Product Analysts"],
+        "leadership_type": "mentorship_only"
+    }},
     "confidence": 0.85,
     "notes": "Strong signals for L3 growth PM role with emphasis on data-driven decision making"
 }}
@@ -146,6 +166,30 @@ Respond in JSON format:
         if result.get('inferred_level') not in valid_levels:
             result['inferred_level'] = 'L3'  # Default to L3
         
+        # Ensure people_management field exists
+        if 'people_management' not in result:
+            result['people_management'] = {
+                'has_direct_reports': False,
+                'direct_reports': [],
+                'has_mentorship': False,
+                'mentorship_scope': [],
+                'leadership_type': 'ic_leadership'
+            }
+        
+        # Cross-reference with PM levels framework for leadership type validation
+        level = result.get('inferred_level', 'L3')
+        leadership_type = result['people_management'].get('leadership_type', 'ic_leadership')
+        
+        # Validate leadership type against PM level expectations
+        expected_leadership = self._get_expected_leadership_for_level(level)
+        if leadership_type != expected_leadership:
+            # Log the discrepancy but keep the LLM's assessment
+            result['leadership_type_validation'] = {
+                'llm_assessment': leadership_type,
+                'framework_expectation': expected_leadership,
+                'confidence': 'medium' if leadership_type in ['mentorship_only', 'ic_leadership'] else 'low'
+            }
+        
         # Get prioritized skills for this level/role
         level = result.get('inferred_level', 'L3')
         role_type = result.get('inferred_role_type', 'generalist')
@@ -160,6 +204,16 @@ Respond in JSON format:
             result['level_competencies'] = [comp['name'] for comp in level_data.get('competencies', [])]
         
         return result
+    
+    def _get_expected_leadership_for_level(self, level: str) -> str:
+        """Get expected leadership type based on PM level framework."""
+        level_expectations = {
+            'L2': 'ic_leadership',  # Product Manager - IC with cross-functional leadership
+            'L3': 'mentorship_only',  # Senior PM - IC with mentorship responsibilities
+            'L4': 'mentorship_only',  # Staff/Principal PM - IC with mentorship
+            'L5': 'people_management'  # Group PM - People management
+        }
+        return level_expectations.get(level, 'ic_leadership')
     
     def _fallback_parsing(self, job_description: str) -> Dict[str, Any]:
         """Fallback parsing when LLM fails."""
@@ -204,6 +258,13 @@ Respond in JSON format:
             'required_competencies': {'execution': 'required', 'collaboration': 'required'},
             'company_info': {'size': 'Unknown', 'stage': 'Unknown', 'industry': 'Unknown'},
             'job_context': {'team_size': 'Unknown', 'reporting_to': 'Unknown'},
+            'people_management': {
+                'has_direct_reports': False,
+                'direct_reports': [],
+                'has_mentorship': True,
+                'mentorship_scope': ['Product Analysts', 'Cross-functional teams'],
+                'leadership_type': 'mentorship_only'
+            },
             'prioritized_skills': ['product_strategy', 'xfn_leadership', 'execution_at_scale'],
             'confidence': 0.3,
             'notes': 'Fallback parsing used due to LLM failure'
