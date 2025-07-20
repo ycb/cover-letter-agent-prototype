@@ -7,7 +7,7 @@ based on job description requirements vs user's available case studies.
 
 import yaml
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass
 
 
@@ -27,10 +27,18 @@ class ContentMatch:
     """Represents a potential match for filling a gap."""
     case_study_id: str
     case_study_name: str
-    match_type: str  # direct, adjacent, partial
+    match_type: str  # direct, adjacent, partial, derived
     confidence: float  # 0.0 to 1.0
     rationale: str
     relevant_tags: List[str]
+    adjacency_explanation: str = ""  # Detailed explanation of adjacency
+    coverage_strength: str = ""  # strong, moderate, weak
+    relationship_type: str = ""  # direct, indirect, pattern-based
+    metadata: Optional[Dict[str, Any]] = None
+    
+    def __post_init__(self):
+        if self.metadata is None:
+            self.metadata = {}
 
 
 class GapDetector:
@@ -171,7 +179,7 @@ class GapDetector:
             case_studies: Available case studies
             
         Returns:
-            Ranked list of potential matches
+            Ranked list of potential matches with detailed rationale
         """
         matches = []
         
@@ -185,8 +193,16 @@ class GapDetector:
                     case_study_name=case_study.get('name', 'Unknown'),
                     match_type='direct',
                     confidence=1.0,
-                    rationale=f"Direct match for {gap.tag}",
-                    relevant_tags=[gap.tag]
+                    rationale=f"Perfect match: This case study directly addresses {gap.tag}",
+                    relevant_tags=[gap.tag],
+                    adjacency_explanation="Direct tag match - no adjacency needed",
+                    coverage_strength="strong",
+                    relationship_type="direct",
+                    metadata={
+                        'exact_match': True,
+                        'gap_tag': gap.tag,
+                        'case_study_tags': case_study_tags
+                    }
                 )
                 matches.append(match)
                 continue
@@ -197,13 +213,42 @@ class GapDetector:
                 # Calculate confidence based on number and relevance of adjacent tags
                 confidence = min(len(adjacent_tags) * 0.3, 0.9)
                 
+                # Determine coverage strength
+                coverage_strength = self._determine_coverage_strength(adjacent_tags, gap.tag)
+                
+                # Generate detailed adjacency explanation
+                adjacency_explanation = self._generate_adjacency_explanation(
+                    gap.tag, adjacent_tags, case_study_tags
+                )
+                
+                # Determine relationship type
+                relationship_type = self._determine_relationship_type(gap.tag, adjacent_tags)
+                
+                # Generate detailed rationale
+                rationale = self._generate_detailed_rationale(
+                    gap.tag, adjacent_tags, case_study_tags, confidence
+                )
+                
                 match = ContentMatch(
                     case_study_id=case_study.get('id', 'unknown'),
                     case_study_name=case_study.get('name', 'Unknown'),
                     match_type='adjacent',
                     confidence=confidence,
-                    rationale=f"Adjacent match: {', '.join(adjacent_tags)}",
-                    relevant_tags=adjacent_tags
+                    rationale=rationale,
+                    relevant_tags=adjacent_tags,
+                    adjacency_explanation=adjacency_explanation,
+                    coverage_strength=coverage_strength,
+                    relationship_type=relationship_type,
+                    metadata={
+                        'gap_tag': gap.tag,
+                        'adjacent_tags': adjacent_tags,
+                        'case_study_tags': case_study_tags,
+                        'confidence_factors': {
+                            'adjacent_tag_count': len(adjacent_tags),
+                            'coverage_strength': coverage_strength,
+                            'relationship_type': relationship_type
+                        }
+                    }
                 )
                 matches.append(match)
         
@@ -211,6 +256,126 @@ class GapDetector:
         matches.sort(key=lambda m: (m.match_type == 'direct', m.confidence), reverse=True)
         
         return matches
+    
+    def _determine_coverage_strength(self, adjacent_tags: List[str], target_tag: str) -> str:
+        """Determine the strength of coverage based on adjacent tags."""
+        if not adjacent_tags:
+            return "weak"
+        
+        # Check for closely related tags
+        closely_related = 0
+        moderately_related = 0
+        
+        for tag in adjacent_tags:
+            # Check if it's a direct relationship
+            if target_tag in self.tag_relationships and tag in self.tag_relationships[target_tag]:
+                closely_related += 1
+            else:
+                moderately_related += 1
+        
+        # Determine strength based on ratio
+        total_related = closely_related + moderately_related
+        if total_related == 0:
+            return "weak"
+        
+        closely_ratio = closely_related / total_related
+        
+        if closely_ratio >= 0.7:
+            return "strong"
+        elif closely_ratio >= 0.3:
+            return "moderate"
+        else:
+            return "weak"
+    
+    def _generate_adjacency_explanation(
+        self, 
+        target_tag: str, 
+        adjacent_tags: List[str], 
+        case_study_tags: List[str]
+    ) -> str:
+        """Generate detailed explanation of adjacency relationship."""
+        if not adjacent_tags:
+            return "No adjacent tags found"
+        
+        # Group adjacent tags by relationship type
+        direct_relations = []
+        reverse_relations = []
+        pattern_relations = []
+        
+        for tag in adjacent_tags:
+            # Check direct relationships
+            if target_tag in self.tag_relationships and tag in self.tag_relationships[target_tag]:
+                direct_relations.append(tag)
+            # Check reverse relationships
+            elif tag in self.tag_relationships and target_tag in self.tag_relationships[tag]:
+                reverse_relations.append(tag)
+            else:
+                pattern_relations.append(tag)
+        
+        # Build explanation
+        explanation_parts = []
+        
+        if direct_relations:
+            explanation_parts.append(f"Direct relationships: {', '.join(direct_relations)}")
+        
+        if reverse_relations:
+            explanation_parts.append(f"Reverse relationships: {', '.join(reverse_relations)}")
+        
+        if pattern_relations:
+            explanation_parts.append(f"Pattern-based relationships: {', '.join(pattern_relations)}")
+        
+        return "; ".join(explanation_parts)
+    
+    def _determine_relationship_type(self, target_tag: str, adjacent_tags: List[str]) -> str:
+        """Determine the type of relationship between target and adjacent tags."""
+        direct_count = 0
+        reverse_count = 0
+        
+        for tag in adjacent_tags:
+            # Check direct relationships
+            if target_tag in self.tag_relationships and tag in self.tag_relationships[target_tag]:
+                direct_count += 1
+            # Check reverse relationships
+            elif tag in self.tag_relationships and target_tag in self.tag_relationships[tag]:
+                reverse_count += 1
+        
+        if direct_count > reverse_count:
+            return "direct"
+        elif reverse_count > direct_count:
+            return "indirect"
+        else:
+            return "pattern-based"
+    
+    def _generate_detailed_rationale(
+        self, 
+        target_tag: str, 
+        adjacent_tags: List[str], 
+        case_study_tags: List[str], 
+        confidence: float
+    ) -> str:
+        """Generate detailed rationale for the match."""
+        rationale_parts = []
+        
+        # Basic match description
+        rationale_parts.append(f"Adjacent match with {len(adjacent_tags)} related tags")
+        
+        # Coverage strength
+        coverage_strength = self._determine_coverage_strength(adjacent_tags, target_tag)
+        rationale_parts.append(f"Coverage strength: {coverage_strength}")
+        
+        # Confidence explanation
+        if confidence >= 0.8:
+            rationale_parts.append("High confidence due to multiple strong relationships")
+        elif confidence >= 0.5:
+            rationale_parts.append("Moderate confidence with some relevant experience")
+        else:
+            rationale_parts.append("Lower confidence but some relevant aspects")
+        
+        # Specific tag relationships
+        if adjacent_tags:
+            rationale_parts.append(f"Related tags: {', '.join(adjacent_tags[:3])}")
+        
+        return ". ".join(rationale_parts)
     
     def get_gap_summary(self, gaps: List[Gap]) -> Dict:
         """Generate a summary of detected gaps."""

@@ -585,6 +585,21 @@ class HILApprovalCLI:
             if matches:
                 content_matches[gap.tag] = matches
                 print(f"  ✅ {gap.tag}: Found {len(matches)} potential matches")
+                
+                # Display detailed rationale for each match
+                for i, match in enumerate(matches[:2], 1):  # Show top 2 matches
+                    print(f"    {i}. {match.case_study_name}")
+                    print(f"       Match Type: {match.match_type}")
+                    print(f"       Confidence: {match.confidence:.2f}")
+                    print(f"       Coverage Strength: {match.coverage_strength}")
+                    print(f"       Relationship Type: {match.relationship_type}")
+                    print(f"       Rationale: {match.rationale}")
+                    
+                    if match.adjacency_explanation:
+                        print(f"       Adjacency: {match.adjacency_explanation}")
+                    
+                    if match.relevant_tags:
+                        print(f"       Relevant Tags: {', '.join(match.relevant_tags)}")
             else:
                 print(f"  ❌ {gap.tag}: No existing content matches")
         
