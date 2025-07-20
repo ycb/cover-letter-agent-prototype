@@ -9,7 +9,7 @@ import os
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from agents.hli_approval_cli import HLIApprovalCLI
+from agents.hil_approval_cli import HILApprovalCLI
 
 
 def test_hli_with_real_data():
@@ -45,7 +45,7 @@ def test_hli_with_real_data():
     ]
     
     # Initialize HLI system
-    hli = HLIApprovalCLI(user_profile="test_real_data")
+    hli = HILApprovalCLI(user_profile="test_real_data")
     
     # Test approval workflow with real data
     job_description = "Senior Product Manager at cleantech startup focusing on energy management"

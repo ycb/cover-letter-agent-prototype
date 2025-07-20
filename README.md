@@ -8,7 +8,7 @@ The Cover Letter Agent is a production-ready system that intelligently selects r
 
 - **Hybrid LLM + Tag Matching**: Two-stage selection with fast tag filtering and intelligent LLM scoring
 - **Work History Context Enhancement**: Tag inheritance and semantic matching from work history
-- **Human-in-the-Loop (HLI) Approval**: Interactive CLI for case study selection with feedback collection
+- **Human-in-the-Loop (HIL) Approval**: Interactive CLI for case study selection with feedback collection
 - **Rule of Three Compliance**: Always selects 3 case studies when possible for better storytelling
 - **Comprehensive Testing**: End-to-end validation with real-world scenarios
 - **Production-Ready Infrastructure**: Configuration management, error handling, and logging
@@ -23,7 +23,7 @@ The Cover Letter Agent is a production-ready system that intelligently selects r
 - **Cost Control**: Efficient LLM usage with <$0.10 per application
 - **Performance**: <0.001s average processing time
 
-### **HLI CLI Features**
+### **HIL CLI Features**
 - **Progress Tracking**: Shows "X/3 case studies added" for clear progress
 - **Full Case Study Display**: Shows complete case study paragraphs for informed decisions
 - **Dynamic Alternatives**: Shows next best candidate when rejecting suggestions
@@ -73,9 +73,9 @@ work_history:
     - marketing
     # ... more tags
 
-# HLI CLI Configuration
-hli_cli:
-  feedback_file: "users/{user_id}/hli_feedback.jsonl"
+# HIL CLI Configuration
+hil_cli:
+  feedback_file: "users/{user_id}/hil_feedback.jsonl"
   session_insights_file: "users/{user_id}/session_insights.jsonl"
   max_rejections_before_add_new: 3
 ```
@@ -87,12 +87,12 @@ hli_cli:
 ```python
 from agents.hybrid_case_study_selection import HybridCaseStudySelector
 from agents.work_history_context import WorkHistoryContextEnhancer
-from agents.hli_approval_cli import HLIApprovalCLI
+from agents.hil_approval_cli import HILApprovalCLI
 
 # Initialize components
 enhancer = WorkHistoryContextEnhancer()
 selector = HybridCaseStudySelector()
-hli_cli = HLIApprovalCLI()
+hil_cli = HILApprovalCLI()
 
 # Enhance case studies with work history context
 enhanced_case_studies = enhancer.enhance_case_studies_batch(case_studies)
@@ -106,7 +106,7 @@ result = selector.select_case_studies(
 )
 
 # Human-in-the-Loop approval
-approved_case_studies, feedback_list = hli_cli.run_approval_workflow(
+approved_case_studies, feedback_list = hil_cli.run_approval_workflow(
     result.selected_case_studies,
     result.all_ranked_candidates,
     job_id='duke_2025_pm',
@@ -118,11 +118,11 @@ print(f"Approved {len(approved_case_studies)} case studies")
 print(f"Collected {len(feedback_list)} feedback items")
 ```
 
-### **HLI CLI Workflow**
+### **HIL CLI Workflow**
 
 ```bash
-# Run HLI approval workflow
-python3 test_hli_peter_real.py
+# Run HIL approval workflow
+python3 test_hil_peter_real.py
 
 # Expected output:
 # 📋 Case Study 1
@@ -150,13 +150,13 @@ print(f"Success rate: {report['summary']['success_rate']:.1%}")
 ## 📊 Performance Metrics
 
 ### **Test Results (Phase 6)**
-- **Success Rate**: 100% (HLI CLI workflow)
+- **Success Rate**: 100% (HIL CLI workflow)
 - **Performance**: <0.001s average time
 - **Cost Control**: $0.050 average cost per test
 - **Quality**: 0.80 average confidence
-- **User Experience**: Clean, efficient HLI workflow
+- **User Experience**: Clean, efficient HIL workflow
 
-### **HLI CLI Results**
+### **HIL CLI Results**
 - **Progress Tracking**: Clear "X/3 case studies added" display
 - **Feedback Collection**: Targeted prompting for meaningful insights
 - **Dynamic Alternatives**: Automatic next-best candidate selection
@@ -183,7 +183,7 @@ print(f"Success rate: {report['summary']['success_rate']:.1%}")
 - **Tag Suppression**: Prevents irrelevant tag inheritance
 - **Confidence Scoring**: Quality assessment for enhancements
 
-#### **Human-in-the-Loop (HLI) CLI**
+#### **Human-in-the-Loop (HIL) CLI**
 - **Progress Tracking**: Clear visual progress indicators
 - **Full Content Display**: Complete case study paragraphs
 - **Dynamic Alternatives**: Next-best candidate selection
@@ -210,13 +210,13 @@ python3 tests/test_integration.py
 # ✅ All integration tests passed!
 ```
 
-### **HLI CLI Tests**
+### **HIL CLI Tests**
 ```bash
-# Test HLI CLI with real user data
-python3 test_hli_peter_real.py
+# Test HIL CLI with real user data
+python3 test_hil_peter_real.py
 
-# Test HLI CLI with mock data
-python3 test_phase6_hli_system.py
+# Test HIL CLI with mock data
+python3 test_phase6_hil_system.py
 
 # Expected output:
 # 📋 Case Study 1
@@ -270,7 +270,7 @@ python3 agents/end_to_end_testing.py
 - Quality assurance
 - 66.7% success rate with room for optimization
 
-#### **Phase 6: Human-in-the-Loop (HLI) CLI System**
+#### **Phase 6: Human-in-the-Loop (HIL) CLI System**
 - **Interactive CLI**: User-friendly approval workflow
 - **Progress Tracking**: Clear "X/3 case studies added" display
 - **Full Content Display**: Complete case study paragraphs
@@ -279,7 +279,7 @@ python3 agents/end_to_end_testing.py
 - **Session Insights**: Ranking discrepancy analysis and aggregation
 - **Search vs Add New**: User choice for gap-filling strategy
 - **Real User Data**: Testing with Peter's actual case studies
-- **100% Success Rate**: All HLI workflows working perfectly
+- **100% Success Rate**: All HIL workflows working perfectly
 
 ### **🚧 Future Phases**
 
@@ -320,7 +320,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🎯 Roadmap
 
-- **✅ Phase 6**: Human-in-the-Loop (HLI) CLI System - **COMPLETED**
+- **✅ Phase 6**: Human-in-the-Loop (HIL) CLI System - **COMPLETED**
 - **Phase 7**: Gap Detection & Gap-Filling
 - **Production Deployment**: Web interface and user management
 - **Advanced Features**: Multi-modal matching, dynamic prompts

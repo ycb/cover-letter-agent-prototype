@@ -1,99 +1,100 @@
 #!/usr/bin/env python3
 """
-Human-in-the-Loop (HLI) CLI System
-===================================
+Human-in-the-Loop (HIL) CLI System
 
-CLI-based approval and refinement workflow for case study selection.
-Focuses on quick mode approval with structured feedback collection.
+Interactive CLI for case study selection with feedback collection,
+progress tracking, and dynamic alternatives.
 """
 
-import sys
-import os
 import json
-import yaml
+import os
 from datetime import datetime
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, asdict
-import logging
+from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple
 
-# Add utils to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from utils.config_manager import ConfigManager
-from utils.error_handler import ErrorHandler, safe_execute
-
-logger = logging.getLogger(__name__)
+from agents.hybrid_case_study_selection import HybridCaseStudySelector
+from agents.work_history_context import WorkHistoryContextEnhancer
 
 
-@dataclass
-class HLIApproval:
-    """Represents a user approval decision for a case study."""
-    job_id: str
-    case_study_id: str
-    approved: bool
-    user_score: int  # 1-10
-    comments: Optional[str] = None
-    llm_score: Optional[float] = None
-    llm_reason: Optional[str] = None
-    timestamp: Optional[str] = None
-    # Enhanced feedback fields
-    ranking_discrepancy: Optional[float] = None  # Difference between user and LLM scores
-    llm_rank: Optional[int] = None  # LLM's ranking position
-    user_rank: Optional[int] = None  # User's ranking position
-    discrepancy_type: Optional[str] = None  # "user_higher", "llm_higher", "aligned"
-    discrepancy_reasoning: Optional[str] = None  # User's explanation for different rating
+class HILApproval:
+    """Represents a single HIL approval decision."""
     
-    def __post_init__(self):
-        if self.timestamp is None:
-            self.timestamp = datetime.now().isoformat()
+    def __init__(
+        self,
+        job_id: str,
+        case_study_id: str,
+        approved: bool,
+        user_score: int,
+        comments: Optional[str] = None,
+        llm_score: Optional[float] = None,
+        llm_reason: Optional[str] = None,
+        llm_rank: Optional[int] = None,
+        user_rank: Optional[int] = None,
+        discrepancy_reasoning: Optional[str] = None
+    ):
+        self.job_id = job_id
+        self.case_study_id = case_study_id
+        self.approved = approved
+        self.user_score = user_score
+        self.comments = comments
+        self.llm_score = llm_score
+        self.llm_reason = llm_reason
+        self.llm_rank = llm_rank
+        self.user_rank = user_rank
+        self.discrepancy_reasoning = discrepancy_reasoning
+        self.timestamp = datetime.now().isoformat()
         
-        # Calculate ranking discrepancy if both scores are available
-        if self.llm_score is not None and self.user_score is not None:
-            self.ranking_discrepancy = self.user_score - (self.llm_score * 10 / 10)  # Normalize LLM score to 1-10 scale
-            
-            # Determine discrepancy type
-            if abs(self.ranking_discrepancy) <= 1.0:
-                self.discrepancy_type = "aligned"
-            elif self.ranking_discrepancy > 1.0:
+        # Calculate ranking discrepancy
+        self.ranking_discrepancy = None
+        self.discrepancy_type = "aligned"
+        
+        if llm_rank is not None and user_rank is not None:
+            self.ranking_discrepancy = abs(llm_rank - user_rank)
+            if user_rank < llm_rank:
                 self.discrepancy_type = "user_higher"
+            elif user_rank > llm_rank:
+                self.discrepancy_type = "ai_higher"
             else:
-                self.discrepancy_type = "llm_higher"
-
-
-@dataclass
-class CaseStudyVariant:
-    """Represents a versioned case study variant."""
-    version: str
-    summary: str
-    tags: List[str]
-    approved_for: List[str]
-    created_at: Optional[str] = None
+                self.discrepancy_type = "aligned"
     
-    def __post_init__(self):
-        if self.created_at is None:
-            self.created_at = datetime.now().isoformat()
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            'job_id': self.job_id,
+            'case_study_id': self.case_study_id,
+            'approved': self.approved,
+            'user_score': self.user_score,
+            'comments': self.comments,
+            'llm_score': self.llm_score,
+            'llm_reason': self.llm_reason,
+            'llm_rank': self.llm_rank,
+            'user_rank': self.user_rank,
+            'ranking_discrepancy': self.ranking_discrepancy,
+            'discrepancy_type': self.discrepancy_type,
+            'discrepancy_reasoning': self.discrepancy_reasoning,
+            'timestamp': self.timestamp
+        }
 
 
-class HLIApprovalCLI:
-    """CLI-based human-in-the-loop approval system."""
+class HILApprovalCLI:
+    """Human-in-the-Loop CLI for case study approval and feedback collection."""
     
     def __init__(self, user_profile: str = "default"):
-        """Initialize the HLI CLI system."""
-        self.config_manager = ConfigManager()
-        self.error_handler = ErrorHandler()
+        """Initialize the HIL CLI system."""
         self.user_profile = user_profile
-        self.feedback_file = f"users/{user_profile}/hli_feedback.jsonl"
-        self.variants_file = f"users/{user_profile}/case_study_variants.yaml"
+        self.feedback_dir = Path(f"users/{user_profile}")
+        self.feedback_dir.mkdir(parents=True, exist_ok=True)
         
-        # Ensure user directory exists
-        os.makedirs(f"users/{user_profile}", exist_ok=True)
+        self.feedback_file = self.feedback_dir / "hil_feedback.jsonl"
+        self.session_insights_file = self.feedback_dir / "session_insights.jsonl"
     
-    def hli_approval_cli(
+    def hil_approval_cli(
         self, 
         selected_case_studies: List[Dict[str, Any]], 
         job_description: str,
         job_id: str,
         all_ranked_candidates: Optional[List[Dict[str, Any]]] = None
-    ) -> Tuple[List[Dict[str, Any]], List[HLIApproval]]:
+    ) -> Tuple[List[Dict[str, Any]], List[HILApproval]]:
         """
         Presents selected case studies via CLI for user approval.
         When user rejects a case study, shows the next highest scored alternative.
@@ -187,7 +188,7 @@ class HLIApprovalCLI:
                     approved_alternatives.add(case_study_id)
             
             # Create feedback object with enhanced tracking
-            feedback = HLIApproval(
+            feedback = HILApproval(
                 job_id=job_id,
                 case_study_id=case_study_id,
                 approved=approved,
@@ -291,15 +292,15 @@ class HLIApprovalCLI:
         comments = input("Any improvement notes? (optional): ").strip()
         return comments if comments else None
     
-    def _save_feedback(self, feedback_list: List[HLIApproval]) -> None:
+    def _save_feedback(self, feedback_list: List[HILApproval]) -> None:
         """Save feedback to JSONL file."""
         try:
             with open(self.feedback_file, 'a') as f:
                 for feedback in feedback_list:
-                    f.write(json.dumps(asdict(feedback)) + '\n')
-            logger.info(f"Saved {len(feedback_list)} feedback entries to {self.feedback_file}")
+                    f.write(json.dumps(feedback.to_dict()) + '\n')
+            print(f"Saved {len(feedback_list)} feedback entries to {self.feedback_file}")
         except Exception as e:
-            self.error_handler.handle_error(e, "save_feedback", {"feedback_count": len(feedback_list)})
+            print(f"Error saving feedback: {e}")
     
     def save_case_study_variant(
         self, 
@@ -391,7 +392,7 @@ class HLIApprovalCLI:
                 return candidate
         return None
 
-    def _show_ranking_insight(self, feedback: HLIApproval) -> None:
+    def _show_ranking_insight(self, feedback: HILApproval) -> None:
         """Show insights about ranking discrepancies."""
         if feedback.ranking_discrepancy is None:
             return
@@ -399,7 +400,7 @@ class HLIApprovalCLI:
         if feedback.discrepancy_type == "user_higher":
             print(f"💡 Insight: You rated this {abs(feedback.ranking_discrepancy):.1f} points higher than the AI")
             print(f"   This suggests the AI may be undervaluing certain aspects of this case study")
-        elif feedback.discrepancy_type == "llm_higher":
+        elif feedback.discrepancy_type == "ai_higher":
             print(f"💡 Insight: The AI rated this {abs(feedback.ranking_discrepancy):.1f} points higher than you")
             print(f"   This suggests the AI may be overvaluing certain aspects of this case study")
         else:
@@ -417,7 +418,7 @@ class HLIApprovalCLI:
             else:
                 print("Please enter 'search' or 'add_new'")
     
-    def _get_discrepancy_reasoning(self, feedback: HLIApproval) -> Optional[str]:
+    def _get_discrepancy_reasoning(self, feedback: HILApproval) -> Optional[str]:
         """Get user's reasoning for ranking discrepancy - only when rejecting AI suggestion and approving alternative."""
         print(f"\n🤔 Why is this story the best fit?")
         print(f"   (You rejected our suggestion but approved this alternative)")
@@ -426,7 +427,7 @@ class HLIApprovalCLI:
         reasoning = input("Your reasoning (optional, press Enter to skip): ").strip()
         return reasoning if reasoning else None
 
-    def _generate_session_insights(self, feedback_list: List[HLIApproval], job_id: str) -> None:
+    def _generate_session_insights(self, feedback_list: List[HILApproval], job_id: str) -> None:
         """Generate insights from the entire session."""
         if not feedback_list:
             return
@@ -434,7 +435,7 @@ class HLIApprovalCLI:
         # Calculate session statistics
         total_discrepancies = [f.ranking_discrepancy for f in feedback_list if f.ranking_discrepancy is not None]
         user_higher_count = len([f for f in feedback_list if f.discrepancy_type == "user_higher"])
-        llm_higher_count = len([f for f in feedback_list if f.discrepancy_type == "llm_higher"])
+        ai_higher_count = len([f for f in feedback_list if f.discrepancy_type == "ai_higher"])
         aligned_count = len([f for f in feedback_list if f.discrepancy_type == "aligned"])
         
         if total_discrepancies:
@@ -443,7 +444,7 @@ class HLIApprovalCLI:
             print(f"\n📈 Session Insights:")
             print(f"  Average ranking discrepancy: {avg_discrepancy:.1f} points")
             print(f"  User rated higher: {user_higher_count} cases")
-            print(f"  AI rated higher: {llm_higher_count} cases")
+            print(f"  AI rated higher: {ai_higher_count} cases")
             print(f"  Aligned ratings: {aligned_count} cases")
             
             # Save session insights
@@ -453,21 +454,21 @@ class HLIApprovalCLI:
                 "total_reviewed": len(feedback_list),
                 "avg_discrepancy": avg_discrepancy,
                 "user_higher_count": user_higher_count,
-                "llm_higher_count": llm_higher_count,
+                "ai_higher_count": ai_higher_count,
                 "aligned_count": aligned_count,
-                "feedback_details": [asdict(f) for f in feedback_list]
+                "feedback_details": [f.to_dict() for f in feedback_list]
             }
             
             insights_file = f"users/{self.user_profile}/session_insights.jsonl"
             try:
                 with open(insights_file, 'a') as f:
                     f.write(json.dumps(session_insights) + '\n')
-                logger.info(f"Saved session insights to {insights_file}")
+                print(f"Saved session insights to {insights_file}")
             except Exception as e:
-                self.error_handler.handle_error(e, "save_session_insights", {"job_id": job_id})
+                print(f"Error saving session insights: {e}")
 
 
-def test_hli_approval_cli():
+def test_hil_approval_cli():
     """Test the HLI approval CLI functionality."""
     print("🧪 Testing HLI Approval CLI...")
     
@@ -492,7 +493,7 @@ def test_hli_approval_cli():
     ]
     
     # Initialize HLI system
-    hli = HLIApprovalCLI(user_profile="test_user")
+    hli = HILApprovalCLI(user_profile="test_user")
     
     # Test approval workflow (simulated)
     print("\n📋 Simulating approval workflow...")
@@ -505,7 +506,7 @@ def test_hli_approval_cli():
     
     # Test feedback saving
     test_feedback = [
-        HLIApproval(
+        HILApproval(
             job_id=job_id,
             case_study_id="enact",
             approved=True,
@@ -514,7 +515,7 @@ def test_hli_approval_cli():
             llm_score=8.9,
             llm_reason="Strong cleantech match"
         ),
-        HLIApproval(
+        HILApproval(
             job_id=job_id,
             case_study_id="aurora",
             approved=False,
@@ -553,4 +554,4 @@ def test_hli_approval_cli():
 
 
 if __name__ == "__main__":
-    test_hli_approval_cli() 
+    test_hil_approval_cli() 

@@ -15,7 +15,7 @@ from datetime import datetime
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from agents.hli_approval_cli import HLIApprovalCLI, HLIApproval, CaseStudyVariant
+from agents.hil_approval_cli import HILApprovalCLI, HILApproval, CaseStudyVariant
 from agents.hybrid_case_study_selection import HybridCaseStudySelector
 from agents.work_history_context import WorkHistoryContextEnhancer
 
@@ -27,7 +27,7 @@ def test_phase6_hli_system():
     # Initialize components
     enhancer = WorkHistoryContextEnhancer()
     selector = HybridCaseStudySelector()
-    hli = HLIApprovalCLI(user_profile="test_user")
+    hli = HILApprovalCLI(user_profile="test_user")
     
     # Test case studies with real data from blurbs.yaml
     test_case_studies = [

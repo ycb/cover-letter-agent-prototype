@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test HLI CLI with Peter's real case study data
+Test HIL CLI with Peter's real case study data
 """
 
 import sys
@@ -10,14 +10,14 @@ import yaml
 # Add project root to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from agents.hli_approval_cli import HLIApprovalCLI
+from agents.hil_approval_cli import HILApprovalCLI
 from agents.hybrid_case_study_selection import HybridCaseStudySelector
 from agents.work_history_context import WorkHistoryContextEnhancer
 
 
-def test_hli_with_peter_data():
-    """Test HLI CLI with Peter's real case study data."""
-    print("🧪 Testing HLI CLI with Peter's Real Case Study Data...")
+def test_hil_with_peter_data():
+    """Test HIL CLI with Peter's real case study data."""
+    print("🧪 Testing HIL CLI with Peter's Real Case Study Data...")
     
     # Load Peter's real case study data
     peter_blurbs_path = "users/peter/blurbs.yaml"
@@ -50,7 +50,7 @@ def test_hli_with_peter_data():
         # Initialize components
         enhancer = WorkHistoryContextEnhancer()
         selector = HybridCaseStudySelector()
-        hli = HLIApprovalCLI(user_profile="peter")
+        hil = HILApprovalCLI(user_profile="peter")
         
         print(f"\n📋 Step 1: Work History Context Enhancement")
         enhanced_case_studies = enhancer.enhance_case_studies_batch(real_case_studies)
@@ -92,19 +92,19 @@ def test_hli_with_peter_data():
             job_description
         )
         
-        print(f"  Selected {len(result.selected_case_studies)} case studies for HLI review")
+        print(f"  Selected {len(result.selected_case_studies)} case studies for HIL review")
         print(f"  Total time: {result.total_time:.3f}s")
         print(f"  LLM cost: ${result.llm_cost_estimate:.3f}")
         
-        # Add LLM scores to case studies for HLI
+        # Add LLM scores to case studies for HIL
         for i, case_study in enumerate(result.selected_case_studies):
             if i < len(result.ranked_candidates):
                 case_study['llm_score'] = result.ranked_candidates[i].score
                 case_study['reasoning'] = result.ranked_candidates[i].reasoning
         
-        print(f"\n📋 Step 3: HLI Approval Workflow with Peter's Real Data")
+        print(f"\n📋 Step 3: HIL Approval Workflow with Peter's Real Data")
         
-        # Convert ranked candidates to dict format for HLI
+        # Convert ranked candidates to dict format for HIL
         all_ranked_candidates = []
         for ranked_candidate in result.ranked_candidates:
             candidate_dict = ranked_candidate.case_study.copy()
@@ -112,15 +112,15 @@ def test_hli_with_peter_data():
             candidate_dict['reasoning'] = ranked_candidate.reasoning
             all_ranked_candidates.append(candidate_dict)
         
-        # Test HLI approval workflow with real data and full ranked list
-        approved_case_studies, feedback_list = hli.hli_approval_cli(
+        # Test HIL approval workflow with real data and full ranked list
+        approved_case_studies, feedback_list = hil.hil_approval_cli(
             result.selected_case_studies,
             job_description,
             job_id,
             all_ranked_candidates  # Pass full ranked list for alternatives
         )
         
-        print(f"\n📊 HLI Results with Peter's Real Data:")
+        print(f"\n📊 HIL Results with Peter's Real Data:")
         print(f"  Total reviewed: {len(result.selected_case_studies)}")
         print(f"  Approved: {len(approved_case_studies)}")
         print(f"  Rejected: {len(result.selected_case_studies) - len(approved_case_studies)}")
@@ -135,7 +135,7 @@ def test_hli_with_peter_data():
             if feedback.comments:
                 print(f"    Comments: {feedback.comments}")
         
-        print(f"\n✅ HLI CLI test with Peter's real data completed!")
+        print(f"\n✅ HIL CLI test with Peter's real data completed!")
         print(f"  Used {len(real_case_studies)} real case studies from Peter's blurbs.yaml")
         print(f"  Full case study paragraphs displayed correctly")
         print(f"  User can make informed decisions based on complete content")
@@ -149,4 +149,4 @@ def test_hli_with_peter_data():
 
 
 if __name__ == "__main__":
-    test_hli_with_peter_data() 
+    test_hil_with_peter_data() 
