@@ -791,7 +791,7 @@ class CoverLetterAgent:
                     samsung_selected = True
             
             # Check for redundant themes
-            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+            # elif any(theme in cs.get.*founding_pm.*0_to_1.*startup.*):
                 if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
                     print(f"    Skipping {cs_id} - redundant founding/startup theme")
                     continue
@@ -801,7 +801,7 @@ class CoverLetterAgent:
                     used_themes.update(['founding_pm', '0_to_1', 'startup'])
             
             # Check for scale/growth themes
-            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+            # elif any(theme in cs.get.*scaleup.*growth.*platform.*):
                 if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
                     print(f"    Skipping {cs_id} - redundant scale/growth theme")
                     continue
@@ -2094,7 +2094,7 @@ class CoverLetterAgent:
                     samsung_selected = True
             
             # Check for redundant themes
-            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+            # elif any(theme in cs.get.*founding_pm.*0_to_1.*startup.*):
                 if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
                     print(f"    Skipping {cs_id} - redundant founding/startup theme")
                     continue
@@ -2104,7 +2104,7 @@ class CoverLetterAgent:
                     used_themes.update(['founding_pm', '0_to_1', 'startup'])
             
             # Check for scale/growth themes
-            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+            # elif any(theme in cs.get.*scaleup.*growth.*platform.*):
                 if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
                     print(f"    Skipping {cs_id} - redundant scale/growth theme")
                     continue
@@ -3374,7 +3374,7 @@ class CoverLetterAgent:
                     samsung_selected = True
             
             # Check for redundant themes
-            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+            # elif any(theme in cs.get.*founding_pm.*0_to_1.*startup.*):
                 if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
                     print(f"    Skipping {cs_id} - redundant founding/startup theme")
                     continue
@@ -3384,7 +3384,7 @@ class CoverLetterAgent:
                     used_themes.update(['founding_pm', '0_to_1', 'startup'])
             
             # Check for scale/growth themes
-            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+            # elif any(theme in cs.get.*scaleup.*growth.*platform.*):
                 if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
                     print(f"    Skipping {cs_id} - redundant scale/growth theme")
                     continue
@@ -4654,7 +4654,7 @@ class CoverLetterAgent:
                     samsung_selected = True
             
             # Check for redundant themes
-            elif any(theme in cs.get('tags', []) for theme in ['founding_pm', '0_to_1', 'startup']):
+            # elif any(theme in cs.get.*founding_pm.*0_to_1.*startup.*):
                 if any(theme in used_themes for theme in ['founding_pm', '0_to_1', 'startup']):
                     print(f"    Skipping {cs_id} - redundant founding/startup theme")
                     continue
@@ -4664,7 +4664,7 @@ class CoverLetterAgent:
                     used_themes.update(['founding_pm', '0_to_1', 'startup'])
             
             # Check for scale/growth themes
-            elif any(theme in cs.get('tags', []) for theme in ['scaleup', 'growth', 'platform']):
+            # elif any(theme in cs.get.*scaleup.*growth.*platform.*):
                 if any(theme in used_themes for theme in ['scaleup', 'growth', 'platform']):
                     print(f"    Skipping {cs_id} - redundant scale/growth theme")
                     continue

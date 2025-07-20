@@ -1,154 +1,129 @@
-# Enhanced LLM Parsing with People Management Analysis
+# Pull Request
 
-## 🎯 Overview
+## 📋 Description
 
-This PR introduces **intelligent job description parsing** that extracts detailed people management information and cross-references it with the PM levels framework for accurate leadership blurb selection.
+Brief description of the changes made in this PR.
 
-## ✨ Key Features
+## 🎯 Type of Change
 
-### 🧠 **Enhanced LLM Parsing**
-- **People Management Analysis**: Extracts direct reports, mentorship scope, and leadership type
-- **PM Levels Integration**: Cross-references with framework for validation
-- **Intelligent Blurb Selection**: Uses leadership type to choose correct blurb (people-manager vs XFN)
-- **Comprehensive Testing**: 9 test cases covering all scenarios and edge cases
+- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+- [ ] ✨ New feature (non-breaking change which adds functionality)
+- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] 📚 Documentation update
+- [ ] 🧪 Test addition or update
+- [ ] 🔧 Configuration change
+- [ ] 🎨 Code style/formatting change
+- [ ] ♻️ Refactoring (no functional changes)
 
-### 🎯 **Leadership Type Classification**
-The system intelligently classifies roles based on LLM parsing:
+## 🔍 Related Issues
 
-- **`people_management`**: Has direct reports and people leadership responsibilities → Uses people-manager blurb
-- **`mentorship_only`**: Has mentorship but no direct reports → Uses XFN leadership blurb  
-- **`ic_leadership`**: Individual contributor with cross-functional leadership → Uses XFN leadership blurb
-- **`no_leadership`**: Pure IC role → Uses XFN leadership blurb
-
-### 📊 **PM Levels Framework Integration**
-Cross-references parsed data with PM levels expectations:
-
-- **L2 (Product Manager)**: IC → XFN leadership blurb
-- **L3 (Senior PM)**: IC with mentorship → XFN leadership blurb
-- **L4 (Staff/Principal)**: IC with mentorship → XFN leadership blurb
-- **L5+ (Group PM)**: People management → People-manager blurb
-
-## 🔧 Technical Changes
-
-### Files Modified
-- `agents/job_parser_llm.py` - Enhanced LLM parsing with people management analysis
-- `agents/cover_letter_agent.py` - Updated leadership blurb selection logic
-- `README.md` - Added comprehensive documentation
-- `TODO.md` - Updated with completion status
-
-### Files Added
-- `test_enhanced_llm_parsing.py` - Comprehensive test suite (9 tests)
-
-### Key Implementation Details
-
-#### Enhanced LLM Prompt
-```python
-# Extracts detailed people management information:
-# - Direct reports presence and list
-# - Mentorship responsibilities and scope  
-# - Leadership type classification
-# - Cross-reference with PM levels framework
-```
-
-#### Validation Logic
-```python
-# Cross-references leadership type with PM levels expectations
-# Provides validation feedback on leadership type consistency
-# Ensures fallback parsing includes people management data structure
-```
-
-#### Test Coverage
-```bash
-# 9 comprehensive test cases:
-# - Field structure validation
-# - Leadership type classification  
-# - PM levels cross-reference
-# - Fallback parsing behavior
-# - Edge case handling
-# - End-to-end integration
-```
+Fixes #(issue number)
+Closes #(issue number)
+Related to #(issue number)
 
 ## 🧪 Testing
 
-### Test Results
-```bash
-===================================================== 9 passed in 0.43s ======================================================
-```
-
 ### Test Coverage
-- ✅ **Field Structure**: Validates people_management data structure
-- ✅ **Classification Logic**: Tests leadership type classification
-- ✅ **PM Levels Integration**: Cross-references with framework
-- ✅ **Fallback Behavior**: Tests graceful degradation
-- ✅ **Edge Cases**: Handles missing fields, invalid data
-- ✅ **End-to-End**: Complete workflow validation
+- [ ] Unit tests added/updated
+- [ ] Integration tests added/updated
+- [ ] Manual testing completed
+- [ ] All existing tests pass
 
-## 📚 Documentation
-
-### README Updates
-- ✅ Added "Enhanced LLM Parsing with People Management Analysis" section
-- ✅ Documented leadership type classification
-- ✅ Added PM levels framework integration details
-- ✅ Included example output and testing instructions
-- ✅ Updated testing section with new test suite
-
-### Key Documentation Features
-- **Clear Leadership Type Explanation**: 4 types with blurb selection logic
-- **PM Levels Integration**: Framework cross-reference details
-- **Example Output**: JSON structure showing enhanced parsing
-- **Testing Instructions**: How to run comprehensive test suite
-
-## 🚀 Benefits
-
-### For Users
-- **Accurate Blurb Selection**: Intelligent choice between people-manager vs XFN leadership blurbs
-- **Scalable Logic**: No more hard-coded solutions for specific cases
-- **Framework Integration**: Leverages PM levels for validation
-- **Robust Error Handling**: Graceful fallback when LLM parsing fails
-
-### For Developers
-- **Comprehensive Testing**: 9 test cases covering all scenarios
-- **Clear Documentation**: Complete feature documentation
-- **Maintainable Code**: Well-structured, validated implementation
-- **Production Ready**: All tests passing with robust error handling
-
-## 🔍 Review Checklist
-
-- [x] **Code Quality**: Follows project coding standards
-- [x] **Testing**: All 9 tests passing
-- [x] **Documentation**: README updated with comprehensive details
-- [x] **Error Handling**: Graceful fallback and edge case handling
-- [x] **Integration**: Works with existing cover letter generation
-- [x] **Performance**: No performance regressions
-- [x] **Security**: No security concerns with LLM integration
-
-## 📋 Testing Instructions
-
+### Test Commands
 ```bash
-# Run enhanced LLM parsing tests
-python -m pytest test_enhanced_llm_parsing.py -v
+# Run all tests
+python -m pytest
 
-# Run all tests to ensure no regressions
-python -m pytest -v
+# Run specific test file
+python -m pytest test_founding_pm_fix.py
 
-# Test end-to-end functionality
-python scripts/run_cover_letter_agent.py --user test_user -i data/test_job.txt
+# Run with coverage
+python -m pytest --cov=agents --cov=core
+
+# Type checking
+python -m mypy agents/ core/
+
+# Code quality
+python -m flake8 agents/ core/
+python -m black --check agents/ core/
 ```
 
-## 🎯 Impact
+## 📝 Changes Made
 
-This enhancement provides **intelligent, scalable leadership blurb selection** that:
-- **Eliminates hard-coded solutions** for specific job types
-- **Leverages PM levels framework** for validation and accuracy
-- **Improves user experience** with more accurate cover letters
-- **Maintains code quality** with comprehensive testing
+### Files Modified
+- `agents/cover_letter_agent.py` - Fixed founding PM logic
+- `test_founding_pm_fix.py` - Added comprehensive test suite
+- `README.md` - Updated documentation
 
-## 🔗 Related Issues
+### Key Changes
+1. **Fixed founding PM logic** - Removed problematic theme checking that was incorrectly categorizing Aurora as "redundant founding/startup theme"
+2. **Simplified selection logic** - Now picks top 3 case studies by score instead of complex theme matching
+3. **Added comprehensive tests** - Created test suite to verify Aurora is now selected correctly
+4. **Updated documentation** - Added section about enhanced case study selection
 
-- Addresses need for intelligent leadership blurb selection
-- Integrates with PM levels framework initiative
-- Provides scalable solution for people management vs mentorship roles
+## 🎯 Expected Behavior
 
----
+### Before Fix
+- Aurora was incorrectly skipped due to "redundant founding/startup theme"
+- Selection: Enact, Meta, Samsung
 
-**Ready for Review** ✅ 
+### After Fix
+- Aurora is now correctly selected based on score
+- Selection: Meta, Aurora, Enact (top 3 by score)
+
+## 🔍 Code Review Checklist
+
+- [ ] Code follows project style guidelines
+- [ ] Self-review of code completed
+- [ ] Code is commented, particularly in hard-to-understand areas
+- [ ] Corresponding changes to documentation made
+- [ ] Tests added/updated for new functionality
+- [ ] All tests pass locally
+- [ ] Type hints added where appropriate
+- [ ] No unnecessary dependencies added
+- [ ] Error handling implemented where needed
+
+## 📊 Performance Impact
+
+- [ ] No performance regression
+- [ ] Performance improvement
+- [ ] Performance impact measured and documented
+
+## 🔒 Security Considerations
+
+- [ ] No security implications
+- [ ] Security review completed
+- [ ] Sensitive data handling reviewed
+
+## 📚 Documentation Updates
+
+- [ ] README.md updated
+- [ ] API documentation updated
+- [ ] User guide updated
+- [ ] Developer guide updated
+
+## 🚀 Deployment Notes
+
+- [ ] No deployment changes required
+- [ ] Database migrations needed
+- [ ] Configuration changes required
+- [ ] Environment variables updated
+
+## ✅ Final Checklist
+
+- [ ] All tests pass
+- [ ] Code review completed
+- [ ] Documentation updated
+- [ ] No merge conflicts
+- [ ] Branch is up to date with main
+- [ ] Commit messages are clear and descriptive
+
+## 📸 Screenshots (if applicable)
+
+Add screenshots or GIFs to help explain the changes.
+
+## 🔗 Additional Resources
+
+- Related documentation: [link]
+- Design documents: [link]
+- User feedback: [link] 

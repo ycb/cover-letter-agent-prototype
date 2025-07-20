@@ -648,6 +648,9 @@ class CoverLetterAgent:
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
                     tag_matches.add(tag.lower())
+                    else:
+                        # Default scoring for other matches
+                        initial_score += 2
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -716,10 +719,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -846,12 +849,88 @@ class CoverLetterAgent:
         return downloaded_files
 
     def parse_job_description(self, job_text: str) -> JobDescription:
-        """Parse and analyze a job description."""
+        """Parse and analyze a job description using LLM parser."""
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("job_parsing")
 
         logger.info("Parsing job description...")
+
+        # Use LLM parser instead of manual parsing
+        from agents.job_parser_llm import JobParserLLM
+        
+        try:
+            llm_parser = JobParserLLM()
+            parsed_data = llm_parser.parse_job_description(job_text)
+            
+            # Extract information from LLM parser result
+            company_name = parsed_data.get('company_name', 'Unknown')
+            job_title = parsed_data.get('job_title', 'Product Manager')
+            inferred_level = parsed_data.get('inferred_level', 'L3')
+            inferred_role_type = parsed_data.get('inferred_role_type', 'generalist')
+            
+            # Extract keywords from LLM result
+            keywords = []
+            if 'key_requirements' in parsed_data:
+                keywords.extend(parsed_data['key_requirements'])
+            if 'required_competencies' in parsed_data:
+                keywords.extend(list(parsed_data['required_competencies'].keys()))
+            
+            # Add inferred level and role type to keywords
+            keywords.extend([inferred_level, inferred_role_type])
+            
+            # Classify job type based on inferred role type
+            job_type = inferred_role_type if inferred_role_type != 'generalist' else 'general'
+            
+            # Calculate score using existing logic
+            score = self._calculate_job_score(job_text, keywords)
+            
+            # Determine go/no-go
+            go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+            
+            # Extract additional information from LLM result
+            extracted_info = {
+                "requirements": parsed_data.get('key_requirements', []),
+                "responsibilities": [],  # LLM parser doesn't extract this separately
+                "company_info": parsed_data.get('company_info', {}),
+                "job_context": parsed_data.get('job_context', {}),
+                "inferred_level": inferred_level,
+                "inferred_role_type": inferred_role_type,
+                "required_competencies": parsed_data.get('required_competencies', {}),
+                "confidence": parsed_data.get('confidence', 0.0),
+                "notes": parsed_data.get('notes', '')
+            }
+            
+            # Evaluate job targeting
+            targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+            
+            # End performance monitoring
+            monitor.end_timer("job_parsing")
+            
+            return JobDescription(
+                raw_text=job_text,
+                company_name=company_name,
+                job_title=job_title,
+                keywords=keywords,
+                job_type=job_type,
+                score=score,
+                go_no_go=go_no_go,
+                extracted_info=extracted_info,
+                targeting=targeting,
+            )
+            
+        except Exception as e:
+            logger.warning(f"LLM parsing failed: {e}. Falling back to manual parsing.")
+            # Fallback to original manual parsing
+            return self._parse_job_description_manual(job_text)
+    
+    def _parse_job_description_manual(self, job_text: str) -> JobDescription:
+        """Original manual parsing method as fallback."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description (manual fallback)...")
 
         # Extract basic information
         company_name = self._extract_company_name(job_text)
@@ -1558,11 +1637,19 @@ class CoverLetterAgent:
         """Return True if the role is a leadership role or JD mentions managing/mentoring."""
         title = job.job_title.lower()
         jd_text = job.raw_text.lower()
-        leadership_titles = ["lead", "director", "head", "vp", "chief", "manager", "executive"]
-        if any(t in title for t in leadership_titles):
+        
+        # Check for people management roles (not just IC roles with "manager" in title)
+        people_management_titles = ["director", "head", "vp", "chief", "executive", "senior manager", "manager of"]
+        people_management_keywords = ["managing", "mentoring", "supervision", "supervise", "leadership", "team leadership"]
+        
+        # Check if title indicates people management
+        if any(t in title for t in people_management_titles):
             return True
-        if "managing" in jd_text or "mentoring" in jd_text:
+            
+        # Check if JD explicitly mentions people management
+        if any(keyword in jd_text for keyword in people_management_keywords):
             return True
+            
         return False
 
     def generate_cover_letter(
@@ -1597,7 +1684,7 @@ class CoverLetterAgent:
         # Leadership blurb if leadership role or JD mentions managing/mentoring
         if self._should_include_leadership_blurb(job):
             for blurb in self.blurbs.get("leadership", []):
-                if blurb["id"] == "leadership":
+                if blurb["id"] == blurb_type:
                     cover_letter_parts.append(blurb["text"])
                     cover_letter_parts.append("")
                     break
@@ -1864,6 +1951,9 @@ class CoverLetterAgent:
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
                     tag_matches.add(tag.lower())
+                    else:
+                        # Default scoring for other matches
+                        initial_score += 2
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -1932,10 +2022,12 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # FIXED: This penalty was incorrectly applied during scoring instead of selection
+            # The penalty logic is now handled in the selection phase below
+            # # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+            #     # final_score -= 3
+            #     # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -2062,12 +2154,88 @@ class CoverLetterAgent:
         return downloaded_files
 
     def parse_job_description(self, job_text: str) -> JobDescription:
-        """Parse and analyze a job description."""
+        """Parse and analyze a job description using LLM parser."""
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("job_parsing")
 
         logger.info("Parsing job description...")
+
+        # Use LLM parser instead of manual parsing
+        from agents.job_parser_llm import JobParserLLM
+        
+        try:
+            llm_parser = JobParserLLM()
+            parsed_data = llm_parser.parse_job_description(job_text)
+            
+            # Extract information from LLM parser result
+            company_name = parsed_data.get('company_name', 'Unknown')
+            job_title = parsed_data.get('job_title', 'Product Manager')
+            inferred_level = parsed_data.get('inferred_level', 'L3')
+            inferred_role_type = parsed_data.get('inferred_role_type', 'generalist')
+            
+            # Extract keywords from LLM result
+            keywords = []
+            if 'key_requirements' in parsed_data:
+                keywords.extend(parsed_data['key_requirements'])
+            if 'required_competencies' in parsed_data:
+                keywords.extend(list(parsed_data['required_competencies'].keys()))
+            
+            # Add inferred level and role type to keywords
+            keywords.extend([inferred_level, inferred_role_type])
+            
+            # Classify job type based on inferred role type
+            job_type = inferred_role_type if inferred_role_type != 'generalist' else 'general'
+            
+            # Calculate score using existing logic
+            score = self._calculate_job_score(job_text, keywords)
+            
+            # Determine go/no-go
+            go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+            
+            # Extract additional information from LLM result
+            extracted_info = {
+                "requirements": parsed_data.get('key_requirements', []),
+                "responsibilities": [],  # LLM parser doesn't extract this separately
+                "company_info": parsed_data.get('company_info', {}),
+                "job_context": parsed_data.get('job_context', {}),
+                "inferred_level": inferred_level,
+                "inferred_role_type": inferred_role_type,
+                "required_competencies": parsed_data.get('required_competencies', {}),
+                "confidence": parsed_data.get('confidence', 0.0),
+                "notes": parsed_data.get('notes', '')
+            }
+            
+            # Evaluate job targeting
+            targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+            
+            # End performance monitoring
+            monitor.end_timer("job_parsing")
+            
+            return JobDescription(
+                raw_text=job_text,
+                company_name=company_name,
+                job_title=job_title,
+                keywords=keywords,
+                job_type=job_type,
+                score=score,
+                go_no_go=go_no_go,
+                extracted_info=extracted_info,
+                targeting=targeting,
+            )
+            
+        except Exception as e:
+            logger.warning(f"LLM parsing failed: {e}. Falling back to manual parsing.")
+            # Fallback to original manual parsing
+            return self._parse_job_description_manual(job_text)
+    
+    def _parse_job_description_manual(self, job_text: str) -> JobDescription:
+        """Original manual parsing method as fallback."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description (manual fallback)...")
 
         # Extract basic information
         company_name = self._extract_company_name(job_text)
@@ -2800,7 +2968,7 @@ class CoverLetterAgent:
         # Leadership blurb if leadership role or JD mentions managing/mentoring
         if self._should_include_leadership_blurb(job):
             for blurb in self.blurbs.get("leadership", []):
-                if blurb["id"] == "leadership":
+                if blurb["id"] == blurb_type:
                     cover_letter_parts.append(blurb["text"])
                     cover_letter_parts.append("")
                     break
@@ -3067,6 +3235,9 @@ class CoverLetterAgent:
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
                     tag_matches.add(tag.lower())
+                    else:
+                        # Default scoring for other matches
+                        initial_score += 2
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -3135,10 +3306,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -3265,12 +3436,88 @@ class CoverLetterAgent:
         return downloaded_files
 
     def parse_job_description(self, job_text: str) -> JobDescription:
-        """Parse and analyze a job description."""
+        """Parse and analyze a job description using LLM parser."""
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("job_parsing")
 
         logger.info("Parsing job description...")
+
+        # Use LLM parser instead of manual parsing
+        from agents.job_parser_llm import JobParserLLM
+        
+        try:
+            llm_parser = JobParserLLM()
+            parsed_data = llm_parser.parse_job_description(job_text)
+            
+            # Extract information from LLM parser result
+            company_name = parsed_data.get('company_name', 'Unknown')
+            job_title = parsed_data.get('job_title', 'Product Manager')
+            inferred_level = parsed_data.get('inferred_level', 'L3')
+            inferred_role_type = parsed_data.get('inferred_role_type', 'generalist')
+            
+            # Extract keywords from LLM result
+            keywords = []
+            if 'key_requirements' in parsed_data:
+                keywords.extend(parsed_data['key_requirements'])
+            if 'required_competencies' in parsed_data:
+                keywords.extend(list(parsed_data['required_competencies'].keys()))
+            
+            # Add inferred level and role type to keywords
+            keywords.extend([inferred_level, inferred_role_type])
+            
+            # Classify job type based on inferred role type
+            job_type = inferred_role_type if inferred_role_type != 'generalist' else 'general'
+            
+            # Calculate score using existing logic
+            score = self._calculate_job_score(job_text, keywords)
+            
+            # Determine go/no-go
+            go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+            
+            # Extract additional information from LLM result
+            extracted_info = {
+                "requirements": parsed_data.get('key_requirements', []),
+                "responsibilities": [],  # LLM parser doesn't extract this separately
+                "company_info": parsed_data.get('company_info', {}),
+                "job_context": parsed_data.get('job_context', {}),
+                "inferred_level": inferred_level,
+                "inferred_role_type": inferred_role_type,
+                "required_competencies": parsed_data.get('required_competencies', {}),
+                "confidence": parsed_data.get('confidence', 0.0),
+                "notes": parsed_data.get('notes', '')
+            }
+            
+            # Evaluate job targeting
+            targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+            
+            # End performance monitoring
+            monitor.end_timer("job_parsing")
+            
+            return JobDescription(
+                raw_text=job_text,
+                company_name=company_name,
+                job_title=job_title,
+                keywords=keywords,
+                job_type=job_type,
+                score=score,
+                go_no_go=go_no_go,
+                extracted_info=extracted_info,
+                targeting=targeting,
+            )
+            
+        except Exception as e:
+            logger.warning(f"LLM parsing failed: {e}. Falling back to manual parsing.")
+            # Fallback to original manual parsing
+            return self._parse_job_description_manual(job_text)
+    
+    def _parse_job_description_manual(self, job_text: str) -> JobDescription:
+        """Original manual parsing method as fallback."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description (manual fallback)...")
 
         # Extract basic information
         company_name = self._extract_company_name(job_text)
@@ -4003,7 +4250,7 @@ class CoverLetterAgent:
         # Leadership blurb if leadership role or JD mentions managing/mentoring
         if self._should_include_leadership_blurb(job):
             for blurb in self.blurbs.get("leadership", []):
-                if blurb["id"] == "leadership":
+                if blurb["id"] == blurb_type:
                     cover_letter_parts.append(blurb["text"])
                     cover_letter_parts.append("")
                     break
@@ -4270,6 +4517,9 @@ class CoverLetterAgent:
                     elif tag.lower() in key_skill_tags or tag.lower() in industry_tags:
                         initial_score += 1
                     tag_matches.add(tag.lower())
+                    else:
+                        # Default scoring for other matches
+                        initial_score += 2
             
             # Apply scoring multipliers
             final_score = initial_score
@@ -4338,10 +4588,10 @@ class CoverLetterAgent:
                 final_score -= 2
                 penalties.append("B2B mismatch")
             
-            # Penalty for redundant founding PM stories (if we already have one)
-            if cs['id'] in ['enact', 'spatialthink'] and any(other_cs['id'] in ['enact', 'spatialthink'] for other_cs in case_studies):
-                final_score -= 3
-                penalties.append("redundant founding PM")
+            # Penalty for redundant founding PM stories (if we already have one) - FIXED: Commented out during scoring
+            # if cs["id"] in ["enact", "spatialthink"] and any(other_cs["id"] in ["enact", "spatialthink"] for other_cs in case_studies):
+                # final_score -= 3
+                # penalties.append("redundant founding PM")
             
             scored.append({
                 'case_study': cs,
@@ -4468,12 +4718,88 @@ class CoverLetterAgent:
         return downloaded_files
 
     def parse_job_description(self, job_text: str) -> JobDescription:
-        """Parse and analyze a job description."""
+        """Parse and analyze a job description using LLM parser."""
         # Start performance monitoring
         monitor = get_performance_monitor()
         monitor.start_timer("job_parsing")
 
         logger.info("Parsing job description...")
+
+        # Use LLM parser instead of manual parsing
+        from agents.job_parser_llm import JobParserLLM
+        
+        try:
+            llm_parser = JobParserLLM()
+            parsed_data = llm_parser.parse_job_description(job_text)
+            
+            # Extract information from LLM parser result
+            company_name = parsed_data.get('company_name', 'Unknown')
+            job_title = parsed_data.get('job_title', 'Product Manager')
+            inferred_level = parsed_data.get('inferred_level', 'L3')
+            inferred_role_type = parsed_data.get('inferred_role_type', 'generalist')
+            
+            # Extract keywords from LLM result
+            keywords = []
+            if 'key_requirements' in parsed_data:
+                keywords.extend(parsed_data['key_requirements'])
+            if 'required_competencies' in parsed_data:
+                keywords.extend(list(parsed_data['required_competencies'].keys()))
+            
+            # Add inferred level and role type to keywords
+            keywords.extend([inferred_level, inferred_role_type])
+            
+            # Classify job type based on inferred role type
+            job_type = inferred_role_type if inferred_role_type != 'generalist' else 'general'
+            
+            # Calculate score using existing logic
+            score = self._calculate_job_score(job_text, keywords)
+            
+            # Determine go/no-go
+            go_no_go = self._evaluate_go_no_go(job_text, keywords, score)
+            
+            # Extract additional information from LLM result
+            extracted_info = {
+                "requirements": parsed_data.get('key_requirements', []),
+                "responsibilities": [],  # LLM parser doesn't extract this separately
+                "company_info": parsed_data.get('company_info', {}),
+                "job_context": parsed_data.get('job_context', {}),
+                "inferred_level": inferred_level,
+                "inferred_role_type": inferred_role_type,
+                "required_competencies": parsed_data.get('required_competencies', {}),
+                "confidence": parsed_data.get('confidence', 0.0),
+                "notes": parsed_data.get('notes', '')
+            }
+            
+            # Evaluate job targeting
+            targeting = self._evaluate_job_targeting(job_text, job_title, extracted_info)
+            
+            # End performance monitoring
+            monitor.end_timer("job_parsing")
+            
+            return JobDescription(
+                raw_text=job_text,
+                company_name=company_name,
+                job_title=job_title,
+                keywords=keywords,
+                job_type=job_type,
+                score=score,
+                go_no_go=go_no_go,
+                extracted_info=extracted_info,
+                targeting=targeting,
+            )
+            
+        except Exception as e:
+            logger.warning(f"LLM parsing failed: {e}. Falling back to manual parsing.")
+            # Fallback to original manual parsing
+            return self._parse_job_description_manual(job_text)
+    
+    def _parse_job_description_manual(self, job_text: str) -> JobDescription:
+        """Original manual parsing method as fallback."""
+        # Start performance monitoring
+        monitor = get_performance_monitor()
+        monitor.start_timer("job_parsing")
+
+        logger.info("Parsing job description (manual fallback)...")
 
         # Extract basic information
         company_name = self._extract_company_name(job_text)
@@ -5206,7 +5532,7 @@ class CoverLetterAgent:
         # Leadership blurb if leadership role or JD mentions managing/mentoring
         if self._should_include_leadership_blurb(job):
             for blurb in self.blurbs.get("leadership", []):
-                if blurb["id"] == "leadership":
+                if blurb["id"] == "cross_functional_ic":
                     cover_letter_parts.append(blurb["text"])
                     cover_letter_parts.append("")
                     break

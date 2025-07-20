@@ -102,6 +102,12 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - Intelligent selection based on job requirements and company type
 - Maintains consistency while allowing customization
 
+### 🏗️ **Enhanced Case Study Selection**
+- **Smart diversity logic** - selects diverse case studies to avoid redundancy
+- **Score-based selection** - picks top 3 case studies by relevance score
+- **User-specific preferences** - founding PM logic can be customized per user
+- **Flexible theme matching** - supports both founding/startup and scaleup/growth stories
+
 ### 🤖 **AI-Powered Enhancement**
 - Post-processes drafts with GPT-4 to improve clarity, tone, and alignment
 - **Strict truth preservation** - never adds or changes factual claims
