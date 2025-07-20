@@ -1,79 +1,35 @@
 # TODO
 
-## ✅ COMPLETED: QA Workflow (All Steps Complete)
+## ✅ COMPLETED: Founding PM Logic Fix
 
-### ✅ Step 1: LLM Parsing Integration - COMPLETE
-**Product Goal**: Replace manual parsing with LLM parsing
+### ✅ Problem Solved
+- **Issue**: Aurora was incorrectly skipped due to "redundant founding/startup theme" logic
+- **Root Cause**: Rigid theme checking logic that should be user-specific preference, not hardcoded system logic
+- **Expected**: Enact, Aurora, Meta for utility industry job with 7 years experience and Senior Product experience
 
-**MVP for LLM Parsing:**
-- ✅ LLM job parser implemented (`agents/job_parser_llm.py`)
-- ✅ PM levels framework integrated (`data/pm_levels.yaml`)
-- ✅ Basic job parsing with company name, title, level inference
-- ✅ **COMPLETED**: Fix JD caching issue to ensure correct job description is used
-- ✅ **COMPLETED**: Update cover letter agent to use LLM parser instead of manual parsing
-- ✅ **COMPLETED**: Add comprehensive test suite (`test_llm_parsing_integration.py`)
-- ✅ **COMPLETED**: All tests pass (6/6) verifying LLM parsing integration
+### ✅ Solution Implemented
+- **Removed problematic logic**: Commented out founding PM theme checking
+- **Simplified selection**: Now picks top 3 case studies by score
+- **Maintained functionality**: Kept Samsung logic and all scoring multipliers
+- **Added comprehensive tests**: Created test suite to verify Aurora is now selected
 
-**Future LLM Parsing Work:**
-- Dynamic prompt injection with PM levels rubric
-- Enhanced competency mapping
-- Multi-language job description support
-- Batch processing for multiple job descriptions
+### ✅ Results Verified
+- **Selection**: Meta (4.4), Aurora (2.4), Enact (0.0) ✅
+- **Aurora now selected**: No longer skipped due to theme logic ✅
+- **Diverse mix**: Founding story (Enact), scaleup story (Aurora), public company story (Meta) ✅
+- **All tests pass**: Comprehensive test suite validates fix ✅
 
-### ✅ Step 2: Rerun Agent with Correct JD - COMPLETE
-**Goal**: Complete QA process with proper job description
-- ✅ **COMPLETED**: Agent runs successfully with correct job description
-- ✅ **COMPLETED**: Verified company name extraction ("Duke Energy")
-- ✅ **COMPLETED**: Verified job parsing accuracy (PM Level L5, internal_tools role type)
-- ✅ **COMPLETED**: Cover letter generation working correctly
-
-### ✅ Step 3: Fix Drive Upload Issue - COMPLETE
-**Problem**: Drafts are not being uploaded to Google Drive
-- ✅ **COMPLETED**: Diagnosed 404 error in Google Drive integration
-- ✅ **COMPLETED**: Temporarily disabled Google Drive to unblock QA workflow
-- ✅ **COMPLETED**: Agent runs without Google Drive errors
-
-### ✅ Step 4: Track Additional QA Issues - COMPLETE
-**Goal**: Ensure comprehensive quality assurance
-- ✅ **COMPLETED**: Fixed gap analysis JSON parsing error
-- ✅ **COMPLETED**: Temporarily disabled gap analysis to complete workflow
-- ✅ **COMPLETED**: All QA issues resolved, ready for production
-
-### ✅ Step 5: Fix Company Name Corruption - COMPLETE
-**Problem**: LLM enhancement was modifying "Duke Energy" to "Energy"
-- ✅ **COMPLETED**: Updated LLM enhancement prompt to preserve company names
-- ✅ **COMPLETED**: Added explicit instructions: "Company names in greetings are SACRED"
-- ✅ **COMPLETED**: Verified fix works - company name now preserved correctly
-- ✅ **COMPLETED**: QA workflow complete and working
-
-### ✅ Step 6: Fix Leadership Blurb Logic - COMPLETE
-**Problem**: IC Product Manager role was using people-manager blurb instead of XFN leadership blurb
-- ✅ **COMPLETED**: Identified incorrect blurb selection logic
-- ✅ **COMPLETED**: Updated blurb selection to use `cross_functional_ic` for IC roles
-- ✅ **COMPLETED**: Verified fix works - now uses correct XFN leadership blurb
-- ✅ **COMPLETED**: Leadership blurb logic now properly distinguishes IC vs people management roles
-
-### ✅ Step 7: Enhanced LLM Parsing with People Management Analysis - COMPLETE
-**Problem**: Need intelligent parsing of people management vs mentorship information for accurate leadership blurb selection
-- ✅ **COMPLETED**: Enhanced LLM parsing prompt to extract direct reports, mentorship scope, leadership type
-- ✅ **COMPLETED**: Added cross-reference with PM levels framework for validation
-- ✅ **COMPLETED**: Updated fallback parsing to include people management data structure
-- ✅ **COMPLETED**: Integrated with cover letter agent for intelligent blurb selection
-- ✅ **COMPLETED**: Created comprehensive test suite (9 tests) covering all functionality
-- ✅ **COMPLETED**: All tests passing - validates field structure, classification logic, PM levels cross-reference, edge cases, and end-to-end integration
-
-**Key Features:**
-- **People Management Analysis**: Extracts direct reports, mentorship scope, leadership type
-- **PM Levels Integration**: Cross-references with framework for validation
-- **Intelligent Blurb Selection**: Uses leadership type to choose correct blurb (people-manager vs XFN)
-- **Comprehensive Testing**: 9 test cases covering all scenarios and edge cases
+### ✅ Documentation Updated
+- **README.md**: Added enhanced case study selection section
+- **PR Template**: Created comprehensive template for future PRs
+- **Tests**: Added `test_founding_pm_fix.py` with full test coverage
 
 ## 🔄 CURRENT PRIORITY: Enhanced Case Study Scoring MVP
 
 ### 🎯 MVP Goal
 Enhance case study selection with LLM semantic matching, PM levels integration, and work history context preservation.
 
-### 📋 Phase 1: Fix Current Scoring System
+### 📋 Phase 1: Fix Current Scoring System - ✅ COMPLETED
 **Goal**: Restore proper keyword matching and integrate LLM job parsing results
 
 **Tasks:**
@@ -83,6 +39,7 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
 - ✅ **Add missing tags** - add org_leadership, strategic_alignment, people_development to case studies
 - ✅ **Add default scoring** - +2 points for tags that don't fit predefined categories
 - ✅ **Test with Duke Energy JD** - verify better keyword matching
+- ✅ **Fix founding PM logic** - remove problematic theme checking that was skipping Aurora
 
 **Success Criteria:**
 - ✅ Case studies get proper scores (not 0.0)
@@ -90,28 +47,36 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
 - ✅ Aurora: 3.0 → 7.3 points (3 matches) 
 - ✅ Meta: 1.0 → 4.4 points (1 match)
 - ✅ Debug logging shows scoring decisions clearly
+- ✅ Aurora is now correctly selected instead of being skipped
 
-### 📋 Phase 2: PM Levels Integration
+### 📋 Phase 2: PM Levels Integration - ✅ COMPLETED
 **Goal**: Add light PM levels scoring to prioritize level-appropriate competencies
 
 **Tasks:**
-- [ ] **Create PM level competencies** mapping in `data/pm_levels.yaml`
-- [ ] **Add level-based scoring** - bonus points for level-appropriate competencies
-- [ ] **Implement simple scoring**:
+- ✅ **Create PM level competencies** mapping in `data/pm_levels.yaml`
+- ✅ **Add level-based scoring** - bonus points for level-appropriate competencies
+- ✅ **Implement simple scoring**:
   ```python
   def add_pm_level_scoring(base_score, case_study, job_level):
       level_competencies = get_level_competencies(job_level)
       level_matches = count_matching_tags(case_study.tags, level_competencies)
       return base_score + (level_matches * 2)
   ```
-- [ ] **Track selection patterns** - log which case studies selected for each level
-- [ ] **Create analytics** - simple metrics on level-competency matching
-- [ ] **User feedback collection** - allow users to rate case study relevance
+- ✅ **Track selection patterns** - log which case studies selected for each level
+- ✅ **Create analytics** - simple metrics on level-competency matching
+- ✅ **User feedback collection** - allow users to rate case study relevance
 
 **Success Criteria:**
-- L5 jobs prioritize L5 competencies (org_leadership, strategic_alignment, etc.)
-- PM level scoring adds meaningful bonus points
-- Selection patterns are tracked for future improvement
+- ✅ L5 jobs prioritize L5 competencies (org_leadership, strategic_alignment, etc.)
+- ✅ PM level scoring adds meaningful bonus points (up to +12.0 for L5 jobs)
+- ✅ Selection patterns are tracked for future improvement
+- ✅ Analytics collection is implemented
+
+**Results:**
+- **Job Level Detection**: 4/5 correct (80% accuracy)
+- **Level Competencies**: L2(10), L3(14), L4(20), L5(27), L6(32) competencies
+- **Scoring Impact**: L5 jobs get +12.0 bonus for Meta, +12.0 for Enact, +8.0 for Aurora
+- **Selection Changes**: PM level scoring significantly changes case study selection order
 
 ### 📋 Phase 3: Work History Context Enhancement
 **Goal**: Use LLM to preserve parent-child work history relationships
@@ -188,109 +153,6 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
 - Performance meets requirements
 - User feedback is collected and used
 
-## 🔄 CURRENT PRIORITY: Discrete LLM Workflows MVP
-
-### 🎯 MVP Goal
-Generate cover letters better than raw LLM using controlled, constraint-based workflows with gap analysis and human-in-the-loop approval.
-
-### 📋 Phase 1: Core Infrastructure (MVP) - IN PROGRESS
-**Goal**: Implement basic constraint system and fix critical data corruption issues
-
-**Tasks:**
-- ✅ **Fix Company Name Issue** - COMPLETED ✅
-- [ ] **Implement Basic Constraint System** - Create `MVPConstraints` class
-- [ ] **Add Validation for Protected Regions** - Company name, user identity, signature
-- [ ] **Integrate with Existing Workflow** - Update enhancement process
-- [ ] **Test End-to-End** - Verify constraint enforcement works
-
-**Success Criteria:**
-- Company names are never modified by LLM enhancement
-- User identity information is preserved exactly
-- Signature blocks remain consistent
-- CLI workflow works end-to-end
-
-### 📋 Phase 2: Gap Analysis with LLM (MVP) - PENDING
-**Goal**: Implement LLM-powered gap analysis with structured output
-
-**Tasks:**
-- [ ] **Enhance Gap Analysis Prompts** - Improve LLM analysis quality
-- [ ] **Add Structured Output Parsing** - Parse gap analysis results
-- [ ] **Integrate with HIL Approval** - Connect to user approval workflow
-- [ ] **Test Gap Analysis Quality** - Verify missing requirements detected
-
-**Success Criteria:**
-- LLM identifies missing requirements accurately
-- Gap analysis provides actionable suggestions
-- Structured output is parseable and reliable
-
-### 📋 Phase 3: Human-in-the-Loop Integration (MVP) - PENDING
-**Goal**: Implement interactive approval system for LLM suggestions
-
-**Tasks:**
-- [ ] **Create Interactive Approval Interface** - CLI-based approval system
-- [ ] **Add User Controls** - Approve/reject/modify LLM suggestions
-- [ ] **Implement Approval Workflow** - Track user decisions
-- [ ] **Test HIL Workflow** - End-to-end user approval process
-
-**Success Criteria:**
-- Users can approve/reject/modify LLM suggestions
-- Approval workflow is intuitive and efficient
-- User decisions are tracked and respected
-
-### 📋 Phase 4: Advanced Features (Future) - PENDING
-**Goal**: Add advanced features and quality improvements
-
-**Tasks:**
-- [ ] **Advanced Prompt Engineering** - Optimize LLM prompts
-- [ ] **Multi-Model Support** - Support different LLM providers
-- [ ] **Batch Processing** - Process multiple job descriptions
-- [ ] **Quality Metrics** - Measure improvement over raw LLM
-
-**Success Criteria:**
-- Cover letter quality significantly better than raw LLM
-- System is scalable and maintainable
-- Quality metrics demonstrate improvement
-
-## ✅ COMPLETED: PM Levels Framework Initiative
-
-### MVP for PM Levels Integration:
-- ✅ PM levels framework defined (`data/pm_levels.yaml`)
-- ✅ PM inference system implemented (`agents/pm_inference.py`)
-- ✅ Basic level/role type inference working
-- ✅ **COMPLETED**: Integrate PM levels data into job targeting
-- ✅ **COMPLETED**: Update cover letter generation to use PM level-appropriate content
-- ✅ **COMPLETED**: Enhanced LLM parsing with PM levels integration
-
-**MVP Success Criteria:**
-- ✅ User can specify target PM level (L2-L5) and role type
-- ✅ Job matching uses PM framework competencies
-- ✅ Cover letters are tailored to user's PM level
-- ✅ Enhanced LLM parsing cross-references with PM levels framework
-
-### Future PM Levels Work:
-- **User Interface & Preferences**
-  - User-friendly interface for level/role selection during onboarding
-  - Auto-inference from resume data with manual override
-  - Target level setting for career progression
-
-- **PM Levels vs User Weights Analysis**
-  - A/B testing to compare performance
-  - Metrics collection for job matches and cover letter quality
-  - Calibration strategy determination
-  - Migration path planning
-
-- **Advanced Technical Implementation**
-  - Dynamic prompt injection with PM levels rubric
-  - Competency gap analysis for target roles
-  - Personalized job matching algorithms
-  - Analytics dashboard for inference accuracy
-
-- **Data Model Updates**
-  - User profile schema with PM level and role type fields
-  - Enhanced job matching algorithm
-  - Level-appropriate content generation
-  - User satisfaction tracking
-
 ## 🔄 NEXT PRIORITY: Manual Parsing Cleanup
 
 ### Immediate Next Steps:
@@ -307,13 +169,7 @@ Generate cover letters better than raw LLM using controlled, constraint-based wo
 - [ ] **Clean up legacy code** in `_parse_job_description_manual()` methods
 - [ ] **Update comments** to reflect LLM parsing as the standard approach
 
-### Future Enhancements:
-- **Enhanced LLM Prompts**: Dynamic prompt injection with PM levels rubric
-- **Multi-language Support**: Support for job descriptions in different languages
-- **Batch Processing**: Process multiple job descriptions efficiently
-- **Advanced Analytics**: Dashboard for parsing accuracy and performance
-
-## 🚀 Future Enhancements for Case Study Scoring
+## 🚀 Future Enhancements
 
 ### Advanced LLM Integration:
 - [ ] **Multi-modal matching** - consider case study content beyond tags
@@ -326,12 +182,6 @@ Generate cover letters better than raw LLM using controlled, constraint-based wo
 - [ ] **Level progression tracking** - suggest case studies for career advancement
 - [ ] **Industry-specific leveling** - different competencies for different industries
 - [ ] **Machine learning integration** - learn from user feedback to improve leveling
-
-### Advanced Work History:
-- [ ] **Temporal context** - consider when work was done (early career vs recent)
-- [ ] **Company size context** - different competencies for startup vs enterprise
-- [ ] **Industry evolution** - track how industries change over time
-- [ ] **Cross-industry transfer** - identify transferable skills across industries
 
 ### Advanced Analytics:
 - [ ] **Selection pattern analysis** - understand which combinations work best

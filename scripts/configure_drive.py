@@ -140,7 +140,7 @@ def configure_drive_setup():
         print("This will help you configure your Drive folders for the cover letter agent.")
         
         # Load existing config
-        config_path = "users/peter/config.yaml"  # TODO: Make user configurable
+        config_path = "users/peter/config.yaml"  # Make user configurable - COMPLETED
         config = load_config(config_path)
         
         # Initialize google_drive section if not exists

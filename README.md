@@ -107,6 +107,17 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - **Score-based selection** - picks top 3 case studies by relevance score
 - **User-specific preferences** - founding PM logic can be customized per user
 - **Flexible theme matching** - supports both founding/startup and scaleup/growth stories
+- **PM Level Integration** - adds level-appropriate scoring bonuses for different PM levels (L2-L6)
+- **Competency-based matching** - prioritizes case studies with level-appropriate competencies
+- **Analytics tracking** - monitors selection patterns for continuous improvement
+
+### 🎯 **PM Level Integration**
+- **Level Detection** - automatically determines job level from title and keywords
+- **Competency Mapping** - comprehensive competencies for L2-L6 PM levels
+- **Scoring Multipliers** - L2(1.0x), L3(1.2x), L4(1.5x), L5(2.0x), L6(2.5x)
+- **Selection Impact** - significantly changes case study selection order based on level
+- **Pattern Tracking** - analytics on which case studies are selected for each level
+- **Future Integration** - ready for full integration into main agent workflow
 
 ### 🤖 **AI-Powered Enhancement**
 - Post-processes drafts with GPT-4 to improve clarity, tone, and alignment

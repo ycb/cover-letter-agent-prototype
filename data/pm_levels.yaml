@@ -1,141 +1,144 @@
-# ------------------------------------------------------------------------------
-# PM Leveling Framework
-#
-# This framework synthesizes the best available sources for evaluating product
-# manager seniority and competency, drawing from:
-#   - Internal leveling guides from Meta, Google, Stripe, and Amazon
-#   - Lenny Rachitsky's PM archetype and leveling work
-#   - Reforge, productladder.dev, and other open-source leveling frameworks
-#   - Practical experience from executive coaching and hiring loops
-#
-# It is designed to be:
-#   ✅ Evidence-based: Derived from real-world behavior and scope, not abstract ideals
-#   ✅ Role-sensitive: Differentiates between IC growth PMs, platform PMs, and GPMs
-#   ✅ Extensible: Supports tagging, inference, gap detection, and tone calibration
-#
-# Key differentiator: This model force-ranks the most critical competencies per level,
-# making it easier to evaluate story coverage and detect under-leveled narratives.
-# It's optimized for integration into AI-assisted story mapping, cover letter generation,
-# and PM self-assessment tools.
-# ------------------------------------------------------------------------------
-levels:
-  - level: L2
-    title: Product Manager
-    summary: Owns features or flows; works cross-functionally with support from senior PMs; focused on delivery and execution.
-    role_types: [generalist, growth, B2B, D2C, internal_tools]
-    competencies:
-      - name: execution
-        priority: 1
-        indicators:
-          - "Delivered a working feature on schedule with clearly defined requirements."
-          - "Iterated quickly based on user feedback or bugs."
-      - name: customer_empathy
-        priority: 2
-        indicators:
-          - "Synthesized user pain points through interviews or surveys."
-          - "Translated feedback into actionable improvements."
-      - name: collaboration
-        priority: 3
-        indicators:
-          - "Worked closely with design and engineering to implement scoped solutions."
-          - "Actively contributed to sprint planning or daily standups."
-      - name: decision_making
-        priority: 4
-        indicators:
-          - "Made clear tradeoffs between scope, speed, and technical debt."
-          - "Defined MVPs and managed stakeholder expectations."
-      - name: communication
-        priority: 5
-        indicators:
-          - "Wrote clear specs and kept stakeholders informed of progress."
+# PM Levels Competencies Mapping
+# Defines key competencies and skills for different Product Manager levels
+# Used to add level-appropriate scoring bonuses to case study selection
 
-  - level: L3
-    title: Senior Product Manager
-    summary: Leads cross-functional pods; owns end-to-end product lifecycle and strategy; delivers measurable business outcomes.
-    role_types: [growth, platform, ai_ml, internal_tools, B2B2C]
-    competencies:
-      - name: product_strategy
-        priority: 1
-        indicators:
-          - "Defined multi-quarter roadmap aligned to business goals."
-          - "Conducted market or cohort analysis to guide direction."
-      - name: xfn_leadership
-        priority: 2
-        indicators:
-          - "Drove alignment across eng, design, and GTM functions."
-          - "Resolved cross-team dependencies to unblock progress."
-      - name: execution_at_scale
-        priority: 3
-        indicators:
-          - "Managed multiple launches across platforms or surfaces."
-          - "Drove planning for complex technical delivery."
-      - name: data_driven_thinking
-        priority: 4
-        indicators:
-          - "Set KPIs and A/B tested improvements."
-          - "Used behavioral analytics to influence roadmap."
-      - name: communication_influence
-        priority: 5
-        indicators:
-          - "Presented roadmap to executives and secured buy-in."
+pm_levels:
+  L2:  # Associate Product Manager / Junior PM
+    name: "Associate Product Manager"
+    years_experience: "0-2 years"
+    key_competencies:
+      - "product_execution"
+      - "user_research"
+      - "data_analysis"
+      - "feature_development"
+      - "stakeholder_communication"
+      - "agile_methodologies"
+      - "user_experience"
+      - "market_research"
+      - "competitive_analysis"
+      - "product_launch"
+    
+  L3:  # Product Manager
+    name: "Product Manager"
+    years_experience: "2-5 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+    
+  L4:  # Senior Product Manager
+    name: "Senior Product Manager"
+    years_experience: "5-8 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+    
+  L5:  # Staff Product Manager
+    name: "Staff Product Manager"
+    years_experience: "8-12 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+      - "org_leadership"
+      - "strategic_alignment"
+      - "cross_org_influence"
+      - "executive_communication"
+      - "complex_problem_solving"
+      - "industry_expertise"
+      - "thought_leadership"
+    
+  L6:  # Principal Product Manager
+    name: "Principal Product Manager"
+    years_experience: "12+ years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+      - "org_leadership"
+      - "strategic_alignment"
+      - "cross_org_influence"
+      - "executive_communication"
+      - "complex_problem_solving"
+      - "industry_expertise"
+      - "thought_leadership"
+      - "company_strategy"
+      - "board_communication"
+      - "industry_thought_leadership"
+      - "complex_organizational_change"
+      - "multi_portfolio_management"
 
-  - level: L4
-    title: Staff / Principal Product Manager
-    summary: Operates at the platform or initiative level; drives systems thinking and cross-org strategy without direct reports.
-    role_types: [platform, ai_ml, data, growth, infra]
-    competencies:
-      - name: org_wide_strategy
-        priority: 1
-        indicators:
-          - "Defined product direction affecting multiple teams or business units."
-          - "Mapped roadmap to strategic company objectives."
-      - name: systems_thinking
-        priority: 2
-        indicators:
-          - "Designed extensible frameworks or shared infrastructure."
-          - "Abstracted solutions that supported scale."
-      - name: mentorship
-        priority: 3
-        indicators:
-          - "Unblocked other PMs through coaching or peer reviews."
-          - "Improved team rituals or strategic clarity."
-      - name: stakeholder_management
-        priority: 4
-        indicators:
-          - "Handled exec and legal reviews for high-risk launches."
-          - "Negotiated with external partners or senior leaders."
-      - name: narrative_thinking
-        priority: 5
-        indicators:
-          - "Built a story around vision that influenced executive prioritization."
+# Scoring multipliers for different levels
+# Higher levels get more bonus points for level-appropriate competencies
+level_scoring_multipliers:
+  L2: 1.0
+  L3: 1.2
+  L4: 1.5
+  L5: 2.0
+  L6: 2.5
 
-  - level: L5
-    title: Group Product Manager
-    summary: Manages multiple PMs or product lines; responsible for people leadership, portfolio investment, and multi-quarter vision.
-    role_types: [platform, growth, ops, enterprise, b2b2c]
-    competencies:
-      - name: org_leadership
-        priority: 1
-        indicators:
-          - "Built and scaled a high-performing PM team."
-          - "Ran hiring, leveling, and goal-setting for direct reports."
-      - name: strategic_alignment
-        priority: 2
-        indicators:
-          - "Consolidated team inputs into a unified product direction."
-          - "Led OKR and planning processes across multiple pods."
-      - name: people_development
-        priority: 3
-        indicators:
-          - "Mentored PMs through promotion or skill development."
-          - "Handled performance issues with clarity and compassion."
-      - name: cross_org_influence
-        priority: 4
-        indicators:
-          - "Collaborated across GTM, operations, and executive functions."
-          - "Influenced roadmap priorities of neighboring teams."
-      - name: portfolio_management
-        priority: 5
-        indicators:
-          - "Made tradeoffs across products based on risk, value, and effort."
-          - "Reallocated teams or budgets across bets." 
+# Default level if not specified
+default_level: "L4" 
