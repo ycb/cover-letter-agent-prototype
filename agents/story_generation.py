@@ -25,6 +25,30 @@ class GapStory:
     version: int = 1
     approved_for: List[str] = None  # job IDs where this story was approved
     metadata: Dict[str, Any] = None
+    
+    def __post_init__(self):
+        if self.approved_for is None:
+            self.approved_for = []
+        if self.metadata is None:
+            self.metadata = {}
+
+
+@dataclass
+class StorySuggestion:
+    """Represents a suggested story for filling a gap."""
+    story_id: str
+    story_text: str
+    tags: List[str]
+    match_type: str  # direct, adjacent, partial, derived
+    confidence: float  # 0.0 to 1.0
+    rationale: str
+    source: str  # existing_story, work_history, derived
+    relevance_score: float  # 0.0 to 1.0
+    metadata: Dict[str, Any] = None
+    
+    def __post_init__(self):
+        if self.metadata is None:
+            self.metadata = {}
 
 
 class StoryGenerator:
@@ -70,14 +94,327 @@ class StoryGenerator:
         except Exception as e:
             print(f"Error saving stories: {e}")
     
+    def suggest_stories_for_gap(
+        self, 
+        gap_tag: str, 
+        work_history: Optional[List[Dict]] = None,
+        existing_case_studies: Optional[List[Dict]] = None,
+        user_context: str = ""
+    ) -> List[StorySuggestion]:
+        """
+        Suggest stories for filling a specific gap.
+        
+        Args:
+            gap_tag: The gap to fill
+            work_history: User's work history and samples
+            existing_case_studies: User's existing case studies
+            user_context: Additional user context
+            
+        Returns:
+            Force-ranked list of story suggestions with confidence scores
+        """
+        suggestions = []
+        
+        # 1. Check existing gap-filling stories
+        existing_stories = self.get_stories_by_gap(gap_tag)
+        for story in existing_stories:
+            suggestion = StorySuggestion(
+                story_id=story.story_id,
+                story_text=story.story_text,
+                tags=story.tags,
+                match_type='direct',
+                confidence=0.9,  # High confidence for existing gap-fill stories
+                rationale=f"Existing story created specifically for {gap_tag} gap",
+                source='existing_story',
+                relevance_score=0.9,
+                metadata={'created_at': story.created_at, 'strategy': story.strategy}
+            )
+            suggestions.append(suggestion)
+        
+        # 2. Analyze work history for potential stories
+        if work_history:
+            work_suggestions = self._analyze_work_history_for_gap(
+                gap_tag, work_history, user_context
+            )
+            suggestions.extend(work_suggestions)
+        
+        # 3. Analyze existing case studies for reframing opportunities
+        if existing_case_studies:
+            reframe_suggestions = self._analyze_case_studies_for_reframing(
+                gap_tag, existing_case_studies
+            )
+            suggestions.extend(reframe_suggestions)
+        
+        # 4. Generate derived stories based on patterns
+        derived_suggestions = self._generate_derived_stories(
+            gap_tag, work_history or [], existing_case_studies or [], user_context
+        )
+        suggestions.extend(derived_suggestions)
+        
+        # 5. Force-rank all suggestions by confidence and relevance
+        suggestions.sort(
+            key=lambda s: (s.confidence * 0.6 + s.relevance_score * 0.4), 
+            reverse=True
+        )
+        
+        return suggestions
+    
+    def _analyze_work_history_for_gap(
+        self, 
+        gap_tag: str, 
+        work_history: List[Dict], 
+        user_context: str
+    ) -> List[StorySuggestion]:
+        """Analyze work history to find potential stories for a gap."""
+        suggestions = []
+        
+        for work_item in work_history:
+            # Check if work item has relevant tags
+            work_tags = work_item.get('tags', [])
+            
+            # Calculate match confidence
+            match_confidence = self._calculate_tag_match_confidence(gap_tag, work_tags)
+            
+            if match_confidence > 0.3:  # Only suggest if reasonably relevant
+                # Extract story from work history
+                story_text = self._extract_story_from_work_item(work_item, gap_tag)
+                
+                if story_text:
+                    suggestion = StorySuggestion(
+                        story_id=f"work_history_{work_item.get('id', 'unknown')}",
+                        story_text=story_text,
+                        tags=work_tags + [gap_tag],
+                        match_type='adjacent' if match_confidence < 0.7 else 'direct',
+                        confidence=match_confidence,
+                        rationale=f"Work history item with {len([t for t in work_tags if t in self._get_related_tags(gap_tag)])} related tags",
+                        source='work_history',
+                        relevance_score=match_confidence,
+                        metadata={
+                            'work_item_id': work_item.get('id'),
+                            'company': work_item.get('company'),
+                            'role': work_item.get('role'),
+                            'duration': work_item.get('duration')
+                        }
+                    )
+                    suggestions.append(suggestion)
+        
+        return suggestions
+    
+    def _analyze_case_studies_for_reframing(
+        self, 
+        gap_tag: str, 
+        existing_case_studies: List[Dict]
+    ) -> List[StorySuggestion]:
+        """Analyze existing case studies for reframing opportunities."""
+        suggestions = []
+        
+        for case_study in existing_case_studies:
+            case_tags = case_study.get('tags', [])
+            
+            # Check if case study could be reframed to address the gap
+            reframe_confidence = self._calculate_reframe_confidence(gap_tag, case_tags)
+            
+            if reframe_confidence > 0.4:  # Only suggest if reframing is feasible
+                reframed_story = self._reframe_case_study_for_gap(
+                    case_study, gap_tag
+                )
+                
+                if reframed_story:
+                    suggestion = StorySuggestion(
+                        story_id=f"reframe_{case_study.get('id', 'unknown')}",
+                        story_text=reframed_story,
+                        tags=case_tags + [gap_tag],
+                        match_type='partial',
+                        confidence=reframe_confidence,
+                        rationale=f"Reframed existing case study to emphasize {gap_tag} aspects",
+                        source='reframed_case_study',
+                        relevance_score=reframe_confidence,
+                        metadata={
+                            'original_case_study_id': case_study.get('id'),
+                            'reframe_strategy': 'emphasis_shift'
+                        }
+                    )
+                    suggestions.append(suggestion)
+        
+        return suggestions
+    
+    def _generate_derived_stories(
+        self, 
+        gap_tag: str, 
+        work_history: List[Dict], 
+        existing_case_studies: List[Dict], 
+        user_context: str
+    ) -> List[StorySuggestion]:
+        """Generate derived stories based on patterns and user context."""
+        suggestions = []
+        
+        # Find common patterns in user's experience
+        patterns = self._identify_experience_patterns(work_history, existing_case_studies)
+        
+        # Generate story based on patterns
+        if patterns:
+            derived_story = self._create_derived_story(gap_tag, patterns, user_context)
+            
+            if derived_story:
+                suggestion = StorySuggestion(
+                    story_id=f"derived_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                    story_text=derived_story,
+                    tags=[gap_tag] + patterns.get('common_tags', []),
+                    match_type='derived',
+                    confidence=0.6,  # Moderate confidence for derived stories
+                    rationale=f"Derived from patterns in your experience: {', '.join(patterns.get('patterns', []))}",
+                    source='derived',
+                    relevance_score=0.7,
+                    metadata={
+                        'derivation_method': 'pattern_analysis',
+                        'patterns_used': patterns.get('patterns', [])
+                    }
+                )
+                suggestions.append(suggestion)
+        
+        return suggestions
+    
+    def _calculate_tag_match_confidence(self, target_tag: str, work_tags: List[str]) -> float:
+        """Calculate confidence that work tags match the target gap tag."""
+        if target_tag in work_tags:
+            return 1.0
+        
+        # Check for related tags
+        related_tags = self._get_related_tags(target_tag)
+        matches = [tag for tag in work_tags if tag in related_tags]
+        
+        if matches:
+            return min(len(matches) * 0.3, 0.9)
+        
+        return 0.0
+    
+    def _get_related_tags(self, tag: str) -> List[str]:
+        """Get tags related to the target tag."""
+        # This would ideally come from the tag schema
+        # For now, use a simple mapping
+        related_mappings = {
+            'fintech': ['payments', 'banking', 'finance', 'compliance'],
+            'ai_ml': ['machine_learning', 'nlp', 'data_analysis', 'analytics'],
+            'growth': ['user_research', 'metrics', 'experimentation', 'retention'],
+            'leadership': ['team_lead', 'people_development', 'org_leadership'],
+            'b2b': ['enterprise', 'sales', 'partnerships', 'business_development'],
+            'b2c': ['consumer', 'user_experience', 'engagement', 'retention']
+        }
+        
+        return related_mappings.get(tag, [])
+    
+    def _extract_story_from_work_item(self, work_item: Dict, gap_tag: str) -> Optional[str]:
+        """Extract a story from a work history item."""
+        # Extract relevant information
+        company = work_item.get('company', 'Company')
+        role = work_item.get('role', 'Role')
+        description = work_item.get('description', '')
+        achievements = work_item.get('achievements', [])
+        
+        if not description and not achievements:
+            return None
+        
+        # Create story focusing on the gap tag
+        story_parts = [f"At {company}, I worked as {role}"]
+        
+        if description:
+            story_parts.append(f"where I {description}")
+        
+        if achievements:
+            relevant_achievements = [
+                achievement for achievement in achievements 
+                if gap_tag in achievement.lower() or any(tag in achievement.lower() for tag in self._get_related_tags(gap_tag))
+            ]
+            if relevant_achievements:
+                story_parts.append(f"Key achievements included: {relevant_achievements[0]}")
+        
+        return " ".join(story_parts)
+    
+    def _calculate_reframe_confidence(self, gap_tag: str, case_tags: List[str]) -> float:
+        """Calculate confidence that a case study can be reframed for a gap."""
+        # Check if case study has related tags
+        related_tags = self._get_related_tags(gap_tag)
+        matches = [tag for tag in case_tags if tag in related_tags]
+        
+        if matches:
+            return min(len(matches) * 0.2, 0.8)
+        
+        return 0.0
+    
+    def _reframe_case_study_for_gap(self, case_study: Dict, gap_tag: str) -> Optional[str]:
+        """Reframe a case study to emphasize aspects relevant to the gap."""
+        original_text = case_study.get('text', case_study.get('description', ''))
+        
+        if not original_text:
+            return None
+        
+        # Simple reframing: add emphasis on the gap tag
+        reframed = f"{original_text} This experience demonstrates my ability in {gap_tag} and related competencies."
+        
+        return reframed
+    
+    def _identify_experience_patterns(
+        self, 
+        work_history: List[Dict], 
+        existing_case_studies: List[Dict]
+    ) -> Dict[str, Any]:
+        """Identify patterns in user's experience."""
+        patterns = {
+            'common_tags': [],
+            'patterns': [],
+            'industries': [],
+            'roles': []
+        }
+        
+        # Collect all tags
+        all_tags = []
+        for work_item in work_history:
+            all_tags.extend(work_item.get('tags', []))
+        for case_study in existing_case_studies:
+            all_tags.extend(case_study.get('tags', []))
+        
+        # Find common tags
+        from collections import Counter
+        tag_counts = Counter(all_tags)
+        patterns['common_tags'] = [tag for tag, count in tag_counts.most_common(5)]
+        
+        # Identify patterns
+        if 'b2b' in all_tags and 'enterprise' in all_tags:
+            patterns['patterns'].append('enterprise_focus')
+        if 'growth' in all_tags and 'metrics' in all_tags:
+            patterns['patterns'].append('data_driven_growth')
+        if 'leadership' in all_tags and 'team_lead' in all_tags:
+            patterns['patterns'].append('leadership_experience')
+        
+        return patterns
+    
+    def _create_derived_story(self, gap_tag: str, patterns: Dict[str, Any], user_context: str) -> Optional[str]:
+        """Create a derived story based on patterns."""
+        if not patterns.get('patterns'):
+            return None
+        
+        # Create story based on patterns
+        story_parts = ["Based on my experience"]
+        
+        if 'enterprise_focus' in patterns['patterns']:
+            story_parts.append("working with enterprise customers")
+        if 'data_driven_growth' in patterns['patterns']:
+            story_parts.append("using data-driven approaches to drive growth")
+        if 'leadership_experience' in patterns['patterns']:
+            story_parts.append("leading cross-functional teams")
+        
+        story_parts.append(f"I have developed strong capabilities in {gap_tag}.")
+        
+        return " ".join(story_parts)
+    
     def create_story(
         self, 
         gap_tag: str, 
         story_text: str, 
-        tags: List[str] = None,
+        tags: Optional[List[str]] = None,
         source: str = "gap_fill",
         strategy: str = "new_story",
-        metadata: Dict[str, Any] = None
+        metadata: Optional[Dict[str, Any]] = None
     ) -> GapStory:
         """
         Create and store a new story for gap-filling.
@@ -183,9 +520,9 @@ class StoryGenerator:
     def update_story(
         self, 
         story_id: str, 
-        story_text: str = None, 
-        tags: List[str] = None,
-        metadata: Dict[str, Any] = None
+        story_text: Optional[str] = None, 
+        tags: Optional[List[str]] = None,
+        metadata: Optional[Dict[str, Any]] = None
     ) -> bool:
         """Update an existing story."""
         if story_id in self.stories:

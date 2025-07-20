@@ -597,7 +597,7 @@ class HILApprovalCLI:
     
     def _gap_fill_workflow(self, gap_tag: str, user_context: str = "") -> Dict:
         """
-        Simple gap filling workflow with template reference and manual entry.
+        Enhanced gap filling workflow with force-ranked story suggestions.
         
         Args:
             gap_tag: The gap to fill
@@ -607,9 +607,95 @@ class HILApprovalCLI:
             Generated story and metadata
         """
         print(f"\n📝 Gap Filling: {gap_tag}")
-        print(f"Creating a new case study to address this gap...")
+        print(f"Analyzing your experience to suggest stories for this gap...")
         
-        # Show template as reference
+        # Get story suggestions using the story generator
+        suggestions = self.story_generator.suggest_stories_for_gap(
+            gap_tag=gap_tag,
+            work_history=self._get_user_work_history(),
+            existing_case_studies=self._get_user_case_studies(),
+            user_context=user_context
+        )
+        
+        if not suggestions:
+            print(f"\n❌ No story suggestions found for {gap_tag}")
+            print(f"   (This may indicate limited relevant experience)")
+            return self._manual_story_creation(gap_tag, user_context)
+        
+        # Display force-ranked suggestions
+        print(f"\n🎯 Story Suggestions (Ranked by Confidence & Relevance):")
+        print(f"Found {len(suggestions)} potential stories for {gap_tag}")
+        print("=" * 60)
+        
+        for i, suggestion in enumerate(suggestions[:5], 1):  # Show top 5
+            print(f"\n{i}. {suggestion.story_text[:100]}...")
+            print(f"   Confidence: {suggestion.confidence:.1f} | Relevance: {suggestion.relevance_score:.1f}")
+            print(f"   Match Type: {suggestion.match_type} | Source: {suggestion.source}")
+            print(f"   Rationale: {suggestion.rationale}")
+            print(f"   Tags: {', '.join(suggestion.tags[:3])}...")
+        
+        # Let user choose a suggestion or create new
+        print(f"\n🤔 Choose an option:")
+        print(f"   [1-{min(len(suggestions), 5)}]: Use one of the suggestions above")
+        print(f"   [new]: Create a new custom story")
+        print(f"   [skip]: Skip story creation for now")
+        
+        choice = input("\nYour choice: ").strip().lower()
+        
+        if choice.isdigit():
+            idx = int(choice) - 1
+            if 0 <= idx < len(suggestions):
+                selected_suggestion = suggestions[idx]
+                print(f"\n✅ Using suggestion #{choice}")
+                print(f"   Story: {selected_suggestion.story_text}")
+                
+                # Save the selected suggestion as a story
+                saved_story = self.story_generator.create_story(
+                    gap_tag=gap_tag,
+                    story_text=selected_suggestion.story_text,
+                    tags=selected_suggestion.tags,
+                    source='gap_fill',
+                    strategy='suggestion_selected',
+                    metadata={
+                        'suggestion_source': selected_suggestion.source,
+                        'confidence': selected_suggestion.confidence,
+                        'match_type': selected_suggestion.match_type,
+                        'rationale': selected_suggestion.rationale,
+                        'user_context': user_context
+                    }
+                )
+                
+                return {
+                    'gap_tag': gap_tag,
+                    'story': selected_suggestion.story_text,
+                    'tags': selected_suggestion.tags,
+                    'source': 'gap_fill',
+                    'strategy': 'suggestion_selected',
+                    'confidence': selected_suggestion.confidence,
+                    'match_type': selected_suggestion.match_type,
+                    'rationale': selected_suggestion.rationale,
+                    'story_id': saved_story.story_id
+                }
+        
+        elif choice == 'new':
+            return self._manual_story_creation(gap_tag, user_context)
+        
+        else:
+            print(f"\n⏭️  Skipping story creation")
+            print(f"   (You can create this story later)")
+            return {
+                'gap_tag': gap_tag,
+                'story': "",
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'skipped',
+                'confidence': 0.0,
+                'match_type': 'none',
+                'rationale': 'User chose to skip'
+            }
+    
+    def _manual_story_creation(self, gap_tag: str, user_context: str) -> Dict:
+        """Handle manual story creation with template guidance."""
         print(f"\n📄 Story Template (for reference):")
         template = f"""
 At [Company], I led [specific {gap_tag} initiative] that [specific challenge/opportunity]. 
@@ -638,7 +724,7 @@ This experience demonstrates my ability to [key skill/competency] and [business 
             print(f"   Gap: {gap_tag}")
             print(f"   Story: {final_story[:100]}...")
             
-            # Save story using story generator (Phase 7C)
+            # Save story using story generator
             saved_story = self.story_generator.create_story(
                 gap_tag=gap_tag,
                 story_text=final_story,
@@ -653,20 +739,74 @@ This experience demonstrates my ability to [key skill/competency] and [business 
             )
             print(f"   Story ID: {saved_story.story_id}")
             print(f"   Saved to: {self.story_generator.stories_file}")
+            
+            return {
+                'gap_tag': gap_tag,
+                'story': final_story,
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'manual_entry',
+                'confidence': 0.8,  # High confidence for user-created stories
+                'match_type': 'manual',
+                'rationale': 'User-created story with template guidance',
+                'story_id': saved_story.story_id
+            }
         else:
             print(f"\n⏭️  Skipping story creation")
-            print(f"   (You can create this story later)")
-            final_story = ""
-        
-        return {
-            'gap_tag': gap_tag,
-            'story': final_story,
-            'tags': [gap_tag],
-            'source': 'gap_fill',
-            'strategy': 'manual_entry',
-            'template_used': True,
-            'web_interface_placeholder': True
-        }
+            return {
+                'gap_tag': gap_tag,
+                'story': "",
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'skipped',
+                'confidence': 0.0,
+                'match_type': 'none',
+                'rationale': 'User chose to skip'
+            }
+    
+    def _get_user_work_history(self) -> List[Dict]:
+        """Get user's work history for story suggestions."""
+        # This would ideally load from user's profile
+        # For now, return a sample work history
+        return [
+            {
+                'id': 'work_1',
+                'company': 'Aurora Solar',
+                'role': 'Senior Product Manager',
+                'duration': '2 years',
+                'description': 'Led platform rebuild and scaling initiatives',
+                'tags': ['growth', 'b2b', 'scaling', 'platform'],
+                'achievements': ['Increased user engagement by 40%', 'Reduced churn by 25%']
+            },
+            {
+                'id': 'work_2',
+                'company': 'Enact',
+                'role': 'Product Manager',
+                'duration': '1.5 years',
+                'description': 'Led 0-to-1 product development for energy management',
+                'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
+                'achievements': ['Launched MVP in 6 months', 'Achieved 10K+ users']
+            }
+        ]
+    
+    def _get_user_case_studies(self) -> List[Dict]:
+        """Get user's existing case studies for reframing suggestions."""
+        # This would ideally load from user's case studies
+        # For now, return sample case studies
+        return [
+            {
+                'id': 'enact',
+                'name': 'Enact 0 to 1 Case Study',
+                'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
+                'text': 'Led cross-functional team from 0-1 to improve home energy management'
+            },
+            {
+                'id': 'aurora',
+                'name': 'Aurora Solar Growth Case Study',
+                'tags': ['growth', 'b2b', 'clean_energy', 'scaling'],
+                'text': 'Helped scale company from Series A to Series C, leading platform rebuild'
+            }
+        ]
 
 
 def test_hil_approval_cli():
