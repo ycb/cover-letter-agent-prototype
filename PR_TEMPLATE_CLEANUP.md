@@ -140,7 +140,7 @@ This PR implements comprehensive cleanup across all three phases, transforming t
 
 ## 🔄 Next Steps
 
-- **Phase 6**: Human-in-the-Loop (HLI) System (ready to proceed)
+- **Phase 6**: Human-in-the-Loop (HIL) System (ready to proceed)
 - **Phase 7**: Gap Detection & Gap-Filling (ready to proceed)
 - **Production Deployment**: Web interface and user management
 - **Advanced Features**: Multi-modal matching, dynamic prompts
