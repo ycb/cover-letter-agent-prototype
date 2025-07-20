@@ -42,7 +42,7 @@ class HybridSelectionResult:
     stage1_time: float
     stage2_time: float
     fallback_used: bool = False
-    confidence_threshold: float = 3.0  # Lower threshold for testing
+    confidence_threshold: float = 1.0  # Lower threshold for rule of three
 
 
 class HybridCaseStudySelector:
@@ -158,7 +158,7 @@ class HybridCaseStudySelector:
         )
         
         # Apply confidence threshold and select top 3
-        threshold_candidates = [r for r in ranked_scores if r.score >= 3.0][:3]  # Lower threshold for testing
+        threshold_candidates = [r for r in ranked_scores if r.score >= 1.0][:3]  # Lower threshold for rule of three
         selected_case_studies = [score.case_study for score in threshold_candidates]
         
         return selected_case_studies, ranked_scores
