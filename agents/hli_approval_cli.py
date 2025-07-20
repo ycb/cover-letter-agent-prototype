@@ -35,10 +35,27 @@ class HLIApproval:
     llm_score: Optional[float] = None
     llm_reason: Optional[str] = None
     timestamp: Optional[str] = None
+    # Enhanced feedback fields
+    ranking_discrepancy: Optional[float] = None  # Difference between user and LLM scores
+    llm_rank: Optional[int] = None  # LLM's ranking position
+    user_rank: Optional[int] = None  # User's ranking position
+    discrepancy_type: Optional[str] = None  # "user_higher", "llm_higher", "aligned"
     
     def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now().isoformat()
+        
+        # Calculate ranking discrepancy if both scores are available
+        if self.llm_score is not None and self.user_score is not None:
+            self.ranking_discrepancy = self.user_score - (self.llm_score * 10 / 10)  # Normalize LLM score to 1-10 scale
+            
+            # Determine discrepancy type
+            if abs(self.ranking_discrepancy) <= 1.0:
+                self.discrepancy_type = "aligned"
+            elif self.ranking_discrepancy > 1.0:
+                self.discrepancy_type = "user_higher"
+            else:
+                self.discrepancy_type = "llm_higher"
 
 
 @dataclass
@@ -101,9 +118,20 @@ class HLIApprovalCLI:
         feedback_list = []
         reviewed_case_studies = set()
         
+        # Track rankings for discrepancy analysis
+        llm_rankings = {}
+        user_rankings = {}
+        
+        # Build LLM rankings from all_ranked_candidates
+        if all_ranked_candidates:
+            for i, candidate in enumerate(all_ranked_candidates):
+                candidate_id = candidate.get('id', candidate.get('name', 'unknown'))
+                llm_rankings[candidate_id] = i + 1
+        
         # Start with the initial selected case studies
         current_candidates = selected_case_studies.copy()
         candidate_index = 0
+        user_rank_counter = 1
         
         while candidate_index < len(current_candidates):
             case_study = current_candidates[candidate_index]
@@ -126,6 +154,8 @@ class HLIApprovalCLI:
             # Show LLM score if available
             if 'llm_score' in case_study:
                 print(f"\n🤖 LLM Score: {case_study['llm_score']:.1f}")
+                if case_study_id in llm_rankings:
+                    print(f"LLM Rank: #{llm_rankings[case_study_id]}")
             if 'reasoning' in case_study:
                 print(f"LLM Reason: {case_study['reasoning']}")
             
@@ -135,7 +165,11 @@ class HLIApprovalCLI:
             # comments = self._get_user_comments()  # Commented out for MVP - too much complexity
             comments = None  # Set to None for MVP
             
-            # Create feedback object
+            # Track user ranking
+            user_rankings[case_study_id] = user_rank_counter
+            user_rank_counter += 1
+            
+            # Create feedback object with enhanced tracking
             feedback = HLIApproval(
                 job_id=job_id,
                 case_study_id=case_study_id,
@@ -143,11 +177,17 @@ class HLIApprovalCLI:
                 user_score=user_score,
                 comments=comments,
                 llm_score=case_study.get('llm_score'),
-                llm_reason=case_study.get('reasoning')
+                llm_reason=case_study.get('reasoning'),
+                llm_rank=llm_rankings.get(case_study_id),
+                user_rank=user_rankings.get(case_study_id)
             )
             
             feedback_list.append(feedback)
             reviewed_case_studies.add(case_study_id)
+            
+            # Show ranking discrepancy insights
+            if feedback.ranking_discrepancy is not None:
+                self._show_ranking_insight(feedback)
             
             if approved:
                 approved_case_studies.append(case_study)
@@ -177,6 +217,9 @@ class HLIApprovalCLI:
         
         # Save feedback
         self._save_feedback(feedback_list)
+        
+        # Generate session insights
+        self._generate_session_insights(feedback_list, job_id)
         
         print(f"\n📊 Approval Summary:")
         print(f"  Total reviewed: {len(feedback_list)}")
@@ -312,6 +355,60 @@ class HLIApprovalCLI:
             if candidate_id not in reviewed_case_studies:
                 return candidate
         return None
+
+    def _show_ranking_insight(self, feedback: HLIApproval) -> None:
+        """Show insights about ranking discrepancies."""
+        if feedback.ranking_discrepancy is None:
+            return
+            
+        if feedback.discrepancy_type == "user_higher":
+            print(f"💡 Insight: You rated this {abs(feedback.ranking_discrepancy):.1f} points higher than the AI")
+            print(f"   This suggests the AI may be undervaluing certain aspects of this case study")
+        elif feedback.discrepancy_type == "llm_higher":
+            print(f"💡 Insight: The AI rated this {abs(feedback.ranking_discrepancy):.1f} points higher than you")
+            print(f"   This suggests the AI may be overvaluing certain aspects of this case study")
+        else:
+            print(f"✅ Alignment: Your rating closely matches the AI's assessment")
+
+    def _generate_session_insights(self, feedback_list: List[HLIApproval], job_id: str) -> None:
+        """Generate insights from the entire session."""
+        if not feedback_list:
+            return
+        
+        # Calculate session statistics
+        total_discrepancies = [f.ranking_discrepancy for f in feedback_list if f.ranking_discrepancy is not None]
+        user_higher_count = len([f for f in feedback_list if f.discrepancy_type == "user_higher"])
+        llm_higher_count = len([f for f in feedback_list if f.discrepancy_type == "llm_higher"])
+        aligned_count = len([f for f in feedback_list if f.discrepancy_type == "aligned"])
+        
+        if total_discrepancies:
+            avg_discrepancy = sum(total_discrepancies) / len(total_discrepancies)
+            
+            print(f"\n📈 Session Insights:")
+            print(f"  Average ranking discrepancy: {avg_discrepancy:.1f} points")
+            print(f"  User rated higher: {user_higher_count} cases")
+            print(f"  AI rated higher: {llm_higher_count} cases")
+            print(f"  Aligned ratings: {aligned_count} cases")
+            
+            # Save session insights
+            session_insights = {
+                "job_id": job_id,
+                "timestamp": datetime.now().isoformat(),
+                "total_reviewed": len(feedback_list),
+                "avg_discrepancy": avg_discrepancy,
+                "user_higher_count": user_higher_count,
+                "llm_higher_count": llm_higher_count,
+                "aligned_count": aligned_count,
+                "feedback_details": [asdict(f) for f in feedback_list]
+            }
+            
+            insights_file = f"users/{self.user_profile}/session_insights.jsonl"
+            try:
+                with open(insights_file, 'a') as f:
+                    f.write(json.dumps(session_insights) + '\n')
+                logger.info(f"Saved session insights to {insights_file}")
+            except Exception as e:
+                self.error_handler.handle_error(e, "save_session_insights", {"job_id": job_id})
 
 
 def test_hli_approval_cli():
