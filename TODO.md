@@ -31,12 +31,14 @@ Deliver a fully interactive, intelligent gap detection and gap-filling workflow,
 - ✅ **Tests for ranking and scoring**: Validate ranking and scoring logic
 - **Success Criteria:** ✅ User sees a ranked list of suggested stories with confidence scores
 
-### **Phase 8E: Rationale & Adjacency Surfacing - ⚠️ PARTIAL**
-- ✅ **ContentMatch class**: Has rationale and match_type fields
-- ⚠️ **Display rationale in CLI**: Basic rationale exists but not fully surfaced
-- [ ] **Enhance rationale display**: Show why each story is suggested in CLI
-- [ ] **Tests for rationale surfacing**: Ensure rationale is present and accurate
-- **Success Criteria:** User sees clear rationale and match type for each suggestion
+### **Phase 8E: Rationale & Adjacency Surfacing - ✅ COMPLETED**
+- ✅ **ContentMatch class**: Enhanced with rationale and match_type fields
+- ✅ **Enhanced rationale display**: Show why each story is suggested in CLI
+- ✅ **Adjacency explanations**: Detailed explanations of tag relationships
+- ✅ **Coverage strength analysis**: strong, moderate, weak coverage assessment
+- ✅ **Relationship type classification**: direct, indirect, pattern-based relationships
+- ✅ **Tests for rationale surfacing**: Ensure rationale is present and accurate
+- **Success Criteria:** ✅ User sees clear rationale and match type for each suggestion
 
 ### **Phase 8F: User Feedback on Gap-Filling - ❌ MISSING**
 - ❌ **Structured feedback capture**: No feedback system for gap-filling stories
