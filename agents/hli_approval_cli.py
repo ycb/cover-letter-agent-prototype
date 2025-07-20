@@ -73,15 +73,18 @@ class HLIApprovalCLI:
         self, 
         selected_case_studies: List[Dict[str, Any]], 
         job_description: str,
-        job_id: str
+        job_id: str,
+        all_ranked_candidates: Optional[List[Dict[str, Any]]] = None
     ) -> Tuple[List[Dict[str, Any]], List[HLIApproval]]:
         """
         Presents selected case studies via CLI for user approval.
+        When user rejects a case study, shows the next highest scored alternative.
         
         Args:
-            selected_case_studies: List of case studies to review
+            selected_case_studies: Initial list of case studies to review
             job_description: Job description for context
             job_id: Unique job identifier
+            all_ranked_candidates: Full ranked list of all candidates for alternatives
             
         Returns:
             Tuple of (approved_case_studies, feedback_list)
@@ -89,14 +92,29 @@ class HLIApprovalCLI:
         print(f"\n🎯 Human-in-the-Loop Approval")
         print(f"Job: {job_id}")
         print(f"Description: {job_description[:100]}...")
-        print(f"Case studies to review: {len(selected_case_studies)}")
+        print(f"Initial case studies to review: {len(selected_case_studies)}")
+        if all_ranked_candidates:
+            print(f"Total ranked candidates available: {len(all_ranked_candidates)}")
         print("=" * 50)
         
         approved_case_studies = []
         feedback_list = []
+        reviewed_case_studies = set()
         
-        for i, case_study in enumerate(selected_case_studies, 1):
-            print(f"\n📋 Case Study {i}/{len(selected_case_studies)}")
+        # Start with the initial selected case studies
+        current_candidates = selected_case_studies.copy()
+        candidate_index = 0
+        
+        while candidate_index < len(current_candidates):
+            case_study = current_candidates[candidate_index]
+            case_study_id = case_study.get('id', case_study.get('name', 'unknown'))
+            
+            # Skip if already reviewed
+            if case_study_id in reviewed_case_studies:
+                candidate_index += 1
+                continue
+            
+            print(f"\n📋 Case Study {len(feedback_list) + 1}")
             print(f"Name: {case_study.get('name', case_study.get('id', 'Unknown'))}")
             print(f"Tags: {', '.join(case_study.get('tags', []))}")
             
@@ -120,7 +138,7 @@ class HLIApprovalCLI:
             # Create feedback object
             feedback = HLIApproval(
                 job_id=job_id,
-                case_study_id=case_study.get('id', case_study.get('name', 'unknown')),
+                case_study_id=case_study_id,
                 approved=approved,
                 user_score=user_score,
                 comments=comments,
@@ -129,20 +147,41 @@ class HLIApprovalCLI:
             )
             
             feedback_list.append(feedback)
+            reviewed_case_studies.add(case_study_id)
             
             if approved:
                 approved_case_studies.append(case_study)
                 print(f"✅ Approved case study: {case_study.get('name', case_study.get('id'))}")
+                candidate_index += 1
             else:
                 print(f"❌ Rejected case study: {case_study.get('name', case_study.get('id'))}")
+                
+                # If we have more ranked candidates, show the next best one
+                if all_ranked_candidates:
+                    next_candidate = self._get_next_best_candidate(
+                        all_ranked_candidates, 
+                        reviewed_case_studies,
+                        approved_case_studies
+                    )
+                    
+                    if next_candidate:
+                        print(f"\n🔄 Showing next best alternative...")
+                        # Replace current candidate with next best
+                        current_candidates[candidate_index] = next_candidate
+                        continue  # Review the new candidate
+                    else:
+                        print(f"\n⚠️  No more high-scoring alternatives available.")
+                        candidate_index += 1
+                else:
+                    candidate_index += 1
         
         # Save feedback
         self._save_feedback(feedback_list)
         
         print(f"\n📊 Approval Summary:")
-        print(f"  Total reviewed: {len(selected_case_studies)}")
+        print(f"  Total reviewed: {len(feedback_list)}")
         print(f"  Approved: {len(approved_case_studies)}")
-        print(f"  Rejected: {len(selected_case_studies) - len(approved_case_studies)}")
+        print(f"  Rejected: {len(feedback_list) - len(approved_case_studies)}")
         
         return approved_case_studies, feedback_list
     
@@ -260,6 +299,19 @@ class HLIApprovalCLI:
             suggestions.append("Consider adding technical implementation details")
         
         return suggestions
+
+    def _get_next_best_candidate(
+        self, 
+        all_ranked_candidates: List[Dict[str, Any]], 
+        reviewed_case_studies: set,
+        approved_case_studies: List[Dict[str, Any]]
+    ) -> Optional[Dict[str, Any]]:
+        """Get the next best candidate that hasn't been reviewed yet."""
+        for candidate in all_ranked_candidates:
+            candidate_id = candidate.get('id', candidate.get('name', 'unknown'))
+            if candidate_id not in reviewed_case_studies:
+                return candidate
+        return None
 
 
 def test_hli_approval_cli():
