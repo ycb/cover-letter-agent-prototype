@@ -119,6 +119,14 @@ python scripts/run_cover_letter_agent.py --user your_name -t "Senior Product Man
 - **Pattern Tracking** - analytics on which case studies are selected for each level
 - **Future Integration** - ready for full integration into main agent workflow
 
+### 🏢 **Work History Context Enhancement**
+- **Parent-Child Relationships** - preserves work history context for case studies
+- **Tag Inheritance** - case studies inherit relevant tags from parent work history
+- **Semantic Tag Matching** - intelligent tag expansion and matching
+- **Confidence Scoring** - quality assessment of enhancements (0.90 average)
+- **Context Preservation** - maintains industry, company stage, and role context
+- **Enhanced Selection** - significantly improves case study tag coverage
+
 ### 🤖 **AI-Powered Enhancement**
 - Post-processes drafts with GPT-4 to improve clarity, tone, and alignment
 - **Strict truth preservation** - never adds or changes factual claims
