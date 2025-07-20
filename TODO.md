@@ -195,14 +195,81 @@ Enhance case study selection with LLM semantic matching, PM levels integration, 
   Assume they were responsible for strategy and execution."
   ```
 
-### Advanced PM Levels:
-- [ ] **Competency gap analysis** - identify missing competencies for target level
-- [ ] **Level progression tracking** - suggest case studies for career advancement
-- [ ] **Industry-specific leveling** - different competencies for different industries
-- [ ] **Machine learning integration** - learn from user feedback to improve leveling
+### **🔧 Phase 6: Human-in-the-Loop (HLI) System**
+**Goal**: Modular system for approval and refinement after LLM output
 
-### Advanced Analytics:
-- [ ] **Selection pattern analysis** - understand which combinations work best
-- [ ] **A/B testing framework** - test different scoring algorithms
-- [ ] **Predictive modeling** - predict which case studies will be most effective
-- [ ] **User behavior analysis** - learn from how users interact with selections 
+**Tasks:**
+- [ ] **HLI Approval Module**:
+  ```python
+  def hli_approval(selected_case_studies, job_description):
+      # Present case studies to human for approval
+      # Allow selection/deselection of case studies
+      # Collect feedback on relevance and quality
+      return approved_case_studies, feedback
+  ```
+- [ ] **Refinement Interface**:
+  ```python
+  def hli_refinement(case_study, feedback):
+      # Allow human to refine case study details
+      # Update tags, descriptions, or relevance scores
+      # Track changes for learning
+      return refined_case_study
+  ```
+- [ ] **Feedback Collection**:
+  - Relevance scoring (1-10)
+  - Quality assessment
+  - Improvement suggestions
+  - Learning data for future improvements
+- [ ] **Approval Workflow**:
+  - Present top 3 case studies to user
+  - Allow selection of 1-3 case studies
+  - Collect reasoning for selections
+  - Store feedback for training
+
+**Success Criteria:**
+- Human can approve/reject case studies
+- Refinement interface is intuitive
+- Feedback is collected and stored
+- System learns from human input
+- Approval workflow is streamlined
+
+### **🔧 Phase 7: Gap Detection & Gap-Filling**
+**Goal**: Identify missing case studies and suggest gap-filling strategies
+
+**Tasks:**
+- [ ] **Gap Detection Logic**:
+  ```python
+  def detect_gaps(job_requirements, available_case_studies):
+      # Identify missing skills, industries, or experiences
+      # Score gaps by importance and frequency
+      # Prioritize gaps for filling
+      return gap_analysis, priority_gaps
+  ```
+- [ ] **Gap Analysis**:
+  - **Skill gaps**: Missing technical or soft skills
+  - **Industry gaps**: Missing industry experience
+  - **Level gaps**: Missing seniority/leadership experience
+  - **Company stage gaps**: Missing startup/enterprise experience
+- [ ] **Gap-Filling Strategies**:
+  ```python
+  def suggest_gap_filling(gaps, user_profile):
+      # Suggest new case studies to create
+      # Recommend experiences to highlight
+      # Provide templates for gap-filling
+      return gap_filling_plan
+  ```
+- [ ] **Gap Prioritization**:
+  - High priority: Critical skills for job requirements
+  - Medium priority: Nice-to-have experiences
+  - Low priority: Optional or rare requirements
+- [ ] **Gap Templates**:
+  - Case study templates for common gaps
+  - Experience highlighting strategies
+  - Story development guidance
+
+**Success Criteria:**
+- Accurately identifies missing requirements
+- Prioritizes gaps by importance
+- Provides actionable gap-filling strategies
+- Integrates with case study creation workflow
+- Improves overall case study coverage 

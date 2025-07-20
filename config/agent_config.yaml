@@ -1,0 +1,63 @@
+# Cover Letter Agent Configuration
+# ================================
+
+# Hybrid Case Study Selection
+hybrid_selection:
+  max_llm_candidates: 10
+  confidence_threshold: 1.0  # Rule of three threshold
+  llm_cost_per_call: 0.01
+  max_total_time: 2.0  # seconds
+  max_cost_per_application: 0.10  # dollars
+
+# Work History Context Enhancement
+work_history:
+  suppressed_inheritance_tags:
+    - frontend
+    - backend
+    - mobile
+    - web
+    - marketing
+    - sales
+    - finance
+    - hr
+    - legal
+    - operations
+    - support
+    - customer_service
+    - design
+    - ux
+    - ui
+    - graphic_design
+    - content
+    - copywriting
+    - social_media
+    - seo
+    - ppc
+    - advertising
+    - pr
+    - communications
+  
+  tag_weights:
+    direct: 1.0
+    inherited: 0.6
+    semantic: 0.8
+
+# End-to-End Testing
+testing:
+  performance_threshold: 2.0  # seconds
+  cost_threshold: 0.10  # dollars
+  confidence_threshold: 0.7
+  success_rate_threshold: 0.8
+
+# Logging
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/cover_letter_agent.log"
+
+# File Paths
+paths:
+  work_history: "users/peter/work_history.yaml"
+  case_studies: "data/case_studies.yaml"
+  logs: "logs/"
+  config: "config/" 

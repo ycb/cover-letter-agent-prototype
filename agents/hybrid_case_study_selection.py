@@ -14,6 +14,13 @@ import logging
 from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
 import time
+import sys
+import os
+
+# Add utils to path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.config_manager import ConfigManager
+from utils.error_handler import ErrorHandler, safe_execute, CoverLetterAgentError, CaseStudySelectionError
 
 logger = logging.getLogger(__name__)
 
@@ -48,11 +55,21 @@ class HybridSelectionResult:
 class HybridCaseStudySelector:
     """Hybrid case study selector with tag filtering + LLM semantic scoring."""
     
-    def __init__(self, llm_enabled: bool = True, max_llm_candidates: int = 10):
+    def __init__(self, llm_enabled: bool = True, max_llm_candidates: int = None):
         """Initialize the hybrid selector."""
+        self.config_manager = ConfigManager()
+        self.error_handler = ErrorHandler()
+        
+        # Load configuration
+        hybrid_config = self.config_manager.get_hybrid_selection_config()
+        
         self.llm_enabled = llm_enabled
-        self.max_llm_candidates = max_llm_candidates
-        self.llm_cost_per_call = 0.01  # Estimated cost per LLM call
+        self.max_llm_candidates = max_llm_candidates or hybrid_config.get('max_llm_candidates', 10)
+        self.llm_cost_per_call = hybrid_config.get('llm_cost_per_call', 0.01)
+        self.max_total_time = hybrid_config.get('max_total_time', 2.0)
+        self.max_cost_per_application = hybrid_config.get('max_cost_per_application', 0.10)
+        
+        logger.info(f"HybridCaseStudySelector initialized with max_candidates={self.max_llm_candidates}")
         
     def select_case_studies(
         self, 
@@ -61,53 +78,95 @@ class HybridCaseStudySelector:
         job_level: Optional[str] = None,
         job_description: Optional[str] = None
     ) -> HybridSelectionResult:
-        """Select case studies using hybrid approach."""
+        """Select case studies using hybrid approach with error handling."""
         start_time = time.time()
         
-        # Stage 1: Fast tag-based filtering
-        stage1_start = time.time()
-        candidates = self._stage1_tag_filtering(case_studies, job_keywords)
-        stage1_time = time.time() - stage1_start
-        
-        logger.info(f"Stage 1: {len(candidates)} candidates from {len(case_studies)} case studies")
-        
-        # Stage 2: LLM semantic scoring (if enabled and candidates available)
-        stage2_start = time.time()
-        if self.llm_enabled and candidates and len(candidates) > 1:
-            try:
-                selected, ranked_scores = self._stage2_llm_scoring(
-                    candidates[:self.max_llm_candidates], 
-                    job_keywords, 
-                    job_level, 
-                    job_description
+        try:
+            # Validate inputs
+            if not case_studies:
+                raise CaseStudySelectionError("No case studies provided", "select_case_studies")
+            if not job_keywords:
+                raise CaseStudySelectionError("No job keywords provided", "select_case_studies")
+            
+            # Stage 1: Fast tag-based filtering
+            stage1_start = time.time()
+            candidates = safe_execute(
+                self._stage1_tag_filtering, 
+                "stage1_tag_filtering", 
+                self.error_handler,
+                case_studies, 
+                job_keywords
+            )
+            stage1_time = time.time() - stage1_start
+            
+            logger.info(f"Stage 1: {len(candidates)} candidates from {len(case_studies)} case studies")
+            
+            # Stage 2: LLM semantic scoring (if enabled and candidates available)
+            stage2_start = time.time()
+            if self.llm_enabled and candidates and len(candidates) > 1:
+                try:
+                    selected, ranked_scores = safe_execute(
+                        self._stage2_llm_scoring,
+                        "stage2_llm_scoring",
+                        self.error_handler,
+                        candidates[:self.max_llm_candidates], 
+                        job_keywords, 
+                        job_level, 
+                        job_description
+                    )
+                    fallback_used = False
+                except Exception as e:
+                    logger.warning(f"LLM scoring failed, using fallback: {e}")
+                    selected = safe_execute(
+                        self._fallback_selection,
+                        "fallback_selection", 
+                        self.error_handler,
+                        candidates
+                    )
+                    ranked_scores = []
+                    fallback_used = True
+            else:
+                # Use fallback if LLM disabled or insufficient candidates
+                selected = safe_execute(
+                    self._fallback_selection,
+                    "fallback_selection",
+                    self.error_handler,
+                    candidates
                 )
-                fallback_used = False
-            except Exception as e:
-                logger.warning(f"LLM scoring failed, using fallback: {e}")
-                selected = self._fallback_selection(candidates)
+                ranked_scores = []
                 fallback_used = True
-        else:
-            # Use fallback if LLM disabled or insufficient candidates
-            selected = self._fallback_selection(candidates)
-            fallback_used = True
-        
-        stage2_time = time.time() - stage2_start
-        total_time = time.time() - start_time
-        
-        # Estimate LLM cost
-        llm_cost = self._estimate_llm_cost(len(candidates[:self.max_llm_candidates]))
-        
-        return HybridSelectionResult(
-            selected_case_studies=selected,
-            ranked_candidates=ranked_scores, # Placeholder, will be populated by _stage2_llm_scoring
-            stage1_candidates=len(candidates),
-            stage2_scored=min(len(candidates), self.max_llm_candidates),
-            llm_cost_estimate=llm_cost,
-            total_time=total_time,
-            stage1_time=stage1_time,
-            stage2_time=stage2_time,
-            fallback_used=fallback_used
-        )
+            
+            stage2_time = time.time() - stage2_start
+            total_time = time.time() - start_time
+            
+            # Validate performance and cost
+            if total_time > self.max_total_time:
+                logger.warning(f"Total time {total_time:.3f}s exceeds threshold {self.max_total_time}s")
+            
+            # Estimate LLM cost
+            llm_cost = self._estimate_llm_cost(len(candidates[:self.max_llm_candidates]))
+            if llm_cost > self.max_cost_per_application:
+                logger.warning(f"LLM cost ${llm_cost:.3f} exceeds threshold ${self.max_cost_per_application}")
+            
+            return HybridSelectionResult(
+                selected_case_studies=selected,
+                ranked_candidates=ranked_scores,
+                stage1_candidates=len(candidates),
+                stage2_scored=min(len(candidates), self.max_llm_candidates),
+                llm_cost_estimate=llm_cost,
+                total_time=total_time,
+                stage1_time=stage1_time,
+                stage2_time=stage2_time,
+                fallback_used=fallback_used
+            )
+            
+        except Exception as e:
+            self.error_handler.handle_error(e, "select_case_studies", {
+                "case_studies_count": len(case_studies),
+                "job_keywords": job_keywords,
+                "job_level": job_level
+            })
+            raise
     
     def _stage1_tag_filtering(
         self, 
