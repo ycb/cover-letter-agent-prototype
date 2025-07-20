@@ -19,9 +19,22 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
+class CaseStudyScore:
+    """Represents a scored case study with explanation."""
+    case_study: Dict[str, Any]
+    score: float
+    confidence: float
+    reasoning: str
+    stage1_score: int
+    level_bonus: float = 0.0
+    industry_bonus: float = 0.0
+
+
+@dataclass
 class HybridSelectionResult:
     """Represents the result of hybrid case study selection."""
     selected_case_studies: List[Dict[str, Any]]
+    ranked_candidates: List[CaseStudyScore]
     stage1_candidates: int
     stage2_scored: int
     llm_cost_estimate: float
@@ -29,6 +42,7 @@ class HybridSelectionResult:
     stage1_time: float
     stage2_time: float
     fallback_used: bool = False
+    confidence_threshold: float = 3.0  # Lower threshold for testing
 
 
 class HybridCaseStudySelector:
@@ -61,7 +75,7 @@ class HybridCaseStudySelector:
         stage2_start = time.time()
         if self.llm_enabled and candidates and len(candidates) > 1:
             try:
-                selected = self._stage2_llm_scoring(
+                selected, ranked_scores = self._stage2_llm_scoring(
                     candidates[:self.max_llm_candidates], 
                     job_keywords, 
                     job_level, 
@@ -85,6 +99,7 @@ class HybridCaseStudySelector:
         
         return HybridSelectionResult(
             selected_case_studies=selected,
+            ranked_candidates=ranked_scores, # Placeholder, will be populated by _stage2_llm_scoring
             stage1_candidates=len(candidates),
             stage2_scored=min(len(candidates), self.max_llm_candidates),
             llm_cost_estimate=llm_cost,
@@ -126,10 +141,10 @@ class HybridCaseStudySelector:
         job_keywords: List[str], 
         job_level: Optional[str], 
         job_description: Optional[str]
-    ) -> List[Dict[str, Any]]:
-        """Stage 2: LLM semantic scoring for top candidates."""
+    ) -> Tuple[List[Dict[str, Any]], List[CaseStudyScore]]:
+        """Stage 2: LLM semantic scoring for top candidates with explanations."""
         if not candidates:
-            return []
+            return [], []
         
         # Create semantic scoring prompt
         prompt = self._create_semantic_scoring_prompt(
@@ -138,10 +153,15 @@ class HybridCaseStudySelector:
         
         # TODO: Implement actual LLM call
         # For now, simulate LLM scoring with enhanced tag matching
-        scored_candidates = self._simulate_llm_scoring(candidates, job_keywords, job_level)
+        scored_candidates, ranked_scores = self._simulate_llm_scoring_with_explanations(
+            candidates, job_keywords, job_level, job_description
+        )
         
-        # Select top 3
-        return scored_candidates[:3]
+        # Apply confidence threshold and select top 3
+        threshold_candidates = [r for r in ranked_scores if r.score >= 3.0][:3]  # Lower threshold for testing
+        selected_case_studies = [score.case_study for score in threshold_candidates]
+        
+        return selected_case_studies, ranked_scores
     
     def _create_semantic_scoring_prompt(
         self, 
@@ -197,24 +217,56 @@ Provide your analysis in JSON format:
             
             # Level-based scoring
             level_bonus = 0
+            level_reasoning = ""
             if job_level:
                 if job_level == 'L5' and 'leadership' in case_study.get('tags', []):
                     level_bonus = 2
+                    level_reasoning = "Strong leadership experience matches L5 role requirements."
                 elif job_level == 'L4' and 'growth' in case_study.get('tags', []):
                     level_bonus = 1.5
+                    level_reasoning = "Growth experience aligns with L4 product manager role."
                 elif job_level == 'L3' and 'product' in case_study.get('tags', []):
                     level_bonus = 1
+                    level_reasoning = "Product experience suitable for L3 role."
             
             # Industry alignment bonus
             industry_bonus = 0
+            industry_reasoning = ""
             case_study_tags = case_study.get('tags', [])
             if 'cleantech' in job_keywords and 'cleantech' in case_study_tags:
                 industry_bonus = 1.5
+                industry_reasoning = "Direct cleantech industry experience matches job requirements."
             elif 'ai_ml' in job_keywords and 'ai_ml' in case_study_tags:
                 industry_bonus = 1.5
+                industry_reasoning = "AI/ML experience directly relevant to job requirements."
             
             # Calculate final score
             final_score = base_score + level_bonus + industry_bonus
+            
+            # Generate comprehensive reasoning
+            reasoning_parts = []
+            if base_score > 0:
+                reasoning_parts.append(f"Tag match score: {base_score}")
+            if level_reasoning:
+                reasoning_parts.append(level_reasoning)
+            if industry_reasoning:
+                reasoning_parts.append(industry_reasoning)
+            
+            reasoning = " ".join(reasoning_parts) if reasoning_parts else "Limited relevance to job requirements."
+            
+            # Calculate confidence based on score strength
+            confidence = min(0.95, 0.5 + (final_score / 10.0))
+            
+            # Create CaseStudyScore object
+            case_study_score = CaseStudyScore(
+                case_study=case_study,
+                score=final_score,
+                confidence=confidence,
+                reasoning=reasoning,
+                stage1_score=base_score,
+                level_bonus=level_bonus,
+                industry_bonus=industry_bonus
+            )
             
             case_study['llm_score'] = final_score
             case_study['level_bonus'] = level_bonus
@@ -225,6 +277,86 @@ Provide your analysis in JSON format:
         scored.sort(key=lambda x: x.get('llm_score', 0), reverse=True)
         
         return scored
+    
+    def _simulate_llm_scoring_with_explanations(
+        self, 
+        candidates: List[Dict[str, Any]], 
+        job_keywords: List[str], 
+        job_level: Optional[str],
+        job_description: Optional[str]
+    ) -> Tuple[List[Dict[str, Any]], List[CaseStudyScore]]:
+        """Simulate LLM scoring with explanations and confidence tracking."""
+        scored = []
+        ranked_scores = []
+        
+        for case_study in candidates:
+            # Enhanced scoring based on tag matches and job level
+            base_score = case_study.get('stage1_score', 0)
+            
+            # Level-based scoring
+            level_bonus = 0
+            level_reasoning = ""
+            if job_level:
+                if job_level == 'L5' and 'leadership' in case_study.get('tags', []):
+                    level_bonus = 2
+                    level_reasoning = "Strong leadership experience matches L5 role requirements."
+                elif job_level == 'L4' and 'growth' in case_study.get('tags', []):
+                    level_bonus = 1.5
+                    level_reasoning = "Growth experience aligns with L4 product manager role."
+                elif job_level == 'L3' and 'product' in case_study.get('tags', []):
+                    level_bonus = 1
+                    level_reasoning = "Product experience suitable for L3 role."
+            
+            # Industry alignment bonus
+            industry_bonus = 0
+            industry_reasoning = ""
+            case_study_tags = case_study.get('tags', [])
+            if 'cleantech' in job_keywords and 'cleantech' in case_study_tags:
+                industry_bonus = 1.5
+                industry_reasoning = "Direct cleantech industry experience matches job requirements."
+            elif 'ai_ml' in job_keywords and 'ai_ml' in case_study_tags:
+                industry_bonus = 1.5
+                industry_reasoning = "AI/ML experience directly relevant to job requirements."
+            
+            # Calculate final score
+            final_score = base_score + level_bonus + industry_bonus
+            
+            # Generate comprehensive reasoning
+            reasoning_parts = []
+            if base_score > 0:
+                reasoning_parts.append(f"Tag match score: {base_score}")
+            if level_reasoning:
+                reasoning_parts.append(level_reasoning)
+            if industry_reasoning:
+                reasoning_parts.append(industry_reasoning)
+            
+            reasoning = " ".join(reasoning_parts) if reasoning_parts else "Limited relevance to job requirements."
+            
+            # Calculate confidence based on score strength
+            confidence = min(0.95, 0.5 + (final_score / 10.0))
+            
+            # Create CaseStudyScore object
+            case_study_score = CaseStudyScore(
+                case_study=case_study,
+                score=final_score,
+                confidence=confidence,
+                reasoning=reasoning,
+                stage1_score=base_score,
+                level_bonus=level_bonus,
+                industry_bonus=industry_bonus
+            )
+            
+            case_study['llm_score'] = final_score
+            case_study['level_bonus'] = level_bonus
+            case_study['industry_bonus'] = industry_bonus
+            scored.append(case_study)
+            ranked_scores.append(case_study_score)
+        
+        # Sort by score (descending)
+        scored.sort(key=lambda x: x.get('llm_score', 0), reverse=True)
+        ranked_scores.sort(key=lambda x: x.score, reverse=True)
+        
+        return scored, ranked_scores
     
     def _fallback_selection(self, candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Fallback selection using stage1 scores."""

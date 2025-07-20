@@ -116,6 +116,15 @@ def test_phase4_hybrid_selection():
         print(f"  Total time: {result.total_time:.3f}s")
         print(f"  LLM cost estimate: ${result.llm_cost_estimate:.3f}")
         print(f"  Fallback used: {result.fallback_used}")
+        print(f"  Confidence threshold: {result.confidence_threshold}")
+        
+        # Show ranked candidates with explanations
+        print(f"  Ranked candidates:")
+        for i, score in enumerate(result.ranked_candidates):
+            print(f"    {i+1}. {score.case_study.get('name', score.case_study.get('id'))}")
+            print(f"       Score: {score.score:.1f} (confidence: {score.confidence:.2f})")
+            print(f"       Reasoning: {score.reasoning}")
+            print(f"       Stage1: {score.stage1_score}, Level: +{score.level_bonus}, Industry: +{score.industry_bonus}")
         
         for i, case_study in enumerate(result.selected_case_studies):
             print(f"    {i+1}. {case_study.get('name', case_study.get('id'))}")
