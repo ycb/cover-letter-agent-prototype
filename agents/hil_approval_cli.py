@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from agents.hybrid_case_study_selection import HybridCaseStudySelector
 from agents.work_history_context import WorkHistoryContextEnhancer
 from agents.gap_detection import GapDetector
+from agents.story_generation import StoryGenerator
 
 
 @dataclass
@@ -103,6 +104,9 @@ class HILApprovalCLI:
         
         # Initialize gap detector for Phase 7B
         self.gap_detector = GapDetector()
+        
+        # Initialize story generator for Phase 7C
+        self.story_generator = StoryGenerator(user_profile)
     
     def hil_approval_cli(
         self, 
@@ -633,6 +637,22 @@ This experience demonstrates my ability to [key skill/competency] and [business 
             print(f"\n✅ Story saved!")
             print(f"   Gap: {gap_tag}")
             print(f"   Story: {final_story[:100]}...")
+            
+            # Save story using story generator (Phase 7C)
+            saved_story = self.story_generator.create_story(
+                gap_tag=gap_tag,
+                story_text=final_story,
+                tags=[gap_tag],
+                source='gap_fill',
+                strategy='manual_entry',
+                metadata={
+                    'template_used': True,
+                    'web_interface_placeholder': True,
+                    'user_context': user_context
+                }
+            )
+            print(f"   Story ID: {saved_story.story_id}")
+            print(f"   Saved to: {self.story_generator.stories_file}")
         else:
             print(f"\n⏭️  Skipping story creation")
             print(f"   (You can create this story later)")
