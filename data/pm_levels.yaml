@@ -1,0 +1,144 @@
+# PM Levels Competencies Mapping
+# Defines key competencies and skills for different Product Manager levels
+# Used to add level-appropriate scoring bonuses to case study selection
+
+pm_levels:
+  L2:  # Associate Product Manager / Junior PM
+    name: "Associate Product Manager"
+    years_experience: "0-2 years"
+    key_competencies:
+      - "product_execution"
+      - "user_research"
+      - "data_analysis"
+      - "feature_development"
+      - "stakeholder_communication"
+      - "agile_methodologies"
+      - "user_experience"
+      - "market_research"
+      - "competitive_analysis"
+      - "product_launch"
+    
+  L3:  # Product Manager
+    name: "Product Manager"
+    years_experience: "2-5 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+    
+  L4:  # Senior Product Manager
+    name: "Senior Product Manager"
+    years_experience: "5-8 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+    
+  L5:  # Staff Product Manager
+    name: "Staff Product Manager"
+    years_experience: "8-12 years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+      - "org_leadership"
+      - "strategic_alignment"
+      - "cross_org_influence"
+      - "executive_communication"
+      - "complex_problem_solving"
+      - "industry_expertise"
+      - "thought_leadership"
+    
+  L6:  # Principal Product Manager
+    name: "Principal Product Manager"
+    years_experience: "12+ years"
+    key_competencies:
+      - "product_strategy"
+      - "roadmap_planning"
+      - "cross_functional_leadership"
+      - "data_driven_decision_making"
+      - "user_research"
+      - "market_analysis"
+      - "feature_development"
+      - "product_launch"
+      - "stakeholder_management"
+      - "agile_methodologies"
+      - "user_experience"
+      - "competitive_analysis"
+      - "business_metrics"
+      - "customer_feedback"
+      - "team_leadership"
+      - "mentoring"
+      - "strategic_thinking"
+      - "business_impact"
+      - "portfolio_management"
+      - "people_development"
+      - "org_leadership"
+      - "strategic_alignment"
+      - "cross_org_influence"
+      - "executive_communication"
+      - "complex_problem_solving"
+      - "industry_expertise"
+      - "thought_leadership"
+      - "company_strategy"
+      - "board_communication"
+      - "industry_thought_leadership"
+      - "complex_organizational_change"
+      - "multi_portfolio_management"
+
+# Scoring multipliers for different levels
+# Higher levels get more bonus points for level-appropriate competencies
+level_scoring_multipliers:
+  L2: 1.0
+  L3: 1.2
+  L4: 1.5
+  L5: 2.0
+  L6: 2.5
+
+# Default level if not specified
+default_level: "L4" 

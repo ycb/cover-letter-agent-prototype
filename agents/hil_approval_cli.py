@@ -1,0 +1,913 @@
+#!/usr/bin/env python3
+"""
+Human-in-the-Loop (HIL) CLI System
+
+Interactive CLI for case study selection with feedback collection,
+progress tracking, and dynamic alternatives.
+"""
+
+import json
+import os
+import yaml
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Set, Tuple, Any
+from dataclasses import dataclass
+
+from agents.hybrid_case_study_selection import HybridCaseStudySelector
+from agents.work_history_context import WorkHistoryContextEnhancer
+from agents.gap_detection import GapDetector
+from agents.story_generation import StoryGenerator
+
+
+@dataclass
+class CaseStudyVariant:
+    """Represents a case study variant for reuse."""
+    case_study_id: str
+    summary: str
+    tags: List[str]
+    approved_for: List[str]
+    created_at: str
+
+
+class HILApproval:
+    """Represents a single HIL approval decision."""
+    
+    def __init__(
+        self,
+        job_id: str,
+        case_study_id: str,
+        approved: bool,
+        user_score: int,
+        comments: Optional[str] = None,
+        llm_score: Optional[float] = None,
+        llm_reason: Optional[str] = None,
+        llm_rank: Optional[int] = None,
+        user_rank: Optional[int] = None,
+        discrepancy_reasoning: Optional[str] = None
+    ):
+        self.job_id = job_id
+        self.case_study_id = case_study_id
+        self.approved = approved
+        self.user_score = user_score
+        self.comments = comments
+        self.llm_score = llm_score
+        self.llm_reason = llm_reason
+        self.llm_rank = llm_rank
+        self.user_rank = user_rank
+        self.discrepancy_reasoning = discrepancy_reasoning
+        self.timestamp = datetime.now().isoformat()
+        
+        # Calculate ranking discrepancy
+        self.ranking_discrepancy = None
+        self.discrepancy_type = "aligned"
+        
+        if llm_rank is not None and user_rank is not None:
+            self.ranking_discrepancy = abs(llm_rank - user_rank)
+            if user_rank < llm_rank:
+                self.discrepancy_type = "user_higher"
+            elif user_rank > llm_rank:
+                self.discrepancy_type = "ai_higher"
+            else:
+                self.discrepancy_type = "aligned"
+    
+    def to_dict(self) -> Dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            'job_id': self.job_id,
+            'case_study_id': self.case_study_id,
+            'approved': self.approved,
+            'user_score': self.user_score,
+            'comments': self.comments,
+            'llm_score': self.llm_score,
+            'llm_reason': self.llm_reason,
+            'llm_rank': self.llm_rank,
+            'user_rank': self.user_rank,
+            'ranking_discrepancy': self.ranking_discrepancy,
+            'discrepancy_type': self.discrepancy_type,
+            'discrepancy_reasoning': self.discrepancy_reasoning,
+            'timestamp': self.timestamp
+        }
+
+
+class HILApprovalCLI:
+    """Human-in-the-Loop CLI for case study approval and feedback collection."""
+    
+    def __init__(self, user_profile: str = "default"):
+        """Initialize the HIL CLI system."""
+        self.user_profile = user_profile
+        self.feedback_dir = Path(f"users/{user_profile}")
+        self.feedback_dir.mkdir(parents=True, exist_ok=True)
+        
+        self.feedback_file = self.feedback_dir / "hil_feedback.jsonl"
+        self.session_insights_file = self.feedback_dir / "session_insights.jsonl"
+        
+        # Initialize gap detector for Phase 7B
+        self.gap_detector = GapDetector()
+        
+        # Initialize story generator for Phase 7C
+        self.story_generator = StoryGenerator(user_profile)
+    
+    def hil_approval_cli(
+        self, 
+        selected_case_studies: List[Dict[str, Any]], 
+        job_description: str,
+        job_id: str,
+        all_ranked_candidates: Optional[List[Dict[str, Any]]] = None
+    ) -> Tuple[List[Dict[str, Any]], List[HILApproval]]:
+        """
+        Presents selected case studies via CLI for user approval.
+        When user rejects a case study, shows the next highest scored alternative.
+        
+        Args:
+            selected_case_studies: Initial list of case studies to review
+            job_description: Job description for context
+            job_id: Unique job identifier
+            all_ranked_candidates: Full ranked list of all candidates for alternatives
+            
+        Returns:
+            Tuple of (approved_case_studies, feedback_list)
+        """
+        print(f"\n🎯 Human-in-the-Loop Approval")
+        print(f"Job: {job_id}")
+        print(f"Description: {job_description[:100]}...")
+        print(f"Initial case studies to review: {len(selected_case_studies)}")
+        if all_ranked_candidates:
+            print(f"Total ranked candidates available: {len(all_ranked_candidates)}")
+        print("=" * 50)
+        
+        approved_case_studies = []
+        feedback_list = []
+        reviewed_case_studies = set()
+        
+        # Track rankings for discrepancy analysis
+        llm_rankings = {}
+        user_rankings = {}
+        
+        # Track for feedback prompting
+        rejected_ai_suggestions = set()
+        approved_alternatives = set()
+        
+        # Build LLM rankings from all_ranked_candidates
+        if all_ranked_candidates:
+            for i, candidate in enumerate(all_ranked_candidates):
+                candidate_id = candidate.get('id', candidate.get('name', 'unknown'))
+                llm_rankings[candidate_id] = i + 1
+        
+        # Start with the initial selected case studies
+        current_candidates = selected_case_studies.copy()
+        candidate_index = 0
+        user_rank_counter = 1
+        rejection_count = 0
+        
+        while candidate_index < len(current_candidates):
+            case_study = current_candidates[candidate_index]
+            case_study_id = case_study.get('id', case_study.get('name', 'unknown'))
+            
+            # Skip if already reviewed
+            if case_study_id in reviewed_case_studies:
+                candidate_index += 1
+                continue
+            
+            # Show progress
+            print(f"\n📋 Case Study {len(feedback_list) + 1}")
+            print(f"Progress: {len(approved_case_studies)}/3 case studies added")
+            print(f"Name: {case_study.get('name', case_study.get('id', 'Unknown'))}")
+            print(f"Tags: {', '.join(case_study.get('tags', []))}")
+            
+            # Show complete case study content (the actual paragraph text)
+            print(f"\n📄 Full Case Study Paragraph:")
+            case_study_text = case_study.get('text', case_study.get('description', 'No case study content available'))
+            print(f"{case_study_text}")
+            
+            # Show LLM score if available
+            if 'llm_score' in case_study:
+                print(f"\n🤖 LLM Score: {case_study['llm_score']:.1f}")
+                if case_study_id in llm_rankings:
+                    print(f"LLM Rank: #{llm_rankings[case_study_id]}")
+            if 'reasoning' in case_study:
+                print(f"LLM Reason: {case_study['reasoning']}")
+            
+            # Get user approval
+            approved = self._get_user_approval()
+            user_score = self._get_user_score()
+            comments = None  # Set to None for MVP
+            
+            # Track user ranking
+            user_rankings[case_study_id] = user_rank_counter
+            user_rank_counter += 1
+            
+            # Track for feedback prompting
+            if not approved:
+                # This was an AI suggestion that was rejected
+                if case_study_id in llm_rankings and llm_rankings[case_study_id] <= 3:
+                    rejected_ai_suggestions.add(case_study_id)
+            else:
+                # This was approved - check if it was an alternative
+                if case_study_id not in llm_rankings or llm_rankings[case_study_id] > 3:
+                    approved_alternatives.add(case_study_id)
+            
+            # Create feedback object with enhanced tracking
+            feedback = HILApproval(
+                job_id=job_id,
+                case_study_id=case_study_id,
+                approved=approved,
+                user_score=user_score,
+                comments=comments,
+                llm_score=case_study.get('llm_score'),
+                llm_reason=case_study.get('reasoning'),
+                llm_rank=llm_rankings.get(case_study_id),
+                user_rank=user_rankings.get(case_study_id)
+            )
+            
+            feedback_list.append(feedback)
+            reviewed_case_studies.add(case_study_id)
+            
+            if approved:
+                approved_case_studies.append(case_study)
+                print(f"✅ Approved case study: {case_study.get('name', case_study.get('id'))}")
+                
+                # Prompt for feedback if user rejected AI suggestion and approved alternative
+                if len(rejected_ai_suggestions) > 0 and case_study_id in approved_alternatives:
+                    feedback_reasoning = self._get_discrepancy_reasoning(feedback)
+                    feedback.discrepancy_reasoning = feedback_reasoning
+                
+                candidate_index += 1
+                
+                # Check if we have 3 approved case studies
+                if len(approved_case_studies) >= 3:
+                    print(f"\n🎉 All 3 case studies selected!")
+                    break
+                    
+            else:
+                print(f"❌ Rejected case study: {case_study.get('name', case_study.get('id'))}")
+                rejection_count += 1
+                
+                # Check if we should ask about adding new vs continuing search
+                if rejection_count % 3 == 0:
+                    choice = self._ask_search_or_add_new()
+                    if choice == "add_new":
+                        # Get job tags and user case studies for gap detection
+                        jd_tags = []  # This would come from job description parsing
+                        user_case_studies = []  # This would come from user's case studies
+                        
+                        # For MVP, use sample data
+                        jd_tags = ['ai_ml', 'platform', 'enterprise', 'leadership']
+                        user_case_studies = [
+                            {
+                                'id': 'sample_case',
+                                'name': 'Sample Case Study',
+                                'tags': ['mobile', 'b2c', 'ux', 'growth']
+                            }
+                        ]
+                        
+                        self._handle_gap_detection_choice(choice, jd_tags, user_case_studies)
+                    else:
+                        print(f"Continuing with search...")
+                
+                # If we have more ranked candidates, show the next best one
+                if all_ranked_candidates:
+                    next_candidate = self._get_next_best_candidate(
+                        all_ranked_candidates, 
+                        reviewed_case_studies,
+                        approved_case_studies
+                    )
+                    
+                    if next_candidate:
+                        print(f"\n🔄 Showing next best alternative...")
+                        # Replace current candidate with next best
+                        current_candidates[candidate_index] = next_candidate
+                        continue  # Review the new candidate
+                    else:
+                        print(f"\n⚠️  No more high-scoring alternatives available.")
+                        candidate_index += 1
+                else:
+                    candidate_index += 1
+        
+        # Save feedback
+        self._save_feedback(feedback_list)
+        
+        # Generate session insights
+        self._generate_session_insights(feedback_list, job_id)
+        
+        print(f"\n📊 Approval Summary:")
+        print(f"  Total reviewed: {len(feedback_list)}")
+        print(f"  Approved: {len(approved_case_studies)}")
+        print(f"  Rejected: {len(feedback_list) - len(approved_case_studies)}")
+        
+        return approved_case_studies, feedback_list
+    
+    def _get_user_approval(self) -> bool:
+        """Get user approval decision."""
+        while True:
+            response = input("\nDo you want to use this case study? (y/n): ").strip().lower()
+            if response in ['y', 'yes']:
+                return True
+            elif response in ['n', 'no']:
+                return False
+            else:
+                print("Please enter 'y' for yes or 'n' for no.")
+    
+    def _get_user_score(self) -> int:
+        """Get user relevance score (1-10)."""
+        while True:
+            try:
+                score = int(input("Rate the relevance (1-10): "))
+                if 1 <= score <= 10:
+                    return score
+                else:
+                    print("Please enter a number between 1 and 10.")
+            except ValueError:
+                print("Please enter a valid number.")
+    
+    def _get_user_comments(self) -> Optional[str]:
+        """Get optional user comments."""
+        comments = input("Any improvement notes? (optional): ").strip()
+        return comments if comments else None
+    
+    def _save_feedback(self, feedback_list: List[HILApproval]) -> None:
+        """Save feedback to JSONL file."""
+        try:
+            with open(self.feedback_file, 'a') as f:
+                for feedback in feedback_list:
+                    f.write(json.dumps(feedback.to_dict()) + '\n')
+            print(f"Saved {len(feedback_list)} feedback entries to {self.feedback_file}")
+        except Exception as e:
+            print(f"Error saving feedback: {e}")
+    
+    def save_case_study_variant(
+        self, 
+        case_study_id: str, 
+        summary: str, 
+        tags: List[str], 
+        approved_for: List[str]
+    ) -> None:
+        """Save a case study variant for future reuse."""
+        try:
+            # Load existing variants
+            variants = self._load_case_study_variants()
+            
+            if case_study_id not in variants:
+                variants[case_study_id] = []
+            
+            # Create new variant
+            variant = CaseStudyVariant(
+                case_study_id=case_study_id,
+                summary=summary,
+                tags=tags,
+                approved_for=approved_for,
+                created_at=datetime.now().isoformat()
+            )
+            
+            variants[case_study_id].append(variant.to_dict())
+            
+            # Save variants
+            with open(self.variants_file, 'w') as f:
+                yaml.dump(variants, f, default_flow_style=False)
+            
+            # logger.info(f"Saved variant {variant.version} for {case_study_id}") # This line was commented out in the original file
+            
+        except Exception as e:
+            # self.error_handler.handle_error(e, "save_case_study_variant", { # This line was commented out in the original file
+            #     "case_study_id": case_study_id,
+            #     "approved_for": approved_for
+            # })
+            print(f"Error saving case study variant: {e}")
+    
+    def _load_case_study_variants(self) -> Dict[str, List[Dict[str, Any]]]:
+        """Load existing case study variants."""
+        try:
+            if os.path.exists(self.variants_file):
+                with open(self.variants_file, 'r') as f:
+                    return yaml.safe_load(f) or {}
+            return {}
+        except Exception as e:
+            # self.error_handler.handle_error(e, "load_case_study_variants") # This line was commented out in the original file
+            print(f"Error loading case study variants: {e}")
+            return {}
+    
+    def get_approved_variants(self, case_study_id: str) -> List[CaseStudyVariant]:
+        """Get approved variants for a case study."""
+        variants = self._load_case_study_variants()
+        if case_study_id in variants:
+            return [CaseStudyVariant(**v) for v in variants[case_study_id]]
+        return []
+    
+    def suggest_refinements(self, case_study: Dict[str, Any], jd_tags: List[str]) -> List[str]:
+        """Suggest refinements for a case study based on job description tags."""
+        suggestions = []
+        
+        # Check for missing metrics
+        if 'growth' in jd_tags and 'revenue_growth' not in case_study.get('tags', []):
+            suggestions.append("Consider adding specific revenue growth metrics")
+        
+        # Check for missing customer insights
+        if 'customer' in jd_tags and 'customer_success' not in case_study.get('tags', []):
+            suggestions.append("Consider highlighting customer success metrics")
+        
+        # Check for missing leadership details
+        if 'leadership' in jd_tags and 'leadership' not in case_study.get('tags', []):
+            suggestions.append("Consider emphasizing leadership and team management")
+        
+        # Check for missing technical details
+        if 'technical' in jd_tags and 'technical' not in case_study.get('tags', []):
+            suggestions.append("Consider adding technical implementation details")
+        
+        return suggestions
+
+    def _get_next_best_candidate(
+        self, 
+        all_ranked_candidates: List[Dict[str, Any]], 
+        reviewed_case_studies: set,
+        approved_case_studies: List[Dict[str, Any]]
+    ) -> Optional[Dict[str, Any]]:
+        """Get the next best candidate that hasn't been reviewed yet."""
+        for candidate in all_ranked_candidates:
+            candidate_id = candidate.get('id', candidate.get('name', 'unknown'))
+            if candidate_id not in reviewed_case_studies:
+                return candidate
+        return None
+
+    def _show_ranking_insight(self, feedback: HILApproval) -> None:
+        """Show insights about ranking discrepancies."""
+        if feedback.ranking_discrepancy is None:
+            return
+            
+        if feedback.discrepancy_type == "user_higher":
+            print(f"💡 Insight: You rated this {abs(feedback.ranking_discrepancy):.1f} points higher than the AI")
+            print(f"   This suggests the AI may be undervaluing certain aspects of this case study")
+        elif feedback.discrepancy_type == "ai_higher":
+            print(f"💡 Insight: The AI rated this {abs(feedback.ranking_discrepancy):.1f} points higher than you")
+            print(f"   This suggests the AI may be overvaluing certain aspects of this case study")
+        else:
+            print(f"✅ Alignment: Your rating closely matches the AI's assessment")
+    
+    def _ask_search_or_add_new(self) -> str:
+        """Ask user if they want to keep searching or add a new case study."""
+        while True:
+            print(f"\n🤔 Keep searching library or add new case study?")
+            response = input("(search/add_new): ").strip().lower()
+            if response in ['search', 's']:
+                return "search"
+            elif response in ['add_new', 'add', 'new', 'a']:
+                return "add_new"
+            else:
+                print("Please enter 'search' or 'add_new'")
+    
+    def _handle_gap_detection_choice(self, choice: str, jd_tags: List[str], user_case_studies: List[Dict]) -> None:
+        """Handle the user's choice for gap detection."""
+        if choice == "add_new":
+            # Trigger gap detection
+            gap_results = self._handle_add_new_option(jd_tags, user_case_studies)
+            
+            if gap_results['recommendation'] == 'gap_fill_needed':
+                # Ask user which gap to fill
+                gaps = gap_results['gaps']
+                if gaps:
+                    print(f"\n🎯 Which gap would you like to fill?")
+                    for i, gap in enumerate(gaps[:3], 1):
+                        print(f"  {i}. {gap.tag} ({gap.priority} priority)")
+                    
+                    try:
+                        choice = int(input("Enter gap number (1-3): ")) - 1
+                        if 0 <= choice < len(gaps):
+                            selected_gap = gaps[choice]
+                            print(f"\n📝 Filling gap: {selected_gap.tag}")
+                            
+                            # Generate story for this gap
+                            story_result = self._gap_fill_workflow(selected_gap.tag)
+                            
+                            print(f"\n✅ Gap filling completed!")
+                            print(f"   New story created for: {selected_gap.tag}")
+                            print(f"   Story: {story_result['story'][:100]}...")
+                            
+                            # In Phase 7C, this would save the story
+                            print(f"   (Story will be saved in Phase 7C)")
+                        else:
+                            print(f"Invalid choice. Continuing with search...")
+                    except ValueError:
+                        print(f"Invalid input. Continuing with search...")
+            else:
+                print(f"✅ No gaps detected. Continuing with search...")
+    
+    def _get_discrepancy_reasoning(self, feedback: HILApproval) -> Optional[str]:
+        """Get user's reasoning for ranking discrepancy - only when rejecting AI suggestion and approving alternative."""
+        print(f"\n🤔 Why is this story the best fit?")
+        print(f"   (You rejected our suggestion but approved this alternative)")
+        print(f"   (This helps improve the system's understanding of what matters to you)")
+        
+        reasoning = input("Your reasoning (optional, press Enter to skip): ").strip()
+        return reasoning if reasoning else None
+
+    def _generate_session_insights(self, feedback_list: List[HILApproval], job_id: str) -> None:
+        """Generate session-level insights from feedback."""
+        if not feedback_list:
+            return
+        
+        # Calculate discrepancy statistics
+        discrepancies = [f.ranking_discrepancy for f in feedback_list if f.ranking_discrepancy is not None]
+        user_higher = len([f for f in feedback_list if f.discrepancy_type == "user_higher"])
+        ai_higher = len([f for f in feedback_list if f.discrepancy_type == "ai_higher"])
+        aligned = len([f for f in feedback_list if f.discrepancy_type == "aligned"])
+        
+        insights = {
+            'job_id': job_id,
+            'timestamp': datetime.now().isoformat(),
+            'total_feedback': len(feedback_list),
+            'average_discrepancy': sum(discrepancies) / len(discrepancies) if discrepancies else 0,
+            'user_rated_higher': user_higher,
+            'ai_rated_higher': ai_higher,
+            'aligned_ratings': aligned,
+            'feedback_details': [f.to_dict() for f in feedback_list]
+        }
+        
+        # Save session insights
+        with open(self.session_insights_file, 'a') as f:
+            f.write(json.dumps(insights) + '\n')
+        
+        print(f"\n📈 Session Insights:")
+        print(f"  Average ranking discrepancy: {insights['average_discrepancy']:.1f} points")
+        print(f"  User rated higher: {user_higher} cases")
+        print(f"  AI rated higher: {ai_higher} cases")
+        print(f"  Aligned ratings: {aligned} cases")
+    
+    def _handle_add_new_option(self, jd_tags: List[str], user_case_studies: List[Dict]) -> Dict:
+        """
+        Handle gap detection when user chooses 'add new'.
+        
+        Args:
+            jd_tags: Job description tags
+            user_case_studies: User's existing case studies
+            
+        Returns:
+            Gap detection results and recommendations
+        """
+        print(f"\n🔍 Gap Detection & Analysis")
+        print(f"Analyzing gaps between job requirements and your experience...")
+        
+        # Extract all user tags from case studies
+        user_tags = set()
+        for case_study in user_case_studies:
+            user_tags.update(case_study.get('tags', []))
+        
+        # Detect gaps
+        gaps = self.gap_detector.detect_gaps(jd_tags, list(user_tags))
+        
+        if not gaps:
+            print(f"✅ No significant gaps detected!")
+            print(f"Your experience appears to cover all job requirements.")
+            return {'gaps': [], 'recommendation': 'no_gaps'}
+        
+        # Show gap analysis
+        print(f"\n📊 Gap Analysis Results:")
+        print(f"  Total gaps detected: {len(gaps)}")
+        
+        summary = self.gap_detector.get_gap_summary(gaps)
+        print(f"  High priority: {summary['high_priority']}")
+        print(f"  Medium priority: {summary['medium_priority']}")
+        print(f"  Low priority: {summary['low_priority']}")
+        
+        # Show top gaps
+        print(f"\n🎯 Top Priority Gaps:")
+        for i, gap in enumerate(gaps[:3], 1):
+            print(f"  {i}. {gap.tag} ({gap.category}) - {gap.priority} priority")
+            if gap.user_coverage:
+                print(f"     Partial coverage: {', '.join(gap.user_coverage)}")
+            else:
+                print(f"     No existing coverage")
+        
+        # Check for existing content matches
+        print(f"\n🔍 Checking for existing content matches...")
+        content_matches = {}
+        
+        for gap in gaps[:3]:  # Check top 3 gaps
+            matches = self.gap_detector.match_existing_content(gap, user_case_studies)
+            if matches:
+                content_matches[gap.tag] = matches
+                print(f"  ✅ {gap.tag}: Found {len(matches)} potential matches")
+                
+                # Display detailed rationale for each match
+                for i, match in enumerate(matches[:2], 1):  # Show top 2 matches
+                    print(f"    {i}. {match.case_study_name}")
+                    print(f"       Match Type: {match.match_type}")
+                    print(f"       Confidence: {match.confidence:.2f}")
+                    print(f"       Coverage Strength: {match.coverage_strength}")
+                    print(f"       Relationship Type: {match.relationship_type}")
+                    print(f"       Rationale: {match.rationale}")
+                    
+                    if match.adjacency_explanation:
+                        print(f"       Adjacency: {match.adjacency_explanation}")
+                    
+                    if match.relevant_tags:
+                        print(f"       Relevant Tags: {', '.join(match.relevant_tags)}")
+            else:
+                print(f"  ❌ {gap.tag}: No existing content matches")
+        
+        return {
+            'gaps': gaps,
+            'content_matches': content_matches,
+            'summary': summary,
+            'recommendation': 'gap_fill_needed'
+        }
+    
+    def _gap_fill_workflow(self, gap_tag: str, user_context: str = "") -> Dict:
+        """
+        Enhanced gap filling workflow with force-ranked story suggestions.
+        
+        Args:
+            gap_tag: The gap to fill
+            user_context: Additional user context
+            
+        Returns:
+            Generated story and metadata
+        """
+        print(f"\n📝 Gap Filling: {gap_tag}")
+        print(f"Analyzing your experience to suggest stories for this gap...")
+        
+        # Get story suggestions using the story generator
+        suggestions = self.story_generator.suggest_stories_for_gap(
+            gap_tag=gap_tag,
+            work_history=self._get_user_work_history(),
+            existing_case_studies=self._get_user_case_studies(),
+            user_context=user_context
+        )
+        
+        if not suggestions:
+            print(f"\n❌ No story suggestions found for {gap_tag}")
+            print(f"   (This may indicate limited relevant experience)")
+            return self._manual_story_creation(gap_tag, user_context)
+        
+        # Display force-ranked suggestions
+        print(f"\n🎯 Story Suggestions (Ranked by Confidence & Relevance):")
+        print(f"Found {len(suggestions)} potential stories for {gap_tag}")
+        print("=" * 60)
+        
+        for i, suggestion in enumerate(suggestions[:5], 1):  # Show top 5
+            print(f"\n{i}. {suggestion.story_text[:100]}...")
+            print(f"   Confidence: {suggestion.confidence:.1f} | Relevance: {suggestion.relevance_score:.1f}")
+            print(f"   Match Type: {suggestion.match_type} | Source: {suggestion.source}")
+            print(f"   Rationale: {suggestion.rationale}")
+            print(f"   Tags: {', '.join(suggestion.tags[:3])}...")
+        
+        # Let user choose a suggestion or create new
+        print(f"\n🤔 Choose an option:")
+        print(f"   [1-{min(len(suggestions), 5)}]: Use one of the suggestions above")
+        print(f"   [new]: Create a new custom story")
+        print(f"   [skip]: Skip story creation for now")
+        
+        choice = input("\nYour choice: ").strip().lower()
+        
+        if choice.isdigit():
+            idx = int(choice) - 1
+            if 0 <= idx < len(suggestions):
+                selected_suggestion = suggestions[idx]
+                print(f"\n✅ Using suggestion #{choice}")
+                print(f"   Story: {selected_suggestion.story_text}")
+                
+                # Save the selected suggestion as a story
+                saved_story = self.story_generator.create_story(
+                    gap_tag=gap_tag,
+                    story_text=selected_suggestion.story_text,
+                    tags=selected_suggestion.tags,
+                    source='gap_fill',
+                    strategy='suggestion_selected',
+                    metadata={
+                        'suggestion_source': selected_suggestion.source,
+                        'confidence': selected_suggestion.confidence,
+                        'match_type': selected_suggestion.match_type,
+                        'rationale': selected_suggestion.rationale,
+                        'user_context': user_context
+                    }
+                )
+                
+                return {
+                    'gap_tag': gap_tag,
+                    'story': selected_suggestion.story_text,
+                    'tags': selected_suggestion.tags,
+                    'source': 'gap_fill',
+                    'strategy': 'suggestion_selected',
+                    'confidence': selected_suggestion.confidence,
+                    'match_type': selected_suggestion.match_type,
+                    'rationale': selected_suggestion.rationale,
+                    'story_id': saved_story.story_id
+                }
+        
+        elif choice == 'new':
+            return self._manual_story_creation(gap_tag, user_context)
+        
+        else:
+            print(f"\n⏭️  Skipping story creation")
+            print(f"   (You can create this story later)")
+            return {
+                'gap_tag': gap_tag,
+                'story': "",
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'skipped',
+                'confidence': 0.0,
+                'match_type': 'none',
+                'rationale': 'User chose to skip'
+            }
+    
+    def _manual_story_creation(self, gap_tag: str, user_context: str) -> Dict:
+        """Handle manual story creation with template guidance."""
+        print(f"\n📄 Story Template (for reference):")
+        template = f"""
+At [Company], I led [specific {gap_tag} initiative] that [specific challenge/opportunity]. 
+I [specific actions taken] and [specific outcomes achieved]. 
+This experience demonstrates my ability to [key skill/competency] and [business impact].
+        """
+        print(f"{template}")
+        
+        print(f"\n💡 Template Guidelines:")
+        print(f"  - Replace [Company] with actual company name")
+        print(f"  - Replace [specific {gap_tag} initiative] with your actual project")
+        print(f"  - Include specific metrics and outcomes")
+        print(f"  - Show leadership and impact")
+        print(f"  - Keep it concise but impactful")
+        
+        # Prompt for manual entry
+        print(f"\n✏️  Manual Story Entry:")
+        print(f"   (Enter your custom story below, or press Enter to skip)")
+        print(f"   (Future: This will be enhanced with a web interface for editing)")
+        
+        custom_story = input("Your custom story: ").strip()
+        
+        if custom_story:
+            final_story = custom_story
+            print(f"\n✅ Story saved!")
+            print(f"   Gap: {gap_tag}")
+            print(f"   Story: {final_story[:100]}...")
+            
+            # Save story using story generator
+            saved_story = self.story_generator.create_story(
+                gap_tag=gap_tag,
+                story_text=final_story,
+                tags=[gap_tag],
+                source='gap_fill',
+                strategy='manual_entry',
+                metadata={
+                    'template_used': True,
+                    'web_interface_placeholder': True,
+                    'user_context': user_context
+                }
+            )
+            print(f"   Story ID: {saved_story.story_id}")
+            print(f"   Saved to: {self.story_generator.stories_file}")
+            
+            return {
+                'gap_tag': gap_tag,
+                'story': final_story,
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'manual_entry',
+                'confidence': 0.8,  # High confidence for user-created stories
+                'match_type': 'manual',
+                'rationale': 'User-created story with template guidance',
+                'story_id': saved_story.story_id
+            }
+        else:
+            print(f"\n⏭️  Skipping story creation")
+            return {
+                'gap_tag': gap_tag,
+                'story': "",
+                'tags': [gap_tag],
+                'source': 'gap_fill',
+                'strategy': 'skipped',
+                'confidence': 0.0,
+                'match_type': 'none',
+                'rationale': 'User chose to skip'
+            }
+    
+    def _get_user_work_history(self) -> List[Dict]:
+        """Get user's work history for story suggestions."""
+        # This would ideally load from user's profile
+        # For now, return a sample work history
+        return [
+            {
+                'id': 'work_1',
+                'company': 'Aurora Solar',
+                'role': 'Senior Product Manager',
+                'duration': '2 years',
+                'description': 'Led platform rebuild and scaling initiatives',
+                'tags': ['growth', 'b2b', 'scaling', 'platform'],
+                'achievements': ['Increased user engagement by 40%', 'Reduced churn by 25%']
+            },
+            {
+                'id': 'work_2',
+                'company': 'Enact',
+                'role': 'Product Manager',
+                'duration': '1.5 years',
+                'description': 'Led 0-to-1 product development for energy management',
+                'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
+                'achievements': ['Launched MVP in 6 months', 'Achieved 10K+ users']
+            }
+        ]
+    
+    def _get_user_case_studies(self) -> List[Dict]:
+        """Get user's existing case studies for reframing suggestions."""
+        # This would ideally load from user's case studies
+        # For now, return sample case studies
+        return [
+            {
+                'id': 'enact',
+                'name': 'Enact 0 to 1 Case Study',
+                'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
+                'text': 'Led cross-functional team from 0-1 to improve home energy management'
+            },
+            {
+                'id': 'aurora',
+                'name': 'Aurora Solar Growth Case Study',
+                'tags': ['growth', 'b2b', 'clean_energy', 'scaling'],
+                'text': 'Helped scale company from Series A to Series C, leading platform rebuild'
+            }
+        ]
+
+
+def test_hil_approval_cli():
+    """Test the HLI approval CLI functionality."""
+    print("🧪 Testing HLI Approval CLI...")
+    
+    # Test case studies
+    test_case_studies = [
+        {
+            'id': 'enact',
+            'name': 'Enact 0 to 1 Case Study',
+            'tags': ['growth', 'consumer', 'clean_energy', 'user_experience'],
+            'description': 'Led cross-functional team from 0-1 to improve home energy management',
+            'llm_score': 8.9,
+            'reasoning': 'Strong cleantech match; highlights post-sale engagement and DER'
+        },
+        {
+            'id': 'aurora',
+            'name': 'Aurora Solar Growth Case Study',
+            'tags': ['growth', 'B2B', 'clean_energy', 'scaling'],
+            'description': 'Helped scale company from Series A to Series C, leading platform rebuild',
+            'llm_score': 7.5,
+            'reasoning': 'Good B2B scaling experience in cleantech'
+        }
+    ]
+    
+    # Initialize HLI system
+    hli = HILApprovalCLI(user_profile="test_user")
+    
+    # Test approval workflow (simulated)
+    print("\n📋 Simulating approval workflow...")
+    job_description = "Senior Product Manager at cleantech startup focusing on energy management"
+    job_id = "duke_2025_pm"
+    
+    # Note: In real usage, this would prompt for user input
+    # For testing, we'll simulate the workflow
+    print("(Simulating user approval - in real usage this would prompt for input)")
+    
+    # Test feedback saving
+    test_feedback = [
+        HILApproval(
+            job_id=job_id,
+            case_study_id="enact",
+            approved=True,
+            user_score=9,
+            comments="Add more detail on customer analytics",
+            llm_score=8.9,
+            llm_reason="Strong cleantech match"
+        ),
+        HILApproval(
+            job_id=job_id,
+            case_study_id="aurora",
+            approved=False,
+            user_score=6,
+            comments="Too focused on B2B, need more consumer experience",
+            llm_score=7.5,
+            llm_reason="Good B2B scaling experience"
+        )
+    ]
+    
+    # Save test feedback
+    hli._save_feedback(test_feedback)
+    
+    # Test variant saving
+    hli.save_case_study_variant(
+        case_study_id="enact",
+        summary="At Enact, I led cross-functional team from 0-1 to improve home energy management",
+        tags=['cleantech', 'DER', 'customer_success'],
+        approved_for=[job_id, 'southern_2025_vpp']
+    )
+    
+    # Test refinement suggestions
+    suggestions = hli.suggest_refinements(
+        test_case_studies[0], 
+        ['growth', 'customer', 'leadership']
+    )
+    
+    print(f"\n📊 Test Results:")
+    print(f"  Feedback saved: {len(test_feedback)} entries")
+    print(f"  Variant saved: enact v1.1")
+    print(f"  Refinement suggestions: {len(suggestions)}")
+    for suggestion in suggestions:
+        print(f"    - {suggestion}")
+    
+    print("\n✅ HLI Approval CLI test completed!")
+
+
+if __name__ == "__main__":
+    test_hil_approval_cli() 

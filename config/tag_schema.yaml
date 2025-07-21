@@ -1,0 +1,342 @@
+# Unified Tag Taxonomy for Gap Detection
+# This schema ensures consistency across JD parsing, case studies, and gap detection
+
+tag_categories:
+  skills:
+    technical:
+      - ai_ml
+      - data_analysis
+      - platform
+      - mobile
+      - web
+      - api
+      - database
+      - cloud
+      - security
+      - testing
+      - automation
+      - nlp
+      - machine_learning
+      - analytics
+      - bi
+      - sql
+      - python
+      - javascript
+      - react
+      - aws
+      - azure
+      - gcp
+    product:
+      - growth
+      - user_research
+      - ux
+      - usability
+      - onboarding
+      - engagement
+      - retention
+      - conversion
+      - a_b_testing
+      - metrics
+      - kpis
+      - analytics
+      - data_driven
+      - experimentation
+      - user_experience
+      - product_quality
+      - feature_flags
+      - plg
+      - product_led_growth
+    business:
+      - strategy
+      - gtm
+      - go_to_market
+      - sales
+      - marketing
+      - partnerships
+      - business_development
+      - revenue_growth
+      - pricing
+      - monetization
+      - customer_success
+      - support
+      - operations
+      - process_improvement
+      - change_management
+      - stakeholder_management
+      - cross_org_influence
+      - portfolio_management
+    leadership:
+      - team_lead
+      - people_development
+      - hiring
+      - coaching
+      - mentoring
+      - org_leadership
+      - strategic_alignment
+      - decision_making
+      - conflict_resolution
+      - communication
+      - presentation
+      - executive_communication
+      - board_communication
+      - investor_relations
+
+  industries:
+    technology:
+      - saas
+      - b2b
+      - b2c
+      - b2b2c
+      - marketplace
+      - platform
+      - api_first
+      - developer_tools
+      - internal_tools
+      - enterprise_systems
+      - consumer_tech
+      - mobile_apps
+      - web_apps
+      - ai_ml_products
+      - data_products
+      - analytics_products
+    energy:
+      - cleantech
+      - renewable
+      - solar
+      - wind
+      - energy_storage
+      - smart_grid
+      - energy_efficiency
+      - sustainability
+      - climate
+      - carbon_reduction
+      - utilities
+      - energy_management
+      - home_energy
+      - commercial_energy
+    finance:
+      - fintech
+      - payments
+      - banking
+      - insurance
+      - investment
+      - trading
+      - compliance
+      - regtech
+      - blockchain
+      - crypto
+      - wealth_management
+      - lending
+      - credit
+    healthcare:
+      - healthtech
+      - medtech
+      - digital_health
+      - telemedicine
+      - health_analytics
+      - patient_care
+      - clinical_trials
+      - medical_devices
+      - pharma
+      - biotech
+    other:
+      - education
+      - edtech
+      - real_estate
+      - proptech
+      - logistics
+      - supply_chain
+      - manufacturing
+      - retail
+      - ecommerce
+      - media
+      - entertainment
+      - gaming
+      - sports
+      - travel
+      - hospitality
+
+  roles:
+    product:
+      - product_manager
+      - senior_pm
+      - principal_pm
+      - director_pm
+      - vp_product
+      - cpmo
+      - product_owner
+      - technical_pm
+      - platform_pm
+      - growth_pm
+      - data_pm
+      - ai_pm
+      - mobile_pm
+      - web_pm
+      - enterprise_pm
+      - b2b_pm
+      - b2c_pm
+    engineering:
+      - software_engineer
+      - senior_engineer
+      - principal_engineer
+      - engineering_manager
+      - tech_lead
+      - architect
+      - devops
+      - data_engineer
+      - ml_engineer
+      - frontend_engineer
+      - backend_engineer
+      - full_stack
+    design:
+      - product_designer
+      - ux_designer
+      - ui_designer
+      - design_manager
+      - design_lead
+      - visual_designer
+      - interaction_designer
+    business:
+      - business_analyst
+      - product_analyst
+      - data_analyst
+      - strategy_manager
+      - operations_manager
+      - program_manager
+      - project_manager
+      - product_marketing
+      - growth_manager
+      - sales_manager
+
+  company_stage:
+    startup:
+      - seed
+      - series_a
+      - series_b
+      - series_c
+      - series_d
+      - early_stage
+      - growth_stage
+      - scaleup
+      - unicorn
+      - pre_ipo
+    established:
+      - public_company
+      - enterprise
+      - fortune_500
+      - large_corporation
+      - established_company
+    size:
+      - small_team
+      - medium_team
+      - large_team
+      - distributed_team
+      - global_team
+
+  experience_level:
+    junior:
+      - l3
+      - mid_level
+      - individual_contributor
+    senior:
+      - l4
+      - senior_level
+      - team_lead
+    executive:
+      - l5
+      - l6
+      - director
+      - vp
+      - c_level
+      - executive
+      - leadership
+
+  project_scope:
+    - 0_to_1
+    - 1_to_10
+    - 10_to_100
+    - 100_to_1000
+    - 1000_plus
+    - global_scale
+    - multi_region
+    - international
+    - cross_border
+
+  impact_areas:
+    - revenue_growth
+    - user_growth
+    - engagement
+    - retention
+    - conversion
+    - efficiency
+    - cost_reduction
+    - quality_improvement
+    - risk_mitigation
+    - compliance
+    - scalability
+    - performance
+    - security
+    - reliability
+
+# Gap detection priorities
+gap_priorities:
+  high:
+    - ai_ml
+    - platform
+    - enterprise
+    - leadership
+    - strategy
+    - growth
+    - data_analysis
+    - user_experience
+    - cleantech
+    - fintech
+    - healthtech
+  medium:
+    - mobile
+    - web
+    - b2b
+    - b2c
+    - saas
+    - analytics
+    - operations
+    - stakeholder_management
+    - cross_org_influence
+  low:
+    - specific_technologies
+    - niche_industries
+    - rare_combinations
+    - emerging_trends
+
+# Tag relationships for adjacent matching
+tag_relationships:
+  ai_ml:
+    - machine_learning
+    - nlp
+    - data_analysis
+    - automation
+    - platform
+  platform:
+    - api
+    - enterprise_systems
+    - internal_tools
+    - b2b
+    - developer_tools
+  enterprise:
+    - b2b
+    - internal_tools
+    - enterprise_systems
+    - stakeholder_management
+    - cross_org_influence
+  leadership:
+    - team_lead
+    - people_development
+    - org_leadership
+    - strategic_alignment
+    - executive
+  cleantech:
+    - renewable
+    - energy
+    - sustainability
+    - climate
+    - utilities 

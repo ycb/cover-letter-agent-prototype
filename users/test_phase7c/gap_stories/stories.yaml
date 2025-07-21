@@ -1,0 +1,52 @@
+fintech_20250719_232426:
+  approved_for:
+  - test_job_123
+  created_at: '2025-07-19T23:24:26.730190'
+  gap_tag: fintech
+  metadata: {}
+  source: gap_fill
+  story_id: fintech_20250719_232426
+  story_text: Updated story with more specific metrics and outcomes.
+  strategy: manual_entry
+  tags:
+  - fintech
+  - billing
+  - gtm
+  - launch
+  - updated
+  - metrics
+  version: 2
+healthtech_20250719_232426:
+  approved_for:
+  - test_job_456
+  created_at: '2025-07-19T23:24:26.731075'
+  gap_tag: healthtech
+  metadata: {}
+  source: gap_fill
+  story_id: healthtech_20250719_232426
+  story_text: At XYZ Health, I led the development of a telemedicine platform that
+    improved patient access by 40%. I worked with clinical teams to ensure compliance
+    and user safety.
+  strategy: manual_entry
+  tags:
+  - healthtech
+  - telemedicine
+  - compliance
+  - patient_access
+  version: 1
+payments_20250719_232426:
+  approved_for: []
+  created_at: '2025-07-19T23:24:26.732086'
+  gap_tag: payments
+  metadata: {}
+  source: gap_fill
+  story_id: payments_20250719_232426
+  story_text: At PaymentCorp, I designed and launched a new payment processing system
+    that reduced transaction failures by 60% and improved processing speed by 3x.
+  strategy: manual_entry
+  tags:
+  - payments
+  - processing
+  - performance
+  - launch
+  version: 1

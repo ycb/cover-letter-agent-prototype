@@ -59,7 +59,7 @@ data_model:
 
 google_drive:
   credentials_file: credentials.json
-  enabled: true
+  enabled: false  # Temporarily disabled to fix 404 error
   materials:
     cover_letters: 0B9PEBLmrpxxiX29qaHlUb3RLME0
     portfolio_work: 0B9PEBLmrpxxibkNlaTZmSVB6MUE

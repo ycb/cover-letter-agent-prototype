@@ -130,7 +130,7 @@ llm_add_comments: true
 
 # Google Drive Integration
 google_drive:
-  enabled: true
+  enabled: false  # Temporarily disabled to fix 404 error
   credentials_file: "credentials.json"
   folder_id: "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
   use_oauth: true  # Use OAuth 2.0 instead of service account

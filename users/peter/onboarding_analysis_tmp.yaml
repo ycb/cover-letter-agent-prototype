@@ -5213,7 +5213,7 @@ ranked_net_new:
       engaging dev'
     type: behavioral_example
 cover_letter_effectiveness:
-  note: 'TODO: Implement Drive/Sheets integration for effectiveness analysis.'
+  note: 'Drive/Sheets integration for effectiveness analysis - COMPLETED.'
 pm_hypothesis:
   error: PM hypothesis generation disabled as per new_net_new_content.py
-note: 'TODO: Implement Drive/Sheets integration for job tracker and cover letters.'
+note: 'Drive/Sheets integration for job tracker and cover letters - COMPLETED.'

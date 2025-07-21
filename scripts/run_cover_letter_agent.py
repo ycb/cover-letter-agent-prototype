@@ -415,30 +415,33 @@ Examples:
 
     security_manager = get_security_manager()
 
-    try:
-        api_key = security_manager.get_secret("OPENAI_API_KEY")
-        if api_key:
-            print("\n[LLM] Running gap analysis and regenerating cover letter with gap-filling blurbs...\n")
-            jd_reqs = extract_requirements_llm(job_text, api_key)
-            gap_report = gap_analysis_llm(jd_reqs, cover_letter, api_key)
-            # Extract missing/partial requirements
-            missing_requirements = [
-                req for req, info in gap_report.items() if isinstance(info, dict) and info.get("status") in ["❌", "⚠️"]
-            ]
-            if missing_requirements:
-                improved_cover_letter = agent.generate_cover_letter(job, agent.select_blurbs(job), missing_requirements)
-                print("\n============================================================")
-                print("IMPROVED COVER LETTER WITH GAP-FILLING BLURBS")
-                print("============================================================")
-                print(improved_cover_letter)
-                if args.output_file:
-                    save_cover_letter(improved_cover_letter, args.output_file)
-            else:
-                print("\nNo additional gaps detected by LLM. No further blurbs added.")
-        else:
-            print("\n[No OpenAI API key found. Skipping LLM-powered gap analysis and regeneration.]")
-    except Exception as e:
-        print(f"[LLM GAP ANALYSIS ERROR] {e}")
+    # Temporarily disabled gap analysis due to JSON parsing error
+    # try:
+    #     api_key = security_manager.get_secret("OPENAI_API_KEY")
+    #     if api_key:
+    #         print("\n[LLM] Running gap analysis and regenerating cover letter with gap-filling blurbs...\n")
+    #         jd_reqs = extract_requirements_llm(job_text, api_key)
+    #         gap_report = gap_analysis_llm(jd_reqs, cover_letter, api_key)
+    #         # Extract missing/partial requirements
+    #         missing_requirements = [
+    #             req for req, info in gap_report.items() if isinstance(info, dict) and info.get("status") in ["❌", "⚠️"]
+    #         ]
+    #         if missing_requirements:
+    #             improved_cover_letter = agent.generate_cover_letter(job, agent.select_blurbs(job), missing_requirements)
+    #             print("\n============================================================")
+    #             print("IMPROVED COVER LETTER WITH GAP-FILLING BLURBS")
+    #             print("============================================================")
+    #             print(improved_cover_letter)
+    #             if args.output_file:
+    #                 save_cover_letter(improved_cover_letter, args.output_file)
+    #         else:
+    #             print("\nNo additional gaps detected by LLM. No further blurbs added.")
+    #     else:
+    #         print("\n[No OpenAI API key found. Skipping LLM-powered gap analysis and regeneration.]")
+    # except Exception as e:
+    #     print(f"[LLM GAP ANALYSIS ERROR] {e}")
+    
+    print("\n[Gap analysis temporarily disabled - cover letter generation complete]")
 
 
 if __name__ == "__main__":
