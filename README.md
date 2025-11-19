@@ -1,6 +1,6 @@
 # Narrata - AI Cover Letter Agent
 
-<img width="1200" height="630" alt="OG-image" src="https://github.com/user-attachments/assets/f7d99371-7f99-490c-ad23-6fc64320bfa8" />
+<img width="1200" height="630" alt="OG-image" src="https://github.com/user-attachments/assets/9b2d3ffd-20af-414b-8f46-8acb7299c89d" />
 
 AI cover letter agent that helps PMs land more interviews via intelligent feedback, re-usable content and objective level assessment.
 
