@@ -6,6 +6,9 @@ google-auth-oauthlib>=1.0.0
 google-auth-httplib2>=0.1.0
 google-api-python-client>=2.0.0
 
+# Schema validation
+jsonschema>=4.0.0
+
 # UX dependencies (optional)
 colorama>=0.4.6
 tqdm>=4.65.0
